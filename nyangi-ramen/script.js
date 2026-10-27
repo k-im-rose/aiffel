@@ -34,8 +34,8 @@ const CTYPES = [
   { name: '개굴이', body: 0x7fcd78, head: 0x9adf8c, acc: 0xffffff, kind: 'frog' },
   { name: '삐약이', body: 0xffd84d, head: 0xffe36b, acc: 0xff9d3a, kind: 'chick' },
 ];
-const DAY_LEN = 180;
-const goalOf = d => 20000 + (d - 1) * 6000;
+const DAY_LEN = 120;
+const goalOf = d => 14000 + (d - 1) * 4000;
 
 const G = {
   screen: 'title', day: 1, total: 0, earned: 0, timeLeft: DAY_LEN, served: 0, starSum: 0, orderNo: 0,
@@ -1019,8 +1019,8 @@ $('#btnStart').addEventListener('click', startDay);
 /* ---------- How to play: Nyangi explains step by step ---------- */
 const COOK_SEGS = '<div class="segs"><i style="width:25%;background:#e9dfe5"></i><i style="width:25%;background:#ffe58f"></i><i style="width:22%;background:#ffc560"></i><i style="width:18%;background:#ff9b52"></i><i style="width:10%;background:#c9a99a"></i></div>';
 const TUT = [
-  { say: '안녕! 나는 냥이야. 3분 동안 라면을 팔아서 목표만큼 돈을 모아 보자!',
-    demo: '<span class="pill"><b>1일차</b>남은 시간 3:00</span><span class="pill">오늘 목표<b>10,000원</b></span>' },
+  { say: '안녕! 나는 냥이야. 2분 동안 라면을 팔아서 목표만큼 돈을 모아 보자!',
+    demo: '<span class="pill"><b>1일차</b>남은 시간 2:00</span><span class="pill">오늘 목표<b>14,000원</b></span>' },
   { say: '손님이 오면 주문서를 꼭 봐! 물, 익힘, 토핑을 기억해야 해.',
     demo: '<div class="mini-ticket"><b>곰돌이 손님</b><dl><dt>물</dt><dd class="hl">보통</dd><dt>익힘</dt><dd class="hl">꼬들꼬들</dd><dt>토핑</dt><dd class="hl">계란</dd></dl></div>' },
   { say: '물 붓기 버튼을 꾹 누르고 있다가, 분홍 칸에 오면 손을 떼!',
