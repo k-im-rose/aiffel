@@ -35,7 +35,7 @@ const CTYPES = [
   { name: '삐약이', body: 0xffd84d, head: 0xffe36b, acc: 0xff9d3a, kind: 'chick' },
 ];
 const DAY_LEN = 180;
-const goalOf = d => 10000 + (d - 1) * 5000;
+const goalOf = d => 20000 + (d - 1) * 6000;
 
 const G = {
   screen: 'title', day: 1, total: 0, earned: 0, timeLeft: DAY_LEN, served: 0, starSum: 0, orderNo: 0,
@@ -48,6 +48,66 @@ G.pot = freshPot();
 
 /* ---------- Audio ---------- */
 let actx = null, muted = false;
+try { muted = localStorage.getItem('nyangiMuted') === '1'; } catch (e) {}
+// phones only allow sound after a touch, and iPhone's silent switch mutes web audio unless the page asks for media playback
+function audioUnlock() {
+  try {
+    if (navigator.audioSession) navigator.audioSession.type = 'playback';
+    actx = actx || new (window.AudioContext || window.webkitAudioContext)();
+    if (actx.state !== 'running') actx.resume();
+    if (!audioUnlock.done) {
+      const b = actx.createBuffer(1, 1, 22050), src = actx.createBufferSource();
+      src.buffer = b; src.connect(actx.destination); src.start(0); audioUnlock.done = true;
+    }
+    musicStart();
+  } catch (e) {}
+}
+['pointerdown', 'touchend', 'keydown', 'click'].forEach(ev => window.addEventListener(ev, audioUnlock, { capture: true, passive: true }));
+
+// background music: an original, gentle music-box loop made in the browser (no audio file, no licence needed)
+const MIDI = n => 440 * Math.pow(2, (n - 69) / 12);
+const SONG = {
+  step: 60 / 84 / 2,
+  mel: [76, 0, 79, 0, 81, 79, 76, 0, 84, 0, 81, 0, 79, 0, 76, 0, 77, 0, 81, 84, 0, 81, 79, 0, 79, 0, 74, 0, 76, 74, 72, 0,
+        76, 0, 79, 0, 81, 79, 76, 0, 84, 0, 81, 0, 79, 0, 76, 79, 77, 0, 76, 74, 0, 72, 74, 0, 72, 0, 0, 0, 0, 0, 0, 0],
+  chords: [[60, 64, 67], [57, 60, 64], [53, 57, 60], [55, 59, 62]],
+  bass: [48, 45, 41, 43],
+};
+let music = null;
+function musicStart() {
+  if (music || !actx) return;
+  const gain = actx.createGain(); gain.gain.value = muted ? 0 : 1; gain.connect(actx.destination);
+  music = { gain, i: 0, next: actx.currentTime + .1 };
+  const note = (f, t, vol, dur, type = 'sine', attack = .006) => {
+    const o = actx.createOscillator(), g = actx.createGain();
+    o.type = type; o.frequency.setValueAtTime(f, t);
+    g.gain.setValueAtTime(.0001, t); g.gain.exponentialRampToValueAtTime(vol, t + attack); g.gain.exponentialRampToValueAtTime(.0001, t + dur);
+    o.connect(g); g.connect(gain); o.start(t); o.stop(t + dur + .05);
+  };
+  const tick = () => {
+    if (!actx || actx.state !== 'running') return;
+    if (music.next < actx.currentTime) music.next = actx.currentTime + .05;
+    while (music.next < actx.currentTime + .25) {
+      const t = music.next, i = music.i % SONG.mel.length, bar = Math.floor(i / 8) % 4, m = SONG.mel[i];
+      if (m) { note(MIDI(m), t, .045, 1.3); note(MIDI(m) * 2, t, .008, .5, 'triangle'); }
+      if (i % 8 === 0) {
+        note(MIDI(SONG.bass[bar]), t, .05, 1.2);
+        SONG.chords[bar].forEach(c => note(MIDI(c), t, .012, SONG.step * 8, 'triangle', .35));
+      }
+      if (i % 8 === 4) note(MIDI(SONG.bass[bar]), t, .03, .8);
+      music.i++; music.next += SONG.step;
+    }
+  };
+  setInterval(tick, 60);
+}
+function setMuted(m) {
+  muted = m;
+  try { localStorage.setItem('nyangiMuted', m ? '1' : '0'); } catch (e) {}
+  if (music && actx) music.gain.gain.setTargetAtTime(m ? 0 : 1, actx.currentTime, .05);
+  const b = $('#mute'); b.classList.toggle('off', m);
+  b.setAttribute('aria-label', m ? '소리 켜기' : '소리 끄기'); b.setAttribute('aria-pressed', String(m));
+}
+
 function sfx(f = 600, d = .08, type = 'sine', vol = .07, slide = 0, delay = 0) {
   if (muted) return;
   try {
@@ -283,7 +343,7 @@ function drawLabel(x, w, h, o) {
   x.clearRect(0, 0, w, h);
   x.fillStyle = o.bg; x.strokeStyle = o.edge; x.lineWidth = 12;
   x.beginPath(); x.roundRect ? x.roundRect(8, 8, w - 16, h - 16, 40) : x.rect(8, 8, w - 16, h - 16); x.fill(); x.stroke();
-  x.fillStyle = o.fg; x.font = `${o.size || 84}px Jua, "Apple SD Gothic Neo", sans-serif`; x.textAlign = 'center'; x.textBaseline = 'middle';
+  x.fillStyle = o.fg; x.font = `${o.size || 84}px Jua, "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", sans-serif`; x.textAlign = 'center'; x.textBaseline = 'middle';
   x.fillText(o.text, w / 2, h / 2 + 6);
   if (o.dots) { x.fillStyle = o.edge; for (const cx of [52, w - 52]) { x.beginPath(); x.arc(cx, h / 2, 14, 0, 7); x.fill(); } }
 }
@@ -341,9 +401,13 @@ for (const x of [-11.5, 11.5]) {
   add(scene, new THREE.CylinderGeometry(.05, .06, 2.6, 10), M(0xffb3d1), [x, 1.3, -3.4]);
   add(scene, SPH, M(0xfff6d6, { emissive: 0xffe9a8, emissiveIntensity: .6 }), [x, 2.7, -3.4], .18);
 }
-if (document.fonts && document.fonts.load) document.fonts.load('84px Jua').then(() => {
-  signTexes.forEach(([t, o]) => { drawLabel(t.image.getContext('2d'), 512, 160, o); t.needsUpdate = true; });
-}).catch(() => {});
+// Google Fonts splits Korean into many small files, so ask for exactly the sign letters, then redraw
+if (document.fonts && document.fonts.load) {
+  const redraw = () => signTexes.forEach(([t, o]) => { drawLabel(t.image.getContext('2d'), 512, 160, o); t.needsUpdate = true; });
+  const letters = signTexes.map(([, o]) => o.text).join('');
+  Promise.all([document.fonts.load('84px Jua', letters), document.fonts.ready]).then(redraw, redraw);
+  if (document.fonts.addEventListener) document.fonts.addEventListener('loadingdone', redraw);
+}
 
 // customer table
 add(scene, new THREE.CylinderGeometry(.62, .62, .1, 40), M(0xffffff, { roughness: .5 }), [3.05, .98, .95]);
@@ -563,7 +627,23 @@ const nyangi = (() => {
   scene.add(root);
   return { root, body, head, arms, mood: 'idle', moodT: 0 };
 })();
-function nyangiMood(m, t = 1.2) { nyangi.mood = m; nyangi.moodT = t; }
+function nyangiMood(m, t = 1.2) { nyangi.mood = m; nyangi.moodT = t; nyangi.moodLen = t; }
+
+// tap Nyangi for a little reaction: a spin, a happy hop or a wiggle, with a floating heart
+const ray = new THREE.Raycaster(), ndc = new THREE.Vector2();
+let pokeN = 0;
+$('#gl').addEventListener('pointerdown', e => {
+  const r = e.currentTarget.getBoundingClientRect();
+  ndc.set((e.clientX - r.left) / r.width * 2 - 1, -((e.clientY - r.top) / r.height) * 2 + 1);
+  ray.setFromCamera(ndc, camera);
+  if (!ray.intersectObject(nyangi.root, true).length) return;
+  const move = ['spin', 'happy', 'wiggle'][pokeN++ % 3];
+  nyangiMood(move, move === 'spin' ? .9 : 1);
+  sfx(520, .14, 'sine', .07, 420); sfx(1040, .12, 'triangle', .03, 0, .1);
+  const h = document.createElement('div'); h.className = 'heart'; h.textContent = '♥';
+  h.style.left = e.clientX - r.left + 'px'; h.style.top = e.clientY - r.top + 'px';
+  stage.appendChild(h); setTimeout(() => h.remove(), 1300);
+});
 
 /* ---------- Customers ---------- */
 const STAND = new THREE.Vector3(3.05, 0, .05);
@@ -629,7 +709,7 @@ function spawnCustomer() {
   const T = CTYPES[Math.floor(Math.random() * CTYPES.length)];
   const parts = makeCustomer(T);
   const pmax = Math.max(45, 70 - G.day * 4);
-  const c = Object.assign(parts, { T, order: makeOrder(), state: 'enter', x: 7.5, patience: 1, pmax, timer: 0, ph: Math.random() * 6 });
+  const c = Object.assign(parts, { T, order: makeOrder(), state: 'enter', x: 6.5, patience: 1, pmax, timer: 0, ph: Math.random() * 6 });
   parts.g.position.set(c.x, 0, STAND.z);
   G.customer = c; G.orderNo++;
   sfx(660, .12, 'triangle', .06); sfx(990, .18, 'triangle', .05, 0, .1);
@@ -707,7 +787,7 @@ function landBowl(b) {
   say(lines[res.stars], res.stars, 2.4);
   if (total) coin(`+${won(total)}${tip ? ' (팁 포함)' : ''}`);
   if (res.stars >= 2) { nyangiMood('happy', 1.4); chime(); } else { nyangiMood('sad', 1.4); sfx(300, .3, 'sawtooth', .04, -120); }
-  c.state = 'eat'; c.timer = 1.9; c.mood = res.stars;
+  c.state = 'eat'; c.timer = .9; c.mood = res.stars;
 }
 
 /* ---------- HUD helpers ---------- */
@@ -740,8 +820,8 @@ TOPS.forEach((t, i) => {
 function toggleTop(id) {
   if (G.screen !== 'play' || TOP[id].day > G.day) return;
   const p = G.pot;
-  if (p.toppings.has(id)) { p.toppings.delete(id); sfx(380, .07, 'triangle', .05, -100); }
-  else {
+  if (p.toppings.has(id)) { toast('한 번 넣은 토핑은 뺄 수 없어요'); return; }
+  {
     p.toppings.add(id); topMesh[id].userData.pop = 0;
     sprinkle(id === 'chili' ? 0xd2281c : id === 'pa' ? 0x6cc04a : 0xffffff, id === 'chili' ? 26 : id === 'pa' ? 10 : 0);
     sfx(700, .07, 'triangle', .06, 200);
@@ -785,7 +865,8 @@ $('#bNoodle').addEventListener('click', addNoodles);
 $('#bSoup').addEventListener('click', addSoup);
 $('#bTrash').addEventListener('click', trash);
 $('#bServe').addEventListener('click', serve);
-$('#mute').addEventListener('click', () => { muted = !muted; $('#mute').textContent = muted ? '소리 꺼짐' : '소리 켜짐'; });
+$('#mute').addEventListener('click', () => setMuted(!muted));
+setMuted(muted);
 // keys mirror the on-screen layout: top row = cooking steps, middle row = toppings, bottom = trash/serve.
 // e.code keeps them working with the Korean keyboard layout too.
 const STEP_KEYS = { KeyQ: 'water', KeyW: 'fire', KeyE: 'noodle', KeyR: 'soup' };
@@ -823,13 +904,13 @@ try { best = +localStorage.getItem('nyangiRamenBest') || 0; } catch (e) {}
 if (best > 1) $('#bestLine').textContent = `최고 기록: ${best}일차까지 영업했어요`;
 
 function setScreen(s) {
-  G.screen = s;
+  G.screen = s; stage.dataset.screen = s;
   $('#scrTitle').hidden = s !== 'title'; $('#scrHow').hidden = s !== 'how'; $('#scrResult').hidden = s !== 'result';
   $('#panel').hidden = s !== 'play'; $('#hud').hidden = s !== 'play';
 }
 
 function startDay() {
-  setScreen('play'); G.earned = 0; G.served = 0; G.starSum = 0; G.timeLeft = DAY_LEN; G.spawnT = 1.0;
+  setScreen('play'); G.earned = 0; G.served = 0; G.starSum = 0; G.timeLeft = DAY_LEN; G.spawnT = .4;
   G.pot = freshPot(); syncPotMeshes();
   $('#sDay').textContent = `${G.day}일차`; $('#sGoal').textContent = won(goalOf(G.day));
   TOPS.forEach(t => {
@@ -873,7 +954,7 @@ const TUT = [
     demo: '<span class="key col press">물 붓기<small>꾹 누르기</small></span><div class="demo-gauge"><span>물 양</span><div class="bar"><b class="fill anim-water"></b><i class="zone" style="left:48%;width:22%"></i></div></div>' },
   { say: '불을 켜고 보글보글 끓으면, 면이랑 스프를 넣어!',
     demo: '<span class="key on">불 켜기</span><i class="arrow">→</i><span class="key">면 넣기</span><i class="arrow">→</i><span class="key">스프</span>' },
-  { say: '손님이 원한 토핑을 올려 줘. 잘못 넣었으면 한 번 더 누르면 빠져!',
+  { say: '손님이 원한 토핑만 골라서 올려 줘. 한 번 넣으면 뺄 수 없으니 잘 보고 넣어!',
     demo: '<span class="key on"><i class="sw" style="--c:#ffd23f"></i>계란</span><span class="key"><i class="sw" style="--c:#6cc04a"></i>파</span><span class="key"><i class="sw" style="--c:#ffcf33"></i>치즈</span>' },
   { say: '익힘 막대가 분홍 칸에 오면 서빙! 별 세 개를 받아 보자!',
     demo: `<div class="demo-gauge"><span>익힘</span><div class="bar">${COOK_SEGS}<i class="zone" style="left:25%;width:25%"></i><b class="marker anim-cook"></b></div></div><span class="key serve">서빙하기</span><span class="demo-stars">★★★</span>` },
@@ -952,14 +1033,14 @@ function update(dt) {
   if (c) {
     const walk = c.state === 'enter' || c.state === 'leave';
     if (c.state === 'enter') {
-      c.x -= 2.8 * dt;
+      c.x -= 7 * dt;
       if (c.x <= STAND.x) { c.x = STAND.x; c.state = 'wait'; showTicket(c); say('안녕하세요! 라면 주세요', null, 1.6); }
     } else if (c.state === 'eat') {
       c.timer -= dt;
       if (c.timer <= 0) { c.state = 'leave'; if (G.bowl) { scene.remove(G.bowl.g); G.bowl = null; } }
     } else if (c.state === 'leave') {
-      c.x += 2.8 * dt;
-      if (c.x > 8) { scene.remove(c.g); G.customer = null; G.spawnT = rnd(.8, 2); }
+      c.x += 7 * dt;
+      if (c.x > 8) { scene.remove(c.g); G.customer = null; G.spawnT = rnd(.25, .6); }
     }
     c.g.position.x = c.x;
     const yaw = c.state === 'enter' ? -1.2 : c.state === 'leave' ? 1.3 : -.35;
@@ -979,7 +1060,7 @@ function update(dt) {
   if (G.bowl) {
     const b = G.bowl;
     if (b.t < 1) {
-      b.t = Math.min(1, b.t + dt / .7);
+      b.t = Math.min(1, b.t + dt / .5);
       const e = b.t;
       b.g.position.set(lerp(POT.x, STAND.x, e), lerp(POT.y + .5, 1.03, e) + Math.sin(Math.PI * e) * 1.1, lerp(POT.z, .95, e));
       b.g.rotation.y = e * Math.PI * 2;
@@ -1074,9 +1155,12 @@ function update(dt) {
   k.root.position.lerpVectors(KFRONT, KGAME, kWalk);
   k.root.rotation.y = .42 * kWalk;
   k.moodT = Math.max(0, k.moodT - dt); if (k.moodT <= 0) k.mood = 'idle';
-  const happy = k.mood === 'happy', sad = k.mood === 'sad';
-  k.body.position.y = Math.sin(time * 2.2) * .03 + (happy ? Math.abs(Math.sin(time * 9)) * .32 : walking ? Math.abs(Math.sin(time * 11)) * .12 : 0);
-  const waving = happy || G.screen !== 'play' || (c && c.state === 'enter');
+  const happy = k.mood === 'happy', sad = k.mood === 'sad', spin = k.mood === 'spin', wiggle = k.mood === 'wiggle';
+  const moodP = k.moodLen ? 1 - k.moodT / k.moodLen : 1;
+  k.body.position.y = Math.sin(time * 2.2) * .03 + (happy ? Math.abs(Math.sin(time * 9)) * .32 : spin ? Math.sin(moodP * Math.PI) * .5 : walking ? Math.abs(Math.sin(time * 11)) * .12 : 0);
+  k.body.rotation.y = spin ? moodP * Math.PI * 2 : 0;
+  k.body.rotation.z = wiggle ? Math.sin(time * 14) * .16 : lerp(k.body.rotation.z, 0, Math.min(1, dt * 8));
+  const waving = happy || spin || wiggle || G.screen !== 'play' || (c && c.state === 'enter');
   const rArm = waving ? 2.55 + Math.sin(time * 8) * .35 : p.pouring || p.flame ? 1.1 + Math.sin(time * 5) * .15 : .55 + Math.sin(time * 2) * .05;
   k.arms[1].rotation.z = lerp(k.arms[1].rotation.z, rArm, Math.min(1, dt * 10));
   k.arms[0].rotation.z = lerp(k.arms[0].rotation.z, happy ? -2.4 + Math.sin(time * 8 + 1) * .3 : sad ? -.25 : -.55, Math.min(1, dt * 10));

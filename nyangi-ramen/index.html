@@ -29,9 +29,12 @@
       <div id="stats">
         <div class="pill"><b id="sDay">1일차</b><span>남은 시간 <span id="sTime">3:00</span></span></div>
         <div class="pill money"><span id="sMoney">0원</span><small>오늘 목표 <span id="sGoal">10,000원</span></small><div class="mbar"><i id="sBar"></i></div></div>
-        <button id="mute" class="pill" type="button">소리 켜짐</button>
       </div>
     </div>
+    <button id="mute" type="button" aria-label="소리 끄기" aria-pressed="false">
+      <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M12 3.5a5 5 0 0 0-5 5v3.1c0 .9-.3 1.8-.9 2.5L5 15.5h14l-1.1-1.4c-.6-.7-.9-1.6-.9-2.5V8.5a5 5 0 0 0-5-5z"/><path d="M10 18.5a2 2 0 0 0 4 0"/><line class="slash" x1="4" y1="3.5" x2="20" y2="20.5"/></svg>
+    </button>
+    <span class="font-warm" aria-hidden="true">냥이 라면 빵집 꽃집 아이스크림 문구점</span>
     <div id="potTag" hidden></div>
     <div id="bubble" hidden></div>
     <div id="toast" hidden></div>

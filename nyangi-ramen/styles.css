@@ -38,7 +38,17 @@ body{overflow:hidden;background:var(--sky);color:var(--ink);font-family:var(--bo
 .money small{color:var(--muted);font-size:11px}
 .mbar{width:120px;height:5px;background:#f6e6ee;border-radius:3px;overflow:hidden}
 .mbar i{display:block;height:100%;width:0;background:var(--berry)}
-#mute{pointer-events:auto;cursor:pointer;font-family:var(--body);color:var(--ink);font-size:12px}
+#mute{position:absolute;z-index:5;left:max(16px,env(safe-area-inset-left,0px));top:calc(14px + env(safe-area-inset-top,0px));width:44px;height:44px;border-radius:50%;
+  display:grid;place-items:center;background:#fff;border:2px solid var(--line);box-shadow:0 3px 0 var(--line);color:var(--berry);cursor:pointer;padding:0}
+#mute svg{fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+#mute .slash{display:none}
+#mute.off{color:var(--muted)}
+#mute.off .slash{display:inline}
+#stage[data-screen="play"] #mute{top:auto;bottom:14px}
+#mute:active{transform:translateY(2px);box-shadow:0 1px 0 var(--line)}
+.font-warm{position:absolute;left:-9999px;top:0;font-family:'Jua';font-size:20px;opacity:0;pointer-events:none}
+.heart{position:absolute;pointer-events:none;font-size:30px;color:var(--pink);text-shadow:0 2px 0 #fff;transform:translate(-50%,-50%);animation:heartup 1.2s ease-out forwards}
+@keyframes heartup{from{opacity:0;margin-top:0;transform:translate(-50%,-50%) scale(.6)}20%{opacity:1;transform:translate(-50%,-50%) scale(1.2)}to{opacity:0;margin-top:-80px;transform:translate(-50%,-50%) scale(1)}}
 #potTag{position:absolute;transform:translate(-50%,-100%);pointer-events:none;font-family:var(--display);font-size:15px;
   background:#fff;color:var(--ink);border-radius:12px;padding:4px 10px;white-space:nowrap;box-shadow:0 3px 0 rgba(226,71,127,.18)}
 #potTag.good{background:var(--mint);color:#16493c}
@@ -62,7 +72,7 @@ body{overflow:hidden;background:var(--sky);color:var(--ink);font-family:var(--bo
 .res dd{margin:0;font-family:var(--display);font-size:18px;text-align:right}
 
 /* Overlays: title, Nyangi's how-to talk, day-end talk */
-.screen{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;overflow:auto;
+.screen{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;overflow:auto;pointer-events:none;
   padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
 .screen.title{justify-content:space-between;
   padding-block:calc(22px + env(safe-area-inset-top,0px)) calc(26px + env(safe-area-inset-bottom,0px));
@@ -71,6 +81,7 @@ body{overflow:hidden;background:var(--sky);color:var(--ink);font-family:var(--bo
   font-size:clamp(46px,11vw,80px);text-wrap:balance;
   text-shadow:4px 0 #fff,-4px 0 #fff,0 4px #fff,0 -4px #fff,3px 3px #fff,-3px 3px #fff,3px -3px #fff,-3px -3px #fff,0 10px 0 rgba(226,71,127,.28)}
 .logo small{display:block;font-size:.5em;color:var(--pink);margin-bottom:4px}
+.logo,.title-actions,.talk-card{pointer-events:auto}
 .title-actions{display:flex;flex-direction:column;align-items:center;gap:12px;width:min(300px,100%)}
 .small-btn{font-family:var(--display);font-size:17px;color:var(--ink);background:#fff;border:2px solid var(--line);border-radius:999px;
   padding:8px 22px;box-shadow:0 3px 0 var(--line);cursor:pointer}
