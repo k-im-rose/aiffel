@@ -182,6 +182,7 @@ body{overflow:hidden;background:var(--sky);color:var(--ink);font-family:var(--bo
 
 /* recipe card: the order ingredients go in */
 .recipe{display:flex;align-items:center;gap:4px;flex-wrap:nowrap;overflow-x:auto;font-family:var(--display);font-size:13px;padding:2px 0}
+.rtitle{font-weight:400;color:var(--muted);font-size:12px;white-space:nowrap;margin-right:2px}
 .rstep{white-space:nowrap;padding:4px 9px;border-radius:999px;background:#fff;border:2px solid var(--line);color:var(--ink)}
 .rstep.skip{opacity:.35;padding:4px 7px}
 .rstep.done{background:#e3f6ee;border-color:var(--mint);color:#1f6a52}

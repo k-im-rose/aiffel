@@ -17,7 +17,7 @@ const TOPS = [
   { id: 'cheese', name: '치즈',     c: '#ffcf33', day: 2 },
   { id: 'tteok',  name: '떡',       c: '#f4efe4', day: 3 },
   { id: 'mandu',  name: '만두',     c: '#efdcb8', day: 3 },
-  { id: 'chili',  name: '고춧가루', c: '#e2412b', day: 4 },
+  { id: 'chili',  name: '고춧가루', c: '#e2412b', day: 2 },
 ];
 const TOP = Object.fromEntries(TOPS.map(t => [t.id, t]));
 // recipe order, the way ramen is really cooked: soup, noodles, slow-cooking add-ins, egg, then finishing toppings
@@ -47,7 +47,7 @@ const CTYPES = [
   { name: '삐약이', body: 0xffd84d, head: 0xffe36b, acc: 0xff9d3a, kind: 'chick' },
 ];
 const DAY_LEN = 120;
-const goalOf = d => 20000 + (d - 1) * 6000;
+const goalOf = d => 15000 + (d - 1) * 5000;
 
 const G = {
   screen: 'title', day: 1, total: 0, earned: 0, timeLeft: DAY_LEN, served: 0, starSum: 0, orderNo: 0,
@@ -943,32 +943,17 @@ function checkOrder(id) {
     if (skipped.length) {
       p.wrongOrder++;
       if (!p.orderNote) p.orderNote = `${iGa(ITEM_NAME(id))} 너무 일찍 들어갔어요`;
-      toast(`순서가 틀렸어요! ${eulReul(ITEM_NAME(skipped[0]))} 먼저 넣어야 해요`);
-      sfx(220, .2, 'square', .03, -60);
     }
   }
   p.log.push(id);
 }
-// the first recipe step that still has something this order needs, and what is left in it
-function nextStep() {
-  const req = needed(), log = G.pot.log;
-  for (let i = 0; i < RECIPE.length; i++) {
-    const left = RECIPE[i].items.filter(x => req.includes(x) && !log.includes(x));
-    if (left.length) return { i, left };
-  }
-  return null;
-}
-// recipe card above the cooking buttons: needed steps show their items, the next one glows, finished ones get a check
+// recipe card above the cooking buttons: the written order of today's ingredients; players check it themselves
 const recipeEl = $('#recipe');
-recipeEl.innerHTML = RECIPE.map((r, i) => `${i ? '<i class="rarrow" aria-hidden="true">›</i>' : ''}<span class="rstep" id="rs${i}"></span>`).join('');
 function renderRecipe() {
-  const req = needed(), log = G.pot.log, nx = nextStep();
-  RECIPE.forEach((r, i) => {
-    const el = $('#rs' + i), mine = r.items.filter(x => req.includes(x));
-    const label = mine.length ? mine.map(x => x === 'chili' && G.customer ? `고춧가루×${G.customer.order.spice}` : ITEM_NAME(x)).join('·') : '';
-    el.textContent = `${r.n}${label ? ' ' + label : ''}`;
-    el.className = 'rstep' + (!mine.length ? ' skip' : mine.every(x => log.includes(x)) ? ' done' : '') + (nx && nx.i === i ? ' next' : '');
-  });
+  const open = id => id === 'soup' || id === 'noodle' || TOP[id].day <= G.day;
+  const steps = RECIPE.map(r => r.items.filter(open)).filter(a => a.length);
+  recipeEl.innerHTML = '<b class="rtitle">넣는 순서</b>' + steps.map((a, i) =>
+    `${i ? '<i class="rarrow" aria-hidden="true">›</i>' : ''}<span class="rstep">${'①②③④⑤'.at(i)} ${a.map(ITEM_NAME).join('·')}</span>`).join('');
 }
 function toggleTop(id) {
   if (G.screen !== 'play' || TOP[id].day > G.day) return;
@@ -1077,11 +1062,11 @@ function startDay() {
   });
   chime(); nyangiMood('happy', 1);
   const intro = {
-    1: '스프 → 면 → 계란 → 파 순서야! 위에 레시피 카드를 봐!',
-    2: '오늘부터 치즈! 치즈는 파랑 같이 마지막에 넣어!',
-    3: '오늘부터 떡이랑 만두! 면이랑 같이 넣어야 잘 익어!',
-    4: '오늘부터 고춧가루! 맵기만큼 마지막에 뿌려 줘!',
+    1: '재료는 넣는 순서가 있어! 위에 적힌 순서를 잘 봐!',
+    2: '오늘부터 치즈랑 고춧가루! 고춧가루는 맵기만큼 넣어!',
+    3: '오늘부터 떡이랑 만두! 순서를 잘 확인해!',
   }[G.day] || '손님이 더 바빠졌어! 순서 지키면서 힘내자!';
+  renderRecipe();
   $('#nyangiSay').textContent = intro; $('#nyangiSay').hidden = false; nyangiSayT = 4.5;
 }
 let passed = false;
@@ -1111,15 +1096,15 @@ $('#btnStart').addEventListener('click', startDay);
 const COOK_SEGS = '<div class="segs"><i style="width:25%;background:#e9dfe5"></i><i style="width:25%;background:#ffe58f"></i><i style="width:22%;background:#ffc560"></i><i style="width:18%;background:#ff9b52"></i><i style="width:10%;background:#c9a99a"></i></div>';
 const TUT = [
   { say: '안녕! 나는 냥이야. 2분 동안 라면을 팔아서 목표만큼 돈을 모아 보자!',
-    demo: '<span class="pill"><b>1일차</b>남은 시간 2:00</span><span class="pill">오늘 목표<b>20,000원</b></span>' },
+    demo: '<span class="pill"><b>1일차</b>남은 시간 2:00</span><span class="pill">오늘 목표<b>15,000원</b></span>' },
   { say: '손님이 오면 주문서를 꼭 봐! 물, 익힘, 토핑을 기억해야 해.',
     demo: '<div class="mini-ticket"><b>곰돌이 손님</b><dl><dt>물</dt><dd class="hl">보통</dd><dt>익힘</dt><dd class="hl">꼬들꼬들</dd><dt>토핑</dt><dd class="hl">계란</dd></dl></div>' },
   { say: '물 붓기 버튼을 꾹 누르고 있다가, 분홍 칸에 오면 손을 떼!',
     demo: '<span class="key col press">물 붓기<small>꾹 누르기</small></span><div class="demo-gauge"><span>물 양</span><div class="bar"><b class="fill anim-water"></b><i class="zone" style="left:48%;width:22%"></i></div></div>' },
   { say: '불을 켜고 보글보글 끓으면, 스프 먼저! 그다음에 면을 넣어.',
     demo: '<span class="key on">불 켜기</span><i class="arrow">→</i><span class="key">스프</span><i class="arrow">→</i><span class="key">면 넣기</span>' },
-  { say: '재료는 넣는 순서가 있어! 위에 있는 레시피 카드에서 반짝이는 차례대로 넣어 줘.',
-    demo: '<div class="recipe demo-recipe"><span class="rstep done">① 스프</span><i class="rarrow">›</i><span class="rstep done">② 면</span><i class="rarrow">›</i><span class="rstep skip">③</span><i class="rarrow">›</i><span class="rstep next">④ 계란</span><i class="rarrow">›</i><span class="rstep">⑤ 파</span></div>' },
+  { say: '재료는 넣는 순서가 있어! 위에 적힌 순서를 보고 스스로 지켜 봐. 틀리면 손님이 알려 줄 거야.',
+    demo: '<div class="recipe demo-recipe"><b class="rtitle">넣는 순서</b><span class="rstep">① 스프</span><i class="rarrow">›</i><span class="rstep">② 면</span><i class="rarrow">›</i><span class="rstep">③ 계란</span><i class="rarrow">›</i><span class="rstep">④ 파</span></div>' },
   { say: '손님이 원한 토핑만 골라서 올려 줘. 한 번 넣으면 뺄 수 없으니 잘 보고 넣어!',
     demo: '<span class="key on"><i class="sw" style="--c:#ffd23f"></i>계란</span><span class="key"><i class="sw" style="--c:#6cc04a"></i>파</span><span class="key"><i class="sw" style="--c:#ffcf33"></i>치즈</span>' },
   { say: '익힘 막대가 분홍 칸에 오면 서빙! 별 세 개를 받아 보자!',
@@ -1378,11 +1363,10 @@ function updateHud(dt) {
     else if (p.water <= .02) txt = p.flame ? '빈 냄비가 뜨거워요!' : '물을 부어 주세요', cls = p.flame ? 'warn' : '';
     else if (!p.noodles && !p.flame && !boiling) txt = '불을 켜 주세요';
     else if (!p.noodles && !boiling) txt = `데우는 중 ${Math.round(p.temp * 100)}%`;
-    else if (!p.noodles) txt = p.soup ? '보글보글! 면을 넣어요' : '보글보글! 스프부터 넣어요', cls = 'good';
+    else if (!p.noodles) txt = '보글보글! 재료를 넣어요', cls = 'good';
     else {
       const st = stageOf(p.cook);
-      const nx = nextStep();
-      txt = STAGE_NAMES[st] + (nx ? ` · 다음: ${nx.left.map(ITEM_NAME).join('·')}` : '') + (boiling ? '' : p.flame ? ' · 데우는 중' : ' · 불을 켜요');
+      txt = STAGE_NAMES[st] + (boiling ? '' : p.flame ? ' · 데우는 중' : ' · 불을 켜요');
       if (G.customer && G.customer.state === 'wait' && st === G.customer.order.done) cls = 'good';
       if (st === 4) cls = 'warn';
     }
@@ -1406,7 +1390,6 @@ function updateHud(dt) {
   }
 
   hudAcc += dt; if (hudAcc < .05) return; hudAcc = 0;
-  renderRecipe();
   const cnt = $('#top-chili .cnt'); if (cnt) cnt.textContent = p.chili ? `×${p.chili}` : '';
   // gauges
   $('#gWater .fill').style.width = p.water * 100 + '%';
