@@ -179,3 +179,18 @@ body{overflow:hidden;background:var(--sky);color:var(--ink);font-family:var(--bo
   .key small{font-size:10px}
 }
 @media (prefers-reduced-motion:reduce){.coin{animation-duration:.01s}}
+
+/* recipe card: the order ingredients go in */
+.recipe{display:flex;align-items:center;gap:4px;flex-wrap:nowrap;overflow-x:auto;font-family:var(--display);font-size:13px;padding:2px 0}
+.rstep{white-space:nowrap;padding:4px 9px;border-radius:999px;background:#fff;border:2px solid var(--line);color:var(--ink)}
+.rstep.skip{opacity:.35;padding:4px 7px}
+.rstep.done{background:#e3f6ee;border-color:var(--mint);color:#1f6a52}
+.rstep.done::after{content:" ✓"}
+.rstep.next{background:var(--pink);border-color:var(--berry);color:#fff;animation:glow 1s ease-in-out infinite}
+.rarrow{font-style:normal;color:var(--muted)}
+@keyframes glow{50%{box-shadow:0 0 0 4px rgba(255,141,189,.35)}}
+.demo-recipe{flex-wrap:wrap;justify-content:center}
+.key .cnt{font-family:var(--body);font-size:11px;color:inherit}
+#nyangiSay{position:absolute;transform:translate(-50%,-100%);pointer-events:none;background:#fff;border:2px solid var(--pink);border-radius:16px;padding:7px 12px;
+  font-family:var(--display);font-size:15px;width:max-content;max-width:min(240px,70vw);text-align:center;word-break:keep-all;box-shadow:0 4px 0 rgba(226,71,127,.18)}
+@media (prefers-reduced-motion:reduce){.rstep.next{animation:none}}

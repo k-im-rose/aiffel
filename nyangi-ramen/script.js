@@ -8,6 +8,7 @@ const batchim = w => { const c = w.charCodeAt(w.length - 1); return c >= 0xAC00 
 const iRang = w => w + (batchim(w) ? '이랑' : '랑');
 const iGa = w => w + (batchim(w) ? '이' : '가');
 const eunNeun = w => w + (batchim(w) ? '은' : '는');
+const eulReul = w => w + (batchim(w) ? '을' : '를');
 
 /* ---------- Game data ---------- */
 const TOPS = [
@@ -19,6 +20,17 @@ const TOPS = [
   { id: 'chili',  name: '고춧가루', c: '#e2412b', day: 4 },
 ];
 const TOP = Object.fromEntries(TOPS.map(t => [t.id, t]));
+// recipe order, the way ramen is really cooked: soup, noodles, slow-cooking add-ins, egg, then finishing toppings
+const RECIPE = [
+  { n: '①', items: ['soup'] },
+  { n: '②', items: ['noodle'] },
+  { n: '③', items: ['tteok', 'mandu'] },
+  { n: '④', items: ['egg'] },
+  { n: '⑤', items: ['pa', 'cheese', 'chili'] },
+];
+const STEP_OF = Object.fromEntries(RECIPE.flatMap((r, i) => r.items.map(id => [id, i])));
+const ITEM_NAME = id => id === 'soup' ? '스프' : id === 'noodle' ? '면' : TOP[id].name;
+const SPICE_SAY = ['', '한 번', '두 번', '세 번'];
 const WATER = [
   { name: '적게', say: '조금만',   lo: .26, hi: .48 },
   { name: '보통', say: '보통으로', lo: .48, hi: .70 },
@@ -42,7 +54,7 @@ const G = {
   customer: null, spawnT: 1.2, bowl: null, pot: null,
 };
 function freshPot() {
-  return { water: 0, pouring: false, flame: false, temp: 0, noodles: false, drop: 0, cook: 0, soup: false, soupMix: 0, toppings: new Set() };
+  return { water: 0, pouring: false, flame: false, temp: 0, noodles: false, drop: 0, cook: 0, soup: false, soupMix: 0, toppings: new Set(), chili: 0, log: [], wrongOrder: 0, orderNote: '' };
 }
 G.pot = freshPot();
 
@@ -794,10 +806,12 @@ function makeOrder() {
   const n = Math.floor(Math.random() * (maxN + 1));
   for (let i = avail.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [avail[i], avail[j]] = [avail[j], avail[i]]; }
   const pick = avail.slice(0, n).sort((a, b) => TOPS.indexOf(TOP[a]) - TOPS.indexOf(TOP[b]));
-  return { water: Math.floor(Math.random() * 3), done: 1 + Math.floor(Math.random() * 3), toppings: pick };
+  // spicy level: how many times to sprinkle chili (1~3), only when chili is ordered
+  const spice = pick.includes('chili') ? 1 + Math.floor(Math.random() * 3) : 0;
+  return { water: Math.floor(Math.random() * 3), done: 1 + Math.floor(Math.random() * 3), toppings: pick, spice };
 }
 function orderLine(o) {
-  const tp = o.toppings.map(id => TOP[id].name);
+  const tp = o.toppings.map(id => id === 'chili' ? `고춧가루 ${SPICE_SAY[o.spice]}` : TOP[id].name);
   const a = !tp.length ? '아무것도 넣지 말고' : tp.length === 1 ? `${tp[0]} 넣고` : tp.slice(0, -1).map(iRang).join(' ') + ` ${tp[tp.length - 1]} 넣고`;
   return `“${a} ${DONE_SAY[o.done]}, 물은 ${WATER[o.water].say} 부탁해요!”`;
 }
@@ -818,7 +832,7 @@ function showTicket(c) {
   $('#tSay').textContent = orderLine(o);
   $('#tWater').textContent = WATER[o.water].name;
   $('#tDone').textContent = STAGE_NAMES[o.done];
-  $('#tTops').textContent = o.toppings.length ? o.toppings.map(id => TOP[id].name).join(', ') : '없음';
+  $('#tTops').textContent = o.toppings.length ? o.toppings.map(id => id === 'chili' ? `고춧가루 ×${o.spice}` : TOP[id].name).join(', ') : '없음';
   $('#ticket').hidden = false;
   const W = WATER[o.water], z = $('#gWater .zone');
   z.hidden = false; z.style.left = W.lo * 100 + '%'; z.style.width = (W.hi - W.lo) * 100 + '%';
@@ -846,8 +860,11 @@ function judge(o, p) {
   const want = new Set(o.toppings), miss = [], extra = [];
   want.forEach(id => { if (!p.toppings.has(id)) miss.push(id); });
   p.toppings.forEach(id => { if (!want.has(id)) extra.push(id); });
-  s += Math.max(0, 1 - .4 * (miss.length + extra.length));
+  const spiceOff = want.has('chili') && p.toppings.has('chili') && p.chili !== o.spice;
+  s += Math.max(0, 1 - .4 * (miss.length + extra.length + (spiceOff ? 1 : 0)));
   if (miss.length) notes.push(`${iGa(TOP[miss[0]].name)} 빠졌어요`);
+  if (spiceOff) notes.push(p.chili > o.spice ? '너무 매워요' : '덜 매워요');
+  if (p.wrongOrder) { s -= Math.min(1, .5 * p.wrongOrder); notes.unshift(p.orderNote); }
   if (extra.length) notes.push(`${eunNeun(TOP[extra[0]].name)} 안 시켰어요`);
   if (!p.soup) { s -= 1.2; notes.unshift('스프를 안 넣었어요!'); }
   const stars = s >= 2.75 ? 3 : s >= 1.9 ? 2 : s >= 1 ? 1 : 0;
@@ -887,7 +904,7 @@ function landBowl(b) {
 }
 
 /* ---------- HUD helpers ---------- */
-let toastT = 0, bubbleT = 0;
+let toastT = 0, bubbleT = 0, nyangiSayT = 0;
 function toast(msg) { const t = $('#toast'); t.textContent = msg; t.hidden = false; toastT = 1.8; sfx(240, .1, 'square', .03); }
 function say(text, stars, dur) {
   const b = $('#bubble'); b.innerHTML = '';
@@ -909,15 +926,57 @@ const topsEl = $('#tops');
 TOPS.forEach((t, i) => {
   const b = document.createElement('button');
   b.className = 'key'; b.type = 'button'; b.id = 'top-' + t.id; b.dataset.id = t.id;
-  b.innerHTML = `<i class="sw" style="--c:${t.c}"></i>${t.name}<small class="lock"></small>`;
+  b.innerHTML = `<i class="sw" style="--c:${t.c}"></i>${t.name}${t.id === 'chili' ? '<b class="cnt"></b>' : ''}<small class="lock"></small>`;
   b.addEventListener('click', () => toggleTop(t.id));
   topsEl.appendChild(b);
 });
+// what this order needs, in recipe order (soup and noodles always)
+function needed() {
+  const c = G.customer;
+  return ['soup', 'noodle'].concat(c && c.state === 'wait' ? c.order.toppings : []);
+}
+// record an ingredient going in; adding it before an earlier recipe step it needs counts as a wrong order
+function checkOrder(id) {
+  const p = G.pot, req = needed();
+  if (req.includes(id) && !p.log.includes(id)) {
+    const skipped = req.filter(x => x !== id && !p.log.includes(x) && STEP_OF[x] < STEP_OF[id]);
+    if (skipped.length) {
+      p.wrongOrder++;
+      if (!p.orderNote) p.orderNote = `${iGa(ITEM_NAME(id))} 너무 일찍 들어갔어요`;
+      toast(`순서가 틀렸어요! ${eulReul(ITEM_NAME(skipped[0]))} 먼저 넣어야 해요`);
+      sfx(220, .2, 'square', .03, -60);
+    }
+  }
+  p.log.push(id);
+}
+// the first recipe step that still has something this order needs, and what is left in it
+function nextStep() {
+  const req = needed(), log = G.pot.log;
+  for (let i = 0; i < RECIPE.length; i++) {
+    const left = RECIPE[i].items.filter(x => req.includes(x) && !log.includes(x));
+    if (left.length) return { i, left };
+  }
+  return null;
+}
+// recipe card above the cooking buttons: needed steps show their items, the next one glows, finished ones get a check
+const recipeEl = $('#recipe');
+recipeEl.innerHTML = RECIPE.map((r, i) => `${i ? '<i class="rarrow" aria-hidden="true">›</i>' : ''}<span class="rstep" id="rs${i}"></span>`).join('');
+function renderRecipe() {
+  const req = needed(), log = G.pot.log, nx = nextStep();
+  RECIPE.forEach((r, i) => {
+    const el = $('#rs' + i), mine = r.items.filter(x => req.includes(x));
+    const label = mine.length ? mine.map(x => x === 'chili' && G.customer ? `고춧가루×${G.customer.order.spice}` : ITEM_NAME(x)).join('·') : '';
+    el.textContent = `${r.n}${label ? ' ' + label : ''}`;
+    el.className = 'rstep' + (!mine.length ? ' skip' : mine.every(x => log.includes(x)) ? ' done' : '') + (nx && nx.i === i ? ' next' : '');
+  });
+}
 function toggleTop(id) {
   if (G.screen !== 'play' || TOP[id].day > G.day) return;
   const p = G.pot;
-  if (p.toppings.has(id)) { toast('한 번 넣은 토핑은 뺄 수 없어요'); return; }
+  if (p.toppings.has(id) && id !== 'chili') { toast('한 번 넣은 토핑은 뺄 수 없어요'); return; }
   {
+    if (id === 'chili') p.chili++;
+    if (!p.toppings.has(id)) checkOrder(id);
     p.toppings.add(id); topMesh[id].userData.pop = 0;
     sprinkle(id === 'chili' ? 0xd2281c : id === 'pa' ? 0x6cc04a : 0xffffff, id === 'chili' ? 26 : id === 'pa' ? 10 : 0);
     sfx(700, .07, 'triangle', .06, 200);
@@ -945,11 +1004,13 @@ function addNoodles() {
   if (G.screen !== 'play' || p.noodles) return;
   if (p.water <= .05) return toast('먼저 물을 부어 주세요');
   if (p.temp < .98) toast('아직 안 끓어서 면이 천천히 익어요');
+  checkOrder('noodle');
   p.noodles = true; p.drop = 0; p.cook = 0; syncPotMeshes(); sfx(200, .2, 'sine', .08, -100);
 }
 function addSoup() {
   const p = G.pot;
   if (G.screen !== 'play' || p.soup) return;
+  checkOrder('soup');
   p.soup = true; sprinkle(0xe8732c, 30); sfx(900, .15, 'triangle', .05, -500);
 }
 function trash() {
@@ -1015,6 +1076,13 @@ function startDay() {
     b.querySelector('.lock').className = locked ? 'lock' : 'lock kbd';
   });
   chime(); nyangiMood('happy', 1);
+  const intro = {
+    1: '스프 → 면 → 계란 → 파 순서야! 위에 레시피 카드를 봐!',
+    2: '오늘부터 치즈! 치즈는 파랑 같이 마지막에 넣어!',
+    3: '오늘부터 떡이랑 만두! 면이랑 같이 넣어야 잘 익어!',
+    4: '오늘부터 고춧가루! 맵기만큼 마지막에 뿌려 줘!',
+  }[G.day] || '손님이 더 바빠졌어! 순서 지키면서 힘내자!';
+  $('#nyangiSay').textContent = intro; $('#nyangiSay').hidden = false; nyangiSayT = 4.5;
 }
 let passed = false;
 function endDay() {
@@ -1048,8 +1116,10 @@ const TUT = [
     demo: '<div class="mini-ticket"><b>곰돌이 손님</b><dl><dt>물</dt><dd class="hl">보통</dd><dt>익힘</dt><dd class="hl">꼬들꼬들</dd><dt>토핑</dt><dd class="hl">계란</dd></dl></div>' },
   { say: '물 붓기 버튼을 꾹 누르고 있다가, 분홍 칸에 오면 손을 떼!',
     demo: '<span class="key col press">물 붓기<small>꾹 누르기</small></span><div class="demo-gauge"><span>물 양</span><div class="bar"><b class="fill anim-water"></b><i class="zone" style="left:48%;width:22%"></i></div></div>' },
-  { say: '불을 켜고 보글보글 끓으면, 면이랑 스프를 넣어!',
-    demo: '<span class="key on">불 켜기</span><i class="arrow">→</i><span class="key">면 넣기</span><i class="arrow">→</i><span class="key">스프</span>' },
+  { say: '불을 켜고 보글보글 끓으면, 스프 먼저! 그다음에 면을 넣어.',
+    demo: '<span class="key on">불 켜기</span><i class="arrow">→</i><span class="key">스프</span><i class="arrow">→</i><span class="key">면 넣기</span>' },
+  { say: '재료는 넣는 순서가 있어! 위에 있는 레시피 카드에서 반짝이는 차례대로 넣어 줘.',
+    demo: '<div class="recipe demo-recipe"><span class="rstep done">① 스프</span><i class="rarrow">›</i><span class="rstep done">② 면</span><i class="rarrow">›</i><span class="rstep skip">③</span><i class="rarrow">›</i><span class="rstep next">④ 계란</span><i class="rarrow">›</i><span class="rstep">⑤ 파</span></div>' },
   { say: '손님이 원한 토핑만 골라서 올려 줘. 한 번 넣으면 뺄 수 없으니 잘 보고 넣어!',
     demo: '<span class="key on"><i class="sw" style="--c:#ffd23f"></i>계란</span><span class="key"><i class="sw" style="--c:#6cc04a"></i>파</span><span class="key"><i class="sw" style="--c:#ffcf33"></i>치즈</span>' },
   { say: '익힘 막대가 분홍 칸에 오면 서빙! 별 세 개를 받아 보자!',
@@ -1308,10 +1378,11 @@ function updateHud(dt) {
     else if (p.water <= .02) txt = p.flame ? '빈 냄비가 뜨거워요!' : '물을 부어 주세요', cls = p.flame ? 'warn' : '';
     else if (!p.noodles && !p.flame && !boiling) txt = '불을 켜 주세요';
     else if (!p.noodles && !boiling) txt = `데우는 중 ${Math.round(p.temp * 100)}%`;
-    else if (!p.noodles) txt = '보글보글! 면을 넣어요', cls = 'good';
+    else if (!p.noodles) txt = p.soup ? '보글보글! 면을 넣어요' : '보글보글! 스프부터 넣어요', cls = 'good';
     else {
       const st = stageOf(p.cook);
-      txt = STAGE_NAMES[st] + (p.soup ? '' : ' · 스프!') + (boiling ? '' : p.flame ? ' · 데우는 중' : ' · 불을 켜요');
+      const nx = nextStep();
+      txt = STAGE_NAMES[st] + (nx ? ` · 다음: ${nx.left.map(ITEM_NAME).join('·')}` : '') + (boiling ? '' : p.flame ? ' · 데우는 중' : ' · 불을 켜요');
       if (G.customer && G.customer.state === 'wait' && st === G.customer.order.done) cls = 'good';
       if (st === 4) cls = 'warn';
     }
@@ -1327,8 +1398,16 @@ function updateHud(dt) {
     else { const s = toScreen(new THREE.Vector3(c.g.position.x, 2.75, c.g.position.z)); b.style.left = s.x + 'px'; b.style.top = s.y + 'px'; }
   }
   if (toastT > 0) { toastT -= dt; if (toastT <= 0) $('#toast').hidden = true; }
+  if (nyangiSayT > 0) {
+    nyangiSayT -= dt;
+    const el = $('#nyangiSay');
+    if (nyangiSayT <= 0 || G.screen !== 'play') { el.hidden = true; nyangiSayT = 0; }
+    else { const s = toScreen(new THREE.Vector3(nyangi.root.position.x, 2.75, nyangi.root.position.z)); el.style.left = s.x + 'px'; el.style.top = s.y + 'px'; }
+  }
 
   hudAcc += dt; if (hudAcc < .05) return; hudAcc = 0;
+  renderRecipe();
+  const cnt = $('#top-chili .cnt'); if (cnt) cnt.textContent = p.chili ? `×${p.chili}` : '';
   // gauges
   $('#gWater .fill').style.width = p.water * 100 + '%';
   $('#gWater em').textContent = Math.round(p.water * 100) + '%';
