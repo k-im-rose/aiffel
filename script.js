@@ -61,6 +61,52 @@ function sfx(f = 600, d = .08, type = 'sine', vol = .07, slide = 0, delay = 0) {
 }
 const chime = () => { sfx(880, .18, 'sine', .07); sfx(1320, .25, 'sine', .06, 0, .12); };
 
+// kitchen ambience built from filtered noise: pouring water, gas flame hiss, simmering, plus bubble pops
+let amb = null;
+function ambInit() {
+  if (amb || !actx) return;
+  try {
+    const len = actx.sampleRate * 2, buf = actx.createBuffer(1, len, actx.sampleRate), d = buf.getChannelData(0);
+    for (let i = 0; i < len; i++) d[i] = Math.random() * 2 - 1;
+    const master = actx.createGain(); master.gain.value = 1; master.connect(actx.destination);
+    const chain = (type, freq, q) => {
+      const src = actx.createBufferSource(); src.buffer = buf; src.loop = true;
+      src.playbackRate.value = .8 + Math.random() * .4;
+      const f = actx.createBiquadFilter(); f.type = type; f.frequency.value = freq; f.Q.value = q;
+      const g = actx.createGain(); g.gain.value = 0;
+      src.connect(f); f.connect(g); g.connect(master); src.start();
+      return { f, g };
+    };
+    amb = { master, pour: chain('bandpass', 1900, 1.1), gas: chain('lowpass', 380, .7), simmer: chain('bandpass', 520, .9), popT: 0 };
+  } catch (e) { amb = null; }
+}
+function pop(size) {
+  if (muted || !actx) return;
+  const t0 = actx.currentTime, o = actx.createOscillator(), g = actx.createGain();
+  const f = 180 + Math.random() * 320 * (1.4 - size);
+  o.type = 'sine'; o.frequency.setValueAtTime(f, t0); o.frequency.exponentialRampToValueAtTime(f * 1.9, t0 + .045);
+  g.gain.setValueAtTime(.0001, t0); g.gain.exponentialRampToValueAtTime(.045 * size, t0 + .008); g.gain.exponentialRampToValueAtTime(.0001, t0 + .07);
+  o.connect(g); g.connect(amb ? amb.master : actx.destination); o.start(t0); o.stop(t0 + .09);
+}
+function ambUpdate(dt, p, on) {
+  if (!actx) return;
+  ambInit(); if (!amb) return;
+  const t = actx.currentTime, set = (node, v) => node.g.gain.setTargetAtTime(v, t, .12);
+  amb.master.gain.setTargetAtTime(muted ? 0 : 1, t, .05);
+  const wet = on && p.water > .05;
+  const heat = wet ? clamp((p.temp - .55) / .45, 0, 1) : 0;
+  set(amb.pour, on && p.pouring && p.water < 1 ? .16 : 0);
+  amb.pour.f.frequency.setTargetAtTime(1500 + (p.water || 0) * 900, t, .1);
+  set(amb.gas, on && p.flame ? .05 : 0);
+  set(amb.simmer, heat * heat * .1);
+  amb.simmer.f.frequency.setTargetAtTime(420 + heat * 300 + Math.random() * 120, t, .05);
+  // bubble pops get busier as the water comes to a rolling boil
+  if (heat > .15 && !muted) {
+    amb.popT -= dt * heat * heat * 26;
+    while (amb.popT <= 0) { pop(.4 + Math.random() * .6); amb.popT += Math.random(); }
+  }
+}
+
 /* ---------- Three setup ---------- */
 const stage = $('#stage');
 const renderer = new THREE.WebGLRenderer({ canvas: $('#gl'), antialias: true });
@@ -1017,8 +1063,7 @@ function update(dt) {
     const len = Math.max(.01, tip.y - bottom);
     stream.visible = true; stream.position.set(tip.x, bottom + len / 2, tip.z); stream.scale.set(1, len, 1);
   } else stream.visible = false;
-  if (p.pouring && Math.random() < dt * 14) sfx(rnd(500, 900), .04, 'sine', .015);
-  if (p.temp >= .98 && p.water > .05 && Math.random() < dt * 5) sfx(rnd(120, 220), .05, 'sine', .02, 60);
+  ambUpdate(dt, p, play);
 
   // camera + Nyangi: close-up in front of the shop off-duty, at the stove while the shop is open
   camT = clamp(camT + (play ? 1 : -1) * dt / 1.3, 0, 1);
