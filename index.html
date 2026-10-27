@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>냥이의 라면가게</title>
+<meta name="description" content="냥이와 함께 손님 주문대로 라면을 끓이는 3D 요리 게임">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jua&family=Gowun+Dodum&display=swap">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div id="app">
+  <div id="stage">
+    <canvas id="gl"></canvas>
+    <div id="hud">
+      <div id="ticket" hidden>
+        <div class="t-head"><span id="tName">손님</span><small id="tNo">주문 01</small></div>
+        <div class="t-pat"><i id="tPat"></i></div>
+        <p id="tSay"></p>
+        <dl>
+          <dt>물</dt><dd id="tWater"></dd>
+          <dt>익힘</dt><dd id="tDone"></dd>
+          <dt>토핑</dt><dd id="tTops"></dd>
+        </dl>
+      </div>
+      <div></div>
+      <div id="stats">
+        <div class="pill"><b id="sDay">1일차</b><span>남은 시간 <span id="sTime">3:00</span></span></div>
+        <div class="pill money"><span id="sMoney">0원</span><small>오늘 목표 <span id="sGoal">10,000원</span></small><div class="mbar"><i id="sBar"></i></div></div>
+        <button id="mute" class="pill" type="button">소리 켜짐</button>
+      </div>
+    </div>
+    <div id="potTag" hidden></div>
+    <div id="bubble" hidden></div>
+    <div id="toast" hidden></div>
+
+    <div id="scrTitle" class="screen title">
+      <h1 class="logo"><small>냥이의</small>라면가게</h1>
+      <div class="title-actions">
+        <button class="big" id="btnStart" type="button">시작하기</button>
+        <button class="small-btn" id="btnHow" type="button">사용 방법</button>
+        <p class="hint" id="bestLine"></p>
+      </div>
+    </div>
+
+    <div id="scrHow" class="screen talk" hidden>
+      <div class="talk-card" role="dialog" aria-labelledby="howSay">
+        <div class="talk-top"><span class="talk-name">냥이</span><span class="talk-step" id="howStep">1 / 6</span>
+          <button class="talk-x" id="howClose" type="button" aria-label="사용 방법 닫기">×</button></div>
+        <p class="talk-say" id="howSay"></p>
+        <div class="tut-demo" id="howDemo"></div>
+        <div class="tut-nav">
+          <button class="key" id="howPrev" type="button">이전</button>
+          <div class="dots" id="howDots"></div>
+          <button class="big" id="howNext" type="button">다음</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="scrResult" class="screen talk" hidden>
+      <div class="talk-card">
+        <div class="talk-top"><span class="talk-name">냥이</span><span class="talk-step" id="rTitle">1일차 영업 끝!</span></div>
+        <p class="talk-say" id="rVerdict"></p>
+        <div class="r-stars" id="rStars" aria-label="평균 별점">☆☆☆</div>
+        <div class="r-goal"><div class="r-goalbar"><i id="rBar"></i></div><span><b id="rEarn">0원</b> / <span id="rGoal">0원</span></span></div>
+        <dl class="res">
+          <dt>받은 손님</dt><dd id="rServed">0명</dd>
+          <dt>총 저금통</dt><dd id="rTotal">0원</dd>
+        </dl>
+        <button class="big" id="btnNext" type="button">다음 날</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="panel">
+    <div class="tray">
+      <div class="gauges">
+        <div class="gauge" id="gWater"><span>물 양</span><div class="bar"><b class="fill"></b><i class="zone" hidden></i></div><em>0%</em></div>
+        <div class="gauge" id="gHeat"><span>온도</span><div class="bar"><b class="fill"></b></div><em>차가움</em></div>
+        <div class="gauge" id="gCook"><span>익힘</span><div class="bar"><div class="segs">
+            <i style="width:25%;background:#e9dfe5"></i><i style="width:25%;background:#ffe58f"></i><i style="width:22%;background:#ffc560"></i><i style="width:18%;background:#ff9b52"></i><i style="width:10%;background:#c9a99a"></i>
+          </div><i class="zone" hidden></i><b class="marker" hidden></b></div><em>-</em></div>
+      </div>
+      <div class="cook">
+        <div class="row steps">
+          <button class="key" id="bWater" type="button">물 붓기<small>꾹 누르기 <span class="kbd">Q</span></small></button>
+          <button class="key" id="bFire" type="button"><span id="fireLbl">불 켜기</span><small>가스레인지 <span class="kbd">W</span></small></button>
+          <button class="key" id="bNoodle" type="button">면 넣기<small>끓으면 <span class="kbd">E</span></small></button>
+          <button class="key" id="bSoup" type="button">스프<small>분말 스프 <span class="kbd">R</span></small></button>
+        </div>
+        <div class="row tops" id="tops"></div>
+      </div>
+      <div class="row actions">
+        <button class="key" id="bTrash" type="button">버리기<small>냄비 비우기 <span class="kbd">Z</span></small></button>
+        <button class="key" id="bServe" type="button">서빙하기<small>손님께 <span class="kbd">Space</span></small></button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
