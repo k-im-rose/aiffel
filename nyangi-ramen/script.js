@@ -1252,9 +1252,15 @@ function update(dt) {
   k.body.rotation.y = spin ? moodP * Math.PI * 2 : 0;
   k.body.rotation.z = wiggle ? Math.sin(time * 14) * .16 : lerp(k.body.rotation.z, 0, Math.min(1, dt * 8));
   const waving = happy || spin || wiggle || G.screen !== 'play' || (c && c.state === 'enter');
-  const rArm = waving ? 2.55 + Math.sin(time * 8) * .35 : p.pouring || p.flame ? 1.1 + Math.sin(time * 5) * .15 : .55 + Math.sin(time * 2) * .05;
+  // the wave stays out to the side, just below shoulder-height of the big head, so the paw is never hidden behind it
+  const rArm = waving ? 1.95 + Math.sin(time * 8) * .2 : p.pouring || p.flame ? 1.1 + Math.sin(time * 5) * .15 : .55 + Math.sin(time * 2) * .05;
   k.arms[1].rotation.z = lerp(k.arms[1].rotation.z, rArm, Math.min(1, dt * 10));
-  k.arms[0].rotation.z = lerp(k.arms[0].rotation.z, happy ? -2.4 + Math.sin(time * 8 + 1) * .3 : sad ? -.25 : -.55, Math.min(1, dt * 10));
+  k.arms[0].rotation.z = lerp(k.arms[0].rotation.z, happy ? -1.95 - Math.sin(time * 8 + 1) * .2 : sad ? -.25 : -.55, Math.min(1, dt * 10));
+  k.arms[1].rotation.x = lerp(k.arms[1].rotation.x, waving ? .45 : 0, Math.min(1, dt * 10));
+  k.arms[0].rotation.x = lerp(k.arms[0].rotation.x, happy ? .45 : 0, Math.min(1, dt * 10));
+  // a raised arm reaches a little further, like a stretch, so the paw clears the cheek
+  k.arms[1].scale.setScalar(lerp(k.arms[1].scale.x, waving ? 1.3 : 1, Math.min(1, dt * 10)));
+  k.arms[0].scale.setScalar(lerp(k.arms[0].scale.x, happy ? 1.3 : 1, Math.min(1, dt * 10)));
   k.head.rotation.y = sad ? Math.sin(time * 14) * .2 : lerp(k.head.rotation.y, play ? .22 : Math.sin(time * .8) * .12, dt * 4);
   k.head.rotation.x = lerp(k.head.rotation.x, sad ? .22 : play && p.noodles ? .12 : 0, dt * 5);
   k.head.rotation.z = Math.sin(time * 1.6) * .04;
