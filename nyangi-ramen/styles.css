@@ -33,12 +33,14 @@ body{overflow:hidden;background:var(--sky);color:var(--ink);font-family:var(--bo
 #stats{display:flex;flex-direction:column;align-items:flex-end;gap:6px}
 .pill{white-space:nowrap;background:rgba(255,250,252,.92);border:2px solid var(--line);border-radius:999px;padding:5px 12px;font-size:13px;display:flex;gap:8px;align-items:center;font-variant-numeric:tabular-nums}
 .pill b{font-family:var(--display);font-weight:400;color:var(--berry);font-size:15px}
+.pill>b,.pill>span{display:flex;align-items:center;gap:4px;line-height:1}
+.pill>b{padding-top:2px}
 .money{flex-direction:column;align-items:flex-end;gap:2px;border-radius:16px;padding:6px 12px}
 .money #sMoney{font-family:var(--display);font-size:18px}
 .money small{color:var(--muted);font-size:11px}
 .mbar{width:120px;height:5px;background:#f6e6ee;border-radius:3px;overflow:hidden}
 .mbar i{display:block;height:100%;width:0;background:var(--berry)}
-#mute{position:absolute;z-index:5;left:max(16px,env(safe-area-inset-left,0px));top:calc(14px + env(safe-area-inset-top,0px));width:44px;height:44px;border-radius:50%;
+#mute{position:absolute;z-index:5;right:max(16px,env(safe-area-inset-right,0px));top:calc(14px + env(safe-area-inset-top,0px));width:44px;height:44px;border-radius:50%;
   display:grid;place-items:center;background:#fff;border:2px solid var(--line);box-shadow:0 3px 0 var(--line);color:var(--berry);cursor:pointer;padding:0}
 #mute svg{fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 #mute .slash{display:none}

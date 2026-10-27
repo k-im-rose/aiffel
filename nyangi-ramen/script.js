@@ -64,42 +64,80 @@ function audioUnlock() {
 }
 ['pointerdown', 'touchend', 'keydown', 'click'].forEach(ev => window.addEventListener(ev, audioUnlock, { capture: true, passive: true }));
 
-// background music: an original, gentle music-box loop made in the browser (no audio file, no licence needed)
+// background music: an original, bouncy but soft loop made in the browser (no audio file, no licence needed)
 const MIDI = n => 440 * Math.pow(2, (n - 69) / 12);
 const SONG = {
-  step: 60 / 84 / 2,
-  mel: [76, 0, 79, 0, 81, 79, 76, 0, 84, 0, 81, 0, 79, 0, 76, 0, 77, 0, 81, 84, 0, 81, 79, 0, 79, 0, 74, 0, 76, 74, 72, 0,
-        76, 0, 79, 0, 81, 79, 76, 0, 84, 0, 81, 0, 79, 0, 76, 79, 77, 0, 76, 74, 0, 72, 74, 0, 72, 0, 0, 0, 0, 0, 0, 0],
-  chords: [[60, 64, 67], [57, 60, 64], [53, 57, 60], [55, 59, 62]],
-  bass: [48, 45, 41, 43],
+  step: 60 / 116 / 2,
+  mel: [72, 76, 79, 76, 84, 0, 79, 0, 77, 81, 84, 81, 77, 0, 76, 77, 79, 0, 74, 79, 83, 81, 79, 77, 76, 79, 72, 0, 76, 0, 0, 0,
+        72, 76, 79, 76, 84, 0, 79, 0, 81, 0, 77, 81, 84, 0, 81, 0, 79, 77, 76, 74, 79, 0, 74, 0, 72, 0, 76, 0, 72, 0, 0, 0],
+  chords: [[60, 64, 67], [53, 57, 60], [55, 59, 62], [60, 64, 67]],
+  bass: [48, 41, 43, 48],
 };
 let music = null;
 function musicStart() {
   if (music || !actx) return;
   const gain = actx.createGain(); gain.gain.value = muted ? 0 : 1; gain.connect(actx.destination);
+  const hat = actx.createBuffer(1, actx.sampleRate * .05, actx.sampleRate), hd = hat.getChannelData(0);
+  for (let i = 0; i < hd.length; i++) hd[i] = (Math.random() * 2 - 1) * (1 - i / hd.length);
   music = { gain, i: 0, next: actx.currentTime + .1 };
-  const note = (f, t, vol, dur, type = 'sine', attack = .006) => {
+  const note = (f, t, vol, dur, type = 'sine') => {
     const o = actx.createOscillator(), g = actx.createGain();
     o.type = type; o.frequency.setValueAtTime(f, t);
-    g.gain.setValueAtTime(.0001, t); g.gain.exponentialRampToValueAtTime(vol, t + attack); g.gain.exponentialRampToValueAtTime(.0001, t + dur);
+    g.gain.setValueAtTime(.0001, t); g.gain.exponentialRampToValueAtTime(vol, t + .005); g.gain.exponentialRampToValueAtTime(.0001, t + dur);
     o.connect(g); g.connect(gain); o.start(t); o.stop(t + dur + .05);
+  };
+  const tickHat = t => {
+    const src = actx.createBufferSource(), f = actx.createBiquadFilter(), g = actx.createGain();
+    src.buffer = hat; f.type = 'highpass'; f.frequency.value = 7000; g.gain.value = .02;
+    src.connect(f); f.connect(g); g.connect(gain); src.start(t);
   };
   const tick = () => {
     if (!actx || actx.state !== 'running') return;
     if (music.next < actx.currentTime) music.next = actx.currentTime + .05;
     while (music.next < actx.currentTime + .25) {
       const t = music.next, i = music.i % SONG.mel.length, bar = Math.floor(i / 8) % 4, m = SONG.mel[i];
-      if (m) { note(MIDI(m), t, .045, 1.3); note(MIDI(m) * 2, t, .008, .5, 'triangle'); }
-      if (i % 8 === 0) {
-        note(MIDI(SONG.bass[bar]), t, .05, 1.2);
-        SONG.chords[bar].forEach(c => note(MIDI(c), t, .012, SONG.step * 8, 'triangle', .35));
-      }
-      if (i % 8 === 4) note(MIDI(SONG.bass[bar]), t, .03, .8);
+      // short plucked melody: bouncy, never sustained
+      if (m) { note(MIDI(m), t, .032, .22, 'triangle'); note(MIDI(m), t, .018, .32); }
+      // oom-pah: bass on the beat (root, fifth), soft chord on the off-beat
+      if (i % 2 === 0) note(MIDI(SONG.bass[bar] + ((i / 2) % 2 ? 7 : 0)), t, .045, .18);
+      if (i % 4 === 2) SONG.chords[bar].forEach(c => note(MIDI(c), t, .008, .12, 'triangle'));
+      if (i % 2 === 1) tickHat(t);
       music.i++; music.next += SONG.step;
     }
   };
   setInterval(tick, 60);
 }
+// a voice-like sound: a few buzzy voices through vowel filters ("아"), following a pitch curve
+function voice(pts, dur, vol, voices = 3, sobs = 0) {
+  if (muted || !actx) return;
+  const t0 = actx.currentTime, out = actx.createGain();
+  out.gain.setValueAtTime(.0001, t0); out.gain.exponentialRampToValueAtTime(vol, t0 + .06);
+  if (sobs) for (let k = 0; k < sobs; k++) {
+    const a = t0 + k * dur / sobs;
+    out.gain.setTargetAtTime(vol, a, .02); out.gain.setTargetAtTime(vol * .15, a + dur / sobs * .6, .04);
+  }
+  out.gain.exponentialRampToValueAtTime(.0001, t0 + dur);
+  [800, 1200].forEach((ff, j) => {
+    const f = actx.createBiquadFilter(); f.type = 'bandpass'; f.frequency.value = ff; f.Q.value = 5;
+    const g = actx.createGain(); g.gain.value = j ? .5 : 1; f.connect(g); g.connect(out);
+    for (let v = 0; v < voices; v++) {
+      const o = actx.createOscillator(); o.type = 'sawtooth';
+      const det = 1 + (v - (voices - 1) / 2) * .03;
+      pts.forEach(([p, f0], n) => n ? o.frequency.linearRampToValueAtTime(f0 * det, t0 + p * dur) : o.frequency.setValueAtTime(f0 * det, t0));
+      const vib = actx.createOscillator(), vg = actx.createGain(); vib.frequency.value = 6 + v; vg.gain.value = 8;
+      vib.connect(vg); vg.connect(o.frequency); vib.start(t0); vib.stop(t0 + dur);
+      o.connect(f); o.start(t0); o.stop(t0 + dur + .05);
+    }
+  });
+  out.connect(actx.destination);
+}
+// day won: a little "와~!" cheer from a few voices plus a bright fanfare
+function cheer() {
+  voice([[0, 330], [.25, 520], [1, 470]], 1.1, .09, 4);
+  [523, 659, 784, 1047].forEach((f, i) => sfx(f, .25, 'triangle', .05, 0, .15 + i * .09));
+}
+// day lost: a soft "엉엉" sob that wobbles downward
+function sob() { voice([[0, 520], [.5, 420], [1, 340]], 1.6, .08, 1, 3); }
 function setMuted(m) {
   muted = m;
   try { localStorage.setItem('nyangiMuted', m ? '1' : '0'); } catch (e) {}
@@ -410,9 +448,11 @@ if (document.fonts && document.fonts.load) {
 }
 
 // customer table
-add(scene, new THREE.CylinderGeometry(.62, .62, .1, 40), M(0xffffff, { roughness: .5 }), [3.05, .98, .95]);
-add(scene, new THREE.CylinderGeometry(.08, .12, .95, 16), M(0xffb3d1), [3.05, .48, .95]);
-add(scene, new THREE.CylinderGeometry(.4, .4, .04, 32), M(0xffb3d1), [3.05, .02, .95]);
+// customer table: low and set forward, so the bowl sits in front of the customer instead of in their face
+const TABLE = new THREE.Vector3(3.05, .68, 1.3);
+add(scene, new THREE.CylinderGeometry(.6, .6, .08, 40), M(0xffffff, { roughness: .5 }), [TABLE.x, TABLE.y - .04, TABLE.z]);
+add(scene, new THREE.CylinderGeometry(.08, .12, .62, 16), M(0xffb3d1), [TABLE.x, .33, TABLE.z]);
+add(scene, new THREE.CylinderGeometry(.38, .38, .04, 32), M(0xffb3d1), [TABLE.x, .02, TABLE.z]);
 
 /* ---------- Pot ---------- */
 const POT = { x: 0, y: 1.68, z: .05, h: .55 };
@@ -513,6 +553,40 @@ for (let i = 0; i < 12; i++) {
   flames.push(g);
 }
 const flameLight = new THREE.PointLight(0xffa860, 0, 3); flameLight.position.set(0, 1.7, .6); scene.add(flameLight);
+
+// piggy bank on the counter, right of the stove: paid coins fly in with a clink
+const piggy = new THREE.Group(); piggy.position.set(1.28, 1.32, .38); piggy.rotation.y = -.55; scene.add(piggy);
+(() => {
+  const pk = M(0xffa9cb, { roughness: .45 }), dk = M(0xff7fb0, { roughness: .45 }), K = M(0x1a1418, { roughness: .2 });
+  const pb = new THREE.Group(); pb.position.y = .3; piggy.add(pb); piggy.userData.body = pb;
+  add(pb, SPH, pk, [0, 0, 0], [.3, .25, .26]);
+  add(pb, new THREE.CylinderGeometry(.09, .1, .08, 20), dk, [.3, -.02, 0], 1, [0, 0, Math.PI / 2]);
+  for (const s of [-1, 1]) {
+    add(pb, SPH, K, [.345, -.02, s * .035], .017, [0, 0, 0], false);
+    add(pb, SPH, K, [.2, .1, s * .13], .028, [0, 0, 0], false);
+    add(pb, new THREE.ConeGeometry(.07, .12, 12), dk, [.08, .23, s * .13], 1, [s * .3, 0, -.4]);
+    for (const f of [-1, 1]) add(pb, new THREE.CylinderGeometry(.05, .05, .12, 12), dk, [f * .14, -.24, s * .13]);
+  }
+  add(pb, new THREE.BoxGeometry(.04, .02, .14), K, [0, .245, 0], 1, [0, 0, 0], false);
+  add(pb, new THREE.TorusGeometry(.04, .012, 6, 14, Math.PI * 1.5), dk, [-.3, .03, 0], 1, [0, Math.PI / 2, 0]);
+})();
+piggy.updateMatrixWorld(true);
+const SLOT = new THREE.Vector3(0, .58, 0).applyMatrix4(piggy.matrixWorld);
+const coinGeo = new THREE.CylinderGeometry(.085, .085, .025, 20), coinMat = M(0xffcf3f, { roughness: .3, metalness: .35, emissive: 0x5a3c00, emissiveIntensity: .25 });
+const coins = [];
+for (let i = 0; i < 6; i++) { const m = new THREE.Mesh(coinGeo, coinMat); m.visible = false; m.castShadow = true; scene.add(m); coins.push({ m, t: 0, on: false, from: new THREE.Vector3() }); }
+// one coin per 1,000 won (at least one, at most six), dropped one after another
+function payCoins(won) {
+  const n = clamp(Math.round(won / 1000), 1, 6);
+  for (let i = 0; i < n; i++) {
+    const c = coins.at(i);
+    c.from.set(TABLE.x + rnd(-.25, .25), TABLE.y + .3, TABLE.z + rnd(-.2, .2));
+    c.t = -i * .14; c.on = true; c.m.visible = false;
+  }
+}
+function clink() {
+  sfx(2093, .14, 'triangle', .05); sfx(3136, .1, 'sine', .03, 0, .012); sfx(4186, .05, 'sine', .015, 0, .02);
+}
 
 // kettle
 const kettle = new THREE.Group(); scene.add(kettle);
@@ -775,8 +849,7 @@ function landBowl(b) {
   const { res, c } = b;
   const price = 3000 + 500 * c.order.toppings.length;
   const pay = Math.round(price * [0, .5, .85, 1][res.stars] / 100) * 100;
-  const tip = res.stars === 3 ? Math.round((500 + c.patience * 1500) / 100) * 100 : 0;
-  const total = pay + tip;
+  const total = pay;
   G.earned += total; G.total += total; G.served++; G.starSum += res.stars;
   const lines = {
     3: ['완벽해요! 최고의 라면!', '바로 이 맛이에요!', '냥이 라면 최고예요!'][Math.floor(Math.random() * 3)],
@@ -785,7 +858,7 @@ function landBowl(b) {
     0: '이건 못 먹겠어요...',
   };
   say(lines[res.stars], res.stars, 2.4);
-  if (total) coin(`+${won(total)}${tip ? ' (팁 포함)' : ''}`);
+  if (total) { coin(`+${won(total)}`); payCoins(total); }
   if (res.stars >= 2) { nyangiMood('happy', 1.4); chime(); } else { nyangiMood('sad', 1.4); sfx(300, .3, 'sawtooth', .04, -120); }
   c.state = 'eat'; c.timer = .9; c.mood = res.stars;
 }
@@ -936,8 +1009,8 @@ function endDay() {
     ? (newTops.length ? `우와, 목표 달성! 정말 잘했어! 내일은 ${newTops.join(', ')} 토핑이 새로 생겨.` : '우와, 목표 달성! 내일은 손님들이 조금 더 까다로워질 거야.')
     : `아쉽다! ${won(goal - G.earned)}만 더 벌면 됐어. 같은 날을 다시 해 볼까?`;
   $('#btnNext').textContent = passed ? '다음 날 영업하기' : '다시 도전하기';
-  if (passed) { try { if (G.day + 1 > best) { best = G.day + 1; localStorage.setItem('nyangiRamenBest', best); } } catch (e) {} nyangiMood('happy', 2.5); chime(); }
-  else nyangiMood('sad', 1.6);
+  if (passed) { try { if (G.day + 1 > best) { best = G.day + 1; localStorage.setItem('nyangiRamenBest', best); } } catch (e) {} nyangiMood('happy', 3); cheer(); }
+  else { nyangiMood('sad', 2.4); sob(); }
   $('#btnNext').focus({ preventScroll: true });
 }
 function nextDay() { if (passed) G.day++; startDay(); }
@@ -1062,10 +1135,28 @@ function update(dt) {
     if (b.t < 1) {
       b.t = Math.min(1, b.t + dt / .5);
       const e = b.t;
-      b.g.position.set(lerp(POT.x, STAND.x, e), lerp(POT.y + .5, 1.03, e) + Math.sin(Math.PI * e) * 1.1, lerp(POT.z, .95, e));
+      b.g.position.set(lerp(POT.x, TABLE.x, e), lerp(POT.y + .5, TABLE.y, e) + Math.sin(Math.PI * e) * 1.1, lerp(POT.z, TABLE.z, e));
+      b.g.scale.setScalar(lerp(1, .78, e));
       b.g.rotation.y = e * Math.PI * 2;
       if (b.t >= 1) landBowl(b);
     }
+  }
+
+  // coins flying into the piggy bank
+  for (const c of coins) {
+    if (!c.on) continue;
+    c.t += dt / .55;
+    if (c.t < 0) continue;
+    const e = Math.min(1, c.t);
+    c.m.visible = true;
+    c.m.position.lerpVectors(c.from, SLOT, e); c.m.position.y += Math.sin(Math.PI * e) * 1.1;
+    c.m.rotation.set(time * 12, 0, Math.PI / 2 * (1 - e));
+    if (c.t >= 1) { c.on = false; c.m.visible = false; clink(); piggy.userData.bounce = 1; }
+  }
+  if (piggy.userData.bounce > 0) {
+    piggy.userData.bounce = Math.max(0, piggy.userData.bounce - dt * 4);
+    const q = Math.sin(piggy.userData.bounce * Math.PI) * .14;
+    piggy.userData.body.scale.set(1 + q * .7, 1 - q, 1 + q * .7);
   }
 
   // pot visuals
