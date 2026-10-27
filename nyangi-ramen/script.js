@@ -167,15 +167,24 @@ function ambInit() {
     const len = actx.sampleRate * 2, buf = actx.createBuffer(1, len, actx.sampleRate), d = buf.getChannelData(0);
     for (let i = 0; i < len; i++) d[i] = Math.random() * 2 - 1;
     const master = actx.createGain(); master.gain.value = 1; master.connect(actx.destination);
-    const chain = (type, freq, q) => {
+    const chain = (type, freq, q, wobble = 0) => {
       const src = actx.createBufferSource(); src.buffer = buf; src.loop = true;
       src.playbackRate.value = .8 + Math.random() * .4;
       const f = actx.createBiquadFilter(); f.type = type; f.frequency.value = freq; f.Q.value = q;
       const g = actx.createGain(); g.gain.value = 0;
-      src.connect(f); f.connect(g); g.connect(master); src.start();
+      let last = f;
+      // optional wobble: a slow tremolo that turns steady noise into a bubbling "보글보글"
+      if (wobble) {
+        const mod = actx.createGain(); mod.gain.value = .55;
+        const lfo = actx.createOscillator(), depth = actx.createGain();
+        lfo.frequency.value = wobble; depth.gain.value = .45; lfo.connect(depth); depth.connect(mod.gain); lfo.start();
+        f.connect(mod); last = mod;
+      }
+      src.connect(f); last.connect(g); g.connect(master); src.start();
       return { f, g };
     };
-    amb = { master, pour: chain('bandpass', 1900, 1.1), gas: chain('lowpass', 380, .7), simmer: chain('bandpass', 520, .9), popT: 0 };
+    amb = { master, pour: chain('bandpass', 700, .5, 3.5), gas: chain('lowpass', 380, .7), simmer: chain('bandpass', 520, .9),
+            boil: chain('bandpass', 320, .8, 7), popT: 0, dripT: 0 };
   } catch (e) { amb = null; }
 }
 function pop(size) {
@@ -193,10 +202,24 @@ function ambUpdate(dt, p, on) {
   amb.master.gain.setTargetAtTime(muted ? 0 : 1, t, .05);
   const wet = on && p.water > .05;
   const heat = wet ? clamp((p.temp - .55) / .45, 0, 1) : 0;
-  set(amb.pour, on && p.pouring && p.water < 1 ? .16 : 0);
-  amb.pour.f.frequency.setTargetAtTime(1500 + (p.water || 0) * 900, t, .1);
+  // pouring: a soft, low water rush with a few trickle drops (not a hiss), pitch rising as the pot fills
+  const pouring = on && p.pouring && p.water < 1;
+  set(amb.pour, pouring ? .07 : 0);
+  amb.pour.f.frequency.setTargetAtTime(550 + (p.water || 0) * 450, t, .1);
+  if (pouring && !muted) {
+    amb.dripT -= dt * 9;
+    while (amb.dripT <= 0) {
+      const t0 = actx.currentTime, o = actx.createOscillator(), g = actx.createGain(), f = 600 + Math.random() * 500 + (p.water || 0) * 300;
+      o.frequency.setValueAtTime(f, t0); o.frequency.exponentialRampToValueAtTime(f * 1.4, t0 + .04);
+      g.gain.setValueAtTime(.0001, t0); g.gain.exponentialRampToValueAtTime(.012, t0 + .006); g.gain.exponentialRampToValueAtTime(.0001, t0 + .06);
+      o.connect(g); g.connect(amb.master); o.start(t0); o.stop(t0 + .08);
+      amb.dripT += Math.random();
+    }
+  }
   set(amb.gas, on && p.flame ? .05 : 0);
-  set(amb.simmer, heat * heat * .1);
+  set(amb.simmer, heat * heat * .08);
+  // a full rolling boil gets its own bubbling layer once the water is really boiling
+  set(amb.boil, wet && p.temp >= .98 ? .14 : 0);
   amb.simmer.f.frequency.setTargetAtTime(420 + heat * 300 + Math.random() * 120, t, .05);
   // bubble pops get busier as the water comes to a rolling boil
   if (heat > .15 && !muted) {
