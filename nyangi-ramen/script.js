@@ -17,20 +17,12 @@ const TOPS = [
   { id: 'cheese', name: '치즈',     c: '#ffcf33', day: 2 },
   { id: 'tteok',  name: '떡',       c: '#f4efe4', day: 3 },
   { id: 'mandu',  name: '만두',     c: '#efdcb8', day: 3 },
-  { id: 'chili',  name: '고춧가루', c: '#e2412b', day: 2 },
+  { id: 'chili',  name: '고춧가루', c: '#e2412b', day: 1 },
 ];
 const TOP = Object.fromEntries(TOPS.map(t => [t.id, t]));
-// recipe order, the way ramen is really cooked: soup, noodles, slow-cooking add-ins, egg, then finishing toppings
-const RECIPE = [
-  { n: '①', items: ['soup'] },
-  { n: '②', items: ['noodle'] },
-  { n: '③', items: ['tteok', 'mandu'] },
-  { n: '④', items: ['egg'] },
-  { n: '⑤', items: ['pa', 'cheese', 'chili'] },
-];
-const STEP_OF = Object.fromEntries(RECIPE.flatMap((r, i) => r.items.map(id => [id, i])));
-const ITEM_NAME = id => id === 'soup' ? '스프' : id === 'noodle' ? '면' : TOP[id].name;
-const SPICE_SAY = ['', '한 번', '두 번', '세 번'];
+// spiciness the customer asks for = how many times to sprinkle chili (0 = not spicy)
+const SPICE_NAME = ['안 맵게', '1단계', '2단계', '3단계'];
+const SPICE_SAY = ['안 맵게', '조금 맵게', '맵게', '아주 맵게'];
 const WATER = [
   { name: '적게', say: '조금만',   lo: .26, hi: .48 },
   { name: '보통', say: '보통으로', lo: .48, hi: .70 },
@@ -47,14 +39,14 @@ const CTYPES = [
   { name: '삐약이', body: 0xffd84d, head: 0xffe36b, acc: 0xff9d3a, kind: 'chick' },
 ];
 const DAY_LEN = 120;
-const goalOf = d => 15000 + (d - 1) * 5000;
+const goalOf = d => 15000 + (d - 1) * 3000;
 
 const G = {
   screen: 'title', day: 1, total: 0, earned: 0, timeLeft: DAY_LEN, served: 0, starSum: 0, orderNo: 0,
   customer: null, spawnT: 1.2, bowl: null, pot: null,
 };
 function freshPot() {
-  return { water: 0, pouring: false, flame: false, temp: 0, noodles: false, drop: 0, cook: 0, soup: false, soupMix: 0, toppings: new Set(), chili: 0, log: [], wrongOrder: 0, orderNote: '' };
+  return { water: 0, pouring: false, flame: false, temp: 0, noodles: false, drop: 0, cook: 0, soup: false, soupMix: 0, toppings: new Set(), chili: 0 };
 }
 G.pot = freshPot();
 
@@ -801,25 +793,25 @@ function makeCustomer(T) {
 }
 
 function makeOrder() {
-  const avail = TOPS.filter(t => t.day <= G.day).map(t => t.id);
+  const avail = TOPS.filter(t => t.day <= G.day && t.id !== 'chili').map(t => t.id);
   const maxN = Math.min(avail.length, 1 + Math.ceil(G.day / 2));
   const n = Math.floor(Math.random() * (maxN + 1));
   for (let i = avail.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [avail[i], avail[j]] = [avail[j], avail[i]]; }
   const pick = avail.slice(0, n).sort((a, b) => TOPS.indexOf(TOP[a]) - TOPS.indexOf(TOP[b]));
-  // spicy level: how many times to sprinkle chili (1~3), only when chili is ordered
-  const spice = pick.includes('chili') ? 1 + Math.floor(Math.random() * 3) : 0;
+  // spiciness 0~3 (0 = not spicy), asked for on every order
+  const spice = Math.random() < .35 ? 0 : 1 + Math.floor(Math.random() * 3);
   return { water: Math.floor(Math.random() * 3), done: 1 + Math.floor(Math.random() * 3), toppings: pick, spice };
 }
 function orderLine(o) {
-  const tp = o.toppings.map(id => id === 'chili' ? `고춧가루 ${SPICE_SAY[o.spice]}` : TOP[id].name);
+  const tp = o.toppings.map(id => TOP[id].name);
   const a = !tp.length ? '아무것도 넣지 말고' : tp.length === 1 ? `${tp[0]} 넣고` : tp.slice(0, -1).map(iRang).join(' ') + ` ${tp[tp.length - 1]} 넣고`;
-  return `“${a} ${DONE_SAY[o.done]}, 물은 ${WATER[o.water].say} 부탁해요!”`;
+  return `“${a} ${SPICE_SAY[o.spice]} ${DONE_SAY[o.done]}, 물은 ${WATER[o.water].say} 부탁해요!”`;
 }
 
 function spawnCustomer() {
   const T = CTYPES[Math.floor(Math.random() * CTYPES.length)];
   const parts = makeCustomer(T);
-  const pmax = Math.max(45, 70 - G.day * 4);
+  const pmax = Math.max(32, 48 - G.day * 3);
   const c = Object.assign(parts, { T, order: makeOrder(), state: 'enter', x: 6.5, patience: 1, pmax, timer: 0, ph: Math.random() * 6 });
   parts.g.position.set(c.x, 0, STAND.z);
   G.customer = c; G.orderNo++;
@@ -832,7 +824,8 @@ function showTicket(c) {
   $('#tSay').textContent = orderLine(o);
   $('#tWater').textContent = WATER[o.water].name;
   $('#tDone').textContent = STAGE_NAMES[o.done];
-  $('#tTops').textContent = o.toppings.length ? o.toppings.map(id => id === 'chili' ? `고춧가루 ×${o.spice}` : TOP[id].name).join(', ') : '없음';
+  $('#tTops').textContent = o.toppings.length ? o.toppings.map(id => TOP[id].name).join(', ') : '없음';
+  $('#tSpice').textContent = SPICE_NAME[o.spice];
   $('#ticket').hidden = false;
   const W = WATER[o.water], z = $('#gWater .zone');
   z.hidden = false; z.style.left = W.lo * 100 + '%'; z.style.width = (W.hi - W.lo) * 100 + '%';
@@ -859,12 +852,11 @@ function judge(o, p) {
   else { if (Math.abs(st - o.done) === 1) s += .5; notes.push(st < o.done ? '면이 좀 덜 익었어요' : '면이 너무 익었어요'); }
   const want = new Set(o.toppings), miss = [], extra = [];
   want.forEach(id => { if (!p.toppings.has(id)) miss.push(id); });
-  p.toppings.forEach(id => { if (!want.has(id)) extra.push(id); });
-  const spiceOff = want.has('chili') && p.toppings.has('chili') && p.chili !== o.spice;
+  p.toppings.forEach(id => { if (id !== 'chili' && !want.has(id)) extra.push(id); });
+  const spiceOff = p.chili !== o.spice;
   s += Math.max(0, 1 - .4 * (miss.length + extra.length + (spiceOff ? 1 : 0)));
   if (miss.length) notes.push(`${iGa(TOP[miss[0]].name)} 빠졌어요`);
-  if (spiceOff) notes.push(p.chili > o.spice ? '너무 매워요' : '덜 매워요');
-  if (p.wrongOrder) { s -= Math.min(1, .5 * p.wrongOrder); notes.unshift(p.orderNote); }
+  if (spiceOff) notes.push(!o.spice ? '안 맵게 해 달라고 했는데요' : p.chili > o.spice ? '너무 매워요' : '덜 매워요');
   if (extra.length) notes.push(`${eunNeun(TOP[extra[0]].name)} 안 시켰어요`);
   if (!p.soup) { s -= 1.2; notes.unshift('스프를 안 넣었어요!'); }
   const stars = s >= 2.75 ? 3 : s >= 1.9 ? 2 : s >= 1 ? 1 : 0;
@@ -926,42 +918,16 @@ const topsEl = $('#tops');
 TOPS.forEach((t, i) => {
   const b = document.createElement('button');
   b.className = 'key'; b.type = 'button'; b.id = 'top-' + t.id; b.dataset.id = t.id;
-  b.innerHTML = `<i class="sw" style="--c:${t.c}"></i>${t.name}${t.id === 'chili' ? '<b class="cnt"></b>' : ''}<small class="lock"></small>`;
+  b.innerHTML = `<i class="sw" style="--c:${t.c}"></i>${t.name}<small class="lock"></small>`;
   b.addEventListener('click', () => toggleTop(t.id));
   topsEl.appendChild(b);
 });
-// what this order needs, in recipe order (soup and noodles always)
-function needed() {
-  const c = G.customer;
-  return ['soup', 'noodle'].concat(c && c.state === 'wait' ? c.order.toppings : []);
-}
-// record an ingredient going in; adding it before an earlier recipe step it needs counts as a wrong order
-function checkOrder(id) {
-  const p = G.pot, req = needed();
-  if (req.includes(id) && !p.log.includes(id)) {
-    const skipped = req.filter(x => x !== id && !p.log.includes(x) && STEP_OF[x] < STEP_OF[id]);
-    if (skipped.length) {
-      p.wrongOrder++;
-      if (!p.orderNote) p.orderNote = `${iGa(ITEM_NAME(id))} 너무 일찍 들어갔어요`;
-    }
-  }
-  p.log.push(id);
-}
-// recipe card above the cooking buttons: the written order of today's ingredients; players check it themselves
-const recipeEl = $('#recipe');
-function renderRecipe() {
-  const open = id => id === 'soup' || id === 'noodle' || TOP[id].day <= G.day;
-  const steps = RECIPE.map(r => r.items.filter(open)).filter(a => a.length);
-  recipeEl.innerHTML = '<b class="rtitle">넣는 순서</b>' + steps.map((a, i) =>
-    `${i ? '<i class="rarrow" aria-hidden="true">›</i>' : ''}<span class="rstep">${'①②③④⑤'.at(i)} ${a.map(ITEM_NAME).join('·')}</span>`).join('');
-}
 function toggleTop(id) {
   if (G.screen !== 'play' || TOP[id].day > G.day) return;
   const p = G.pot;
   if (p.toppings.has(id) && id !== 'chili') { toast('한 번 넣은 토핑은 뺄 수 없어요'); return; }
   {
     if (id === 'chili') p.chili++;
-    if (!p.toppings.has(id)) checkOrder(id);
     p.toppings.add(id); topMesh[id].userData.pop = 0;
     sprinkle(id === 'chili' ? 0xd2281c : id === 'pa' ? 0x6cc04a : 0xffffff, id === 'chili' ? 26 : id === 'pa' ? 10 : 0);
     sfx(700, .07, 'triangle', .06, 200);
@@ -989,13 +955,11 @@ function addNoodles() {
   if (G.screen !== 'play' || p.noodles) return;
   if (p.water <= .05) return toast('먼저 물을 부어 주세요');
   if (p.temp < .98) toast('아직 안 끓어서 면이 천천히 익어요');
-  checkOrder('noodle');
   p.noodles = true; p.drop = 0; p.cook = 0; syncPotMeshes(); sfx(200, .2, 'sine', .08, -100);
 }
 function addSoup() {
   const p = G.pot;
   if (G.screen !== 'play' || p.soup) return;
-  checkOrder('soup');
   p.soup = true; sprinkle(0xe8732c, 30); sfx(900, .15, 'triangle', .05, -500);
 }
 function trash() {
@@ -1062,11 +1026,10 @@ function startDay() {
   });
   chime(); nyangiMood('happy', 1);
   const intro = {
-    1: '재료는 넣는 순서가 있어! 위에 적힌 순서를 잘 봐!',
-    2: '오늘부터 치즈랑 고춧가루! 고춧가루는 맵기만큼 넣어!',
-    3: '오늘부터 떡이랑 만두! 순서를 잘 확인해!',
-  }[G.day] || '손님이 더 바빠졌어! 순서 지키면서 힘내자!';
-  renderRecipe();
+    1: '맵기는 고춧가루로! 1단계면 한 번, 2단계면 두 번 넣어!',
+    2: '오늘부터 치즈도 있어! 주문서를 잘 봐!',
+    3: '오늘부터 떡이랑 만두! 손님이 더 까다로워졌어!',
+  }[G.day] || '손님이 더 바빠졌어! 힘내자!';
   $('#nyangiSay').textContent = intro; $('#nyangiSay').hidden = false; nyangiSayT = 4.5;
 }
 let passed = false;
@@ -1098,15 +1061,13 @@ const TUT = [
   { say: '안녕! 나는 냥이야. 2분 동안 라면을 팔아서 목표만큼 돈을 모아 보자!',
     demo: '<span class="pill"><b>1일차</b>남은 시간 2:00</span><span class="pill">오늘 목표<b>15,000원</b></span>' },
   { say: '손님이 오면 주문서를 꼭 봐! 물, 익힘, 토핑을 기억해야 해.',
-    demo: '<div class="mini-ticket"><b>곰돌이 손님</b><dl><dt>물</dt><dd class="hl">보통</dd><dt>익힘</dt><dd class="hl">꼬들꼬들</dd><dt>토핑</dt><dd class="hl">계란</dd></dl></div>' },
+    demo: '<div class="mini-ticket"><b>곰돌이 손님</b><dl><dt>물</dt><dd class="hl">보통</dd><dt>익힘</dt><dd class="hl">꼬들꼬들</dd><dt>토핑</dt><dd class="hl">계란</dd><dt>맵기</dt><dd class="hl">2단계</dd></dl></div>' },
   { say: '물 붓기 버튼을 꾹 누르고 있다가, 분홍 칸에 오면 손을 떼!',
     demo: '<span class="key col press">물 붓기<small>꾹 누르기</small></span><div class="demo-gauge"><span>물 양</span><div class="bar"><b class="fill anim-water"></b><i class="zone" style="left:48%;width:22%"></i></div></div>' },
-  { say: '불을 켜고 보글보글 끓으면, 스프 먼저! 그다음에 면을 넣어.',
-    demo: '<span class="key on">불 켜기</span><i class="arrow">→</i><span class="key">스프</span><i class="arrow">→</i><span class="key">면 넣기</span>' },
-  { say: '재료는 넣는 순서가 있어! 위에 적힌 순서를 보고 스스로 지켜 봐. 틀리면 손님이 알려 줄 거야.',
-    demo: '<div class="recipe demo-recipe"><b class="rtitle">넣는 순서</b><span class="rstep">① 스프</span><i class="rarrow">›</i><span class="rstep">② 면</span><i class="rarrow">›</i><span class="rstep">③ 계란</span><i class="rarrow">›</i><span class="rstep">④ 파</span></div>' },
-  { say: '손님이 원한 토핑만 골라서 올려 줘. 한 번 넣으면 뺄 수 없으니 잘 보고 넣어!',
-    demo: '<span class="key on"><i class="sw" style="--c:#ffd23f"></i>계란</span><span class="key"><i class="sw" style="--c:#6cc04a"></i>파</span><span class="key"><i class="sw" style="--c:#ffcf33"></i>치즈</span>' },
+  { say: '불을 켜고 보글보글 끓으면, 면이랑 스프를 넣어!',
+    demo: '<span class="key on">불 켜기</span><i class="arrow">→</i><span class="key">면 넣기</span><i class="arrow">·</i><span class="key">스프</span>' },
+  { say: '손님이 원한 토핑만 올려 줘. 맵기는 고춧가루로! 2단계면 두 번 눌러. 한 번 넣으면 뺄 수 없어!',
+    demo: '<span class="key on"><i class="sw" style="--c:#ffd23f"></i>계란</span><span class="key"><i class="sw" style="--c:#6cc04a"></i>파</span><span class="key on"><i class="sw" style="--c:#e2412b"></i>고춧가루</span>' },
   { say: '익힘 막대가 분홍 칸에 오면 서빙! 별 세 개를 받아 보자!',
     demo: `<div class="demo-gauge"><span>익힘</span><div class="bar">${COOK_SEGS}<i class="zone" style="left:25%;width:25%"></i><b class="marker anim-cook"></b></div></div><span class="key serve">서빙하기</span><span class="demo-stars">★★★</span>` },
 ];
@@ -1163,7 +1124,7 @@ function update(dt) {
     const boiling = p.temp >= .98 && p.water > .05;
     if (p.noodles) {
       p.drop = Math.min(1, p.drop + dt / .45);
-      const rate = boiling ? 1 / 16 : p.temp > .5 ? 1 / 30 : 0;
+      const rate = boiling ? 1 / 12 : p.temp > .5 ? 1 / 24 : 0;
       p.cook = Math.min(1, p.cook + rate * dt);
     }
     if (p.soup && p.water > .05) p.soupMix = Math.min(1, p.soupMix + dt / 1.2);
@@ -1390,7 +1351,6 @@ function updateHud(dt) {
   }
 
   hudAcc += dt; if (hudAcc < .05) return; hudAcc = 0;
-  const cnt = $('#top-chili .cnt'); if (cnt) cnt.textContent = p.chili ? `×${p.chili}` : '';
   // gauges
   $('#gWater .fill').style.width = p.water * 100 + '%';
   $('#gWater em').textContent = Math.round(p.water * 100) + '%';
