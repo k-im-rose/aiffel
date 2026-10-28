@@ -182,3 +182,7 @@ body{overflow:hidden;background:var(--sky);color:var(--ink);font-family:var(--bo
 
 #nyangiSay{position:absolute;transform:translate(-50%,-100%);pointer-events:none;background:#fff;border:2px solid var(--pink);border-radius:16px;padding:7px 12px;
   font-family:var(--display);font-size:15px;width:max-content;max-width:min(240px,70vw);text-align:center;word-break:keep-all;box-shadow:0 4px 0 rgba(226,71,127,.18)}
+.spice-demo{border-collapse:separate;border-spacing:4px;font-size:13px}
+.spice-demo th{font-weight:400;color:var(--muted);text-align:left;padding-right:4px;white-space:nowrap}
+.spice-demo td{background:#fff;border:2px solid var(--line);border-radius:10px;padding:5px 8px;text-align:center;font-family:var(--display);white-space:nowrap}
+.spice-demo tr:last-child td{color:#c5221a}

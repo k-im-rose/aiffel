@@ -11,17 +11,18 @@ const eunNeun = w => w + (batchim(w) ? '은' : '는');
 const eulReul = w => w + (batchim(w) ? '을' : '를');
 
 /* ---------- Game data ---------- */
+// topping buttons in screen order (left to right); chili sits first since every order has a spice level
 const TOPS = [
+  { id: 'chili',  name: '고춧가루', c: '#e2412b', day: 1 },
   { id: 'egg',    name: '계란',     c: '#ffd23f', day: 1 },
   { id: 'pa',     name: '파',       c: '#6cc04a', day: 1 },
   { id: 'cheese', name: '치즈',     c: '#ffcf33', day: 2 },
   { id: 'tteok',  name: '떡',       c: '#f4efe4', day: 3 },
   { id: 'mandu',  name: '만두',     c: '#efdcb8', day: 3 },
-  { id: 'chili',  name: '고춧가루', c: '#e2412b', day: 1 },
 ];
 const TOP = Object.fromEntries(TOPS.map(t => [t.id, t]));
 // spiciness the customer asks for = how many times to sprinkle chili (0 = not spicy)
-const SPICE_NAME = ['안 맵게', '1단계', '2단계', '3단계'];
+const SPICE_NAME = ['0단계', '1단계', '2단계', '3단계'];
 const SPICE_SAY = ['안 맵게', '조금 맵게', '맵게', '아주 맵게'];
 const WATER = [
   { name: '적게', say: '조금만',   lo: .26, hi: .48 },
@@ -856,7 +857,7 @@ function judge(o, p) {
   const spiceOff = p.chili !== o.spice;
   s += Math.max(0, 1 - .4 * (miss.length + extra.length + (spiceOff ? 1 : 0)));
   if (miss.length) notes.push(`${iGa(TOP[miss[0]].name)} 빠졌어요`);
-  if (spiceOff) notes.push(!o.spice ? '안 맵게 해 달라고 했는데요' : p.chili > o.spice ? '너무 매워요' : '덜 매워요');
+  if (spiceOff) notes.push(!o.spice ? '맵기 0단계라 고춧가루는 빼 달라고 했는데요' : p.chili > o.spice ? '너무 매워요' : '덜 매워요');
   if (extra.length) notes.push(`${eunNeun(TOP[extra[0]].name)} 안 시켰어요`);
   if (!p.soup) { s -= 1.2; notes.unshift('스프를 안 넣었어요!'); }
   const stars = s >= 2.75 ? 3 : s >= 1.9 ? 2 : s >= 1 ? 1 : 0;
@@ -1026,7 +1027,7 @@ function startDay() {
   });
   chime(); nyangiMood('happy', 1);
   const intro = {
-    1: '맵기는 고춧가루로! 1단계면 한 번, 2단계면 두 번 넣어!',
+    1: '맵기는 고춧가루 횟수야! 0단계는 안 넣고, 1단계는 한 번, 2단계는 두 번!',
     2: '오늘부터 치즈도 있어! 주문서를 잘 봐!',
     3: '오늘부터 떡이랑 만두! 손님이 더 까다로워졌어!',
   }[G.day] || '손님이 더 바빠졌어! 힘내자!';
@@ -1066,8 +1067,10 @@ const TUT = [
     demo: '<span class="key col press">물 붓기<small>꾹 누르기</small></span><div class="demo-gauge"><span>물 양</span><div class="bar"><b class="fill anim-water"></b><i class="zone" style="left:48%;width:22%"></i></div></div>' },
   { say: '불을 켜고 보글보글 끓으면, 면이랑 스프를 넣어!',
     demo: '<span class="key on">불 켜기</span><i class="arrow">→</i><span class="key">면 넣기</span><i class="arrow">·</i><span class="key">스프</span>' },
-  { say: '손님이 원한 토핑만 올려 줘. 맵기는 고춧가루로! 2단계면 두 번 눌러. 한 번 넣으면 뺄 수 없어!',
-    demo: '<span class="key on"><i class="sw" style="--c:#ffd23f"></i>계란</span><span class="key"><i class="sw" style="--c:#6cc04a"></i>파</span><span class="key on"><i class="sw" style="--c:#e2412b"></i>고춧가루</span>' },
+  { say: '손님이 원한 토핑만 올려 줘. 한 번 넣으면 뺄 수 없으니 잘 보고 넣어!',
+    demo: '<span class="key on"><i class="sw" style="--c:#ffd23f"></i>계란</span><span class="key"><i class="sw" style="--c:#6cc04a"></i>파</span><span class="key"><i class="sw" style="--c:#ffcf33"></i>치즈</span>' },
+  { say: '주문서의 맵기만큼 고춧가루를 눌러! 0단계는 안 넣고, 1단계는 한 번, 2단계는 두 번, 3단계는 세 번이야.',
+    demo: '<table class="spice-demo"><tr><th>맵기</th><td>0단계</td><td>1단계</td><td>2단계</td><td>3단계</td></tr><tr><th>고춧가루</th><td>안 넣기</td><td>한 번</td><td>두 번</td><td>세 번</td></tr></table>' },
   { say: '익힘 막대가 분홍 칸에 오면 서빙! 별 세 개를 받아 보자!',
     demo: `<div class="demo-gauge"><span>익힘</span><div class="bar">${COOK_SEGS}<i class="zone" style="left:25%;width:25%"></i><b class="marker anim-cook"></b></div></div><span class="key serve">서빙하기</span><span class="demo-stars">★★★</span>` },
 ];
