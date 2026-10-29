@@ -167,8 +167,9 @@ body{overflow:hidden;background:var(--sky);color:var(--ink);font-family:var(--bo
 .key.on small{color:#fff}
 .key:focus-visible,.big:focus-visible,#mute:focus-visible{outline:3px solid var(--ink);outline-offset:2px}
 .sw{width:14px;height:14px;border-radius:50%;background:var(--c);border:1.5px solid rgba(85,37,58,.25)}
-.chili-dots{display:inline-flex;gap:3px;margin-left:6px;vertical-align:middle}
-.chili-dots i{width:5px;height:5px;border-radius:50%;background:#e2412b}
+#ticket dd.spice-dd{display:flex;align-items:center}
+.chili-dots{display:inline-flex;align-items:center;gap:3px;margin-left:6px}
+.chili-dots i{width:7.5px;height:7.5px;border-radius:50%;background:#e2412b}
 #bServe{background:var(--berry);color:#fff;border-color:#b02c5e;box-shadow:0 4px 0 #b02c5e;font-size:20px}
 #bServe small{color:#ffd9e8}
 #bWater{touch-action:none}
