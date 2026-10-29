@@ -168,7 +168,8 @@ body{overflow:hidden;background:var(--sky);color:var(--ink);font-family:var(--bo
 .key:focus-visible,.big:focus-visible,#mute:focus-visible{outline:3px solid var(--ink);outline-offset:2px}
 .sw{width:14px;height:14px;border-radius:50%;background:var(--c);border:1.5px solid rgba(85,37,58,.25)}
 #ticket dd.spice-dd{display:flex;align-items:center}
-.chili-dots{display:inline-flex;align-items:center;gap:3px;margin-left:6px}
+/* up to 10 dots, wrapping in rows of five so they fit the narrow phone ticket */
+.chili-dots{display:inline-flex;flex-wrap:wrap;align-items:center;gap:3px;margin-left:6px;max-width:50px}
 .chili-dots i{width:7.5px;height:7.5px;border-radius:50%;background:#e2412b}
 #bServe{background:var(--berry);color:#fff;border-color:#b02c5e;box-shadow:0 4px 0 #b02c5e;font-size:20px}
 #bServe small{color:#ffd9e8}

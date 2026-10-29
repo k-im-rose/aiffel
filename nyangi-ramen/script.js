@@ -22,8 +22,9 @@ const TOPS = [
 ];
 const TOP = Object.fromEntries(TOPS.map(t => [t.id, t]));
 // spiciness the customer asks for = how many times to sprinkle chili (0 = not spicy)
-const SPICE_NAME = ['0단계', '1단계', '2단계', '3단계'];
-const SPICE_SAY = ['안 맵게', '조금 맵게', '맵게', '아주 맵게'];
+const SPICE_MAX = 10; // spice levels 0~10 = chili presses; the chili button stops at 10
+const SPICE_NAME = Array.from({ length: SPICE_MAX + 1 }, (_, i) => i + '단계');
+const spiceSay = n => !n ? '안 맵게' : n <= 2 ? '조금 맵게' : n <= 5 ? '맵게' : n <= 8 ? '아주 맵게' : '불나게 맵게';
 const WATER = [
   { name: '적게', say: '조금만',   lo: .26, hi: .48 },
   { name: '보통', say: '보통으로', lo: .48, hi: .70 },
@@ -803,13 +804,13 @@ function makeOrder() {
   for (let i = avail.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [avail[i], avail[j]] = [avail[j], avail[i]]; }
   const pick = avail.slice(0, n).sort((a, b) => TOPS.indexOf(TOP[a]) - TOPS.indexOf(TOP[b]));
   // spiciness 0~3 (0 = not spicy), asked for on every order
-  const spice = Math.random() < .35 ? 0 : 1 + Math.floor(Math.random() * 3);
+  const spice = Math.random() < .35 ? 0 : 1 + Math.floor(Math.random() * SPICE_MAX);
   return { water: Math.floor(Math.random() * 3), done: 1 + Math.floor(Math.random() * 3), toppings: pick, spice };
 }
 function orderLine(o) {
   const tp = o.toppings.map(id => TOP[id].name);
   const a = !tp.length ? '아무것도 넣지 말고' : tp.length === 1 ? `${tp[0]} 넣고` : tp.slice(0, -1).map(iRang).join(' ') + ` ${tp[tp.length - 1]} 넣고`;
-  return `“${a} ${SPICE_SAY[o.spice]} ${DONE_SAY[o.done]}, 물은 ${WATER[o.water].say} 부탁해요!”`;
+  return `“${a} ${spiceSay(o.spice)} ${DONE_SAY[o.done]}, 물은 ${WATER[o.water].say} 부탁해요!”`;
 }
 
 function spawnCustomer() {
@@ -930,6 +931,7 @@ function toggleTop(id) {
   if (G.screen !== 'play' || TOP[id].day > G.day) return;
   const p = G.pot;
   if (p.toppings.has(id) && id !== 'chili') { toast('한 번 넣은 토핑은 뺄 수 없어요'); return; }
+  if (id === 'chili' && p.chili >= SPICE_MAX) { toast(`고춧가루는 ${SPICE_MAX}번까지만 넣을 수 있어요`); return; }
   {
     if (id === 'chili') p.chili++;
     p.toppings.add(id); topMesh[id].userData.pop = 0;
@@ -1030,7 +1032,7 @@ function startDay() {
   });
   chime(); nyangiMood('happy', 1);
   const intro = {
-    1: '맵기는 고춧가루 횟수야! 0단계는 안 넣고, 1단계는 한 번, 2단계는 두 번!',
+    1: '맵기는 고춧가루 횟수야! 0단계는 안 넣고, 1단계는 한 번, 10단계는 열 번!',
     2: '오늘부터 치즈도 있어! 주문서를 잘 봐!',
     3: '오늘부터 떡이랑 만두! 손님이 더 까다로워졌어!',
   }[G.day] || '손님이 더 바빠졌어! 힘내자!';
@@ -1072,8 +1074,8 @@ const TUT = [
     demo: '<span class="key on">불 켜기</span><i class="arrow">→</i><span class="key">면 넣기</span><i class="arrow">·</i><span class="key">스프</span>' },
   { say: '손님이 원한 토핑만 올려 줘. 한 번 넣으면 뺄 수 없으니 잘 보고 넣어!',
     demo: '<span class="key on"><i class="sw" style="--c:#ffd23f"></i>계란</span><span class="key"><i class="sw" style="--c:#6cc04a"></i>파</span><span class="key"><i class="sw" style="--c:#ffcf33"></i>치즈</span>' },
-  { say: '주문서의 맵기만큼 고춧가루를 눌러! 0단계는 안 넣고, 1단계는 한 번, 2단계는 두 번, 3단계는 세 번이야.',
-    demo: '<table class="spice-demo"><tr><th>맵기</th><td>0단계</td><td>1단계</td><td>2단계</td><td>3단계</td></tr><tr><th>고춧가루</th><td>안 넣기</td><td>한 번</td><td>두 번</td><td>세 번</td></tr></table>' },
+  { say: '주문서의 맵기만큼 고춧가루를 눌러! 0단계는 안 넣고, 1단계는 한 번, 2단계는 두 번… 10단계는 열 번이야. 열 번까지만 넣을 수 있어.',
+    demo: '<table class="spice-demo"><tr><th>맵기</th><td>0단계</td><td>1단계</td><td>2단계</td><td>…</td><td>10단계</td></tr><tr><th>고춧가루</th><td>안 넣기</td><td>한 번</td><td>두 번</td><td>…</td><td>열 번</td></tr></table>' },
   { say: '익힘 막대가 분홍 칸에 오면 서빙! 별 세 개를 받아 보자!',
     demo: `<div class="demo-gauge"><span>익힘</span><div class="bar">${COOK_SEGS}<i class="zone" style="left:25%;width:25%"></i><b class="marker anim-cook"></b></div></div><span class="key serve">서빙하기</span><span class="demo-stars">★★★</span>` },
 ];
