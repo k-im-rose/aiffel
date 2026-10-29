@@ -1102,6 +1102,7 @@ const COL_WATER = new THREE.Color(0xcfeeff), COL_SOUP = new THREE.Color(0xf08a3c
 const COL_RAW = new THREE.Color(0xf2c443), COL_DONE = new THREE.Color(0xffe39a), COL_OVER = new THREE.Color(0xfff4d8);
 const _c = new THREE.Color();
 function syncPotMeshes() {
+  $('#tChili').innerHTML = '<i></i>'.repeat(G.pot.chili);
   const p = G.pot;
   noodles.visible = p.noodles;
   TOPS.forEach(t => { topMesh[t.id].visible = p.toppings.has(t.id); });
