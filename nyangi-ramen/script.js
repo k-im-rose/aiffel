@@ -1031,7 +1031,7 @@ function startDay() {
     2: '오늘부터 치즈도 있어! 주문서를 잘 봐!',
     3: '오늘부터 떡이랑 만두! 손님이 더 까다로워졌어!',
   }[G.day] || '손님이 더 바빠졌어! 힘내자!';
-  $('#nyangiSay').textContent = intro; $('#nyangiSay').hidden = false; nyangiSayT = 4.5;
+  $('#nyangiSay').textContent = intro; $('#nyangiSay').hidden = false; nyangiSayT = 9;
 }
 let passed = false;
 function endDay() {
@@ -1350,7 +1350,19 @@ function updateHud(dt) {
     nyangiSayT -= dt;
     const el = $('#nyangiSay');
     if (nyangiSayT <= 0 || G.screen !== 'play') { el.hidden = true; nyangiSayT = 0; }
-    else { const s = toScreen(new THREE.Vector3(nyangi.root.position.x, 2.75, nyangi.root.position.z)); el.style.left = s.x + 'px'; el.style.top = s.y + 'px'; }
+    else {
+      // above the head, kept inside the screen; on phones, or if the ticket/stats cover that spot, drop it below her feet
+      const w = el.offsetWidth, h = el.offsetHeight, st = stage.getBoundingClientRect();
+      const s = toScreen(new THREE.Vector3(nyangi.root.position.x, 2.75, nyangi.root.position.z));
+      const x = Math.min(Math.max(s.x, w / 2 + 8), stage.clientWidth - w / 2 - 8);
+      const covered = stage.clientWidth < 520 || [$('#ticket'), $('#stats')].some(c => {
+        if (c.hidden) return false;
+        const r = c.getBoundingClientRect();
+        return r.bottom - st.top > s.y - h - 6 && r.left - st.left < x + w / 2 && r.right - st.left > x - w / 2;
+      });
+      const y = covered ? toScreen(new THREE.Vector3(nyangi.root.position.x, 0, nyangi.root.position.z)).y + h + 22 : s.y;
+      el.style.left = x + 'px'; el.style.top = y + 'px';
+    }
   }
 
   hudAcc += dt; if (hudAcc < .05) return; hudAcc = 0;
