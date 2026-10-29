@@ -1364,7 +1364,8 @@ function updateHud(dt) {
         const r = c.getBoundingClientRect();
         return r.bottom - st.top > s.y - h - 6 && r.left - st.left < x + w / 2 && r.right - st.left > x - w / 2;
       });
-      const y = covered ? toScreen(new THREE.Vector3(nyangi.root.position.x, 0, nyangi.root.position.z)).y + h + 22 : s.y;
+      // below: overlap her feet and the counter a little, and stay well clear of the button panel
+      const y = covered ? Math.min(toScreen(new THREE.Vector3(nyangi.root.position.x, 0, nyangi.root.position.z)).y + h * .5, stage.clientHeight - 24) : s.y;
       el.style.left = x + 'px'; el.style.top = y + 'px';
     }
   }
