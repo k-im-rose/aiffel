@@ -254,8 +254,11 @@ function resize() {
   renderer.setSize(w, h, false);
   camera.aspect = w / h;
   const vt = Math.tan(THREE.MathUtils.degToRad(camera.fov / 2));
-  const d = Math.max(4.9 / (vt * camera.aspect), 2.9 / vt), pitch = .46;
-  CAM.gl.copy(LOOK); CAM.gp.set(0, LOOK.y + d * Math.sin(pitch), d * Math.cos(pitch));
+  // tall (phone) screens pan up and tilt flatter so the counter sits low: less floor, more sky behind the ticket and stats
+  const tall = THREE.MathUtils.clamp((1.4 - camera.aspect) / .6, 0, 1);
+  const d = Math.max(4.9 / (vt * camera.aspect), 2.9 / vt), pitch = .4 - .16 * tall;
+  const lift = (.1 + .32 * tall) * d * vt;
+  CAM.gl.copy(LOOK); CAM.gl.y += lift; CAM.gp.set(0, CAM.gl.y + d * Math.sin(pitch), d * Math.cos(pitch));
   const d2 = Math.max(3.4 / (vt * camera.aspect), 3.5 / vt), p2 = .06;
   CAM.half = d2 * vt;
   CAM.cl.set(0, 1.55, 2.3); CAM.cp.set(0, 1.55 + d2 * Math.sin(p2), 2.3 + d2 * Math.cos(p2));
