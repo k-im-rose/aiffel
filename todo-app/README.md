@@ -259,7 +259,7 @@ Supabase 모드로 실행하기:
 #### 13. 가입 문제 해결 — 이메일 확인 잠시 끄기
 - 가입이 계속 실패한 원인은 Supabase 무료 메일 서버의 **발송 한도(1시간에 약 2통)**였다 (인증 로그 `429 over_email_send_rate_limit`).
 - 테스트 계정을 만들 수 있도록 Supabase **Authentication → Sign In / Providers → Confirm email**을 **잠시 껐다** (가입하면 바로 로그인).
-- ⚠️ 테스트가 끝나면 둘 중 하나로 정리한다: Confirm email 다시 켜기 / 나만 쓸 거면 **Allow new users to sign up** 끄기.
+- RLS 확인(14번)이 끝난 뒤 **Confirm email을 다시 켰다** → 새로 가입하면 다시 확인 메일 링크를 눌러야 로그인된다 (무료 메일 한도: 1시간에 약 2통).
 
 #### 14. RLS 확인 — 테스트 계정 두 개 (과제 필수)
 - 계정 A(`mi***@gmail.com`)와 B(`mo***@naver.com`)로 가입하고, 각자 할 일을 하나씩 만들었다 (A: "독서", B: "점심 식사").
@@ -286,5 +286,4 @@ Supabase 모드로 실행하기:
 
 ### 다음 할 일
 - 직접 써 보며 버전 1 확인표 점검, DB Browser for SQLite로 `todo.db` 확인 (제출용 캡처).
-- 테스트 후 Supabase 'Confirm email' 다시 켜기 또는 새 가입 막기.
 
