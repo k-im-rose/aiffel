@@ -3,8 +3,8 @@
 냥이와 함께 손님의 주문대로 라면을 끓이는 3D 요리 게임이다.
 어린 시절 즐겨 하던 플래시 게임 **슈의 라면가게**에서 아이디어를 얻었다.
 
-- **플레이 주소:** https://k-im-rose.github.io/aiffel-nyangi-ramen-shop/nyangi-ramen/
-- **저장소:** https://github.com/k-im-rose/aiffel-nyangi-ramen-shop (예전 이름: my-game)
+- **플레이 주소:** https://k-im-rose.github.io/aiffel/nyangi-ramen-shop/nyangi-ramen/
+- **저장소:** https://github.com/k-im-rose/aiffel/tree/main/nyangi-ramen-shop (과제 모음 저장소 안의 폴더. 예전 저장소 이름: my-game)
 - **대상:** 초등 저학년 (7~9세)
 - **조작:** 마우스 클릭 / 터치 / 키보드
 - **만든 방법:** 개발 에이전트(Claude Code)와 대화하며 만드는 바이브 코딩

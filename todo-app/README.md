@@ -3,6 +3,8 @@
 루틴을 매일 체크리스트로 만들어 지키고, 못 지킨 이유를 회고해서 다음엔 같은 실수를 하지 않게 돕는 Todo 앱.
 모두의연구소(MODULABS) 바이브 코딩 수업 9장 「실습·과제와 마무리」의 'Todo 앱 만들기' 과제로, 에이전트(Claude Code)와 함께 만들었다.
 
+- **사이트:** 배포 준비 중 (Render) — 배포하면 여기에 주소를 넣는다
+- **저장소:** https://github.com/k-im-rose/aiffel/tree/main/todo-app (과제 모음 저장소 `aiffel` 안의 폴더)
 - 무엇을 만드는지: [PRD.md](PRD.md)
 - DB 구조: [DB-구조.md](DB-구조.md)
 - 리뷰 양식: [Review.md](Review.md) (ART — Agent Review Template)
@@ -18,8 +20,8 @@
 Node.js 22 이상(LTS 권장)이 필요하다.
 
 ```bash
-git clone https://github.com/k-im-rose/aiffel-todo-app.git
-cd aiffel-todo-app
+git clone https://github.com/k-im-rose/aiffel.git
+cd aiffel/todo-app
 npm install
 npm run seed   # 예시 데이터 넣기 (선택)
 npm run dev    # http://localhost:3000
@@ -29,12 +31,24 @@ npm test       # PRD 확인표 + 보안 자동 점검 (10개)
 - 데이터는 프로젝트 폴더의 `todo.db`(SQLite)에 저장된다. 이 파일은 `.gitignore`에 있어 Git에 올라가지 않는다.
 - 다른 DB 파일로 실행하려면 `DB_FILE=demo.db npm run dev` (macOS·Linux).
 
+### 두 가지 저장 방식
+
+| 모드 | 언제 | 로그인 | 데이터 위치 |
+|---|---|---|---|
+| **로컬 (버전 1, 길 A)** | `.env`에 Supabase 값이 없을 때 (기본) | 없음 | 이 폴더의 `todo.db` (SQLite) |
+| **Supabase (버전 2, 길 B)** | `.env`에 `SUPABASE_URL`, `SUPABASE_ANON_KEY`가 있을 때 | 이메일 로그인 (Supabase Auth) | Supabase(Postgres), RLS로 사용자별 분리 |
+
+Supabase 모드로 실행하기:
+1. Supabase 프로젝트를 만들고 **SQL Editor**에서 [`supabase/schema.sql`](supabase/schema.sql)을 실행한다 (표, RLS 정책, 날짜별 목록 함수).
+2. **Project Settings → API Keys**에서 프로젝트 주소와 **publishable(공개용) 키**를 `.env`에 넣는다 (`.env.example` 참고). secret(관리자) 키는 쓰지 않는다.
+3. `npm run dev` → 로그인 화면이 나오면 가입·로그인한다.
+
 ## 리뷰 기준(ART)별로 볼 곳
 
 | ART 항목 | 근거 |
 |---|---|
 | 1. 기능이 의도대로 동작하나 | [PRD 완료 기준](PRD.md#완료-기준--버전-1-확인표) → [자동 테스트](test/api.test.js) · [테스트 결과](docs/test-result.txt) · 위 화면 캡처 |
-| 2. 보안 검토 | 아래 [보안 검토](#보안-검토) |
+| 2. 보안 검토 | 아래 [보안 검토](#보안-검토) · [RLS 확인 캡처](docs/screenshots/4-supabase-rls.png) |
 | 3. 디버깅 기록 | 아래 [디버깅 기록](#디버깅-기록) · [개발 기록](#개발-기록) |
 | 프롬프트 품질 | 아래 [에이전트에게 한 요청](#에이전트에게-한-요청) |
 
@@ -87,7 +101,11 @@ npm test       # PRD 확인표 + 보안 자동 점검 (10개)
 | 보안 헤더 | `X-Powered-By` 제거, `X-Content-Type-Options: nosniff`, `X-Frame-Options: DENY`, `Referrer-Policy: no-referrer`, Content-Security-Policy(스크립트는 자기 서버만, 글꼴은 Google Fonts·jsDelivr만). 요청 본문 20KB 제한. |
 | 의존성 | `express@5.3.0`, `better-sqlite3@13.0.3` (npm 공식). `npm audit` → 취약점 0개. |
 | 외부 리소스 | 글꼴만 외부에서 불러온다: Google Fonts(Archivo), jsDelivr(Pretendard, GitHub `orioncactus/pretendard` 버전 고정 v1.3.9). 스크립트는 외부에서 불러오지 않는다. |
-| 남은 한계 | 로그인·권한이 없다 → 버전 2에서 Supabase Auth + RLS로 해결 예정. 요청 횟수 제한 없음(로컬 전용이라 보류). CSP의 `style-src`에 `'unsafe-inline'`이 있다(화면 코드가 style 속성을 쓰기 때문). |
+| 로그인 (버전 2) | Supabase Auth 사용(직접 만들지 않음). 토큰은 **httpOnly 쿠키**에만 두어 화면 JS가 읽을 수 없다. 쿠키는 `SameSite=Lax`, 배포 시 `Secure`. 로그인 실패 시 이메일이 없는지·비밀번호가 틀렸는지 구분해 알려 주지 않는다. |
+| RLS (버전 2) | 모든 표에 RLS를 켜고 "자기 행만" 정책을 걸었다. 할 일에 연결하는 루틴, 회고를 다는 할 일도 자기 것이어야 한다. 로그인하지 않은 요청(anon)은 모든 표와 함수에서 `permission denied` (직접 호출해 확인). |
+| DB 접속 방식 (버전 2) | 서버는 **사용자 토큰 + 공개용 키**로만 Supabase에 접속한다. RLS를 무시하는 service_role(관리자) 키는 쓰지 않으므로, 서버 코드에 실수가 있어도 남의 데이터에 접근할 수 없다. |
+| 쓰기 요청 출처 검사 (버전 2) | 쿠키 로그인이라 CSRF에 대비해, 다른 사이트(Origin)에서 온 쓰기 요청은 403. |
+| 남은 한계 | 버전 1(로컬)은 로그인이 없다(내 컴퓨터 전용). 요청 횟수 제한 없음(로컬 전용이라 보류). CSP의 `style-src`에 `'unsafe-inline'`이 있다(화면 코드가 style 속성을 쓰기 때문). |
 
 ## 디버깅 기록
 
@@ -206,6 +224,26 @@ npm test       # PRD 확인표 + 보안 자동 점검 (10개)
 
 - **과제 폴더 정리**: 수업 과제를 한곳에 모았다. 이 컴퓨터에서는 `~/에이펠/` 폴더 아래 `todo-app`, `nyangi-ramen-shop`(냥이의 라면가게 게임)으로 옮겼다. GitHub는 폴더가 없어서 저장소 이름 앞에 `aiffel-`을 붙여 묶었다: `aiffel-todo-app`, `aiffel-nyangi-ramen-shop`. 예전 주소는 GitHub가 새 주소로 넘겨 준다. 이미 제출한 블로그(`k-im-rose.github.io`)는 그대로 두었다.
 
+#### 10. 과제 폴더를 한 저장소로 (`aiffel/todo-app`)
+- 원하는 주소 형태가 `aiffel/todo-app`이었다. GitHub 이름 `aiffel`은 이미 다른 사람이 쓰고 있어서, 내 계정에 **과제 모음 저장소 `k-im-rose/aiffel`**을 만들고 그 안에 폴더로 넣었다.
+- `git subtree`로 각 프로젝트의 커밋 이력을 유지한 채 합쳤다. 이 컴퓨터의 `~/에이펠` 폴더도 이 저장소와 같은 구조다.
+- 게임은 GitHub Pages로 `k-im-rose.github.io/aiffel/...` 주소에서 열린다.
+
+#### 11. 3부 — 길 B: Supabase + 로그인 + RLS
+- **구조 변경**: 저장소 코드를 `server/store/sqlite.js`(로컬)와 `server/store/supabase.js`(Supabase)로 나누고, 둘이 같은 함수 모양을 갖게 했다. 입력 검사와 규칙(이 날만 빼기, 회고 지우기 등)은 `server/index.js` 한곳에 두어 두 모드가 똑같이 동작한다. 그래서 과제의 "로컬과 Supabase에서 각각 확인"을 같은 앱으로 할 수 있다.
+- **스키마**: [`supabase/schema.sql`](supabase/schema.sql) — 모든 표에 `user_id`(기본값: 로그인한 사용자), RLS "자기 행만" 정책, 날짜별 목록 함수 `day_todos`(security invoker → RLS 적용).
+- **로그인**: Supabase Auth, 토큰은 httpOnly 쿠키. 로그인 화면(LOG IN / SIGN UP)과 로그아웃.
+- **Supabase 프로젝트**: 조직 `aiffel`(무료)에 프로젝트 `todo-app`을 만들고 SQL Editor에서 스키마를 실행했다.
+- **확인한 것**
+  - 표 4개 모두 RLS 켜짐, 정책 각 1개, anon 읽기 권한 없음 ([캡처](docs/screenshots/4-supabase-rls.png)).
+  - 로그인 없이 Supabase에 직접 요청 → 표 4개·함수 모두 `permission denied`.
+  - 이 컴퓨터에서 Supabase 모드로 실행 → 로그인 화면, 로그인 없이 할 일 요청은 401, 다른 사이트에서 온 로그인 요청은 403.
+  - 로컬 모드 자동 테스트 10개는 그대로 통과.
+- **디버깅**
+  - 날짜별 목록 함수에서 출력 열 이름(`date`, `routine_id`)과 표의 열 이름이 겹치면 `on conflict`가 모호해질 수 있어 `#variable_conflict use_column`을 넣었다 (실행 전 검토에서 발견).
+  - 로그인 화면에 탭·로그아웃이 같이 보였다 → `display`를 지정한 요소에서는 `hidden` 속성이 무시되기 때문. `[hidden] { display: none !important; }`로 수정.
+- **남은 것**: Render 배포, 테스트 계정 두 개로 "다른 계정의 할 일은 안 보이고 수정·삭제도 거절되는지" 확인, Supabase의 Site URL을 배포 주소로 바꾸기.
+
 ### 지금 논의 중 (결정 전)
 - **ALL 탭**: 루틴 관리 + 밀린 것(OVERDUE) + 예정(UPCOMING) + 완료(DONE)를 한 화면에 모으고, 탭을 PLANNER / ALL 두 개로 정리하는 안.
 - **식사·이동 같은 일상 일정**을 체크 항목으로 둘지 (기록률이 실제 루틴과 무관하게 올라갈 수 있음).
@@ -213,5 +251,6 @@ npm test       # PRD 확인표 + 보안 자동 점검 (10개)
 
 ### 다음 할 일
 - 직접 써 보며 버전 1 확인표 점검, DB Browser for SQLite로 `todo.db` 확인 (제출용 캡처).
-- 3부: Supabase 전환 + Supabase Auth + RLS, Render 배포 준비물 정리.
+- Render 배포 → 사이트 주소를 README 맨 위에 넣기.
+- 테스트 계정 두 개로 RLS 확인 기록 남기기 (제출 필수).
 
