@@ -147,6 +147,10 @@ app.post('/api/auth/login', async (req, res) => {
   if (MODE === 'local') throw notFound('로컬 모드에서는 로그인이 없어요');
   const { email, password } = cleanCredentials(req.body || {});
   const { data, error } = await auth.signIn(email, password);
+  // 가입은 됐지만 확인 메일 링크를 아직 누르지 않은 경우 (비밀번호가 맞을 때만 이 오류가 온다)
+  if (error && error.code === 'email_not_confirmed') {
+    return res.status(403).json({ error: '아직 이메일 확인 전이에요. 메일함(스팸함 포함)에서 확인 링크를 눌러 주세요', code: 'email_not_confirmed' });
+  }
   // 이메일이 없는지 비밀번호가 틀렸는지 구분해서 알려 주지 않는다
   if (error || !data.session) throw new HttpError(401, '이메일 또는 비밀번호가 맞지 않아요');
   auth.setSession(res, data.session);
@@ -163,6 +167,16 @@ app.post('/api/auth/signup', async (req, res) => {
     return res.status(201).json({ user: { email: data.user.email } });
   }
   res.status(202).json({ message: '확인 메일을 보냈어요. 메일의 링크를 누른 뒤 로그인해 주세요' });
+});
+
+// 확인 메일 다시 보내기. 가입 여부를 알려 주지 않도록 결과와 상관없이 같은 응답을 준다.
+app.post('/api/auth/resend', async (req, res) => {
+  if (MODE === 'local') throw notFound('로컬 모드에서는 로그인이 없어요');
+  const email = typeof (req.body || {}).email === 'string' ? req.body.email.trim().toLowerCase() : '';
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) throw bad('이메일 형식이 올바르지 않아요');
+  const { error } = await auth.resendConfirmation(email);
+  if (error && error.status === 429) throw new HttpError(429, '메일을 너무 자주 보냈어요. 잠시 뒤에 다시 시도해 주세요');
+  res.json({ message: '가입된 이메일이면 확인 메일을 다시 보냈어요' });
 });
 
 app.post('/api/auth/logout', async (req, res) => {

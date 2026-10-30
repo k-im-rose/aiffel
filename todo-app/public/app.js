@@ -89,7 +89,11 @@ async function api(method, url, body) {
     showLogin(); // 로그인이 풀렸으면 로그인 화면으로
     throw new Error('다시 로그인해 주세요');
   }
-  if (!res.ok) throw new Error(data.error || '요청을 처리하지 못했어요');
+  if (!res.ok) {
+    const err = new Error(data.error || '요청을 처리하지 못했어요');
+    err.code = data.code;
+    throw err;
+  }
   return data;
 }
 
@@ -737,6 +741,19 @@ document.getElementById('authForm').addEventListener('submit', async (e) => {
     msg.classList.add('is-ok');
     msg.textContent = data.message;
   } catch (err) {
+    msg.textContent = err.message;
+    document.getElementById('authResend').hidden = err.code !== 'email_not_confirmed';
+  }
+});
+
+document.getElementById('authResend').addEventListener('click', async () => {
+  const msg = document.getElementById('authMessage');
+  try {
+    const data = await api('POST', '/api/auth/resend', { email: document.getElementById('authEmail').value });
+    msg.classList.add('is-ok');
+    msg.textContent = data.message;
+  } catch (err) {
+    msg.classList.remove('is-ok');
     msg.textContent = err.message;
   }
 });

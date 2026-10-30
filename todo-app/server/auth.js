@@ -53,6 +53,10 @@ async function signUp(email, password) {
   return authClient().auth.signUp({ email, password });
 }
 
+async function resendConfirmation(email) {
+  return authClient().auth.resend({ type: 'signup', email });
+}
+
 async function signOut(accessToken) {
   // 서버 쪽 세션도 끝낸다 (실패해도 쿠키는 지운다)
   try {
@@ -63,4 +67,4 @@ async function signOut(accessToken) {
   } catch {}
 }
 
-module.exports = { resolveUser, signIn, signUp, signOut, setSession, clearSession, readCookies, ACCESS };
+module.exports = { resolveUser, signIn, signUp, resendConfirmation, signOut, setSession, clearSession, readCookies, ACCESS };
