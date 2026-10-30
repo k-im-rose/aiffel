@@ -1,10 +1,10 @@
 # 냥이의 라면가게 북적북적
 
 손님 다섯 테이블, 냄비 세 개! 냥이와 함께 여러 손님의 주문을 한꺼번에 해내는 3D 웹 라면 요리 게임입니다.
-MODULABS 'AI로 게임 만들기' 과제로 만든 [냥이의 라면가게](https://k-im-rose.github.io/my-game/nyangi-ramen/)를 바탕으로 한 '여러 손님 + 여러 냄비' 버전입니다.
+MODULABS 'AI로 게임 만들기' 과제로 만든 [냥이의 라면가게](https://k-im-rose.github.io/aiffel-nyangi-ramen-shop/nyangi-ramen/)를 바탕으로 한 '여러 손님 + 여러 냄비' 버전입니다.
 
 - 플레이: https://k-im-rose.github.io/nyangi-ramen-rush/
-- 기존 1인 손님 버전: https://k-im-rose.github.io/my-game/nyangi-ramen/
+- 기존 1인 손님 버전: https://k-im-rose.github.io/aiffel-nyangi-ramen-shop/nyangi-ramen/
 - 대상: 7~9세 / 기획 목표: 순서대로 해내는 힘, 주문 기억하기, 여러 일을 차례로 나눠 하기
 - 만든 방식: Three.js r128, 파일 3개(`index.html`, `styles.css`, `script.js`), 설치·빌드 없음
 
