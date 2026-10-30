@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>도시 파쿠르 러너</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main>
+    <canvas id="game" width="960" height="540"></canvas>
+    <p class="help">Space/↑ 점프 · ↓ 숙이기 · →/Shift 태클 · Esc 일시정지</p>
+  </main>
+  <!-- 더블클릭 실행을 위해 ES 모듈 대신 일반 script 태그 사용 (순서 중요: 설정 → 게임) -->
+  <script src="config.js"></script>
+  <script src="game.js"></script>
+</body>
+</html>
