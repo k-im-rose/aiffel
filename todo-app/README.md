@@ -256,6 +256,11 @@ Supabase 모드로 실행하기:
 - Supabase **Site URL**을 배포 주소로 바꿔, 가입 확인 메일의 링크가 배포된 앱으로 오게 했다.
 - **확인한 것**: `/api/health` → `{"ok":true,"mode":"supabase"}`, 로그인 없이 할 일 요청 → 401, 보안 헤더(CSP 등) 적용, 사이트 접속 시 로그인 화면.
 
+#### 13. 가입 문제 해결 — 이메일 확인 잠시 끄기
+- 가입이 계속 실패한 원인은 Supabase 무료 메일 서버의 **발송 한도(1시간에 약 2통)**였다 (인증 로그 `429 over_email_send_rate_limit`).
+- 테스트 계정을 만들 수 있도록 Supabase **Authentication → Sign In / Providers → Confirm email**을 **잠시 껐다** (가입하면 바로 로그인).
+- ⚠️ 테스트가 끝나면 둘 중 하나로 정리한다: Confirm email 다시 켜기 / 나만 쓸 거면 **Allow new users to sign up** 끄기.
+
 ### 지금 논의 중 (결정 전)
 - **ALL 탭**: 루틴 관리 + 밀린 것(OVERDUE) + 예정(UPCOMING) + 완료(DONE)를 한 화면에 모으고, 탭을 PLANNER / ALL 두 개로 정리하는 안.
 - **식사·이동 같은 일상 일정**을 체크 항목으로 둘지 (기록률이 실제 루틴과 무관하게 올라갈 수 있음).
@@ -264,4 +269,5 @@ Supabase 모드로 실행하기:
 ### 다음 할 일
 - 직접 써 보며 버전 1 확인표 점검, DB Browser for SQLite로 `todo.db` 확인 (제출용 캡처).
 - 테스트 계정 두 개로 RLS 확인 기록 남기기 (제출 필수).
+- 테스트 후 Supabase 'Confirm email' 다시 켜기 또는 새 가입 막기.
 
