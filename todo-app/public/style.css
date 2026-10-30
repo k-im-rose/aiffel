@@ -14,6 +14,8 @@
   --grain-opacity: 0.05;
   --display: "Archivo", Pretendard, sans-serif;
   --text: Pretendard, -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+  --picker-icon: none;    /* 시계·달력 아이콘: 밝은 화면에서는 원래 검은색 */
+  color-scheme: light;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -29,6 +31,8 @@
     --important: #d26a69;
     --on-important: #251f1d;
     --grain-opacity: 0.07;
+    --picker-icon: brightness(0) invert(1); /* 어두운 화면에서는 흰색으로 (원래 색과 상관없이 흰색) */
+    color-scheme: dark;
   }
 }
 
@@ -227,6 +231,11 @@ input::placeholder { color: var(--gray-soft); }
 }
 .field:focus { border-bottom-color: var(--line-strong); }
 .field[type="time"] { width: auto; font-variant-numeric: tabular-nums; }
+/* 시계·달력 버튼: 눈에 띄게 1.5배, 어두운 화면에서는 흰색 */
+.field::-webkit-calendar-picker-indicator {
+  width: 21px; height: 21px; margin-left: 4px;
+  cursor: pointer; opacity: 1; filter: var(--picker-icon);
+}
 
 .row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
 .row .grow { flex: 1 1 120px; }
