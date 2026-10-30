@@ -245,9 +245,11 @@ const camera = new THREE.PerspectiveCamera(36, 1, .1, 120);
 const LOOK = new THREE.Vector3(0, 1.75, 0);
 // Nyangi stands in front of the shop on the title/talk screens, then walks to the stove when the shop opens
 const KGAME = new THREE.Vector3(-2.5, 0, .45), KFRONT = new THREE.Vector3(0, 0, 2.3);
-const CAM = { gp: new THREE.Vector3(), gl: new THREE.Vector3(), cp: new THREE.Vector3(), cl: new THREE.Vector3(), half: 2.8, khalf: 3 };
+// gp/gl: shop-open view, zp/zl: closer view over the pot while a customer waits, cp/cl: off-duty close-up of Nyangi
+const CAM = { gp: new THREE.Vector3(), gl: new THREE.Vector3(), zp: new THREE.Vector3(), zl: new THREE.Vector3(), cp: new THREE.Vector3(), cl: new THREE.Vector3(), half: 2.8, khalf: 3 };
+const _gp = new THREE.Vector3(), _gl = new THREE.Vector3();
 const _look = new THREE.Vector3();
-let camT = 0, camShift = 0;
+let camT = 0, camShift = 0, zoomT = 0;
 
 function resize() {
   const w = stage.clientWidth, h = stage.clientHeight;
@@ -261,6 +263,9 @@ function resize() {
   const d = Math.max((4.3 - .7 * tall) / (vt * camera.aspect), 2.75 / vt), pitch = .46 - .12 * tall;
   const lift = (.1 + .32 * tall) * d * vt;
   CAM.gl.copy(LOOK); CAM.gl.y += lift; CAM.gp.set(0, CAM.gl.y + d * Math.sin(pitch), d * Math.cos(pitch));
+  // while cooking: about 25% closer and looking down more steeply into the pot (Nyangi and the customer slide toward the edges)
+  const dz = d * .77, pz = pitch + .12;
+  CAM.zl.set(POT.x, POT.y + .45 + (.1 + .32 * tall) * dz * vt, POT.z); CAM.zp.set(0, CAM.zl.y + dz * Math.sin(pz), POT.z + dz * Math.cos(pz));
   const d2 = Math.max(3.4 / (vt * camera.aspect), 3.5 / vt), p2 = .06;
   CAM.half = d2 * vt;
   CAM.cl.set(0, 1.55, 2.3); CAM.cp.set(0, 1.55 + d2 * Math.sin(p2), 2.3 + d2 * Math.cos(p2));
@@ -272,9 +277,10 @@ function resize() {
   applyCam();
 }
 function applyCam() {
-  const e = camT * camT * (3 - 2 * camT), s = camShift * (1 - e);
-  camera.position.lerpVectors(CAM.cp, CAM.gp, e); camera.position.y += s;
-  _look.lerpVectors(CAM.cl, CAM.gl, e); _look.y += s;
+  const e = camT * camT * (3 - 2 * camT), s = camShift * (1 - e), z = zoomT * zoomT * (3 - 2 * zoomT);
+  _gp.lerpVectors(CAM.gp, CAM.zp, z); _gl.lerpVectors(CAM.gl, CAM.zl, z);
+  camera.position.lerpVectors(CAM.cp, _gp, e); camera.position.y += s;
+  _look.lerpVectors(CAM.cl, _gl, e); _look.y += s;
   camera.lookAt(_look);
 }
 new ResizeObserver(resize).observe(stage);
@@ -863,7 +869,7 @@ function judge(o, p) {
   const spiceOff = p.chili !== o.spice;
   s += Math.max(0, 1 - .4 * (miss.length + extra.length + (spiceOff ? 1 : 0)));
   if (miss.length) notes.push(`${iGa(TOP[miss[0]].name)} 빠졌어요`);
-  if (spiceOff) notes.push(!o.spice ? '맵기 0단계라 고춧가루는 빼 달라고 했는데요' : p.chili > o.spice ? '너무 매워요' : '덜 매워요');
+  if (spiceOff) notes.push(!o.spice ? '고춧가루는 빼 달랬는데요' : p.chili > o.spice ? '너무 매워요' : '덜 매워요');
   if (extra.length) notes.push(`${eunNeun(TOP[extra[0]].name)} 안 시켰어요`);
   if (!p.soup) { s -= 1.2; notes.unshift('스프를 안 넣었어요!'); }
   const stars = s >= 2.75 ? 3 : s >= 1.9 ? 2 : s >= 1 ? 1 : 0;
@@ -892,7 +898,7 @@ function landBowl(b) {
   G.earned += total; G.total += total; G.served++; G.starSum += res.stars;
   const lines = {
     3: ['완벽해요! 최고의 라면!', '바로 이 맛이에요!', '냥이 라면 최고예요!'][Math.floor(Math.random() * 3)],
-    2: `맛있어요! 그런데 ${res.notes[0] || '조금 아쉬워요'}`,
+    2: `맛있어요! 그런데\n${res.notes[0] || '조금 아쉬워요'}`,
     1: `${res.notes[0] || '음...'}...`,
     0: '이건 못 먹겠어요...',
   };
@@ -1053,8 +1059,8 @@ function endDay() {
   $('#rTotal').textContent = won(G.total);
   const newTops = TOPS.filter(t => t.day === G.day + 1).map(t => t.name);
   $('#rVerdict').textContent = passed
-    ? (newTops.length ? `우와, 목표 달성! 정말 잘했어! 내일은 ${newTops.join(', ')} 토핑이 새로 생겨.` : '우와, 목표 달성! 내일은 손님들이 조금 더 까다로워질 거야.')
-    : `아쉽다! ${won(goal - G.earned)}만 더 벌면 됐어. 같은 날을 다시 해 볼까?`;
+    ? (newTops.length ? `우와, 목표 달성! 정말 잘했어!\n내일은 ${newTops.join(', ')} 토핑이 새로 생겨.` : '우와, 목표 달성!\n내일은 손님들이 더 까다로워질 거야.')
+    : `아쉽다! ${won(goal - G.earned)}만 더 벌면 됐어.\n같은 날을 다시 해 볼까?`;
   $('#btnNext').textContent = passed ? '다음 날 영업하기' : '다시 도전하기';
   if (passed) { try { if (G.day + 1 > best) { best = G.day + 1; localStorage.setItem('nyangiRamenBest', best); } } catch (e) {} nyangiMood('happy', 3); cheer(); }
   else { nyangiMood('sad', 2.4); sob(); }
@@ -1066,19 +1072,19 @@ $('#btnStart').addEventListener('click', startDay);
 /* ---------- How to play: Nyangi explains step by step ---------- */
 const COOK_SEGS = '<div class="segs"><i style="width:25%;background:#e9dfe5"></i><i style="width:25%;background:#ffe58f"></i><i style="width:22%;background:#ffc560"></i><i style="width:18%;background:#ff9b52"></i><i style="width:10%;background:#c9a99a"></i></div>';
 const TUT = [
-  { say: '안녕! 나는 냥이야. 2분 동안 라면을 팔아서 목표만큼 돈을 모아 보자!',
+  { say: '안녕! 나는 냥이야.\n2분 동안 라면을 팔아서\n목표만큼 돈을 모아 보자!',
     demo: '<span class="pill"><b>1일차</b>남은 시간 2:00</span><span class="pill">오늘 목표<b>15,000원</b></span>' },
-  { say: '손님이 오면 주문서를 꼭 봐! 물, 익힘, 토핑을 기억해야 해.',
+  { say: '손님이 오면 주문서를 꼭 봐!\n물, 익힘, 토핑을 기억해야 해.',
     demo: '<div class="mini-ticket"><b>곰돌이 손님</b><dl><dt>물</dt><dd class="hl">보통</dd><dt>익힘</dt><dd class="hl">꼬들꼬들</dd><dt>토핑</dt><dd class="hl">계란</dd><dt>맵기</dt><dd class="hl">2단계</dd></dl></div>' },
-  { say: '물 붓기 버튼을 꾹 누르고 있다가, 분홍 칸에 오면 손을 떼!',
+  { say: '물 붓기 버튼을 꾹 누르고 있다가,\n분홍 칸에 오면 손을 떼!',
     demo: '<span class="key col press">물 붓기<small>꾹 누르기</small></span><div class="demo-gauge"><span>물 양</span><div class="bar"><b class="fill anim-water"></b><i class="zone" style="left:48%;width:22%"></i></div></div>' },
-  { say: '불을 켜고 보글보글 끓으면, 면이랑 스프를 넣어!',
+  { say: '불을 켜고 보글보글 끓으면,\n면이랑 스프를 넣어!',
     demo: '<span class="key on">불 켜기</span><i class="arrow">→</i><span class="key">면 넣기</span><i class="arrow">·</i><span class="key">스프</span>' },
-  { say: '손님이 원한 토핑만 올려 줘. 한 번 넣으면 뺄 수 없으니 잘 보고 넣어!',
+  { say: '손님이 원한 토핑만 올려 줘.\n한 번 넣으면 뺄 수 없으니\n잘 보고 넣어!',
     demo: '<span class="key on"><i class="sw" style="--c:#ffd23f"></i>계란</span><span class="key"><i class="sw" style="--c:#6cc04a"></i>파</span><span class="key"><i class="sw" style="--c:#ffcf33"></i>치즈</span>' },
-  { say: '주문서의 맵기만큼 고춧가루를 눌러! 0단계는 안 넣고, 1단계는 한 번, 2단계는 두 번… 5단계는 다섯 번이야. 다섯 번까지만 넣을 수 있어.',
+  { say: '주문서의 맵기만큼 고춧가루를 눌러!\n아래 표처럼 넣으면 돼.\n다섯 번까지만 넣을 수 있어.',
     demo: '<table class="spice-demo"><tr><th>맵기</th><td>0단계</td><td>1단계</td><td>2단계</td><td>3단계</td><td>4단계</td><td>5단계</td></tr><tr><th>고춧가루</th><td>안 넣기</td><td>한 번</td><td>두 번</td><td>세 번</td><td>네 번</td><td>다섯 번</td></tr></table>' },
-  { say: '익힘 막대가 분홍 칸에 오면 서빙! 별 세 개를 받아 보자!',
+  { say: '익힘 막대가 분홍 칸에 오면 서빙!\n별 세 개를 받아 보자!',
     demo: `<div class="demo-gauge"><span>익힘</span><div class="bar">${COOK_SEGS}<i class="zone" style="left:25%;width:25%"></i><b class="marker anim-cook"></b></div></div><span class="key serve">서빙하기</span><span class="demo-stars">★★★</span>` },
 ];
 let tutI = 0;
@@ -1289,6 +1295,9 @@ function update(dt) {
 
   // camera + Nyangi: close-up in front of the shop off-duty, at the stove while the shop is open
   camT = clamp(camT + (play ? 1 : -1) * dt / 1.3, 0, 1);
+  // ease in toward the pot while a customer waits for their ramen; ease back out (slowly) when they arrive, eat or leave
+  const cooking = play && G.customer && G.customer.state === 'wait' && !G.bowl;
+  zoomT = clamp(zoomT + (cooking ? 1 : -1) * dt / 1.6, 0, 1);
   const talkShift = G.screen === 'how' || G.screen === 'result' ? -.5 * CAM.khalf : 0;
   camShift = lerp(camShift, talkShift, Math.min(1, dt * 4));
   applyCam();

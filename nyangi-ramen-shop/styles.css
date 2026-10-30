@@ -56,7 +56,7 @@ body{overflow:hidden;background:var(--sky);color:var(--ink);font-family:var(--bo
 #potTag.good{background:var(--mint);color:#16493c}
 #potTag.warn{background:#ffe1d6;color:#b13c1b}
 #bubble{position:absolute;transform:translate(-50%,-100%);pointer-events:none;background:#fff;border-radius:16px;padding:6px 10px;
-  font-family:var(--display);font-size:15px;width:max-content;max-width:min(200px,60vw);text-align:center;word-break:keep-all;box-shadow:0 4px 0 rgba(226,71,127,.18)}
+  font-family:var(--display);font-size:15px;width:max-content;max-width:min(230px,calc(100vw - 32px));white-space:pre-line;text-align:center;word-break:keep-all;box-shadow:0 4px 0 rgba(226,71,127,.18)}
 #bubble::after{content:"";position:absolute;left:50%;bottom:-8px;margin-left:-8px;border:8px solid transparent;border-top-color:#fff;border-bottom:0}
 #bubble .st{display:block;color:#f1a400;letter-spacing:2px;font-size:17px}
 .coin{position:absolute;pointer-events:none;font-family:var(--display);font-size:22px;color:var(--berry);
@@ -99,7 +99,8 @@ body{overflow:hidden;background:var(--sky);color:var(--ink);font-family:var(--bo
 .talk-step{font-family:var(--display);color:var(--muted);font-size:14px;font-variant-numeric:tabular-nums}
 .talk-x{margin-left:auto;width:34px;height:34px;border-radius:50%;border:2px solid var(--line);background:#fff;color:var(--ink);font-size:20px;line-height:1;cursor:pointer}
 .talk-x:focus-visible{outline:3px solid var(--ink);outline-offset:2px}
-.talk-say{margin:10px 0 12px;font-family:var(--display);font-size:21px;line-height:1.4;word-break:keep-all;text-wrap:balance}
+/* each step breaks its own lines (\n) so no word is left alone on a line */
+.talk-say{margin:10px 0 12px;font-family:var(--display);font-size:21px;line-height:1.4;word-break:keep-all;white-space:pre-line}
 .tut-demo{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;align-items:center;min-height:92px;padding:12px;margin-bottom:14px;
   background:#fff1f7;border-radius:18px}
 .tut-demo .key{pointer-events:none;padding:8px 12px;flex-direction:row;gap:6px}
