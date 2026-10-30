@@ -244,7 +244,7 @@ const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(36, 1, .1, 120);
 const LOOK = new THREE.Vector3(0, 1.75, 0);
 // Nyangi stands in front of the shop on the title/talk screens, then walks to the stove when the shop opens
-const KGAME = new THREE.Vector3(-2.5, 0, .45), KFRONT = new THREE.Vector3(0, 0, 2.3);
+const KGAME = new THREE.Vector3(-2.75, 0, .45), KFRONT = new THREE.Vector3(0, 0, 2.3);
 // gp/gl: shop-open view, zp/zl: closer view over the pot while a customer waits, cp/cl: off-duty close-up of Nyangi
 const CAM = { gp: new THREE.Vector3(), gl: new THREE.Vector3(), zp: new THREE.Vector3(), zl: new THREE.Vector3(), cp: new THREE.Vector3(), cl: new THREE.Vector3(), half: 2.8, khalf: 3 };
 const _gp = new THREE.Vector3(), _gl = new THREE.Vector3();
@@ -265,7 +265,9 @@ function resize() {
   CAM.gl.copy(LOOK); CAM.gl.y += lift; CAM.gp.set(0, CAM.gl.y + d * Math.sin(pitch), d * Math.cos(pitch));
   // while cooking: about 25% closer and looking down more steeply into the pot (Nyangi and the customer slide toward the edges)
   const dz = d * .77, pz = pitch + .12;
-  CAM.zl.set(POT.x, POT.y + .45 + (.1 + .32 * tall) * dz * vt, POT.z); CAM.zp.set(0, CAM.zl.y + dz * Math.sin(pz), POT.z + dz * Math.cos(pz));
+  // on narrow phones slide a little left so Nyangi stays in view (the order ticket already shows what the customer wants)
+  const zx = POT.x - .35 * tall;
+  CAM.zl.set(zx, POT.y + .45 + (.1 + .32 * tall) * dz * vt, POT.z); CAM.zp.set(zx, CAM.zl.y + dz * Math.sin(pz), POT.z + dz * Math.cos(pz));
   const d2 = Math.max(3.4 / (vt * camera.aspect), 3.5 / vt), p2 = .06;
   CAM.half = d2 * vt;
   CAM.cl.set(0, 1.55, 2.3); CAM.cp.set(0, 1.55 + d2 * Math.sin(p2), 2.3 + d2 * Math.cos(p2));
@@ -637,7 +639,7 @@ add(kettle, SPH, M(0xff8dbd), [0, .28, 0], .05);
 const spout = add(kettle, new THREE.CylinderGeometry(.035, .055, .34, 12), kMat, [.32, .06, 0], 1, [0, 0, -.95]);
 const spoutTip = new THREE.Object3D(); spoutTip.position.set(0, .17, 0); spout.add(spoutTip);
 add(kettle, new THREE.TorusGeometry(.14, .032, 8, 18, Math.PI), kMat, [-.27, .02, 0], 1, [0, 0, Math.PI / 2]);
-const KREST = new THREE.Vector3(-1.38, 1.5, .55), KPOUR = new THREE.Vector3(-1.05, POT.y + 1.35, .05);
+const KREST = new THREE.Vector3(-1.3, 1.5, .25), KPOUR = new THREE.Vector3(-1.05, POT.y + 1.35, .05);
 kettle.position.copy(KREST); kettle.userData.p = 0;
 const stream = new THREE.Mesh(new THREE.CylinderGeometry(.035, .035, 1, 10), new THREE.MeshStandardMaterial({ color: 0xa8dcff, transparent: true, opacity: .8, roughness: .1 }));
 stream.visible = false; scene.add(stream);
