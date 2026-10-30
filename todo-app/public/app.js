@@ -719,7 +719,11 @@ function paintAuthMode() {
 document.getElementById('authSwitch').addEventListener('click', () => {
   signUpMode = !signUpMode;
   paintAuthMode();
+  // 가입 ↔ 로그인을 바꾸면 입력한 값과 안내를 모두 비운다
+  document.getElementById('authForm').reset();
   document.getElementById('authMessage').textContent = '';
+  document.getElementById('authResend').hidden = true;
+  document.getElementById('authEmail').focus();
 });
 
 document.getElementById('authForm').addEventListener('submit', async (e) => {
