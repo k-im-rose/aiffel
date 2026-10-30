@@ -33,6 +33,7 @@
 }
 
 * { box-sizing: border-box; }
+[hidden] { display: none !important; } /* display 를 지정한 요소도 hidden 이면 숨긴다 */
 html { -webkit-text-size-adjust: 100%; }
 
 body {
@@ -89,7 +90,6 @@ input::placeholder { color: var(--gray-soft); }
 .auth-form .add-more .solid-btn { margin-left: 0; }
 #authMessage { min-height: 1.2em; color: var(--important); }
 #authMessage.is-ok { color: var(--gray); }
-.fab[hidden] { display: none; }
 
 .week-bar {
   display: flex; justify-content: space-between; align-items: center;

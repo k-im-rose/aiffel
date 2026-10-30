@@ -118,6 +118,7 @@ language plpgsql
 security invoker
 set search_path = public
 as $$
+#variable_conflict use_column
 begin
   -- 그 날짜에 해당하는 내 루틴을 할 일로 만든다. 이미 있으면 (routine_id, date) 중복 금지로 건너뛴다.
   insert into public.todos (routine_id, title, date, start_time, end_time, is_important)
