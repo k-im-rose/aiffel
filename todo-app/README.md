@@ -1,10 +1,12 @@
 # 루틴 플래너
 
+### ▶ [사이트 바로 가기](https://aiffel-todo-app.onrender.com) · [코드 저장소](https://github.com/k-im-rose/aiffel/tree/main/todo-app)
+
 루틴을 매일 체크리스트로 만들어 지키고, 못 지킨 이유를 회고해서 다음엔 같은 실수를 하지 않게 돕는 Todo 앱.
 모두의연구소(MODULABS) 바이브 코딩 수업 9장 「실습·과제와 마무리」의 'Todo 앱 만들기' 과제로, 에이전트(Claude Code)와 함께 만들었다.
 
-- **사이트:** https://aiffel-todo-app.onrender.com (짧은 주소 https://k-im-rose.github.io/aiffel/todo-app/ 로 들어와도 여기로 넘어온다 · 로그인 필요 · 무료 서버라 오래 안 쓰면 첫 접속이 30초~1분 걸린다)
-- **저장소:** https://github.com/k-im-rose/aiffel/tree/main/todo-app (과제 모음 저장소 `aiffel` 안의 폴더)
+- **사이트:** [aiffel-todo-app.onrender.com](https://aiffel-todo-app.onrender.com) (짧은 주소 [k-im-rose.github.io/aiffel/todo-app](https://k-im-rose.github.io/aiffel/todo-app/) 로 들어와도 여기로 넘어온다 · 로그인 필요 · 무료 서버라 오래 안 쓰면 첫 접속이 30초~1분 걸린다)
+- **저장소:** [github.com/k-im-rose/aiffel/todo-app](https://github.com/k-im-rose/aiffel/tree/main/todo-app) (과제 모음 저장소 `aiffel` 안의 폴더)
 - 무엇을 만드는지: [PRD.md](PRD.md)
 - DB 구조: [DB-구조.md](DB-구조.md)
 - 리뷰 양식: [Review.md](Review.md) (ART — Agent Review Template)
