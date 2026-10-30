@@ -10,7 +10,12 @@ function readCookies(req) {
   const out = {};
   for (const part of (req.headers.cookie || '').split(';')) {
     const i = part.indexOf('=');
-    if (i > 0) out[part.slice(0, i).trim()] = decodeURIComponent(part.slice(i + 1).trim());
+    if (i <= 0) continue;
+    try {
+      out[part.slice(0, i).trim()] = decodeURIComponent(part.slice(i + 1).trim());
+    } catch {
+      // 인코딩이 깨진 쿠키(다른 앱이 만든 것일 수도 있다)는 건너뛴다
+    }
   }
   return out;
 }
@@ -26,6 +31,17 @@ function clearSession(res) {
   res.clearCookie(REFRESH, { path: '/' });
 }
 
+// Supabase가 토큰을 '거절'한 것(4xx)과 잠깐 연결이 안 된 것(네트워크·5xx)을 구분한다.
+// 연결 문제일 때 쿠키를 지우면 사용자가 괜히 로그아웃되므로, 쿠키는 두고 503을 돌려준다.
+function rejected(error) {
+  return error.status >= 400 && error.status < 500;
+}
+function unavailable() {
+  const err = new Error('auth server unavailable');
+  err.status = 503;
+  return err;
+}
+
 // 쿠키의 토큰을 Supabase에 확인한다. 만료됐으면 refresh 토큰으로 새로 받는다.
 async function resolveUser(req, res) {
   const c = readCookies(req);
@@ -33,6 +49,7 @@ async function resolveUser(req, res) {
   if (c[ACCESS]) {
     const { data, error } = await sb.auth.getUser(c[ACCESS]);
     if (!error && data.user) return { user: data.user, accessToken: c[ACCESS] };
+    if (error && !rejected(error)) throw unavailable();
   }
   if (c[REFRESH]) {
     const { data, error } = await sb.auth.refreshSession({ refresh_token: c[REFRESH] });
@@ -40,6 +57,7 @@ async function resolveUser(req, res) {
       setSession(res, data.session);
       return { user: data.user, accessToken: data.session.access_token };
     }
+    if (error && !rejected(error)) throw unavailable();
   }
   clearSession(res);
   return null;

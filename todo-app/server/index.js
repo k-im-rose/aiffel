@@ -77,9 +77,23 @@ function weekdayOf(date) {
   return day === 0 ? 7 : day;
 }
 
+// 달력에 실제로 있는 날짜만 받는다 (2026-02-30 같은 날짜는 거절)
 function cleanDate(v) {
-  if (typeof v !== 'string' || !DATE_RE.test(v) || Number.isNaN(Date.parse(v))) throw bad('날짜 형식이 올바르지 않아요');
+  if (typeof v !== 'string' || !DATE_RE.test(v)) throw bad('날짜 형식이 올바르지 않아요');
+  const [y, m, d] = v.split('-').map(Number);
+  const dt = new Date(Date.UTC(y, m - 1, d));
+  if (dt.getUTCFullYear() !== y || dt.getUTCMonth() !== m - 1 || dt.getUTCDate() !== d) throw bad('없는 날짜예요');
   return v;
+}
+
+// 날짜를 열면 루틴 항목이 만들어지므로, 열 수 있는 날짜는 오늘 기준 앞뒤 1년으로 제한한다
+const DAY_RANGE_YEARS = 1;
+function cleanPlanDate(v) {
+  const date = cleanDate(v);
+  const t = todayStr();
+  const shift = (n) => `${Number(t.slice(0, 4)) + n}${t.slice(4)}`;
+  if (date < shift(-DAY_RANGE_YEARS) || date > shift(DAY_RANGE_YEARS)) throw bad('오늘부터 앞뒤 1년 안의 날짜만 열 수 있어요');
+  return date;
 }
 
 function cleanTime(v) {
@@ -103,7 +117,7 @@ function cleanTitle(v) {
 }
 
 function cleanDays(v) {
-  const days = [...new Set((Array.isArray(v) ? v : []).map(Number))].filter((n) => n >= 1 && n <= 7).sort();
+  const days = [...new Set((Array.isArray(v) ? v : []).map(Number))].filter((n) => Number.isInteger(n) && n >= 1 && n <= 7).sort();
   if (days.length === 0) throw bad('반복 요일을 하나 이상 골라 주세요');
   return days.join(',');
 }
@@ -116,11 +130,20 @@ function cleanId(v) {
 
 // ── 로그인 (Supabase 모드) ──────────────────────────────────
 
+// 'null'처럼 주소가 아닌 Origin은 읽을 수 없는 출처로 보고 거절한다
+function originHost(origin) {
+  try {
+    return new URL(origin).host;
+  } catch {
+    return null;
+  }
+}
+
 // 쿠키로 로그인하므로, 다른 사이트에서 보낸 쓰기 요청은 거절한다 (CSRF 방지)
 app.use('/api', (req, res, next) => {
   if (req.method === 'GET' || req.method === 'HEAD') return next();
   const origin = req.get('origin');
-  if (origin && new URL(origin).host !== req.get('host')) {
+  if (origin && originHost(origin) !== req.get('host')) {
     return res.status(403).json({ error: '허용되지 않은 요청이에요' });
   }
   next();
@@ -211,7 +234,7 @@ app.use('/api', async (req, res, next) => {
 // ── 날짜별 목록 ──────────────────────────────────────────────
 
 app.get('/api/days/:date', async (req, res) => {
-  const date = cleanDate(req.params.date);
+  const date = cleanPlanDate(req.params.date);
   const todos = await req.store.dayTodos(date, weekdayOf(date));
   res.json({ date, today: todayStr(), todos });
 });
@@ -222,7 +245,7 @@ app.post('/api/todos', async (req, res) => {
   const b = req.body || {};
   const t = {
     title: cleanTitle(b.title),
-    date: cleanDate(b.date),
+    date: cleanPlanDate(b.date),
     start_time: cleanTime(b.start_time),
     end_time: cleanTime(b.end_time),
     is_important: !!b.is_important,
@@ -362,7 +385,11 @@ app.use((err, req, res, next) => {
   const status = err.status || err.statusCode || 500;
   if (status >= 500) console.error(err.cause || err);
   res.status(status >= 400 && status < 600 ? status : 500).json({
-    error: status === 400 ? '요청 형식이 올바르지 않아요' : status === 413 ? '요청이 너무 커요' : '서버에서 문제가 생겼어요',
+    error:
+      status === 400 ? '요청 형식이 올바르지 않아요'
+      : status === 413 ? '요청이 너무 커요'
+      : status === 503 ? '로그인 서버와 잠깐 연결이 안 돼요. 잠시 뒤 다시 시도해 주세요'
+      : '서버에서 문제가 생겼어요',
   });
 });
 

@@ -199,3 +199,38 @@ test('보안: 깨진 요청에 내부 정보가 보이지 않고, 다른 Host는
   assert.ok(page.headers.get('content-security-policy').includes("script-src 'self'"));
 });
 
+
+test('리뷰 반영: DB가 거부할 값은 서버에서 먼저 400으로 막는다', async () => {
+  // 달력에 없는 날짜
+  for (const d of ['2026-02-30', '2026-02-31', '2026-04-31', '2026-13-01', '2026-00-10']) {
+    assert.equal((await api('GET', `/days/${d}`)).status, 400, d);
+    assert.equal((await api('POST', '/todos', { title: 'x', date: d })).status, 400, d);
+  }
+  assert.equal((await api('GET', '/days/2028-02-29')).status, 400); // 윤일이지만 1년 범위 밖
+  // 소수 요일
+  const r = await api('POST', '/routines', { title: 'x', start_time: '09:00', end_time: '10:00', repeat_days: [1.5] });
+  assert.equal(r.status, 400);
+  const r2 = await api('POST', '/routines', { title: '소수 섞임', start_time: '09:00', end_time: '10:00', repeat_days: [1.5, 2] });
+  assert.equal(r2.status, 201);
+  assert.equal(r2.data.repeat_days, '2');
+});
+
+test('리뷰 반영: 날짜 보기는 오늘 기준 앞뒤 1년까지만 (GET이 먼 날짜에 행을 만들지 않게)', async () => {
+  const shift = (n) => `${Number(today.slice(0, 4)) + n}${today.slice(4)}`;
+  assert.equal((await api('GET', '/days/2099-01-01')).status, 400);
+  assert.equal((await api('POST', '/todos', { title: 'x', date: '2099-01-01' })).status, 400);
+  assert.equal((await api('GET', `/days/${shift(2)}`)).status, 400);
+  assert.equal((await api('GET', `/days/${shift(-2)}`)).status, 400);
+  const near = new Date();
+  near.setMonth(near.getMonth() + 11);
+  assert.equal((await api('GET', `/days/${fmt(near)}`)).status, 200);
+});
+
+test('리뷰 반영: Origin이 null이면 500이 아니라 403', async () => {
+  const res = await fetch(`${BASE}/todos`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', Origin: 'null' },
+    body: JSON.stringify({ title: 'x', date: today }),
+  });
+  assert.equal(res.status, 403);
+});

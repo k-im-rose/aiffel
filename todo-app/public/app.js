@@ -663,6 +663,10 @@ document.getElementById('fab').addEventListener('click', () => {
   dialogError.textContent = '';
   // 플래너에서 펼쳐 둔 날을 기본 날짜로
   dialogForm.elements.date.value = state.view === 'week' ? state.openDate : toDateStr(new Date());
+  // 서버가 받는 범위(오늘 기준 앞뒤 1년)만 고를 수 있게 한다
+  const now = new Date();
+  dialogForm.elements.date.min = toDateStr(new Date(now.getFullYear() - 1, now.getMonth(), now.getDate()));
+  dialogForm.elements.date.max = toDateStr(new Date(now.getFullYear() + 1, now.getMonth(), now.getDate()));
   dialog.showModal();
   dialogForm.elements.title.focus();
 });
@@ -787,7 +791,12 @@ run(async () => {
   if (hash.get('error')) welcome = '확인 링크가 만료됐거나 이미 사용됐어요. 로그인해 보시고, 안 되면 확인 메일을 다시 받아 주세요';
   if (location.hash) history.replaceState(null, '', location.pathname);
 
-  const me = await api('GET', '/api/auth/me');
+  let me;
+  try {
+    me = await api('GET', '/api/auth/me');
+  } catch (err) {
+    return showError(err); // 로그인 서버와 잠깐 연결이 안 될 때: 로그아웃시키지 않고 안내만
+  }
   if (me.mode === 'supabase' && !me.user) return showLogin(welcome);
   await startApp(me.user);
 });
