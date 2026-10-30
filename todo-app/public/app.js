@@ -779,7 +779,15 @@ async function startApp(user) {
 }
 
 run(async () => {
+  // 가입 확인 메일 링크로 돌아온 경우: 주소창의 토큰을 지우고 '확인 완료'를 알려 준다
+  // (토큰을 주소에 남겨 두지 않는다. 로그인은 이메일·비밀번호로 다시 한다)
+  const hash = new URLSearchParams(location.hash.slice(1));
+  let welcome = '';
+  if (hash.get('type') === 'signup' || hash.get('access_token')) welcome = '이메일 확인이 끝났어요. 가입한 비밀번호로 로그인해 주세요';
+  if (hash.get('error')) welcome = '확인 링크가 만료됐거나 이미 사용됐어요. 로그인해 보시고, 안 되면 확인 메일을 다시 받아 주세요';
+  if (location.hash) history.replaceState(null, '', location.pathname);
+
   const me = await api('GET', '/api/auth/me');
-  if (me.mode === 'supabase' && !me.user) return showLogin();
+  if (me.mode === 'supabase' && !me.user) return showLogin(welcome);
   await startApp(me.user);
 });
