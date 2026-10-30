@@ -161,7 +161,16 @@ app.post('/api/auth/signup', async (req, res) => {
   if (MODE === 'local') throw notFound('로컬 모드에서는 로그인이 없어요');
   const { email, password } = cleanCredentials(req.body || {});
   const { data, error } = await auth.signUp(email, password);
-  if (error) throw bad('가입하지 못했어요. 다른 이메일이나 더 강한 비밀번호로 다시 시도해 주세요');
+  if (error) {
+    // 원인별로 안내한다 (Supabase 오류 원문은 보여 주지 않는다)
+    if (error.code === 'over_email_send_rate_limit' || error.status === 429) {
+      throw new HttpError(429, '확인 메일 발송 한도(무료: 1시간에 약 2통)를 넘었어요. 잠시 뒤 다시 가입해 주세요');
+    }
+    if (error.code === 'weak_password') throw bad('비밀번호가 너무 약해요. 영문·숫자를 섞어 더 길게 정해 주세요');
+    if (error.code === 'signup_disabled') throw new HttpError(403, '지금은 새로 가입할 수 없어요');
+    console.error('signup failed', error.code || error.status);
+    throw bad('가입하지 못했어요. 잠시 뒤 다시 시도해 주세요');
+  }
   if (data.session) {
     auth.setSession(res, data.session);
     return res.status(201).json({ user: { email: data.user.email } });
