@@ -59,7 +59,7 @@ README의 디버깅 기록에 16건이 "증상 → 원인 → 해결" 표로 정
 
 ## 1.리뷰 시 참고한 링크가 있다면 링크와 간략한 설명을 첨부합니다.
 
-아래는 지적 내용의 근거가 되는 공식 문서다. 리뷰 중에 직접 열어 보지는 않았다.
+아래는 지적 내용의 근거가 되는 공식 문서다.
 
 - [Supabase: Row Level Security](https://supabase.com/docs/guides/database/postgres/row-level-security): RLS 정책과 `(select auth.uid())` 최적화 문법. 스키마가 이 권장 방식대로 작성되어 있다.
 - [MDN: Date.parse()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/parse): 존재하지 않는 날짜도 NaN이 아닌 값으로 파싱될 수 있다. 개선 제안 1번의 근거다.
