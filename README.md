@@ -4,7 +4,7 @@
 
 | 과제 | 사이트 | 코드 |
 |---|---|---|
-| 루틴 플래너 (Todo 앱) — 루틴 체크리스트와 회고 | 배포 준비 중 (Render) | [todo-app/](todo-app) |
+| 루틴 플래너 (Todo 앱) — 루틴 체크리스트와 회고 | https://aiffel-todo-app.onrender.com | [todo-app/](todo-app) |
 | 냥이의 라면가게 — 3D 라면 요리 게임 | https://k-im-rose.github.io/aiffel/nyangi-ramen-shop/nyangi-ramen/ | [nyangi-ramen-shop/](nyangi-ramen-shop) |
 | 냥이의 라면가게 북적북적 — 여러 손님·여러 냄비 버전 | https://k-im-rose.github.io/aiffel/nyangi-ramen-shop/nyangi-ramen-rush/ | [nyangi-ramen-shop/nyangi-ramen-rush/](nyangi-ramen-shop/nyangi-ramen-rush) |
 | 파쿠르 러너 | https://k-im-rose.github.io/aiffel/nyangi-ramen-shop/parkour-runner/ | [nyangi-ramen-shop/parkour-runner/](nyangi-ramen-shop/parkour-runner) |

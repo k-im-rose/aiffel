@@ -3,7 +3,7 @@
 루틴을 매일 체크리스트로 만들어 지키고, 못 지킨 이유를 회고해서 다음엔 같은 실수를 하지 않게 돕는 Todo 앱.
 모두의연구소(MODULABS) 바이브 코딩 수업 9장 「실습·과제와 마무리」의 'Todo 앱 만들기' 과제로, 에이전트(Claude Code)와 함께 만들었다.
 
-- **사이트:** 배포 준비 중 (Render) — 배포하면 여기에 주소를 넣는다
+- **사이트:** https://aiffel-todo-app.onrender.com (로그인 필요 · 무료 서버라 오래 안 쓰면 첫 접속이 30초~1분 걸린다)
 - **저장소:** https://github.com/k-im-rose/aiffel/tree/main/todo-app (과제 모음 저장소 `aiffel` 안의 폴더)
 - 무엇을 만드는지: [PRD.md](PRD.md)
 - DB 구조: [DB-구조.md](DB-구조.md)
@@ -244,6 +244,14 @@ Supabase 모드로 실행하기:
   - 로그인 화면에 탭·로그아웃이 같이 보였다 → `display`를 지정한 요소에서는 `hidden` 속성이 무시되기 때문. `[hidden] { display: none !important; }`로 수정.
 - **남은 것**: Render 배포, 테스트 계정 두 개로 "다른 계정의 할 일은 안 보이고 수정·삭제도 거절되는지" 확인, Supabase의 Site URL을 배포 주소로 바꾸기.
 
+#### 12. 배포 — Render
+- Render 무료 웹 서비스 `aiffel-todo-app`으로 배포했다 → **https://aiffel-todo-app.onrender.com**
+- 저장소 루트의 [`render.yaml`](../render.yaml)(Blueprint)로 만들었다: 폴더 `todo-app`, `npm ci` → `npm start`, `NODE_ENV=production`, `HOST=0.0.0.0`, 상태 확인 `/api/health`.
+- GitHub 계정 권한을 Render에 주지 않도록 **공개 저장소 주소**로 연결했다. 대신 코드를 고치면 Render에서 수동 배포(Manual Deploy)를 눌러야 반영된다.
+- 환경변수: `SUPABASE_URL`은 Render 화면에서, **공개용 키(`SUPABASE_ANON_KEY`)는 내가 직접** 붙여 넣었다. 키는 저장소에 없다.
+- Supabase **Site URL**을 배포 주소로 바꿔, 가입 확인 메일의 링크가 배포된 앱으로 오게 했다.
+- **확인한 것**: `/api/health` → `{"ok":true,"mode":"supabase"}`, 로그인 없이 할 일 요청 → 401, 보안 헤더(CSP 등) 적용, 사이트 접속 시 로그인 화면.
+
 ### 지금 논의 중 (결정 전)
 - **ALL 탭**: 루틴 관리 + 밀린 것(OVERDUE) + 예정(UPCOMING) + 완료(DONE)를 한 화면에 모으고, 탭을 PLANNER / ALL 두 개로 정리하는 안.
 - **식사·이동 같은 일상 일정**을 체크 항목으로 둘지 (기록률이 실제 루틴과 무관하게 올라갈 수 있음).
@@ -251,6 +259,5 @@ Supabase 모드로 실행하기:
 
 ### 다음 할 일
 - 직접 써 보며 버전 1 확인표 점검, DB Browser for SQLite로 `todo.db` 확인 (제출용 캡처).
-- Render 배포 → 사이트 주소를 README 맨 위에 넣기.
 - 테스트 계정 두 개로 RLS 확인 기록 남기기 (제출 필수).
 
