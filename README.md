@@ -18,7 +18,7 @@
 Node.js 22 이상(LTS 권장)이 필요하다.
 
 ```bash
-git clone <이 저장소 주소>
+git clone https://github.com/k-im-rose/todo-app.git
 cd todo-app
 npm install
 npm run seed   # 예시 데이터 넣기 (선택)
@@ -201,6 +201,7 @@ npm test       # PRD 확인표 + 보안 자동 점검 (10개)
   - 발견: 깨진 JSON에 내부 경로가 보이는 오류 화면, Host 검사 없음, `X-Powered-By` 노출, 보안 헤더 없음 → 모두 고치고 자동 테스트에 추가(10개 모두 통과).
   - 이상 없음: DB 파일·서버 코드는 주소로 받을 수 없음(404), 화면 캡처에 위치·경로 정보 없음, `npm audit` 0개.
 - **Git 이력 새로 시작**: 예전 커밋에 실제 일정이 남아 있어서, 공개 저장소는 개인 정보가 없는 현재 상태 하나의 커밋으로 새로 시작했다. 그래서 위 기록에는 커밋 번호를 적지 않았다.
+- **GitHub 공개**: https://github.com/k-im-rose/todo-app (public). `main` 브랜치 하나, 작성자는 GitHub noreply 이메일. 공개 후 GitHub에서 브랜치·커밋·파일 목록을 다시 확인했다 (`*.db`·`.env`·`node_modules` 없음).
 - **구글 캘린더 연동 끊기**: 보안을 위해 Claude 세션의 구글 캘린더 커넥터를 껐다(새 세션에서도 기본 꺼짐). 앱 코드에는 원래 연동 코드가 없었고, PRD의 '캘린더 가져오기' 계획도 뺐다.
 
 ### 지금 논의 중 (결정 전)
