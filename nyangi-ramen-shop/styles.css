@@ -168,8 +168,8 @@ body{overflow:hidden;background:var(--sky);color:var(--ink);font-family:var(--bo
 .key:focus-visible,.big:focus-visible,#mute:focus-visible{outline:3px solid var(--ink);outline-offset:2px}
 .sw{width:14px;height:14px;border-radius:50%;background:var(--c);border:1.5px solid rgba(85,37,58,.25)}
 #ticket dd.spice-dd{display:flex;align-items:center}
-/* up to 10 dots, wrapping in rows of five so they fit the narrow phone ticket */
-.chili-dots{display:inline-flex;flex-wrap:wrap;align-items:center;gap:3px;margin-left:6px;max-width:50px}
+/* up to 5 dots, always on one line */
+.chili-dots{display:inline-flex;flex-wrap:nowrap;align-items:center;gap:3px;margin-left:6px}
 .chili-dots i{width:7.5px;height:7.5px;border-radius:50%;background:#e2412b}
 #bServe{background:var(--berry);color:#fff;border-color:#b02c5e;box-shadow:0 4px 0 #b02c5e;font-size:20px}
 #bServe small{color:#ffd9e8}
@@ -190,3 +190,5 @@ body{overflow:hidden;background:var(--sky);color:var(--ink);font-family:var(--bo
 .spice-demo th{font-weight:400;color:var(--muted);text-align:left;padding-right:4px;white-space:nowrap}
 .spice-demo td{background:#fff;border:2px solid var(--line);border-radius:10px;padding:5px 8px;text-align:center;font-family:var(--display);white-space:nowrap}
 .spice-demo tr:last-child td{color:#c5221a}
+/* 0~5단계 여섯 칸이 휴대폰 말풍선 폭 안에 들어가도록 촘촘하게 */
+@media (max-width:520px){.spice-demo{border-spacing:2px;font-size:11.5px}.spice-demo th{padding-right:2px}.spice-demo td{padding:5px 3px}}

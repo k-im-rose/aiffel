@@ -22,9 +22,9 @@ const TOPS = [
 ];
 const TOP = Object.fromEntries(TOPS.map(t => [t.id, t]));
 // spiciness the customer asks for = how many times to sprinkle chili (0 = not spicy)
-const SPICE_MAX = 10; // spice levels 0~10 = chili presses; the chili button stops at 10
+const SPICE_MAX = 5; // spice levels 0~5 = chili presses; the chili button stops at 5
 const SPICE_NAME = Array.from({ length: SPICE_MAX + 1 }, (_, i) => i + '단계');
-const spiceSay = n => !n ? '안 맵게' : n <= 2 ? '조금 맵게' : n <= 5 ? '맵게' : n <= 8 ? '아주 맵게' : '불나게 맵게';
+const spiceSay = n => !n ? '안 맵게' : n <= 2 ? '조금 맵게' : n <= 3 ? '맵게' : n <= 4 ? '아주 맵게' : '불나게 맵게';
 const WATER = [
   { name: '적게', say: '조금만',   lo: .26, hi: .48 },
   { name: '보통', say: '보통으로', lo: .48, hi: .70 },
@@ -1032,7 +1032,7 @@ function startDay() {
   });
   chime(); nyangiMood('happy', 1);
   const intro = {
-    1: '맵기는 고춧가루 횟수야! 0단계는 안 넣고, 1단계는 한 번, 10단계는 열 번!',
+    1: '맵기는 고춧가루 횟수야! 0단계는 안 넣고, 1단계는 한 번, 5단계는 다섯 번!',
     2: '오늘부터 치즈도 있어! 주문서를 잘 봐!',
     3: '오늘부터 떡이랑 만두! 손님이 더 까다로워졌어!',
   }[G.day] || '손님이 더 바빠졌어! 힘내자!';
@@ -1074,8 +1074,8 @@ const TUT = [
     demo: '<span class="key on">불 켜기</span><i class="arrow">→</i><span class="key">면 넣기</span><i class="arrow">·</i><span class="key">스프</span>' },
   { say: '손님이 원한 토핑만 올려 줘. 한 번 넣으면 뺄 수 없으니 잘 보고 넣어!',
     demo: '<span class="key on"><i class="sw" style="--c:#ffd23f"></i>계란</span><span class="key"><i class="sw" style="--c:#6cc04a"></i>파</span><span class="key"><i class="sw" style="--c:#ffcf33"></i>치즈</span>' },
-  { say: '주문서의 맵기만큼 고춧가루를 눌러! 0단계는 안 넣고, 1단계는 한 번, 2단계는 두 번… 10단계는 열 번이야. 열 번까지만 넣을 수 있어.',
-    demo: '<table class="spice-demo"><tr><th>맵기</th><td>0단계</td><td>1단계</td><td>2단계</td><td>…</td><td>10단계</td></tr><tr><th>고춧가루</th><td>안 넣기</td><td>한 번</td><td>두 번</td><td>…</td><td>열 번</td></tr></table>' },
+  { say: '주문서의 맵기만큼 고춧가루를 눌러! 0단계는 안 넣고, 1단계는 한 번, 2단계는 두 번… 5단계는 다섯 번이야. 다섯 번까지만 넣을 수 있어.',
+    demo: '<table class="spice-demo"><tr><th>맵기</th><td>0단계</td><td>1단계</td><td>2단계</td><td>3단계</td><td>4단계</td><td>5단계</td></tr><tr><th>고춧가루</th><td>안 넣기</td><td>한 번</td><td>두 번</td><td>세 번</td><td>네 번</td><td>다섯 번</td></tr></table>' },
   { say: '익힘 막대가 분홍 칸에 오면 서빙! 별 세 개를 받아 보자!',
     demo: `<div class="demo-gauge"><span>익힘</span><div class="bar">${COOK_SEGS}<i class="zone" style="left:25%;width:25%"></i><b class="marker anim-cook"></b></div></div><span class="key serve">서빙하기</span><span class="demo-stars">★★★</span>` },
 ];
