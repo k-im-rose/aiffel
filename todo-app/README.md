@@ -3,7 +3,7 @@
 루틴을 매일 체크리스트로 만들어 지키고, 못 지킨 이유를 회고해서 다음엔 같은 실수를 하지 않게 돕는 Todo 앱.
 모두의연구소(MODULABS) 바이브 코딩 수업 9장 「실습·과제와 마무리」의 'Todo 앱 만들기' 과제로, 에이전트(Claude Code)와 함께 만들었다.
 
-- **사이트:** https://aiffel-todo-app.onrender.com (로그인 필요 · 무료 서버라 오래 안 쓰면 첫 접속이 30초~1분 걸린다)
+- **사이트:** https://aiffel-todo-app.onrender.com (짧은 주소 https://k-im-rose.github.io/aiffel/todo-app/ 로 들어와도 여기로 넘어온다 · 로그인 필요 · 무료 서버라 오래 안 쓰면 첫 접속이 30초~1분 걸린다)
 - **저장소:** https://github.com/k-im-rose/aiffel/tree/main/todo-app (과제 모음 저장소 `aiffel` 안의 폴더)
 - 무엇을 만드는지: [PRD.md](PRD.md)
 - DB 구조: [DB-구조.md](DB-구조.md)
@@ -133,6 +133,7 @@ Supabase 모드로 실행하기:
 | 20 | 확인 메일 링크를 누르면 로그인 화면만 뜸 | "이메일 확인이 끝났어요" 안내, 주소창 토큰 지움 |
 | 21 | 계정을 지웠는데도 가입이 안 됨 | 원인: 무료 메일 발송 한도. 원인별 안내로 수정, 테스트 동안 이메일 확인을 껐다가 RLS 확인 후 다시 켬 |
 | 22 | 급하게 만든 계정 삭제 | 계정 삭제는 되돌릴 수 없어 에이전트가 하지 않음 → Users 화면을 열어 두고 내가 직접 삭제 |
+| 23 | 주소에서 todo-app/public/ 의 public 빼기 | 이 앱은 서버가 있어야 동작해서 GitHub Pages에서는 로그인이 안 된다. 그래서 todo-app/에 안내 페이지(index.html)를 두어 k-im-rose.github.io/aiffel/todo-app/ 으로 들어오면 Render 사이트로 바로 넘어가게 함 |
 
 ## 보안 검토
 
