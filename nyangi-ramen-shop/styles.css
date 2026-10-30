@@ -55,7 +55,7 @@ body{overflow:hidden;background:var(--sky);color:var(--ink);font-family:var(--bo
   background:#fff;color:var(--ink);border-radius:12px;padding:4px 10px;white-space:nowrap;box-shadow:0 3px 0 rgba(226,71,127,.18)}
 #potTag.good{background:var(--mint);color:#16493c}
 #potTag.warn{background:#ffe1d6;color:#b13c1b}
-#bubble{position:absolute;transform:translate(-50%,-100%);pointer-events:none;background:#fff;border-radius:16px;padding:7px 12px;
+#bubble{position:absolute;transform:translate(-50%,-100%);pointer-events:none;background:#fff;border-radius:16px;padding:6px 10px;
   font-family:var(--display);font-size:15px;width:max-content;max-width:min(200px,60vw);text-align:center;word-break:keep-all;box-shadow:0 4px 0 rgba(226,71,127,.18)}
 #bubble::after{content:"";position:absolute;left:50%;bottom:-8px;margin-left:-8px;border:8px solid transparent;border-top-color:#fff;border-bottom:0}
 #bubble .st{display:block;color:#f1a400;letter-spacing:2px;font-size:17px}
@@ -184,8 +184,9 @@ body{overflow:hidden;background:var(--sky);color:var(--ink);font-family:var(--bo
 }
 @media (prefers-reduced-motion:reduce){.coin{animation-duration:.01s}}
 
-#nyangiSay{position:absolute;transform:translate(-50%,-100%);pointer-events:none;background:#fff;border:2px solid var(--pink);border-radius:16px;padding:7px 12px;
-  font-family:var(--display);font-size:15px;width:max-content;max-width:min(240px,70vw);text-align:center;word-break:keep-all;box-shadow:0 4px 0 rgba(226,71,127,.18)}
+/* lines break where the text says (\n), so the box hugs the text instead of leaving wide empty sides */
+#nyangiSay{position:absolute;transform:translate(-50%,-100%);pointer-events:none;background:#fff;border:2px solid var(--pink);border-radius:16px;padding:6px 10px;white-space:pre-line;
+  font-family:var(--display);font-size:15px;width:max-content;max-width:min(240px,calc(100vw - 32px));text-align:center;word-break:keep-all;box-shadow:0 4px 0 rgba(226,71,127,.18)}
 .spice-demo{border-collapse:separate;border-spacing:4px;font-size:13px}
 .spice-demo th{font-weight:400;color:var(--muted);text-align:left;padding-right:4px;white-space:nowrap}
 .spice-demo td{background:#fff;border:2px solid var(--line);border-radius:10px;padding:5px 8px;text-align:center;font-family:var(--display);white-space:nowrap}

@@ -244,7 +244,7 @@ const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(36, 1, .1, 120);
 const LOOK = new THREE.Vector3(0, 1.75, 0);
 // Nyangi stands in front of the shop on the title/talk screens, then walks to the stove when the shop opens
-const KGAME = new THREE.Vector3(-2.9, 0, .45), KFRONT = new THREE.Vector3(0, 0, 2.3);
+const KGAME = new THREE.Vector3(-2.5, 0, .45), KFRONT = new THREE.Vector3(0, 0, 2.3);
 const CAM = { gp: new THREE.Vector3(), gl: new THREE.Vector3(), cp: new THREE.Vector3(), cl: new THREE.Vector3(), half: 2.8, khalf: 3 };
 const _look = new THREE.Vector3();
 let camT = 0, camShift = 0;
@@ -257,7 +257,8 @@ function resize() {
   const vt = Math.tan(THREE.MathUtils.degToRad(camera.fov / 2));
   // tall (phone) screens pan up and tilt flatter so the counter sits low: less floor, more sky behind the ticket and stats
   const tall = THREE.MathUtils.clamp((1.4 - camera.aspect) / .6, 0, 1);
-  const d = Math.max(4.9 / (vt * camera.aspect), 2.9 / vt), pitch = .4 - .16 * tall;
+  // frame tightly around the stall (Nyangi to the customer) and look down a little more, so the pot is big and its inside shows
+  const d = Math.max((4.3 - .7 * tall) / (vt * camera.aspect), 2.75 / vt), pitch = .46 - .12 * tall;
   const lift = (.1 + .32 * tall) * d * vt;
   CAM.gl.copy(LOOK); CAM.gl.y += lift; CAM.gp.set(0, CAM.gl.y + d * Math.sin(pitch), d * Math.cos(pitch));
   const d2 = Math.max(3.4 / (vt * camera.aspect), 3.5 / vt), p2 = .06;
@@ -481,14 +482,15 @@ if (document.fonts && document.fonts.load) {
 
 // customer table
 // customer table: low and set forward, so the bowl sits in front of the customer instead of in their face
-const TABLE = new THREE.Vector3(3.05, .68, 1.3);
+const TABLE = new THREE.Vector3(2.65, .68, 1.3);
 add(scene, new THREE.CylinderGeometry(.6, .6, .08, 40), M(0xffffff, { roughness: .5 }), [TABLE.x, TABLE.y - .04, TABLE.z]);
 add(scene, new THREE.CylinderGeometry(.08, .12, .62, 16), M(0xffb3d1), [TABLE.x, .33, TABLE.z]);
 add(scene, new THREE.CylinderGeometry(.38, .38, .04, 32), M(0xffb3d1), [TABLE.x, .02, TABLE.z]);
 
 /* ---------- Pot ---------- */
-const POT = { x: 0, y: 1.68, z: .05, h: .55 };
-const pot = new THREE.Group(); pot.position.set(POT.x, POT.y, POT.z); scene.add(pot);
+// s: the whole pot (and everything in it) is drawn this much bigger so kids can see the noodles and toppings
+const POT = { x: 0, y: 1.68, z: .05, h: .55, s: 1.25 };
+const pot = new THREE.Group(); pot.position.set(POT.x, POT.y, POT.z); pot.scale.setScalar(POT.s); scene.add(pot);
 const potPink = M(0xff9cc6, { roughness: .35 });
 add(pot, new THREE.CylinderGeometry(.79, .73, .62, 48, 1, true), potPink, [0, .31, 0]);
 add(pot, new THREE.CylinderGeometry(.75, .69, .6, 48, 1, true), M(0xf6f0f3, { side: THREE.BackSide, roughness: .3 }), [0, .32, 0], 1, [0, 0, 0], false);
@@ -565,8 +567,8 @@ function sprinkle(color, n = 22) {
   let k = 0;
   for (const p of sprinkles) {
     if (p.on) continue;
-    const a = rnd(0, 6.3), r = Math.sqrt(Math.random()) * .45;
-    p.m.material.color.setHex(color); p.m.position.set(POT.x + Math.cos(a) * r, POT.y + 1.1 + rnd(0, .5), POT.z + Math.sin(a) * r);
+    const a = rnd(0, 6.3), r = Math.sqrt(Math.random()) * .45 * POT.s;
+    p.m.material.color.setHex(color); p.m.position.set(POT.x + Math.cos(a) * r, POT.y + 1.1 * POT.s + rnd(0, .5), POT.z + Math.sin(a) * r);
     p.m.rotation.set(rnd(0, 3), rnd(0, 3), 0); p.vy = rnd(-.5, 0); p.on = true; p.m.visible = true;
     if (++k >= n) break;
   }
@@ -629,7 +631,7 @@ add(kettle, SPH, M(0xff8dbd), [0, .28, 0], .05);
 const spout = add(kettle, new THREE.CylinderGeometry(.035, .055, .34, 12), kMat, [.32, .06, 0], 1, [0, 0, -.95]);
 const spoutTip = new THREE.Object3D(); spoutTip.position.set(0, .17, 0); spout.add(spoutTip);
 add(kettle, new THREE.TorusGeometry(.14, .032, 8, 18, Math.PI), kMat, [-.27, .02, 0], 1, [0, 0, Math.PI / 2]);
-const KREST = new THREE.Vector3(-1.2, 1.5, .5), KPOUR = new THREE.Vector3(-.85, POT.y + 1.2, .05);
+const KREST = new THREE.Vector3(-1.38, 1.5, .55), KPOUR = new THREE.Vector3(-1.05, POT.y + 1.35, .05);
 kettle.position.copy(KREST); kettle.userData.p = 0;
 const stream = new THREE.Mesh(new THREE.CylinderGeometry(.035, .035, 1, 10), new THREE.MeshStandardMaterial({ color: 0xa8dcff, transparent: true, opacity: .8, roughness: .1 }));
 stream.visible = false; scene.add(stream);
@@ -728,7 +730,7 @@ const nyangi = (() => {
       rod(head, new THREE.Vector3(s * x0, y0, z0 + .005), new THREE.Vector3(s * 1.36, y1, z0 - .2), .014, K);
     });
   }
-  root.position.set(-2.9, 0, .45); root.rotation.y = .42; root.scale.setScalar(.8);
+  root.position.set(KGAME.x, 0, KGAME.z); root.rotation.y = .42; root.scale.setScalar(.8);
   root.traverse(o => { if (o.isMesh) o.castShadow = true; });
   scene.add(root);
   return { root, body, head, arms, mood: 'idle', moodT: 0 };
@@ -752,7 +754,7 @@ $('#gl').addEventListener('pointerdown', e => {
 });
 
 /* ---------- Customers ---------- */
-const STAND = new THREE.Vector3(3.05, 0, .05);
+const STAND = new THREE.Vector3(2.65, 0, .05);
 function makeCustomer(T) {
   const g = new THREE.Group(), b = new THREE.Group(); g.add(b);
   const MB = M(T.body), MH = M(T.head), MA = M(T.acc), K = M(0x1f1720, { roughness: .22 }),
@@ -1032,10 +1034,10 @@ function startDay() {
   });
   chime(); nyangiMood('happy', 1);
   const intro = {
-    1: '맵기는 고춧가루 횟수야! 0단계는 안 넣고, 1단계는 한 번, 5단계는 다섯 번!',
-    2: '오늘부터 치즈도 있어! 주문서를 잘 봐!',
-    3: '오늘부터 떡이랑 만두! 손님이 더 까다로워졌어!',
-  }[G.day] || '손님이 더 바빠졌어! 힘내자!';
+    1: '맵기 숫자만큼 고춧가루를 눌러!\n0단계는 안 넣는 거야!',
+    2: '오늘부터 치즈도 있어!\n주문서를 잘 봐!',
+    3: '오늘부터 떡이랑 만두!\n손님이 더 까다로워졌어!',
+  }[G.day] || '손님이 더 바빠졌어!\n힘내자!';
   $('#nyangiSay').textContent = intro; $('#nyangiSay').hidden = false; nyangiSayT = 9;
 }
 let passed = false;
@@ -1261,7 +1263,7 @@ function update(dt) {
     } else s.s.material.opacity = 0;
   }
   // sprinkles
-  const surfWorld = POT.y + surfY + .01;
+  const surfWorld = POT.y + surfY * POT.s + .01;
   for (const sp of sprinkles) {
     if (!sp.on) continue;
     sp.vy -= 9 * dt; sp.m.position.y += sp.vy * dt; sp.m.rotation.x += dt * 6;
@@ -1279,7 +1281,7 @@ function update(dt) {
   kettle.rotation.z = -.95 * ke;
   if (p.pouring && kp > .9 && p.water < 1) {
     const tip = spoutTip.getWorldPosition(new THREE.Vector3());
-    const bottom = POT.y + surfY;
+    const bottom = POT.y + surfY * POT.s;
     const len = Math.max(.01, tip.y - bottom);
     stream.visible = true; stream.position.set(tip.x, bottom + len / 2, tip.z); stream.scale.set(1, len, 1);
   } else stream.visible = false;
@@ -1341,7 +1343,7 @@ function updateHud(dt) {
       if (st === 4) cls = 'warn';
     }
     tag.textContent = txt; tag.className = cls; tag.hidden = false;
-    const s = toScreen(new THREE.Vector3(POT.x, POT.y + 1.05, POT.z));
+    const s = toScreen(new THREE.Vector3(POT.x, POT.y + 1.05 * POT.s, POT.z));
     tag.style.left = s.x + 'px'; tag.style.top = s.y + 'px';
   } else tag.hidden = true;
   // bubble
@@ -1349,7 +1351,13 @@ function updateHud(dt) {
     bubbleT -= dt;
     const c = G.customer, b = $('#bubble');
     if (!c || bubbleT <= 0) { b.hidden = true; bubbleT = 0; }
-    else { const s = toScreen(new THREE.Vector3(c.g.position.x, 2.75, c.g.position.z)); b.style.left = s.x + 'px'; b.style.top = s.y + 'px'; }
+    else {
+      // keep the whole bubble on screen when the customer stands near the edge of a narrow phone;
+      // a bubble pushed in from the edge also moves up one bubble height so it clears the pot's status tag
+      const s = toScreen(new THREE.Vector3(c.g.position.x, 2.75, c.g.position.z)), w = b.offsetWidth;
+      const x = Math.min(Math.max(s.x, w / 2 + 8), stage.clientWidth - w / 2 - 8);
+      b.style.left = x + 'px'; b.style.top = s.y - (Math.abs(x - s.x) > 1 ? b.offsetHeight + 4 : 0) + 'px';
+    }
   }
   if (toastT > 0) { toastT -= dt; if (toastT <= 0) $('#toast').hidden = true; }
   if (nyangiSayT > 0) {
