@@ -85,6 +85,10 @@ async function api(method, url, body) {
   });
   if (res.status === 204) return null;
   const data = await res.json().catch(() => ({}));
+  if (res.status === 401 && !url.startsWith('/api/auth/')) {
+    showLogin(); // 로그인이 풀렸으면 로그인 화면으로
+    throw new Error('다시 로그인해 주세요');
+  }
   if (!res.ok) throw new Error(data.error || '요청을 처리하지 못했어요');
   return data;
 }
@@ -460,7 +464,7 @@ function statusOn(routineId, date) {
 }
 
 function isScheduled(r, date) {
-  return r.repeat_days.split(',').map(Number).includes(weekdayNum(date)) && date >= r.created_at.slice(0, 10);
+  return r.repeat_days.split(',').map(Number).includes(weekdayNum(date)) && date >= (r.created_on || r.created_at.slice(0, 10));
 }
 
 // 오늘부터 거꾸로, 해야 하는 날에 '완료'가 이어진 날 수. 오늘은 아직 안 했어도 끊긴 걸로 보지 않는다.
@@ -615,6 +619,9 @@ function routineForm(r) {
 
 function setView(view) {
   state.view = view;
+  document.getElementById('authView').hidden = true;
+  document.getElementById('tabs').hidden = false;
+  document.getElementById('fab').hidden = false;
   for (const b of document.querySelectorAll('.tab')) b.classList.toggle('is-on', b.dataset.view === view);
   document.getElementById('weekView').hidden = view !== 'week';
   document.getElementById('routineView').hidden = view !== 'routines';
@@ -686,7 +693,72 @@ setInterval(() => {
   if (state.view === 'week' && state.openId === null && !typing) renderWeek();
 }, 60 * 1000);
 
-run(async () => {
+// ── 로그인 ─────────────────────────────────────────────
+
+let signUpMode = false;
+
+function showLogin(message = '') {
+  for (const id of ['weekView', 'routineView', 'tabs', 'fab']) document.getElementById(id).hidden = true;
+  document.getElementById('authView').hidden = false;
+  const msg = document.getElementById('authMessage');
+  msg.textContent = message;
+  msg.classList.toggle('is-ok', !!message);
+}
+
+function paintAuthMode() {
+  document.querySelector('#authView .display').textContent = signUpMode ? 'SIGN UP' : 'LOG IN';
+  document.getElementById('authSubmit').textContent = signUpMode ? '가입하기' : '로그인';
+  document.getElementById('authSwitch').textContent = signUpMode ? '이미 계정이 있어요 · 로그인' : '처음이에요 · 가입하기';
+  document.getElementById('authPassword').autocomplete = signUpMode ? 'new-password' : 'current-password';
+}
+
+document.getElementById('authSwitch').addEventListener('click', () => {
+  signUpMode = !signUpMode;
+  paintAuthMode();
+  document.getElementById('authMessage').textContent = '';
+});
+
+document.getElementById('authForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const f = e.currentTarget.elements;
+  const msg = document.getElementById('authMessage');
+  msg.classList.remove('is-ok');
+  msg.textContent = signUpMode ? '가입하는 중…' : '로그인하는 중…';
+  try {
+    const data = await api('POST', signUpMode ? '/api/auth/signup' : '/api/auth/login', {
+      email: f.email.value,
+      password: f.password.value,
+    });
+    f.password.value = '';
+    if (data && data.user) return startApp(data.user);
+    // 이메일 확인이 필요한 경우
+    signUpMode = false;
+    paintAuthMode();
+    msg.classList.add('is-ok');
+    msg.textContent = data.message;
+  } catch (err) {
+    msg.textContent = err.message;
+  }
+});
+
+document.getElementById('logout').addEventListener('click', () =>
+  run(async () => {
+    await api('POST', '/api/auth/logout');
+    state.days = {};
+    showLogin('로그아웃했어요');
+  })
+);
+
+async function startApp(user) {
+  const account = document.getElementById('account');
+  account.hidden = !user;
+  if (user) document.getElementById('accountEmail').textContent = user.email;
   state.reasons = await api('GET', '/api/reasons');
-  await loadWeek();
+  setView('week');
+}
+
+run(async () => {
+  const me = await api('GET', '/api/auth/me');
+  if (me.mode === 'supabase' && !me.user) return showLogin();
+  await startApp(me.user);
 });

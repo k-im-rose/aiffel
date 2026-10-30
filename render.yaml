@@ -1,0 +1,21 @@
+# Render 블루프린트 — Todo 앱(루틴 플래너) 백엔드를 웹 서비스로 올린다.
+# 비밀값(SUPABASE_*)은 여기 적지 않고, Render 대시보드에서 직접 넣는다 (sync: false).
+services:
+  - type: web
+    name: aiffel-todo-app
+    runtime: node
+    plan: free
+    region: singapore
+    rootDir: todo-app
+    buildCommand: npm ci
+    startCommand: npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: HOST
+        value: 0.0.0.0
+      - key: SUPABASE_URL
+        sync: false
+      - key: SUPABASE_ANON_KEY
+        sync: false
