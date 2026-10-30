@@ -9,11 +9,22 @@
 - DB 구조: [DB-구조.md](DB-구조.md)
 - 리뷰 양식: [Review.md](Review.md) (ART — Agent Review Template)
 
-| 플래너 | 회고 | 루틴 |
-|---|---|---|
-| ![플래너](docs/screenshots/1-planner.jpg) | ![회고](docs/screenshots/2-review.jpg) | ![루틴](docs/screenshots/3-routines.jpg) |
+## 샘플 화면
 
-> 화면의 데이터는 `npm run seed`로 넣은 **예시 데이터**다. 실제 개인 일정은 저장소에 올리지 않는다.
+배포된 사이트는 로그인해야 안을 볼 수 있어서, 주요 화면을 캡처해 두었다. (휴대폰 폭 기준)
+
+| ① 로그인 | ② 플래너 (오늘부터 7일) | ③ + 버튼으로 할 일 추가 |
+|---|---|---|
+| ![로그인](docs/screenshots/0-login.png) | ![플래너](docs/screenshots/1-planner.jpg) | ![할 일 추가](docs/screenshots/6-add.jpg) |
+| 사이트에 처음 들어오면 보이는 화면. 가입·로그인 (Supabase Auth) | 루틴이 날마다 자동으로 생기고, 시간 순으로 체크. 지금 시각(NOW)과 '지난번 다짐'이 보인다 | 오른쪽 아래 붉은 + 버튼 → 어느 날짜에든 추가 |
+
+| ④ 회고 | ⑤ 루틴 (해빗 트래커) |
+|---|---|
+| ![회고](docs/screenshots/2-review.jpg) | ![루틴](docs/screenshots/3-routines.jpg) |
+| '일부만·못 함'이면 실제로 한 일·이유·다음엔 이렇게를 남긴다 | 이번 주 M T W T F S S 칸과 연속 기록 |
+
+> ②~⑤의 데이터는 `npm run seed`로 넣은 **예시 데이터**다. 실제 개인 일정은 저장소에 올리지 않는다.
+> 직접 눌러 보려면 사이트에서 가입하거나, 아래 [빠른 시작](#빠른-시작-리뷰어용)대로 내 컴퓨터에서 예시 데이터로 실행하면 된다 (로그인 없음).
 
 ## 빠른 시작 (리뷰어용)
 
