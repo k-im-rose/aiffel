@@ -8,6 +8,7 @@
 | 냥이의 라면가게 — 3D 라면 요리 게임 | https://k-im-rose.github.io/aiffel/nyangi-ramen-shop/ | [nyangi-ramen-shop/](nyangi-ramen-shop) |
 | 냥이의 라면가게 북적북적 — 여러 손님·여러 냄비 버전 | https://k-im-rose.github.io/aiffel/nyangi-ramen-shop/nyangi-ramen-rush/ | [nyangi-ramen-shop/nyangi-ramen-rush/](nyangi-ramen-shop/nyangi-ramen-rush) |
 | 파쿠르 러너 | https://k-im-rose.github.io/aiffel/nyangi-ramen-shop/parkour-runner/ | [nyangi-ramen-shop/parkour-runner/](nyangi-ramen-shop/parkour-runner) |
+| Write My Way — 내 생각을 내 문체로 쓰는 Claude Code 스킬 | (스킬이라 사이트 없음) | [my-skills/](my-skills) |
 | 코드 리뷰 — castlegyun님의 Todo 앱 (ART 리뷰) | https://github.com/castlegyun/todo-app/pull/1 (합쳐짐) | [reviews/castlegyun-todo-app/](reviews/castlegyun-todo-app) |
 
 - 저장소: https://github.com/k-im-rose/aiffel
