@@ -18,8 +18,8 @@
 | 채점 기준 | 근거 |
 |---|---|
 | ① PRD 한 장 (30) | [PRD.md](PRD.md) — 기능·조건·버전 1/2 범위·규칙·완료 기준(모두 확인) |
-| ② CRUD + 껐다 켜도 남음 (40) | **로컬**: 아래 캡처 ①~④ · 자동 테스트 "서버 재시작 후에도 남는다" ([결과](docs/test-result.txt)) |
-| ③ 로컬·Supabase 저장 확인 + 전환·RLS 기록 (30) | 로컬 DB 표 캡처 ④ · [RLS 켜짐](docs/screenshots/4-supabase-rls.png) · [두 계정 RLS 시험](docs/screenshots/5-rls-two-accounts.png) · 개발 기록 [11](#11-3부--길-b-supabase--로그인--rls)·[14](#14-rls-확인--테스트-계정-두-개-과제-필수) |
+| ② CRUD + 껐다 켜도 남음 (40) | 아래 **로컬** 캡처 ①~④ · **Supabase** 캡처 ①~④ · 자동 테스트 "서버 재시작 후에도 남는다" ([결과](docs/test-result.txt)) |
+| ③ 로컬·Supabase 저장 확인 + 전환·RLS 기록 (30) | 로컬 DB 조회 ④ · Supabase DB 조회 ④ · [RLS 켜짐](docs/screenshots/4-supabase-rls.png) · [두 계정 RLS 시험](docs/screenshots/5-rls-two-accounts.png) · 개발 기록 [11](#11-3부--길-b-supabase--로그인--rls)·[14](#14-rls-확인--테스트-계정-두-개-과제-필수) |
 
 - **클라우드 전환**: 저장소를 로컬 SQLite → Supabase(Postgres)로 바꾸고 Supabase Auth 로그인을 붙였다. 화면은 계속 백엔드 `/api`에만 요청하고, DB 접속 키는 서버의 환경변수(`.env`, Render)에만 있다. Render에 배포 → [aiffel-todo-app.onrender.com](https://aiffel-todo-app.onrender.com)
 - **RLS 확인**: 모든 표에 RLS + "자기 행만" 정책. 계정 B로 A의 할 일을 읽기·수정·삭제하면 0개, A 이름으로 추가는 거절, 시험 뒤 A의 할 일은 그대로였다.
@@ -36,6 +36,19 @@
 ④ 재시작 후 DB 파일을 직접 조회 — 완료한 행은 `done`과 완료 시각, 삭제한 행(3번)은 없다.
 
 ![로컬 DB 표](docs/screenshots/10-local-4-db-rows.png)
+
+### Supabase(길 B) 확인 장면 — 2026-11-02
+
+배포 사이트([aiffel-todo-app.onrender.com](https://aiffel-todo-app.onrender.com))에 로그인한 계정으로 같은 순서를 반복했다. 캡처에서 계정 이메일은 가렸다.
+
+| ① 할 일 3개 추가 | ② 1개 완료, 1개 삭제 | ③ 탭을 닫고 새 탭으로 다시 열기 |
+|---|---|---|
+| ![추가](docs/screenshots/11-supabase-1-add.jpg) | ![완료·삭제](docs/screenshots/12-supabase-2-done-delete.jpg) | ![다시 열기](docs/screenshots/13-supabase-3-reopen.jpg) |
+| 화면에서 추가 → `기록 0/3` | '독서 30분' 완료, '삭제해 볼 할 일' 삭제 → `기록 1/2 · 완료 1` | 데이터가 브라우저가 아니라 Supabase에 있으므로 그대로 남아 있다 |
+
+④ Supabase SQL Editor에서 그날 행을 조회 — 완료한 행은 `done`, 삭제한 행은 없다.
+
+![Supabase DB 조회](docs/screenshots/14-supabase-4-db-rows.jpg)
 
 ## 샘플 화면
 
@@ -433,6 +446,7 @@ Supabase 모드로 실행하기:
 #### 22. 과제 제출 준비 — 채점 기준으로 다시 점검
 - 수업 PDF의 채점 기준(PRD 30 / CRUD + 껐다 켜도 남음 40 / 로컬·Supabase 저장과 RLS 기록 30)으로 앱과 문서를 점검했다.
 - 빈칸: "껐다 켜도 남는 **장면**"이 없었다(자동 테스트로만 확인). → 버리는 예시 DB로 로컬 서버를 띄워 추가 → 완료·삭제 → 서버 재시작 → DB 조회를 캡처하고, README 맨 위에 [과제 제출](#과제-제출) 칸을 만들었다.
+- Supabase도 같은 순서로 캡처했다. 배포 서버는 직접 껐다 켤 수 없어 '탭을 닫고 새로 열기'로 대신했고, DB는 SQL Editor에서 읽기 전용 `select`로 확인했다(창 폭이 좁아 Table Editor는 열이 다 보이지 않았다).
 - PRD 완료 기준 체크박스를 확인 완료(`[x]`)로 바꿨다.
 
 ### 지금 논의 중 (결정 전)
