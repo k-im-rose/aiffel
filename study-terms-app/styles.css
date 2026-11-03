@@ -1,0 +1,52 @@
+:root {
+  --green: #1E3932;
+  --page: #13241F;
+  --cream: #F2F0EB;
+  --mint: #D9E8DF;
+  --sage: #4E8A6B;
+  --line: rgba(217, 232, 223, 0.18);
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--page);
+  color: var(--cream);
+  font-family: Pretendard, -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", sans-serif;
+}
+
+.page {
+  max-width: 440px;
+  margin: 0 auto;
+  padding: 48px 16px;
+}
+
+.label {
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  color: var(--mint);
+}
+
+.dot {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  margin-right: 8px;
+  border-radius: 50%;
+  background: var(--cream);
+  vertical-align: 1px;
+}
+
+.title {
+  margin: 24px 0 8px;
+  font-size: 40px;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+}
+
+.sub {
+  color: var(--mint);
+  line-height: 1.6;
+}
