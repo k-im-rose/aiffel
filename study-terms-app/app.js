@@ -331,6 +331,24 @@ document.querySelectorAll('.st').forEach(b => b.addEventListener('click', () => 
   renderList();
 }));
 
+// 홈 = 필터 '전체' + 자료별 보기 + 섹션 모두 닫힘 + 검색어 없음 + 맨 위. 제목을 누르면 여기로 온다
+function goHome() {
+  $('q').value = '';
+  filter = 'all';
+  view = 'sections';
+  for (const k of Object.keys(open)) delete open[k];
+  Object.assign(store.ui, { filter, view, open });
+  persist();
+  history.replaceState(null, '', location.pathname + location.search);
+  document.body.classList.remove('view-card');
+  renderList();
+  window.scrollTo(0, 0);
+}
+document.querySelector('.home').addEventListener('click', e => {
+  e.preventDefault();
+  goHome();
+});
+
 // '← 목록'도 브라우저 뒤로 가기와 같은 길로 간다 (방문 기록이 어긋나지 않게)
 $('back').addEventListener('click', () => {
   if (history.state && history.state.card) history.back();
