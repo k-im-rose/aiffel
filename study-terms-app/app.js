@@ -254,7 +254,25 @@ $('back').addEventListener('click', () => {
   if (row) row.scrollIntoView({ block: 'center' });
 });
 
+// 노란 메모칸 너비를 가장 긴 용어에 맞춰 고정한다 (용어가 바뀌어도 칸 크기가 흔들리지 않게)
+function fixNoteWidth() {
+  const probe = document.querySelector('.note-ko').cloneNode(true);
+  probe.style.cssText = 'position:absolute; visibility:hidden; width:auto; left:-9999px;';
+  probe.removeAttribute('id');
+  probe.querySelectorAll('[id]').forEach(el => el.removeAttribute('id'));
+  document.querySelector('.hero').appendChild(probe);
+  let max = 0;
+  for (const t of TERMS) {
+    probe.querySelector('strong').textContent = t.ko;
+    probe.querySelector('em').textContent = t.full;
+    max = Math.max(max, probe.getBoundingClientRect().width);
+  }
+  probe.remove();
+  document.documentElement.style.setProperty('--note-w', Math.ceil(max) + 'px');
+}
+
 // ---- 시작 ----
+fixNoteWidth();
 renderCard();
 renderList();
 if (window.matchMedia('(min-width: 821px)').matches) $('q').focus();
