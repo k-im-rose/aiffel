@@ -40,6 +40,9 @@ a, button, input, textarea { touch-action: manipulation; }
 .mast-sub { flex-basis: 100%; } /* PC: 제목 줄 아래 한 줄을 통째로 쓴다 */
 /* 선은 제목과 오른쪽 작은 글씨 사이를 채우며 길게 뻗는다 (제목 높이의 가운데) */
 .mast-rule { flex: 1 1 auto; min-width: 40px; height: 1px; background: var(--ink); }
+.site-foot { margin: 48px 0 0; font-size: 12px; }
+.site-foot a { color: var(--gray); text-underline-offset: 3px; }
+body.view-card .site-foot { display: none; }
 /* 맨 위 줄: 왼쪽 라벨, 오른쪽 로그인 */
 .topbar { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; margin-bottom: 16px; }
 .account { display: flex; align-items: center; gap: 14px; font-size: 13px; color: var(--gray); }
