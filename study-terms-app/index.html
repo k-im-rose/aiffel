@@ -28,15 +28,15 @@
       <input id="q" class="search" type="search" placeholder="용어 검색 — mcp, 하네스, ㅎㄴㅅ" autocomplete="off" spellcheck="false">
 
       <div class="progress">
-        <div class="progress-text"><span>설명 가능</span><strong id="prog">0 / 20</strong></div>
+        <div class="progress-text"><span>마침</span><strong id="prog">0 / 20</strong></div>
         <div class="bar" aria-hidden="true"><div id="bar"></div></div>
       </div>
 
       <div class="filters" role="group" aria-label="상태로 거르기">
         <button type="button" class="chip" data-filter="all">전체 <span></span></button>
-        <button type="button" class="chip" data-filter="0">모름 <span></span></button>
-        <button type="button" class="chip" data-filter="1">헷갈림 <span></span></button>
-        <button type="button" class="chip" data-filter="2">설명 가능 <span></span></button>
+        <button type="button" class="chip" data-filter="0">알아보기 <span></span></button>
+        <button type="button" class="chip" data-filter="1">다시 보기 <span></span></button>
+        <button type="button" class="chip" data-filter="2">마침 <span></span></button>
       </div>
 
       <ul id="list" class="list"></ul>
@@ -77,9 +77,9 @@
           <label class="sr-only" for="mine">내 설명</label>
           <textarea id="mine" class="memo" rows="4" placeholder="이 용어를 내 말로 한두 문장 설명해 보세요."></textarea>
           <div class="status" role="group" aria-label="이해 상태">
-            <button type="button" class="st" data-status="0">모름</button>
-            <button type="button" class="st" data-status="1">헷갈림</button>
-            <button type="button" class="st" data-status="2">설명 가능</button>
+            <button type="button" class="st" data-status="0">알아보기</button>
+            <button type="button" class="st" data-status="1">다시 보기</button>
+            <button type="button" class="st" data-status="2">마치기</button>
           </div>
           <p id="msg" class="msg" role="status"></p>
         </section>

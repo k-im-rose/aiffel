@@ -2,7 +2,7 @@
 // 저장: 내 설명과 상태만 localStorage에 남긴다. 용어 데이터는 terms.js.
 
 const STORE_KEY = 'study-terms:v1';
-const STATUS = ['모름', '헷갈림', '설명 가능'];
+const STATUS_TAG = ['알아보기', '다시 보기', '✓ 마침']; // 목록 표시: 끝난 용어는 결과로 보여 준다
 const CHO = 'ㄱㄲㄴㄷㄸㄹㅁㅂㅃㅅㅆㅇㅈㅉㅊㅋㅌㅍㅎ';
 const byId = Object.fromEntries(TERMS.map(t => [t.id, t]));
 const $ = id => document.getElementById(id);
@@ -87,7 +87,7 @@ function renderList() {
       `<span class="row-no">${t.no}</span>` +
       `<span><span class="row-name">${highlight(t.term, q)}</span>` +
       `<span class="row-ko">${highlight(t.ko, q)}${m.hint ? `<span class="row-hint">· ${m.hint}에서 찾음</span>` : ''}</span></span>` +
-      `<span class="tag state state-${st}">${st === 2 ? '✓ ' : ''}${STATUS[st]}</span>` +
+      `<span class="tag state state-${st}">${STATUS_TAG[st]}</span>` +
       `</button></li>`
     );
   }
@@ -219,7 +219,7 @@ $('mine').addEventListener('input', () => {
   n.mine = $('mine').value;
   if (n.status === 2 && !n.mine.trim()) {
     n.status = 1;
-    setMsg("설명이 비어서 상태를 '헷갈림'으로 바꿨어요.");
+    setMsg("설명이 비어서 '다시 보기'로 바꿨어요.");
     renderCard();
     renderList();
   } else {
@@ -234,7 +234,7 @@ document.querySelectorAll('.st').forEach(b => b.addEventListener('click', () => 
   const n = note(current);
   const next = Number(b.dataset.status);
   if (next === 2 && !n.mine.trim()) {
-    setMsg("내 설명을 먼저 써야 '설명 가능'으로 바꿀 수 있어요.");
+    setMsg('내 설명을 먼저 써야 마칠 수 있어요.');
     $('mine').focus();
     return;
   }
