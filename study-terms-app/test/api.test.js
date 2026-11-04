@@ -73,3 +73,10 @@ test('지우기(DELETE) → 다시 조회하면 없음', async () => {
   const got = await call('GET', '/api/notes', A);
   assert.deepEqual(got.body.notes, []);
 });
+
+test('로컬(SQLite) 서버에는 로그인이 없음', async () => {
+  const me = await call('GET', '/api/auth/me');
+  assert.deepEqual(me.body, { available: false, user: null });
+  assert.equal((await call('GET', '/api/auth/google')).status, 404);
+  assert.equal((await call('POST', '/api/notes/merge', A)).status, 401);
+});

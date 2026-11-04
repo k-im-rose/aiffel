@@ -26,14 +26,18 @@ function open() {
       related    TEXT NOT NULL DEFAULT '[]'
     );
     CREATE TABLE IF NOT EXISTS notes (
-      device_id  TEXT NOT NULL,
+      owner_id   TEXT NOT NULL,          -- 'device:<기기 ID>' (로그인 전) 또는 'user:<계정 ID>' (구글 로그인)
       term_id    TEXT NOT NULL REFERENCES terms(id),
       mine       TEXT NOT NULL DEFAULT '',
       status     INTEGER NOT NULL DEFAULT 0 CHECK (status IN (0, 1, 2)),
       updated_at TEXT NOT NULL DEFAULT (datetime('now')),
-      PRIMARY KEY (device_id, term_id)
+      PRIMARY KEY (owner_id, term_id)
     );
   `);
+  // 로그인 추가 전에 만든 DB: device_id 칸을 owner_id로 바꾸고 'device:'를 붙인다
+  if (db.prepare('PRAGMA table_info(notes)').all().some((c) => c.name === 'device_id')) {
+    db.exec("ALTER TABLE notes RENAME COLUMN device_id TO owner_id; UPDATE notes SET owner_id = 'device:' || owner_id");
+  }
   return db;
 }
 
@@ -75,19 +79,36 @@ function createStore() {
       return !!db.prepare('SELECT 1 FROM terms WHERE id = ?').get(id);
     },
 
-    async listNotes(deviceId) {
-      return db.prepare('SELECT term_id, mine, status, updated_at FROM notes WHERE device_id = ?').all(deviceId);
+    async listNotes(owner) {
+      return db.prepare('SELECT term_id, mine, status, updated_at FROM notes WHERE owner_id = ?').all(owner);
     },
 
-    async upsertNote(deviceId, termId, { mine, status }) {
+    async upsertNote(owner, termId, { mine, status }) {
       return db.prepare(`
-        INSERT INTO notes (device_id, term_id, mine, status, updated_at) VALUES (?, ?, ?, ?, datetime('now'))
-        ON CONFLICT(device_id, term_id) DO UPDATE SET mine = excluded.mine, status = excluded.status, updated_at = excluded.updated_at
-        RETURNING term_id, mine, status, updated_at`).get(deviceId, termId, mine, status);
+        INSERT INTO notes (owner_id, term_id, mine, status, updated_at) VALUES (?, ?, ?, ?, datetime('now'))
+        ON CONFLICT(owner_id, term_id) DO UPDATE SET mine = excluded.mine, status = excluded.status, updated_at = excluded.updated_at
+        RETURNING term_id, mine, status, updated_at`).get(owner, termId, mine, status);
     },
 
-    async deleteNote(deviceId, termId) {
-      return db.prepare('DELETE FROM notes WHERE device_id = ? AND term_id = ?').run(deviceId, termId).changes > 0;
+    async deleteNote(owner, termId) {
+      return db.prepare('DELETE FROM notes WHERE owner_id = ? AND term_id = ?').run(owner, termId).changes > 0;
+    },
+
+    // 로그인할 때: 이 기기의 기록을 계정으로 옮긴다. 계정에 이미 있는 용어는 계정 쪽을 남긴다
+    async mergeNotes(from, to) {
+      db.exec('BEGIN');
+      try {
+        const moved = db.prepare(`
+          INSERT INTO notes (owner_id, term_id, mine, status, updated_at)
+          SELECT ?, term_id, mine, status, updated_at FROM notes WHERE owner_id = ?
+          ON CONFLICT(owner_id, term_id) DO NOTHING`).run(to, from).changes;
+        db.prepare('DELETE FROM notes WHERE owner_id = ?').run(from);
+        db.exec('COMMIT');
+        return moved;
+      } catch (e) {
+        db.exec('ROLLBACK');
+        throw e;
+      }
     },
   };
 }

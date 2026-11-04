@@ -8,12 +8,20 @@
 <meta name="apple-mobile-web-app-title" content="아그뭐">
 <meta name="description" content="헷갈리는 용어를 내 말로 설명해 보며 익히는 용어 사전 겸 암기장">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
-<link rel="stylesheet" href="styles.css?v=26">
+<link rel="stylesheet" href="styles.css?v=27">
 </head>
 <body>
 <div class="app">
   <header class="masthead">
-    <p class="brand">STUDY TERM NOTES</p>
+    <div class="topbar">
+      <p class="brand">STUDY TERM NOTES</p>
+      <!-- 구글 로그인: 로그인하면 휴대폰·PC에서 같은 기록을 본다. 서버에 로그인 기능이 없으면 숨긴다 -->
+      <div class="account" id="account" hidden>
+        <p class="account-msg" id="accountMsg"></p>
+        <a class="line-btn" id="login" href="/api/auth/google" hidden>Google로 로그인</a>
+        <button type="button" class="text-btn" id="logout" hidden>로그아웃</button>
+      </div>
+    </div>
     <!-- PC: 제목 · 선 · 작은 글씨 두 줄이 한 줄로, 그 아래 안내와 상태 설명. 휴대폰: 제목 → 안내 → 상태 설명 → 작은 글씨 -->
     <div class="mast-row">
       <h1 class="title"><a class="home" href="./" title="처음 화면으로"><span class="hl">아, 그게 뭐더라?</span></a></h1>
@@ -110,6 +118,6 @@
     </main>
   </div>
 </div>
-<script src="app.js?v=18"></script>
+<script src="app.js?v=19"></script>
 </body>
 </html>

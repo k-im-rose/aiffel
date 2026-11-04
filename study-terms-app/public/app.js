@@ -1,5 +1,6 @@
 // 아, 그게 뭐더라? — 화면 동작
 // 데이터: 용어는 GET /api/terms, 내 기록은 /api/notes (서버 → DB). 브라우저에는 화면 상태(펼친 섹션 등)만 남긴다.
+// 로그인 전에는 기기 ID로, 구글 로그인 후에는 계정으로 기록을 구분한다 (서버가 쿠키로 판단).
 
 const UI_KEY = 'study-terms:ui';
 const OLD_KEY = 'study-terms:v1';   // API 이전 버전: 기록을 브라우저에 저장하던 곳 (처음 한 번 서버로 옮긴다)
@@ -205,14 +206,48 @@ function saveNote(id, delay = 500) {
     const n = note(id);
     try {
       await api(`/api/notes/${encodeURIComponent(id)}`, { method: 'PUT', body: JSON.stringify({ mine: n.mine, status: n.status }) });
+      delete saveTimers[id];
       if (id === current) setSaved('ok');
     } catch (e) {
-      if (e.status === 400) { setMsg(e.message); setSaved(''); return; } // 서버가 거절한 값은 다시 보내지 않는다
+      if (e.status === 400) { delete saveTimers[id]; setMsg(e.message); setSaved(''); return; } // 서버가 거절한 값은 다시 보내지 않는다
       if (id === current) setSaved('fail');
       saveNote(id, 3000);
     }
   }, delay);
 }
+
+// 로그인·로그아웃으로 페이지를 떠나기 전에, 아직 안 보낸 기록을 바로 보낸다
+async function flushSaves() {
+  await Promise.all(Object.keys(saveTimers).map(async id => {
+    clearTimeout(saveTimers[id]);
+    const n = note(id);
+    try {
+      await api(`/api/notes/${encodeURIComponent(id)}`, { method: 'PUT', body: JSON.stringify({ mine: n.mine, status: n.status }) });
+    } catch (e) { /* 못 보낸 기록은 이 기기에 남지 않으므로 아래 안내에 맡긴다 */ }
+    delete saveTimers[id];
+  }));
+}
+
+// ---- 구글 로그인 ----
+// 로그인하면 휴대폰·PC에서 같은 기록을 본다. 토큰은 서버가 httpOnly 쿠키로만 다루므로 화면 코드는 모른다
+function renderAccount(me, notice) {
+  if (!me.available) return; // 로컬 SQLite 서버에는 로그인이 없다
+  $('account').hidden = false;
+  $('login').hidden = !!me.user;
+  $('logout').hidden = !me.user;
+  const who = me.user ? `<strong>${esc(me.user.email || me.user.name)}</strong>(으)로 로그인했어요.` : '로그인하면 휴대폰·PC에서 같은 기록을 볼 수 있어요.';
+  $('accountMsg').innerHTML = (notice ? esc(notice) + ' ' : '') + who;
+}
+$('login').addEventListener('click', async e => {
+  e.preventDefault();
+  await flushSaves();
+  location.href = $('login').getAttribute('href');
+});
+$('logout').addEventListener('click', async () => {
+  await flushSaves();
+  try { await api('/api/auth/logout', { method: 'POST' }); } catch (e) { /* 아래에서 다시 읽어 확인한다 */ }
+  location.replace(location.pathname + '?logout=1');
+});
 
 function select(id, openCard) {
   current = id;
@@ -450,10 +485,31 @@ function showLoadError() {
     '<button type="button" class="line-btn" onclick="location.reload()">다시 시도</button>';
 }
 
+// 주소의 ?login=ok / fail / ?logout=1 (로그인에서 돌아왔을 때)을 읽고 주소에서는 지운다
+function takeAuthResult() {
+  const params = new URLSearchParams(location.search);
+  const result = params.get('login') || (params.has('logout') ? 'logout' : '');
+  if (result) history.replaceState(null, '', location.pathname + location.hash);
+  return result;
+}
+
 async function boot() {
   document.body.classList.add('loading', 'no-card');
+  const result = takeAuthResult();
+  let notice = { fail: '로그인하지 못했어요. 다시 시도해 주세요.', logout: '로그아웃했어요. 기록은 계정에 남아 있어요.' }[result] || '';
+  let me = { available: false, user: null };
   try {
-    const [catalog, mine] = await Promise.all([api('/api/terms', { timeout: 60000 }), api('/api/notes', { timeout: 60000 })]);
+    const [catalog, who] = await Promise.all([
+      api('/api/terms', { timeout: 60000 }),
+      api('/api/auth/me', { timeout: 60000 }).catch(() => me),
+    ]);
+    me = who;
+    // 방금 로그인했으면 이 기기에 남긴 기록을 계정으로 옮긴다
+    if (me.user && result === 'ok') {
+      const { moved } = await api('/api/notes/merge', { method: 'POST' }).catch(() => ({ moved: 0 }));
+      notice = moved ? `이 기기의 기록 ${moved}개를 계정으로 옮겼어요.` : '';
+    }
+    const mine = await api('/api/notes', { timeout: 60000 });
     useCatalog(catalog);
     for (const n of mine.notes) store.notes[n.term_id] = { mine: n.mine, status: n.status };
     await migrateOldNotes();
@@ -463,6 +519,7 @@ async function boot() {
     return;
   }
   document.body.classList.remove('loading');
+  renderAccount(me, notice);
   if (!store.ui.open) { open[SECTIONS[0].id] = true; store.ui.open = open; }
   current = byId[store.ui.last] ? store.ui.last : TERMS[0].id;
   // 주소에 #용어id가 있으면 그 카드로 연다 (휴대폰에서는 뒤로 가기로 목록에 돌아오게 기록을 한 칸 둔다)

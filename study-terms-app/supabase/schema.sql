@@ -23,14 +23,15 @@ create table if not exists public.terms (
   related    text[] not null default '{}'
 );
 
--- 내 기록 (사람마다 따로. 로그인 전에는 브라우저마다 만든 무작위 ID로 구분)
+-- 내 기록 (사람마다 따로)
+-- owner_id: 로그인 전 'device:<브라우저마다 만든 UUID>', 구글 로그인 후 'user:<auth.users.id>'
 create table if not exists public.notes (
-  device_id  uuid not null,
+  owner_id   text not null check (owner_id ~ '^(device|user):[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$'),
   term_id    text not null references public.terms(id) on delete cascade,
   mine       text not null default '' check (char_length(mine) <= 2000),
   status     smallint not null default 0 check (status in (0, 1, 2)),
   updated_at timestamptz not null default now(),
-  primary key (device_id, term_id),
+  primary key (owner_id, term_id),
   -- 설명 없이 '마치기' 금지 (서버에 이어 DB에서도 한 번 더)
   constraint done_needs_note check (status <> 2 or length(trim(mine)) > 0)
 );
@@ -40,3 +41,15 @@ create table if not exists public.notes (
 alter table public.sections enable row level security;
 alter table public.terms    enable row level security;
 alter table public.notes    enable row level security;
+
+-- 로그인 추가 전에 만든 DB를 옮기기 (device_id uuid → owner_id text 'device:…'). 한 번만 실행된다
+do $$
+begin
+  if exists (select 1 from information_schema.columns
+             where table_schema = 'public' and table_name = 'notes' and column_name = 'device_id') then
+    alter table public.notes alter column device_id type text using 'device:' || device_id::text;
+    alter table public.notes rename column device_id to owner_id;
+    alter table public.notes add constraint notes_owner_format
+      check (owner_id ~ '^(device|user):[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$');
+  end if;
+end $$;
