@@ -51,7 +51,7 @@ body.view-card .site-foot { display: none; }
 .account .line-btn { display: inline-flex; align-items: center; min-height: 44px; color: var(--ink); text-decoration: none; }
 .account .text-btn { min-height: 44px; }
 .brand {
-  display: inline-flex; align-items: center; margin: 0; padding: 4px 10px 3px;
+  display: inline-flex; align-items: center; margin: 0; padding: 3.5px 10px;
   background: var(--ink); color: var(--white);
   font-weight: 600; font-size: 20px; letter-spacing: 0.02em;
 }
