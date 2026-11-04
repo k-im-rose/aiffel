@@ -4,6 +4,15 @@
 const STORE_KEY = 'study-terms:v1';
 const STATUS_TAG = ['알아보기', '다시 보기', '✓ 마치기'];
 const CHO = 'ㄱㄲㄴㄷㄸㄹㅁㅂㅃㅅㅆㅇㅈㅉㅊㅋㅌㅍㅎ';
+// 섹션을 자료 순서로 정렬하고, 번호(WORD 001…)와 전체 목록 순서도 섹션 순서를 따른다
+SECTIONS.sort((x, y) => x.id.localeCompare(y.id));
+{
+  let n = 0;
+  const order = {};
+  for (const sec of SECTIONS) for (const id of sec.ids) order[id] = ++n;
+  TERMS.sort((x, y) => order[x.id] - order[y.id]);
+  TERMS.forEach(t => { t.no = String(order[t.id]).padStart(3, '0'); });
+}
 const byId = Object.fromEntries(TERMS.map(t => [t.id, t]));
 const $ = id => document.getElementById(id);
 
@@ -71,7 +80,7 @@ function matchTerm(t, q) {
 let current = byId[store.ui.last] ? store.ui.last : TERMS[0].id;
 let filter = ['all', '0', '1', '2'].includes(store.ui.filter) ? store.ui.filter : 'all';
 let view = store.ui.view === 'all' ? 'all' : 'sections';
-const open = store.ui.open || { core: true };
+const open = store.ui.open || { [SECTIONS[0].id]: true }; // 처음엔 첫 섹션만 펼친다
 let visible = [];
 
 function query() { return $('q').value.trim(); }
@@ -112,7 +121,7 @@ function renderList() {
       rows.push(
         `<li><button type="button" class="sec-head" data-sec="${sec.id}" aria-expanded="${isOpen}">` +
         `<span class="sec-title"><span class="sec-caret" aria-hidden="true">${isOpen ? '▾' : '▸'}</span>` +
-        `${sec.id === 'core' ? '' : `<span class="sec-no">${sec.id}</span>`}${esc(sec.title)}</span>` +
+        `<span class="sec-no">${sec.id}</span>${esc(sec.title)}</span>` +
         `<span class="sec-count">${done} / ${sec.ids.length}</span></button></li>`
       );
       if (!isOpen) continue;

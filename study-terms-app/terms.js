@@ -1,7 +1,7 @@
-// 시작용 20개 용어. 원본은 용어집.md, 카드 구성은 DESIGN.md "용어 하나에 필요한 내용"을 따른다.
+// 기본 용어 20개 (처음 만든 카드). 원본은 용어집.md, 카드 구성은 DESIGN.md "용어 하나에 필요한 내용"을 따른다.
 // id는 저장된 내 설명과 이어지는 열쇠라서 바꾸지 않는다.
 // full: 약어의 영문 풀네임만 쓴다. 풀네임이 없는 용어는 비워 두면 카드에서 그 줄이 숨겨진다.
-// 섹션: 핵심 20개는 여기, 자료별 용어는 terms-02-0N.js가 addSection()으로 붙인다.
+// 섹션: 따로 두지 않고, 각 용어가 처음 나온 자료의 섹션에 넣는다. 자료별 용어는 terms-NN-NN.js가 addSection()으로 붙인다.
 // 각 용어: id·term·ko·full·src·def·easy(쉬운 비유)·ex(실제 장면)·flow·related·level. 빈 칸은 화면에서 숨긴다.
 const TERMS = [
   {
@@ -166,15 +166,22 @@ const TERMS = [
   },
 ];
 
-const SECTIONS = [{ id: 'core', title: '핵심 20개', note: '시작용', ids: TERMS.map(t => t.id) }];
+// 섹션 = 용어가 처음 나온 교육자료. 이 파일의 기본 용어도 src의 첫 자료 섹션에 들어간다.
+const SECTIONS = [];
+function sectionFor(id, title) {
+  let sec = SECTIONS.find(x => x.id === id);
+  if (!sec) { sec = { id, title: title || id, ids: [] }; SECTIONS.push(sec); }
+  if (title) sec.title = title;
+  return sec;
+}
+for (const t of TERMS) sectionFor(t.src.split(' · ')[0]).ids.push(t.id);
+sectionFor('01-04', 'AI와 바이브 코딩 첫걸음');
+
 function addSection(id, title, list) {
-  let no = TERMS.length;
-  const ids = [];
+  const sec = sectionFor(id, title);
   for (const t of list) {
     if (TERMS.some(x => x.id === t.id)) continue; // 이미 있는 용어는 건너뛴다
-    no += 1;
-    TERMS.push({ full: '', flow: [], related: [], ex: '', easy: '', level: '', ...t, no: String(no).padStart(3, '0'), src: t.src || id });
-    ids.push(t.id);
+    TERMS.push({ full: '', flow: [], related: [], ex: '', easy: '', level: '', ...t, src: t.src || id });
+    sec.ids.push(t.id);
   }
-  SECTIONS.push({ id, title, ids });
 }
