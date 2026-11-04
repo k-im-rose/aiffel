@@ -36,11 +36,11 @@ a, button, input, textarea { touch-action: manipulation; }
 /* 머리말 */
 .masthead { margin-bottom: 36px; }
 /* 제목과 안내 사이를 가로로 뻗는 얇은 선으로 잇는다. 세로 가운데 정렬 */
-.mast-row { --title-size: clamp(32px, 5.2vw, 60px); display: flex; align-items: flex-start; gap: 38px; }
+.mast-row { --title-size: clamp(32px, 5.2vw, 60px); display: flex; flex-wrap: wrap; align-items: center; column-gap: 38px; }
+.mast-sub { flex-basis: 100%; } /* PC: 제목 줄 아래 한 줄을 통째로 쓴다 */
 /* 선은 짧게 고정하고 제목 높이의 가운데에 둔다. 오른쪽 설명은 선 바로 뒤에 붙고, 남는 폭은 오른쪽 여백으로 */
 .mast-rule {
   flex: none; width: 120px; height: 1px; background: var(--ink);
-  margin-top: calc(var(--title-size) * 0.54); /* 제목 줄 높이(1.08배)의 절반 */
 }
 .brand {
   display: inline-block; margin: 0 0 16px; padding: 4px 10px 3px;
@@ -66,12 +66,12 @@ a, button, input, textarea { touch-action: manipulation; }
 /* 가로선 오른쪽: 상태 설명 + 작은 글씨 */
 .mast-note { font-size: 13px; line-height: 1.7; color: var(--ink); }
 .mast-note p { margin: 0; }
-.legend { margin: 0; display: grid; gap: 6px; }
+.legend { margin: 16px 0 0; display: grid; gap: 6px; }
 .legend div { display: flex; align-items: center; gap: 18px; }
 .legend dt { flex: none; width: 74px; }
 .legend dt .tag { width: 100%; justify-content: center; }
 .legend dd { margin: 0; font-size: 14px; white-space: nowrap; }
-.mast-note .info { margin-top: 12px; color: var(--gray); white-space: nowrap; }
+.mast-note .info { color: var(--gray); white-space: nowrap; }
 .m-only { display: none; }
 /* 좁은 PC 화면에서는 '있잖아요.' 뒤에서 줄을 바꿔 어색한 끊김을 막는다 */
 @media (max-width: 1100px) { .m-only { display: inline; } }
@@ -254,7 +254,9 @@ body.no-card .card { display: none; } /* 홈: 카드 자리는 배경만 */
   .app { padding: 20px 16px 48px; }
   .masthead { margin-bottom: 24px; }
   .title { font-size: min(48px, 12.8vw); } /* 휴대폰에서 제목을 1.5배로 (아주 작은 폰에서는 폭에 맞춰 줄어듦) */
-  .mast-row { flex-direction: column; align-items: flex-start; gap: 24px; }
+  .mast-row { flex-direction: column; align-items: flex-start; gap: 0; }
+  .mast-sub { order: 1; }
+  .mast-note { order: 2; margin-top: 12px; }
   .mast-note { word-break: keep-all; line-height: 1.45; }
   .mast-rule { display: none; }
   .m-only { display: inline; }
