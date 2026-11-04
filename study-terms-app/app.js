@@ -195,11 +195,34 @@ function select(id, openCard) {
   $('saved').textContent = '';
   renderCard();
   renderList();
-  if (openCard) {
+  if (openCard) openCardView(id);
+}
+
+// 휴대폰: 카드를 열 때 방문 기록을 남겨서 브라우저 뒤로 가기(사파리 스와이프 포함)로 목록에 돌아오게 한다
+function isPhone() { return window.matchMedia('(max-width: 820px)').matches; }
+function openCardView(id) {
+  if (!isPhone()) return;
+  document.body.classList.add('view-card');
+  window.scrollTo(0, 0);
+  if (!(history.state && history.state.card === id)) history.pushState({ card: id }, '', '#' + id);
+}
+function showListView() {
+  document.body.classList.remove('view-card');
+  const row = document.querySelector(`.row[data-id="${current}"]`);
+  if (row) row.scrollIntoView({ block: 'center' });
+}
+window.addEventListener('popstate', e => {
+  const id = e.state && e.state.card;
+  if (id && byId[id]) {
+    current = id;
+    renderCard();
+    renderList();
     document.body.classList.add('view-card');
     window.scrollTo(0, 0);
+  } else {
+    showListView();
   }
-}
+});
 
 // ---- 이벤트 ----
 $('list').addEventListener('click', e => {
@@ -301,10 +324,10 @@ document.querySelectorAll('.st').forEach(b => b.addEventListener('click', () => 
   renderList();
 }));
 
+// '← 목록'도 브라우저 뒤로 가기와 같은 길로 간다 (방문 기록이 어긋나지 않게)
 $('back').addEventListener('click', () => {
-  document.body.classList.remove('view-card');
-  const row = document.querySelector(`.row[data-id="${current}"]`);
-  if (row) row.scrollIntoView({ block: 'center' });
+  if (history.state && history.state.card) history.back();
+  else showListView();
 });
 
 // 노란 메모칸 너비를 가장 긴 용어에 맞춰 고정한다 (용어가 바뀌어도 칸 크기가 흔들리지 않게)
@@ -328,6 +351,16 @@ function fixNoteWidth() {
 }
 
 // ---- 시작 ----
+// 주소에 #용어id가 있으면 그 카드로 연다 (휴대폰에서는 뒤로 가기로 목록에 돌아오게 기록을 한 칸 둔다)
+const startId = decodeURIComponent(location.hash.slice(1));
+if (byId[startId]) {
+  current = startId;
+  if (isPhone()) {
+    history.replaceState(null, '', location.pathname + location.search);
+    history.pushState({ card: startId }, '', '#' + startId);
+    document.body.classList.add('view-card');
+  }
+}
 fixNoteWidth();
 renderCard();
 renderList();
