@@ -1,43 +1,51 @@
 // 아, 그게 뭐더라? — 화면 동작
-// 저장: 내 설명과 상태만 localStorage에 남긴다. 용어 데이터는 terms.js와 terms-02-0N.js.
+// 데이터: 용어는 GET /api/terms, 내 기록은 /api/notes (서버 → DB). 브라우저에는 화면 상태(펼친 섹션 등)만 남긴다.
 
-const STORE_KEY = 'study-terms:v1';
+const UI_KEY = 'study-terms:ui';
+const OLD_KEY = 'study-terms:v1';   // API 이전 버전: 기록을 브라우저에 저장하던 곳 (처음 한 번 서버로 옮긴다)
+const DEVICE_KEY = 'study-terms:device';
 const STATUS_TAG = ['알아보기', '다시보기', '✓ 마치기'];
 const CHO = 'ㄱㄲㄴㄷㄸㄹㅁㅂㅃㅅㅆㅇㅈㅉㅊㅋㅌㅍㅎ';
-// 섹션을 자료 순서로 정렬하고, 번호(WORD 001…)와 전체 목록 순서도 섹션 순서를 따른다
-SECTIONS.sort((x, y) => x.id.localeCompare(y.id));
-{
-  let n = 0;
-  const order = {};
-  for (const sec of SECTIONS) for (const id of sec.ids) order[id] = ++n;
-  TERMS.sort((x, y) => order[x.id] - order[y.id]);
-  TERMS.forEach(t => { t.no = String(order[t.id]).padStart(3, '0'); });
-}
-const byId = Object.fromEntries(TERMS.map(t => [t.id, t]));
+let TERMS = [];
+let SECTIONS = [];
+let byId = {};
 const $ = id => document.getElementById(id);
 
-// ---- 저장 ----
-let canSave = true;
-function load() {
-  try {
-    const data = JSON.parse(localStorage.getItem(STORE_KEY));
-    if (data && data.notes) return data;
-  } catch (e) { /* 읽기 실패는 빈 기록으로 시작 */ }
-  return { notes: {}, ui: {} };
+// ---- 브라우저 저장 (화면 상태만) ----
+function readJSON(key) {
+  try { return JSON.parse(localStorage.getItem(key)); } catch (e) { return null; }
 }
-const store = load();
-function persist() {
-  try {
-    localStorage.setItem(STORE_KEY, JSON.stringify(store));
-    canSave = true;
-  } catch (e) {
-    canSave = false;
+function writeJSON(key, value) {
+  try { localStorage.setItem(key, JSON.stringify(value)); } catch (e) { /* 저장 못 해도 화면은 계속 쓴다 */ }
+}
+// 로그인 전까지 사람 구분용 무작위 ID. 이 브라우저에서 한 번 만들고 계속 쓴다
+function deviceId() {
+  let id = null;
+  try { id = localStorage.getItem(DEVICE_KEY); } catch (e) { /* 아래에서 새로 만든다 */ }
+  if (!id) {
+    id = crypto.randomUUID();
+    try { localStorage.setItem(DEVICE_KEY, id); } catch (e) { /* 이번 방문에만 쓴다 */ }
   }
-  return canSave;
+  return id;
 }
+const DEVICE = deviceId();
+const store = { notes: {}, ui: readJSON(UI_KEY) || (readJSON(OLD_KEY) || {}).ui || {} };
+function persist() { writeJSON(UI_KEY, store.ui); }
 function note(id) {
   if (!store.notes[id]) store.notes[id] = { mine: '', status: 0 };
   return store.notes[id];
+}
+
+// ---- API ----
+async function api(path, options = {}) {
+  const res = await fetch(path, {
+    signal: AbortSignal.timeout(options.timeout || 8000), // 응답이 너무 늦으면 실패로 보고 알려 준다
+    ...options,
+    headers: { 'Content-Type': 'application/json', 'X-Device-Id': DEVICE, ...(options.headers || {}) },
+  });
+  const body = await res.json().catch(() => ({}));
+  if (!res.ok) throw Object.assign(new Error(body.error || '요청에 실패했어요'), { status: res.status });
+  return body;
 }
 
 // ---- 검색 (대소문자 무시 + 초성) ----
@@ -54,9 +62,7 @@ function findIn(text, q) {
   const hay = isChoQuery(q) ? toCho(text) : text.toLowerCase();
   return hay.indexOf(isChoQuery(q) ? q : q.toLowerCase());
 }
-function exText(t) {
-  return typeof t.ex === 'string' ? t.ex : `${t.ex.title} — ${t.ex.body}`;
-}
+function exText(t) { return t.ex || ''; }
 function esc(s) {
   return s.replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 }
@@ -77,10 +83,10 @@ function matchTerm(t, q) {
 }
 
 // ---- 화면 상태 ----
-let current = byId[store.ui.last] ? store.ui.last : TERMS[0].id;
+let current = null;
 let filter = ['all', '0', '1', '2'].includes(store.ui.filter) ? store.ui.filter : 'all';
 let view = store.ui.view === 'all' ? 'all' : 'sections';
-const open = store.ui.open || { [SECTIONS[0].id]: true }; // 처음엔 첫 섹션만 펼친다
+const open = store.ui.open || {}; // 처음 방문이면 boot()에서 첫 섹션만 펼친다
 let visible = [];
 
 function query() { return $('q').value.trim(); }
@@ -185,8 +191,27 @@ function renderCard() {
 }
 
 function setMsg(text) { $('msg').textContent = text; }
-function setSaved(ok) {
-  $('saved').textContent = ok ? '저장됨 ✓' : '이 브라우저에서는 저장할 수 없어요';
+function setSaved(state) {
+  $('saved').textContent = { saving: '저장 중…', ok: '저장됨 ✓', fail: '저장하지 못했어요 · 다시 시도 중' }[state] || '';
+  $('saved').classList.toggle('is-error', state === 'fail');
+}
+
+// 내 기록을 서버에 저장 (PUT). 실패하면 잠시 뒤 다시 시도한다
+const saveTimers = {};
+function saveNote(id, delay = 500) {
+  clearTimeout(saveTimers[id]);
+  setSaved('saving');
+  saveTimers[id] = setTimeout(async () => {
+    const n = note(id);
+    try {
+      await api(`/api/notes/${encodeURIComponent(id)}`, { method: 'PUT', body: JSON.stringify({ mine: n.mine, status: n.status }) });
+      if (id === current) setSaved('ok');
+    } catch (e) {
+      if (e.status === 400) { setMsg(e.message); setSaved(''); return; } // 서버가 거절한 값은 다시 보내지 않는다
+      if (id === current) setSaved('fail');
+      saveNote(id, 3000);
+    }
+  }, delay);
 }
 
 function select(id, openCard) {
@@ -302,7 +327,6 @@ $('c-rel').addEventListener('click', e => {
   select(b.dataset.id, true);
 });
 
-let saveTimer;
 $('mine').addEventListener('input', () => {
   const n = note(current);
   n.mine = $('mine').value;
@@ -314,9 +338,7 @@ $('mine').addEventListener('input', () => {
   } else {
     setMsg('');
   }
-  $('saved').textContent = '저장 중…';
-  clearTimeout(saveTimer);
-  saveTimer = setTimeout(() => setSaved(persist()), 400);
+  saveNote(current);
 });
 
 document.querySelectorAll('.st').forEach(b => b.addEventListener('click', () => {
@@ -329,10 +351,29 @@ document.querySelectorAll('.st').forEach(b => b.addEventListener('click', () => 
   }
   n.status = next;
   setMsg('');
-  setSaved(persist());
+  saveNote(current, 0);
   renderCard();
   renderList();
 }));
+
+// 삭제(DELETE): 이 용어의 내 설명과 상태를 지우고 처음(알아보기)으로
+$('reset').addEventListener('click', async () => {
+  const n = note(current);
+  if (!n.mine && n.status === 0) return setMsg('지울 기록이 없어요.');
+  if (!confirm('이 용어에 쓴 내 설명과 상태를 지울까요?')) return;
+  clearTimeout(saveTimers[current]);
+  try {
+    await api(`/api/notes/${encodeURIComponent(current)}`, { method: 'DELETE' });
+    store.notes[current] = { mine: '', status: 0 };
+    $('mine').value = '';
+    setMsg('기록을 지웠어요.');
+    setSaved('');
+    renderCard();
+    renderList();
+  } catch (e) {
+    setMsg('지우지 못했어요. 잠시 뒤 다시 시도해 주세요.');
+  }
+});
 
 // 홈 = 필터 '전체' + 자료별 보기 + 섹션 모두 닫힘 + 검색어 없음 + 맨 위. 제목을 누르면 여기로 온다
 function goHome() {
@@ -380,17 +421,64 @@ function fixNoteWidth() {
 }
 
 // ---- 시작 ----
-// 주소에 #용어id가 있으면 그 카드로 연다 (휴대폰에서는 뒤로 가기로 목록에 돌아오게 기록을 한 칸 둔다)
-const startId = decodeURIComponent(location.hash.slice(1));
-if (byId[startId]) {
-  current = startId;
-  if (isPhone()) {
-    history.replaceState(null, '', location.pathname + location.search);
-    history.pushState({ card: startId }, '', '#' + startId);
-    document.body.classList.add('view-card');
-  }
+// 서버 용어(position 순)를 화면 모양으로 바꾼다: 번호(no), 풀네임(full), 섹션별 묶음
+function useCatalog({ sections, terms }) {
+  TERMS = terms.map(t => ({ ...t, full: t.full_name, no: String(t.position).padStart(3, '0') }));
+  byId = Object.fromEntries(TERMS.map(t => [t.id, t]));
+  SECTIONS = sections.map(s => ({ ...s, ids: TERMS.filter(t => t.section_id === s.id).map(t => t.id) }));
 }
-fixNoteWidth();
-renderCard();
-renderList();
-if (window.matchMedia('(min-width: 821px)').matches) $('q').focus();
+
+// API 이전 버전에서 브라우저에 남긴 기록을 한 번만 서버로 옮긴다
+async function migrateOldNotes() {
+  const old = readJSON(OLD_KEY);
+  if (!old || !old.notes) return;
+  for (const [id, n] of Object.entries(old.notes)) {
+    if (!byId[id] || (!n.mine && !n.status) || store.notes[id]) continue;
+    const status = n.status === 2 && !String(n.mine || '').trim() ? 1 : n.status;
+    try {
+      await api(`/api/notes/${encodeURIComponent(id)}`, { method: 'PUT', body: JSON.stringify({ mine: n.mine || '', status }) });
+      store.notes[id] = { mine: n.mine || '', status };
+    } catch (e) { return; } // 실패하면 다음 방문 때 다시 옮긴다
+  }
+  try { localStorage.removeItem(OLD_KEY); } catch (e) { /* 다음에 다시 지운다 */ }
+}
+
+function showLoadError() {
+  $('list').innerHTML = '';
+  $('empty').hidden = false;
+  $('empty').innerHTML = '<p><strong>서버에 연결하지 못했어요.</strong><br>무료 서버라 처음 열 때 30초쯤 걸릴 수 있어요.</p>' +
+    '<button type="button" class="line-btn" onclick="location.reload()">다시 시도</button>';
+}
+
+async function boot() {
+  document.body.classList.add('loading', 'no-card');
+  try {
+    const [catalog, mine] = await Promise.all([api('/api/terms', { timeout: 60000 }), api('/api/notes', { timeout: 60000 })]);
+    useCatalog(catalog);
+    for (const n of mine.notes) store.notes[n.term_id] = { mine: n.mine, status: n.status };
+    await migrateOldNotes();
+  } catch (e) {
+    document.body.classList.remove('loading');
+    showLoadError();
+    return;
+  }
+  document.body.classList.remove('loading');
+  if (!store.ui.open) { open[SECTIONS[0].id] = true; store.ui.open = open; }
+  current = byId[store.ui.last] ? store.ui.last : TERMS[0].id;
+  // 주소에 #용어id가 있으면 그 카드로 연다 (휴대폰에서는 뒤로 가기로 목록에 돌아오게 기록을 한 칸 둔다)
+  const startId = decodeURIComponent(location.hash.slice(1));
+  if (byId[startId]) {
+    current = startId;
+    if (isPhone()) {
+      history.replaceState(null, '', location.pathname + location.search);
+      history.pushState({ card: startId }, '', '#' + startId);
+      document.body.classList.add('view-card');
+    }
+  }
+  document.body.classList.remove('no-card');
+  fixNoteWidth();
+  renderCard();
+  renderList();
+  if (window.matchMedia('(min-width: 821px)').matches) $('q').focus();
+}
+boot();

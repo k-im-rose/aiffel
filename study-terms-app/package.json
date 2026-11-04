@@ -1,0 +1,19 @@
+{
+  "name": "study-terms-app",
+  "version": "1.0.0",
+  "description": "아, 그게 뭐더라? — 나의 언어로 설명하며 외우는 용어 사전 겸 암기장",
+  "private": true,
+  "type": "commonjs",
+  "scripts": {
+    "start": "node --env-file-if-exists=.env server/index.js",
+    "dev": "node --watch --env-file-if-exists=.env server/index.js",
+    "test": "node --test test/*.test.js"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.118.0",
+    "express": "^5.3.0"
+  },
+  "engines": {
+    "node": ">=22.13"
+  }
+}

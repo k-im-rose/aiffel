@@ -19,3 +19,23 @@ services:
         sync: false
       - key: SUPABASE_ANON_KEY
         sync: false
+
+  # 아, 그게 뭐더라? (study-terms-app) — API 서버 + 화면
+  - type: web
+    name: aiffel-study-terms
+    runtime: node
+    plan: free
+    region: singapore
+    rootDir: study-terms-app
+    buildCommand: npm ci
+    startCommand: npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: HOST
+        value: 0.0.0.0
+      - key: SUPABASE_URL
+        sync: false
+      - key: SUPABASE_SECRET_KEY
+        sync: false

@@ -1,23 +1,24 @@
 # 아, 그게 뭐더라? (용어 사전 겸 암기장)
 
 ## 개요
-헷갈리는 용어를 사전처럼 찾고, 내 말로 설명하며 외우는 용어장. 특정 주제 전용이 아니며, 지금은 AI 개발 용어 144개(교육자료 01-04, 02-01~02-07)가 들어 있다. 줄임말은 '아그뭐'. 1인용, 로그인 없음.
+헷갈리는 용어를 사전처럼 찾고, 내 말로 설명하며 외우는 용어장. 특정 주제 전용이 아니며, 지금은 AI 개발 용어 144개(교육자료 01-04, 02-01~02-07)가 들어 있다. 줄임말은 '아그뭐'. 1인용, 로그인 없음(브라우저마다 기기 ID로 구분). API 서버(Express) + DB(Supabase / 로컬 SQLite).
 - 무엇을 만들지: `PRD.md`
 - 어떻게 보일지: `DESIGN.md`
 - 어떻게 만들지(기술 선택): `설계.md`
 - 용어 원본: `용어집.md` (교육자료 01-01~02-07에서 뽑은 목록)
 
 ## 실행
-- 빌드 없음. `index.html`을 브라우저로 열면 된다.
-- 로컬 서버로 볼 때: `python3 -m http.server 8000` 후 `http://localhost:8000/study-terms-app/` (저장소 루트에서 실행)
+- `npm install` 후 `npm start` → http://localhost:3000 (Supabase 설정이 없으면 로컬 SQLite)
+- 시험: `npm test`
 
 ## 구조
-- `index.html` 구조 / `styles.css` 표현 / `app.js` 동작
-- `terms.js` 처음 만든 기본 용어 20개와 `addSection()`. 섹션은 용어 src의 첫 자료 기준이고, 번호(WORD 001…)는 app.js가 섹션 순서대로 매긴다. `terms-02-0N.js` 자료별 용어 (자료마다 파일 하나, 섹션 하나)
-- 용어 id는 저장된 기록과 이어지므로 바꾸지 않는다. 새 자료 용어는 새 `terms-NN-NN.js` 파일로 추가하고 `index.html`에 script 한 줄을 더한다
+- `public/` 화면 (`index.html` 구조 / `styles.css` 표현 / `app.js` 동작). 데이터는 API로만 주고받는다
+- `server/` API 서버(Express)와 저장소(`store/supabase.js`, `store/sqlite.js`). DB에 접근하는 코드는 server/에만 둔다
+- `data/terms.js` 처음 만든 기본 용어 20개와 `addSection()`. 섹션은 용어 src의 첫 자료 기준이고, 번호(WORD 001…)는 서버(server/terms.js)가 섹션 순서대로 매긴다. `data/terms-02-0N.js` 자료별 용어 (자료마다 파일 하나, 섹션 하나)
+- 용어 id는 저장된 기록과 이어지므로 바꾸지 않는다. 새 자료 용어는 `data/`에 새 `terms-NN-NN.js` 파일로 추가하고 서버를 다시 켜면 DB에 들어간다
 - 용어 추가 기준: 교육자료 PDF에 나온 실전 개발·AI 용어만. 뜻(def)은 PDF 설명 기반, easy는 초등학생 눈높이 비유, ex는 실제 장면. 이미 있는 개념이면 새로 만들지 않고 src에 자료 번호만 덧붙인다
-- 저장: 내 설명과 상태만 브라우저 localStorage에 저장
-- `styles.css`·`app.js`·`terms*.js`를 고치면 `index.html`의 `?v=` 숫자를 올린다 (브라우저가 옛 파일을 캐시하지 않게)
+- 저장: 내 설명과 상태는 API → DB(notes 표). 브라우저에는 화면 상태(펼친 섹션 등)와 기기 ID만
+- `public/styles.css`·`app.js`를 고치면 `public/index.html`의 `?v=` 숫자를 올린다. 용어 원본(`data/`)을 고치면 서버를 다시 켠다 (브라우저가 옛 파일을 캐시하지 않게)
 
 ## 규칙
 - PRD의 범위(Must)만 만든다. Won't 목록에 있는 기능은 먼저 묻는다.
@@ -28,5 +29,6 @@
 - 외부 라이브러리는 꼭 필요할 때만, 먼저 묻는다.
 
 ## 하지 말 것
+- `.env`(Supabase 비밀 키)를 읽거나 출력하지 말 것. 비밀 키를 public/ 코드에 넣지 말 것.
 - 비밀값(API 키 등)을 코드에 넣지 말 것.
 - `git reset --hard`, 강제 푸시는 승인 없이 실행하지 말 것.
