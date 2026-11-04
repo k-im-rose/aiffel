@@ -55,6 +55,8 @@ body.view-card .site-foot { display: none; }
   background: var(--ink); color: var(--white);
   font-weight: 600; font-size: 20px; letter-spacing: 0.02em;
 }
+/* 로고: 검정 칸 안, 글자 앞. 크기는 글자 크기를 따라간다 */
+.brand-logo { width: 1.35em; height: 1.35em; margin: -0.2em 0.3em -0.2em -0.15em; vertical-align: middle; }
 .title {
   margin: 0; font-weight: 700;
   font-size: var(--title-size); line-height: 1.08; letter-spacing: -0.02em;
