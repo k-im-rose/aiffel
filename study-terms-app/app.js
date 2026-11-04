@@ -1,5 +1,5 @@
-// 내 말로 용어장 — 화면 동작
-// 저장: 내 설명과 상태만 localStorage에 남긴다. 용어 데이터는 terms.js.
+// 아, 그게 뭐더라? — 화면 동작
+// 저장: 내 설명과 상태만 localStorage에 남긴다. 용어 데이터는 terms.js와 terms-02-0N.js.
 
 const STORE_KEY = 'study-terms:v1';
 const STATUS_TAG = ['알아보기', '다시 보기', '✓ 마치기'];
@@ -45,6 +45,9 @@ function findIn(text, q) {
   const hay = isChoQuery(q) ? toCho(text) : text.toLowerCase();
   return hay.indexOf(isChoQuery(q) ? q : q.toLowerCase());
 }
+function exText(t) {
+  return typeof t.ex === 'string' ? t.ex : `${t.ex.title} — ${t.ex.body}`;
+}
 function esc(s) {
   return s.replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 }
@@ -59,7 +62,7 @@ function matchTerm(t, q) {
   if (findIn(t.term, q) >= 0 || findIn(t.ko, q) >= 0) return { ok: true, hint: '' };
   if (findIn(t.full, q) >= 0) return { ok: true, hint: '영문' };
   if (findIn(t.def, q) >= 0) return { ok: true, hint: '뜻' };
-  if (findIn(t.ex.title + ' ' + t.ex.body, q) >= 0) return { ok: true, hint: '예시' };
+  if (findIn(t.easy || '', q) >= 0 || findIn(exText(t), q) >= 0) return { ok: true, hint: '설명' };
   if (findIn(note(t.id).mine, q) >= 0) return { ok: true, hint: '내 설명' };
   return { ok: false };
 }
@@ -67,32 +70,60 @@ function matchTerm(t, q) {
 // ---- 화면 상태 ----
 let current = byId[store.ui.last] ? store.ui.last : TERMS[0].id;
 let filter = ['all', '0', '1', '2'].includes(store.ui.filter) ? store.ui.filter : 'all';
-let showExample = false;
+let view = store.ui.view === 'all' ? 'all' : 'sections';
+const open = store.ui.open || { core: true };
 let visible = [];
 
 function query() { return $('q').value.trim(); }
 
+function rowHtml(t, q, hint) {
+  const st = note(t.id).status;
+  return `<li><button type="button" class="row" data-id="${t.id}" aria-current="${t.id === current}">` +
+    `<span class="row-no">${t.no}</span>` +
+    `<span><span class="row-name">${highlight(t.term, q)}</span>` +
+    `<span class="row-ko">${highlight(t.ko, q)}${hint ? `<span class="row-hint">· ${hint}에서 찾음</span>` : ''}</span></span>` +
+    `<span class="tag state state-${st}">${STATUS_TAG[st]}</span>` +
+    `</button></li>`;
+}
+
+// 검색 중이거나 '전체 목록'이면 한 줄 목록, 아니면 자료별 섹션(펼치고 접기)
 function renderList() {
   const q = query();
   visible = [];
+  const pass = id => {
+    const t = byId[id];
+    if (filter !== 'all' && String(note(id).status) !== filter) return null;
+    return matchTerm(t, q);
+  };
   const rows = [];
-  for (const t of TERMS) {
-    const st = note(t.id).status;
-    if (filter !== 'all' && String(st) !== filter) continue;
-    const m = matchTerm(t, q);
-    if (!m.ok) continue;
-    visible.push(t.id);
-    rows.push(
-      `<li><button type="button" class="row" data-id="${t.id}" aria-current="${t.id === current}">` +
-      `<span class="row-no">${t.no}</span>` +
-      `<span><span class="row-name">${highlight(t.term, q)}</span>` +
-      `<span class="row-ko">${highlight(t.ko, q)}${m.hint ? `<span class="row-hint">· ${m.hint}에서 찾음</span>` : ''}</span></span>` +
-      `<span class="tag state state-${st}">${STATUS_TAG[st]}</span>` +
-      `</button></li>`
-    );
+  if (q || view === 'all') {
+    for (const t of TERMS) {
+      const m = pass(t.id);
+      if (!m || !m.ok) continue;
+      visible.push(t.id);
+      rows.push(rowHtml(t, q, m.hint));
+    }
+  } else {
+    for (const sec of SECTIONS) {
+      const ids = sec.ids.filter(id => { const m = pass(id); return m && m.ok; });
+      if (filter !== 'all' && !ids.length) continue;
+      const done = sec.ids.filter(id => note(id).status === 2).length;
+      const isOpen = !!open[sec.id];
+      rows.push(
+        `<li><button type="button" class="sec-head" data-sec="${sec.id}" aria-expanded="${isOpen}">` +
+        `<span class="sec-title"><span class="sec-caret" aria-hidden="true">${isOpen ? '▾' : '▸'}</span>` +
+        `${sec.id === 'core' ? '' : `<span class="sec-no">${sec.id}</span>`}${esc(sec.title)}</span>` +
+        `<span class="sec-count">${done} / ${sec.ids.length}</span></button></li>`
+      );
+      if (!isOpen) continue;
+      for (const id of ids) {
+        visible.push(id);
+        rows.push(rowHtml(byId[id], '', ''));
+      }
+    }
   }
   $('list').innerHTML = rows.join('');
-  $('empty').hidden = visible.length > 0;
+  $('empty').hidden = visible.length > 0 || (!q && view === 'sections' && rows.length > 0);
 
   const counts = { all: TERMS.length, 0: 0, 1: 0, 2: 0 };
   TERMS.forEach(t => counts[note(t.id).status]++);
@@ -100,6 +131,7 @@ function renderList() {
     b.setAttribute('aria-pressed', String(b.dataset.filter === filter));
     b.querySelector('span').textContent = counts[b.dataset.filter];
   });
+  document.querySelectorAll('.view-btn').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.view === view)));
   $('prog').textContent = `${counts[2]} / ${TERMS.length}`;
   $('bar').style.width = Math.round(counts[2] / TERMS.length * 100) + '%';
 }
@@ -112,11 +144,18 @@ function termSize(word) {
   return 'clamp(34px, 6.5vw, 56px)';
 }
 
+function setSub(el, text) {
+  el.hidden = !text;
+  el.querySelector('.def-v').textContent = text || '';
+}
+
 function renderCard() {
   const t = byId[current];
   const n = note(t.id);
   $('c-no').textContent = `CONCEPT ${t.no}`;
   $('c-src').textContent = `출처 ${t.src}`;
+  $('c-level').textContent = t.level || '';
+  $('c-level').hidden = !t.level;
   $('c-term').textContent = t.term;
   $('c-term').style.setProperty('--term-size', termSize(t.term));
   document.querySelector('.note-ko').style.setProperty('--term-size', termSize(t.term));
@@ -127,16 +166,17 @@ function renderCard() {
   $('c-flow').innerHTML = t.flow.map((s, i) =>
     `<span class="flow-step">${i ? '<span class="flow-arrow" aria-hidden="true">→</span>' : ''}<span class="flow-box">${esc(s)}</span></span>`
   ).join('');
+  $('c-flow').hidden = !t.flow.length;
 
-  $('c-def-label').textContent = showExample ? 'IN PRACTICE' : 'DEFINITION';
-  $('c-def').innerHTML = showExample
-    ? `<span class="ex-title">${esc(t.ex.title)}</span><span class="ex-text">${esc(t.ex.body)}</span>`
-    : esc(t.def);
-  $('c-ex-btn').textContent = showExample ? '정의로 돌아가기 ↙' : '예시 보기 ↗';
+  $('c-def').textContent = t.def;
+  setSub($('c-easy'), t.easy);
+  setSub($('c-ex'), exText(t));
 
   if (document.activeElement !== $('mine')) $('mine').value = n.mine;
   document.querySelectorAll('.st').forEach(b => b.setAttribute('aria-pressed', String(Number(b.dataset.status) === n.status)));
-  $('c-rel').innerHTML = t.related.map(id => `<button type="button" data-id="${id}">${esc(byId[id].ko)}</button>`).join('');
+  const rel = t.related.filter(id => byId[id] && id !== t.id);
+  $('c-rel').innerHTML = rel.map(id => `<button type="button" data-id="${id}">${esc(byId[id].ko)}</button>`).join('');
+  $('c-related').hidden = !rel.length;
 }
 
 function setMsg(text) { $('msg').textContent = text; }
@@ -146,7 +186,9 @@ function setSaved(ok) {
 
 function select(id, openCard) {
   current = id;
-  showExample = false;
+  // 그 용어가 든 섹션을 펼쳐 둔다 (연결할 용어로 넘어갔을 때 목록에서도 보이게)
+  const sec = SECTIONS.find(x => x.ids.includes(id));
+  if (sec) { open[sec.id] = true; store.ui.open = open; }
   store.ui.last = id;
   persist();
   setMsg('');
@@ -161,9 +203,24 @@ function select(id, openCard) {
 
 // ---- 이벤트 ----
 $('list').addEventListener('click', e => {
+  const head = e.target.closest('.sec-head');
+  if (head) {
+    open[head.dataset.sec] = !open[head.dataset.sec];
+    store.ui.open = open;
+    persist();
+    renderList();
+    return;
+  }
   const row = e.target.closest('.row');
   if (row) select(row.dataset.id, true);
 });
+
+document.querySelectorAll('.view-btn').forEach(b => b.addEventListener('click', () => {
+  view = b.dataset.view;
+  store.ui.view = view;
+  persist();
+  renderList();
+}));
 
 $('q').addEventListener('input', renderList);
 $('q').addEventListener('keydown', e => {
@@ -200,11 +257,6 @@ $('show-all').addEventListener('click', () => {
   persist();
   renderList();
   $('q').focus();
-});
-
-$('c-ex-btn').addEventListener('click', () => {
-  showExample = !showExample;
-  renderCard();
 });
 
 $('c-rel').addEventListener('click', e => {
