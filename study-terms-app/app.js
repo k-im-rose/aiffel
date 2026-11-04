@@ -201,12 +201,14 @@ function select(id, openCard) {
   renderCard();
   renderList();
   if (openCard) openCardView(id);
+  // PC: 방문 기록은 쌓지 않고 주소만 그 용어로 바꾼다 (주소를 복사해 공유할 수 있게)
+  else if (!isPhone()) history.replaceState(null, '', '#' + id);
 }
 
 // 휴대폰: 카드를 열 때 방문 기록을 남겨서 브라우저 뒤로 가기(사파리 스와이프 포함)로 목록에 돌아오게 한다
 function isPhone() { return window.matchMedia('(max-width: 820px)').matches; }
 function openCardView(id) {
-  if (!isPhone()) return;
+  if (!isPhone()) { history.replaceState(null, '', '#' + id); return; }
   document.body.classList.add('view-card');
   window.scrollTo(0, 0);
   if (!(history.state && history.state.card === id)) history.pushState({ card: id }, '', '#' + id);
