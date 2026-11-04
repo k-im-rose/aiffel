@@ -33,7 +33,7 @@ button { cursor: pointer; }
 /* 머리말 */
 .masthead { margin-bottom: 36px; }
 /* 제목과 안내 사이를 가로로 뻗는 얇은 선으로 잇는다. 세로 가운데 정렬 */
-.mast-row { display: flex; align-items: center; gap: 20px; }
+.mast-row { display: flex; align-items: center; gap: 38px; }
 .mast-rule { flex: 1 1 auto; min-width: 40px; height: 1px; background: var(--ink); }
 .brand {
   display: inline-block; margin: 0 0 16px; padding: 4px 10px 3px;
@@ -206,7 +206,7 @@ mark { background: var(--yellow); color: inherit; padding: 0 1px; }
   .app { padding: 20px 16px 48px; }
   .masthead { margin-bottom: 24px; }
   .mast-row { flex-direction: column; align-items: flex-start; gap: 12px; }
-  .mast-note { word-break: keep-all; }
+  .mast-note { word-break: keep-all; line-height: 1.45; }
   .mast-rule { display: none; }
   .m-only { display: inline; }
   .mast-note .line, .mast-note .info { white-space: normal; }
