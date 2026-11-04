@@ -150,6 +150,7 @@ mark { background: var(--yellow); color: inherit; padding: 0 1px; }
 }
 .note-ko strong { display: block; font-size: 20px; font-weight: 700; }
 .note-ko em { display: block; margin-top: 2px; font-style: normal; font-size: 17px; font-weight: 500; }
+.note-ko em[hidden] { display: none; }
 
 .flow { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 24px; }
 .flow-box { padding: 8px 12px; border: 1.5px solid var(--ink); font-size: 14px; font-weight: 500; }

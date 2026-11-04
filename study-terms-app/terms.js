@@ -1,5 +1,6 @@
 // 시작용 20개 용어. 원본은 용어집.md, 카드 구성은 DESIGN.md "용어 하나에 필요한 내용"을 따른다.
 // id는 저장된 내 설명과 이어지는 열쇠라서 바꾸지 않는다.
+// full: 약어의 영문 풀네임만 쓴다. 풀네임이 없는 용어는 비워 두면 카드에서 그 줄이 숨겨진다.
 const TERMS = [
   {
     id: 'genai', no: '001', term: 'GenAI', ko: '생성형 AI', full: 'Generative AI', src: '01-04',
@@ -9,49 +10,49 @@ const TERMS = [
     related: ['hallucination', 'prompt', 'agent'],
   },
   {
-    id: 'hallucination', no: '002', term: 'Hallucination', ko: '환각', full: 'AI hallucination', src: '01-04',
+    id: 'hallucination', no: '002', term: 'Hallucination', ko: '환각', full: '', src: '01-04',
     flow: ['질문', '그럴듯한 답', '사실 확인'],
     def: 'AI가 없는 사실이나 파일명을 사실처럼 지어내는 현상. 그럴듯함과 정확함은 다르다.',
     ex: { title: '없는 함수', body: 'AI가 존재하지 않는 함수를 알려 줘서 실행하면 오류가 납니다. 그래서 결과는 직접 확인해야 합니다.' },
     related: ['genai', 'vibe-coding'],
   },
   {
-    id: 'vibe-coding', no: '003', term: 'Vibe coding', ko: '바이브 코딩', full: 'Vibe coding', src: '01-04',
+    id: 'vibe-coding', no: '003', term: 'Vibe coding', ko: '바이브 코딩', full: '', src: '01-04',
     flow: ['의도 말하기', 'AI가 생성', '확인·재지시'],
     def: '만들 것을 말로 설명하면 AI가 코드를 짜고, 사람은 결과를 확인하며 다시 지시하는 개발 방식.',
     ex: { title: '할 일 앱', body: '"할 일을 추가하고 완료 표시하게 해 줘"라고 말하고, 화면을 직접 눌러 본 뒤 고칠 점을 다시 지시합니다.' },
     related: ['prompt', 'harness', 'commit'],
   },
   {
-    id: 'prompt', no: '004', term: 'Prompt', ko: '프롬프트', full: 'Prompt', src: '02-01',
+    id: 'prompt', no: '004', term: 'Prompt', ko: '프롬프트', full: '', src: '02-01',
     flow: ['만들 것', '조건', '지킬 것'],
     def: 'AI에게 보내는 지시문. 만들 것과 조건, 지킬 것을 함께 말한다.',
     ex: { title: '좋은 프롬프트', body: '"신청 버튼을 누르면 남은 자리가 줄게 해 줘. 비밀값은 코드에 넣지 마."' },
     related: ['vibe-coding', 'genai'],
   },
   {
-    id: 'agent', no: '005', term: 'Agent', ko: '에이전트', full: 'AI agent', src: '01-04 · 02-06',
+    id: 'agent', no: '005', term: 'Agent', ko: '에이전트', full: '', src: '01-04 · 02-06',
     flow: ['목표', '도구 사용', '결과 확인'],
     def: '목표를 주면 필요한 도구를 골라 쓰고, 결과를 보며 끝까지 해내는 AI.',
     ex: { title: 'Claude Code', body: '"빈 프로젝트 세워 줘" 한마디에 폴더를 만들고, 파일을 쓰고, 실행해서 확인까지 합니다.' },
     related: ['harness', 'agent-loop', 'tool-use'],
   },
   {
-    id: 'harness', no: '006', term: 'Harness', ko: '하네스', full: 'Agent = Model + Harness', src: '02-06',
+    id: 'harness', no: '006', term: 'Harness', ko: '하네스', full: '', src: '02-06',
     flow: ['모델', '하네스', '에이전트'],
     def: 'AI 모델이 실제로 일하도록 감싸 주는 작업 환경. 파일 접근, 도구 권한, 안전장치를 맡는다.',
     ex: { title: 'Claude Code', body: '모델이 파일을 읽고 명령을 실행하게 해 주고, 위험한 작업은 사용자 승인을 받게 합니다.' },
     related: ['agent', 'tool-use'],
   },
   {
-    id: 'agent-loop', no: '007', term: 'Agent loop', ko: '에이전트 루프', full: 'Agentic loop', src: '02-06',
+    id: 'agent-loop', no: '007', term: 'Agent loop', ko: '에이전트 루프', full: '', src: '02-06',
     flow: ['계획', '실행', '관찰·반성'],
     def: '계획 → 실행 → 관찰 → 반성을 목표를 이룰 때까지 반복하는 것. 한 번 답하고 끝나는 챗봇과의 차이.',
     ex: { title: '오류 고치기', body: '코드를 고치고, 실행해 보고, 실패하면 오류를 읽고 다시 고치기를 통과할 때까지 반복합니다.' },
     related: ['agent', 'tool-use'],
   },
   {
-    id: 'tool-use', no: '008', term: 'Tool use', ko: '도구 호출', full: 'Tool calling', src: '02-06',
+    id: 'tool-use', no: '008', term: 'Tool use', ko: '도구 호출', full: '', src: '02-06',
     flow: ['모델 판단', '도구 부르기', '결과 받기'],
     def: '모델이 검색·파일 읽기·코드 실행 같은 바깥 도구를 정해진 방식으로 부르는 것.',
     ex: { title: '파일 읽기', body: '"PRD.md 읽어 줘"라고 하면 모델이 파일 읽기 도구를 불러 내용을 가져옵니다.' },
@@ -65,14 +66,14 @@ const TERMS = [
     related: ['tool-use', 'skill'],
   },
   {
-    id: 'skill', no: '010', term: 'Skill', ko: '스킬', full: 'Agent skill', src: '02-06',
+    id: 'skill', no: '010', term: 'Skill', ko: '스킬', full: '', src: '02-06',
     flow: ['작업 방법 정리', '폴더에 저장', '필요할 때 사용'],
     def: '자주 하는 작업 방법을 한 번 적어 두고 계속 꺼내 쓰는 재사용 설명서. 폴더 하나로 되어 있다.',
     ex: { title: 'frontend-design', body: '화면을 만들 때 뻔한 AI 디자인을 피하는 지침을 AI가 따르게 합니다.' },
     related: ['mcp', 'harness'],
   },
   {
-    id: 'web-layers', no: '011', term: 'HTML·CSS·JS', ko: '웹페이지의 세 겹', full: 'Structure, style, behavior', src: '02-02',
+    id: 'web-layers', no: '011', term: 'HTML·CSS·JS', ko: '웹페이지의 세 겹', full: 'HyperText Markup Language · Cascading Style Sheets · JavaScript', src: '02-02',
     flow: ['구조 HTML', '표현 CSS', '동작 JS'],
     def: '웹페이지를 구조(HTML)·표현(CSS)·동작(JS) 세 겹으로 나눠 보는 관점. 어디를 고칠지 짚기 쉬워진다.',
     ex: { title: '버튼 하나', body: '버튼이 있는 건 HTML, 노란색인 건 CSS, 누르면 저장되는 건 JS 덕분입니다.' },
@@ -93,7 +94,7 @@ const TERMS = [
     related: ['front-back', 'database'],
   },
   {
-    id: 'database', no: '014', term: 'Database', ko: '데이터베이스', full: 'Database (DB)', src: '02-03 · 02-04',
+    id: 'database', no: '014', term: 'Database', ko: '데이터베이스', full: '', src: '02-03 · 02-04',
     flow: ['저장', '조회', '수정·삭제'],
     def: '데이터를 저장해 두고 필요할 때 찾아 꺼내는 저장소. 새로고침해도 데이터가 남게 해 준다.',
     ex: { title: 'Supabase', body: 'Todo 앱의 할 일이 Supabase 표에 저장돼서, 다시 열어도 그대로 남아 있습니다.' },
@@ -114,14 +115,14 @@ const TERMS = [
     related: ['commit', 'deploy', 'auth'],
   },
   {
-    id: 'commit', no: '017', term: 'Commit', ko: '커밋', full: 'Git commit', src: '02-04',
+    id: 'commit', no: '017', term: 'Commit', ko: '커밋', full: '', src: '02-04',
     flow: ['작업', '동작 확인', '커밋'],
     def: '지금 잘 되는 상태에 이름을 붙여 되돌릴 지점을 남기는 기록.',
     ex: { title: '바이브 코딩 중', body: '화면이 뜨는 순간 커밋해 두면, AI가 망가뜨려도 그 지점으로 돌아갈 수 있습니다.' },
     related: ['env', 'deploy'],
   },
   {
-    id: 'deploy', no: '018', term: 'Deploy', ko: '배포', full: 'Deployment', src: '02-02 · 02-05',
+    id: 'deploy', no: '018', term: 'Deploy', ko: '배포', full: '', src: '02-02 · 02-05',
     flow: ['내 컴퓨터', '호스팅', '공개 주소'],
     def: '내 컴퓨터에서만 보이던 것을 인터넷 주소로 올려 누구나 접속하게 하는 일.',
     ex: { title: 'GitHub Pages', body: '냥이의 라면가게를 올려 k-im-rose.github.io 주소로 누구나 열 수 있게 했습니다.' },

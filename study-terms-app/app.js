@@ -122,6 +122,7 @@ function renderCard() {
   document.querySelector('.note-ko').style.setProperty('--term-size', termSize(t.term));
   $('c-ko').textContent = t.ko;
   $('c-full').textContent = t.full;
+  $('c-full').hidden = !t.full;
   // 화살표는 다음 상자와 묶어서, 줄이 바뀌어도 화살표만 남지 않게 한다
   $('c-flow').innerHTML = t.flow.map((s, i) =>
     `<span class="flow-step">${i ? '<span class="flow-arrow" aria-hidden="true">→</span>' : ''}<span class="flow-box">${esc(s)}</span></span>`
@@ -255,6 +256,7 @@ $('back').addEventListener('click', () => {
 });
 
 // 노란 메모칸 너비를 가장 긴 용어에 맞춰 고정한다 (용어가 바뀌어도 칸 크기가 흔들리지 않게)
+const NOTE_MAX = 340;
 function fixNoteWidth() {
   const probe = document.querySelector('.note-ko').cloneNode(true);
   probe.style.cssText = 'position:absolute; visibility:hidden; width:auto; left:-9999px;';
@@ -268,7 +270,8 @@ function fixNoteWidth() {
     max = Math.max(max, probe.getBoundingClientRect().width);
   }
   probe.remove();
-  document.documentElement.style.setProperty('--note-w', Math.ceil(max) + 'px');
+  // 아주 긴 풀네임(HTML·CSS·JS 등)은 칸을 무한정 넓히지 않고 칸 안에서 줄을 바꾼다
+  document.documentElement.style.setProperty('--note-w', Math.ceil(Math.min(max, NOTE_MAX)) + 'px');
 }
 
 // ---- 시작 ----
