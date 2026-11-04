@@ -6,7 +6,7 @@
 <title>아 그게 뭐더라?</title>
 <meta name="description" content="헷갈리는 용어를 내 말로 설명해 보며 익히는 용어 사전 겸 암기장">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
-<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="styles.css?v=2">
 </head>
 <body>
 <div class="app">
@@ -28,7 +28,7 @@
       <input id="q" class="search" type="search" placeholder="용어 검색 — mcp, 하네스, ㅎㄴㅅ" autocomplete="off" spellcheck="false">
 
       <div class="progress">
-        <div class="progress-text"><span>마침</span><strong id="prog">0 / 20</strong></div>
+        <div class="progress-text"><span>마치기</span><strong id="prog">0 / 20</strong></div>
         <div class="bar" aria-hidden="true"><div id="bar"></div></div>
       </div>
 
@@ -36,7 +36,7 @@
         <button type="button" class="chip" data-filter="all">전체 <span></span></button>
         <button type="button" class="chip" data-filter="0">알아보기 <span></span></button>
         <button type="button" class="chip" data-filter="1">다시 보기 <span></span></button>
-        <button type="button" class="chip" data-filter="2">마침 <span></span></button>
+        <button type="button" class="chip" data-filter="2">마치기 <span></span></button>
       </div>
 
       <ul id="list" class="list"></ul>
@@ -89,7 +89,7 @@
     </main>
   </div>
 </div>
-<script src="terms.js"></script>
-<script src="app.js"></script>
+<script src="terms.js?v=2"></script>
+<script src="app.js?v=2"></script>
 </body>
 </html>

@@ -148,6 +148,7 @@ mark { background: var(--yellow); color: inherit; padding: 0 1px; }
 
 .flow { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 24px; }
 .flow-box { padding: 8px 12px; border: 1.5px solid var(--ink); font-size: 14px; font-weight: 500; }
+.flow-step { display: inline-flex; align-items: center; gap: 8px; white-space: nowrap; }
 .flow-arrow { font-size: 16px; }
 
 .section { margin-top: 28px; padding-top: 16px; border-top: 2px solid var(--ink); }
@@ -212,5 +213,8 @@ mark { background: var(--yellow); color: inherit; padding: 0 1px; }
     display: inline-flex; align-items: center; min-height: 44px; margin-bottom: 12px; padding: 0 14px;
     border: 1.5px solid var(--ink); background: transparent; font-weight: 600;
   }
-  .status { flex-wrap: wrap; }
+  .filters { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .chip { padding: 0 4px; font-size: 13px; }
+  .chip span { margin-left: 1px; }
+  .flow-box { padding: 7px 10px; font-size: 13px; }
 }

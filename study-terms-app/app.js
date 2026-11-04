@@ -2,7 +2,7 @@
 // 저장: 내 설명과 상태만 localStorage에 남긴다. 용어 데이터는 terms.js.
 
 const STORE_KEY = 'study-terms:v1';
-const STATUS_TAG = ['알아보기', '다시 보기', '✓ 마침']; // 목록 표시: 끝난 용어는 결과로 보여 준다
+const STATUS_TAG = ['알아보기', '다시 보기', '✓ 마치기'];
 const CHO = 'ㄱㄲㄴㄷㄸㄹㅁㅂㅃㅅㅆㅇㅈㅉㅊㅋㅌㅍㅎ';
 const byId = Object.fromEntries(TERMS.map(t => [t.id, t]));
 const $ = id => document.getElementById(id);
@@ -122,7 +122,10 @@ function renderCard() {
   document.querySelector('.note-ko').style.setProperty('--term-size', termSize(t.term));
   $('c-ko').textContent = t.ko;
   $('c-full').textContent = t.full;
-  $('c-flow').innerHTML = t.flow.map(s => `<span class="flow-box">${esc(s)}</span>`).join('<span class="flow-arrow" aria-hidden="true">→</span>');
+  // 화살표는 다음 상자와 묶어서, 줄이 바뀌어도 화살표만 남지 않게 한다
+  $('c-flow').innerHTML = t.flow.map((s, i) =>
+    `<span class="flow-step">${i ? '<span class="flow-arrow" aria-hidden="true">→</span>' : ''}<span class="flow-box">${esc(s)}</span></span>`
+  ).join('');
 
   $('c-def-label').textContent = showExample ? 'IN PRACTICE' : 'DEFINITION';
   $('c-def').innerHTML = showExample

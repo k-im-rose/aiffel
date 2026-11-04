@@ -15,6 +15,7 @@
 - `index.html` 구조 / `styles.css` 표현 / `app.js` 동작
 - `terms.js` 미리 넣어 둔 용어 데이터 (시작용 20개, id는 저장된 기록과 이어지므로 바꾸지 않는다)
 - 저장: 내 설명과 상태만 브라우저 localStorage에 저장
+- `styles.css`·`app.js`·`terms.js`를 고치면 `index.html`의 `?v=` 숫자를 올린다 (브라우저가 옛 파일을 캐시하지 않게)
 
 ## 규칙
 - PRD의 범위(Must)만 만든다. Won't 목록에 있는 기능은 먼저 묻는다.
