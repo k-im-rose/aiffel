@@ -162,11 +162,7 @@ function renderCard() {
   $('c-ko').textContent = t.ko;
   $('c-full').textContent = t.full;
   $('c-full').hidden = !t.full;
-  // 화살표는 다음 상자와 묶어서, 줄이 바뀌어도 화살표만 남지 않게 한다
-  $('c-flow').innerHTML = t.flow.map((s, i) =>
-    `<span class="flow-step">${i ? '<span class="flow-arrow" aria-hidden="true">→</span>' : ''}<span class="flow-box">${esc(s)}</span></span>`
-  ).join('');
-  $('c-flow').hidden = !t.flow.length;
+  // 개념 흐름(t.flow)은 화면에 보이지 않는다. 뜻을 알기 어려워 쉬운 설명·예시로 대신한다. 데이터는 남겨 둔다
 
   $('c-def').textContent = t.def;
   setSub($('c-easy'), t.easy);
