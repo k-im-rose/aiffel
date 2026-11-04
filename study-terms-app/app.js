@@ -208,6 +208,8 @@ function select(id, openCard) {
 
 // 휴대폰: 카드를 열 때 방문 기록을 남겨서 브라우저 뒤로 가기(사파리 스와이프 포함)로 목록에 돌아오게 한다
 function isPhone() { return window.matchMedia('(max-width: 820px)').matches; }
+// 뒤로 가기 때 사파리가 스크롤 위치를 늦게(애니메이션으로) 되돌리면 그동안 누른 것이 무시된다. 스크롤은 직접 맞춘다
+if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
 function openCardView(id) {
   if (!isPhone()) { history.replaceState(null, '', '#' + id); return; }
   document.body.classList.add('view-card');

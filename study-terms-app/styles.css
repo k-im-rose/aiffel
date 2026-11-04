@@ -22,6 +22,8 @@ body {
 button, input, textarea { font: inherit; color: inherit; }
 [hidden] { display: none !important; }
 button { cursor: pointer; }
+/* 휴대폰에서 두 번 누르기 확대 판정을 기다리지 않고 바로 반응하게 */
+a, button, input, textarea { touch-action: manipulation; }
 :focus-visible { outline: 3px solid var(--ink); outline-offset: 2px; }
 
 .sr-only {
@@ -48,7 +50,8 @@ button { cursor: pointer; }
 }
 /* 제목을 누르면 처음 화면으로 (주소의 #용어id 없이 다시 연다) */
 .home { color: inherit; text-decoration: none; }
-.home:hover .hl { background: var(--ink); color: var(--yellow); }
+/* 마우스가 있는 기기에서만. 터치 기기에서 '올려 둔' 상태가 남아 한 번 더 눌러야 하는 일을 막는다 */
+@media (hover: hover) { .home:hover .hl { background: var(--ink); color: var(--yellow); } }
 .hl {
   background: var(--yellow); padding: 0 10px;
   -webkit-box-decoration-break: clone; box-decoration-break: clone;
