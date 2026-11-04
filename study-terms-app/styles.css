@@ -50,7 +50,8 @@ button { cursor: pointer; }
 }
 .mast-note { font-size: 13px; line-height: 1.7; color: var(--ink); }
 .mast-note p { margin: 0; }
-.mast-note .line { white-space: nowrap; }
+.mast-note .line { white-space: nowrap; font-size: 15px; font-weight: 500; }
+.mast-note .info { margin-top: 8px; color: var(--gray); white-space: nowrap; }
 .mast-note .keys { display: flex; gap: 16px; margin-top: 6px; white-space: nowrap; }
 kbd {
   display: inline-block; min-width: 20px; padding: 0 5px; border: 1.5px solid var(--ink);
@@ -203,7 +204,7 @@ mark { background: var(--yellow); color: inherit; padding: 0 1px; }
   .app { padding: 20px 16px 48px; }
   .masthead { margin-bottom: 24px; }
   .mast-row { flex-direction: column; align-items: flex-start; gap: 12px; }
-  .mast-note .line { white-space: normal; }
+  .mast-note .line, .mast-note .info { white-space: normal; }
   .mast-note .keys { display: none; }
   .layout { grid-template-columns: minmax(0, 1fr); gap: 0; }
   .side { position: static; max-height: none; overflow: visible; }
