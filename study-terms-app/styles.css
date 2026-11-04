@@ -32,8 +32,9 @@ button { cursor: pointer; }
 
 /* 머리말 */
 .masthead { margin-bottom: 36px; }
-/* 제목 바로 옆에 얇은 세로선을 두고 안내를 붙인다. 세로 가운데 정렬 */
-.mast-row { display: flex; align-items: center; gap: 28px; }
+/* 제목과 안내 사이를 가로로 뻗는 얇은 선으로 잇는다. 세로 가운데 정렬 */
+.mast-row { display: flex; align-items: center; gap: 20px; }
+.mast-rule { flex: 1 1 auto; min-width: 40px; height: 1px; background: var(--ink); }
 .brand {
   display: inline-block; margin: 0 0 16px; padding: 4px 10px 3px;
   background: var(--ink); color: var(--white);
@@ -48,7 +49,7 @@ button { cursor: pointer; }
   background: var(--yellow); padding: 0 10px;
   -webkit-box-decoration-break: clone; box-decoration-break: clone;
 }
-.mast-note { padding: 4px 0 4px 28px; border-left: 1px solid var(--ink); font-size: 13px; line-height: 1.7; color: var(--ink); }
+.mast-note { font-size: 13px; line-height: 1.7; color: var(--ink); }
 .mast-note p { margin: 0; }
 .mast-note .line { white-space: nowrap; font-size: 15px; font-weight: 500; }
 .mast-note .info { margin-top: 8px; color: var(--gray); white-space: nowrap; }
@@ -205,7 +206,8 @@ mark { background: var(--yellow); color: inherit; padding: 0 1px; }
   .app { padding: 20px 16px 48px; }
   .masthead { margin-bottom: 24px; }
   .mast-row { flex-direction: column; align-items: flex-start; gap: 12px; }
-  .mast-note { padding: 0; border-left: none; word-break: keep-all; }
+  .mast-note { word-break: keep-all; }
+  .mast-rule { display: none; }
   .m-only { display: inline; }
   .mast-note .line, .mast-note .info { white-space: normal; }
   .mast-note .keys { display: none; }
