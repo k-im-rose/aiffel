@@ -235,6 +235,7 @@ mark { background: var(--yellow); color: inherit; padding: 0 1px; }
 @media (max-width: 820px) {
   .app { padding: 20px 16px 48px; }
   .masthead { margin-bottom: 24px; }
+  .title { font-size: min(48px, 12.8vw); } /* 휴대폰에서 제목을 1.5배로 (아주 작은 폰에서는 폭에 맞춰 줄어듦) */
   .mast-row { flex-direction: column; align-items: flex-start; gap: 40px; }
   .mast-note { word-break: keep-all; line-height: 1.45; }
   .mast-rule { display: none; }
