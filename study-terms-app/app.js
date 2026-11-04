@@ -152,7 +152,7 @@ function setSub(el, text) {
 function renderCard() {
   const t = byId[current];
   const n = note(t.id);
-  $('c-no').textContent = `CONCEPT ${t.no}`;
+  $('c-no').textContent = `WORD ${t.no}`;
   $('c-src').textContent = `출처 ${t.src}`;
   $('c-level').textContent = t.level || '';
   $('c-level').hidden = !t.level;
