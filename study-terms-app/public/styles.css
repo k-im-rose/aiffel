@@ -51,12 +51,12 @@ body.view-card .site-foot { display: none; }
 .account .line-btn { display: inline-flex; align-items: center; min-height: 44px; color: var(--ink); text-decoration: none; }
 .account .text-btn { min-height: 44px; }
 .brand {
-  display: inline-block; margin: 0; padding: 4px 10px 3px;
+  display: inline-flex; align-items: center; margin: 0; padding: 4px 10px 3px;
   background: var(--ink); color: var(--white);
   font-weight: 600; font-size: 20px; letter-spacing: 0.02em;
 }
-/* 로고: 검정 칸 안, 글자 앞. 크기는 글자 크기를 따라간다 */
-.brand-logo { width: 1.35em; height: 1.35em; margin: -0.2em 0.3em -0.2em -0.15em; vertical-align: middle; }
+/* 로고: 검정 칸 안, 글자 앞. 크기는 글자 크기를 따라가고, 대문자 높이의 가운데에 맞춘다 */
+.brand-logo { flex: none; width: 1.35em; height: 1.35em; margin: -0.2em 0.3em -0.2em -0.15em; }
 .title {
   margin: 0; font-weight: 700;
   font-size: var(--title-size); line-height: 1.08; letter-spacing: -0.02em;
