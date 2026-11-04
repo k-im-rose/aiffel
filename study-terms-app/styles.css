@@ -151,6 +151,7 @@ mark { background: var(--yellow); color: inherit; padding: 0 1px; }
 .state-2 { background: var(--ink); color: var(--white); }
 
 /* 카드 */
+body.no-card .card { display: none; } /* 홈: 카드 자리는 배경만 */
 .back { display: none; }
 .card {
   max-width: 680px; padding: clamp(20px, 4vw, 40px);

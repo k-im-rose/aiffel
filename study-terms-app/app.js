@@ -87,7 +87,7 @@ function query() { return $('q').value.trim(); }
 
 function rowHtml(t, q, hint) {
   const st = note(t.id).status;
-  return `<li><button type="button" class="row" data-id="${t.id}" aria-current="${t.id === current}">` +
+  return `<li><button type="button" class="row" data-id="${t.id}" aria-current="${t.id === current && !document.body.classList.contains('no-card')}">` +
     `<span class="row-no">${t.no}</span>` +
     `<span><span class="row-name">${highlight(t.term, q)}</span>` +
     `<span class="row-ko">${highlight(t.ko, q)}${hint ? `<span class="row-hint">· ${hint}에서 찾음</span>` : ''}</span></span>` +
@@ -191,6 +191,7 @@ function setSaved(ok) {
 
 function select(id, openCard) {
   current = id;
+  document.body.classList.remove('no-card');
   // 그 용어가 든 섹션을 펼쳐 둔다 (연결할 용어로 넘어갔을 때 목록에서도 보이게)
   const sec = SECTIONS.find(x => x.ids.includes(id));
   if (sec) { open[sec.id] = true; store.ui.open = open; }
@@ -341,6 +342,7 @@ function goHome() {
   persist();
   history.replaceState(null, '', location.pathname + location.search);
   document.body.classList.remove('view-card');
+  document.body.classList.add('no-card'); // PC: 홈에서는 카드 자리를 비워 둔다
   renderList();
   window.scrollTo(0, 0);
 }
