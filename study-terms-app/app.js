@@ -308,13 +308,15 @@ $('back').addEventListener('click', () => {
 });
 
 // 노란 메모칸 너비를 가장 긴 용어에 맞춰 고정한다 (용어가 바뀌어도 칸 크기가 흔들리지 않게)
-const NOTE_MAX = 340;
+// 휴대폰에서는 처음에 카드가 숨겨져 있으므로, 화면 밖 body에 붙인 복제본으로 잰다
+const NOTE_MAX = 340;   // 아주 긴 풀네임은 이 너비 안에서 줄을 바꾼다
+const NOTE_SCALE = 1.5; // 잰 너비보다 절반만큼 넓게 (PC에서 칸이 작아 보이지 않게)
 function fixNoteWidth() {
   const probe = document.querySelector('.note-ko').cloneNode(true);
-  probe.style.cssText = 'position:absolute; visibility:hidden; width:auto; left:-9999px;';
-  probe.removeAttribute('id');
+  probe.style.cssText = 'position:absolute; visibility:hidden; left:-9999px; top:0; width:auto; max-width:none;';
   probe.querySelectorAll('[id]').forEach(el => el.removeAttribute('id'));
-  document.querySelector('.hero').appendChild(probe);
+  probe.querySelector('em').hidden = false;
+  document.body.appendChild(probe);
   let max = 0;
   for (const t of TERMS) {
     probe.querySelector('strong').textContent = t.ko;
@@ -322,8 +324,7 @@ function fixNoteWidth() {
     max = Math.max(max, probe.getBoundingClientRect().width);
   }
   probe.remove();
-  // 아주 긴 풀네임(HTML·CSS·JS 등)은 칸을 무한정 넓히지 않고 칸 안에서 줄을 바꾼다
-  document.documentElement.style.setProperty('--note-w', Math.ceil(Math.min(max, NOTE_MAX)) + 'px');
+  if (max > 0) document.documentElement.style.setProperty('--note-w', Math.ceil(Math.min(max, NOTE_MAX) * NOTE_SCALE) + 'px');
 }
 
 // ---- 시작 ----
