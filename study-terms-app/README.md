@@ -1,6 +1,6 @@
 # 아, 그게 뭐더라? (아그뭐)
 
-### ▶ [사이트 바로 가기](https://k-im-rose.github.io/aiffel/study-terms-app/) · [코드 저장소](https://github.com/k-im-rose/aiffel/tree/main/study-terms-app)
+### ▶ [사이트 바로 가기](https://aiffel-study-terms.onrender.com/) · [코드 저장소](https://github.com/k-im-rose/aiffel/tree/main/study-terms-app)
 
 헷갈리는 용어를 사전처럼 찾아보고, 나의 언어로 설명하며 외우는 용어 사전 겸 암기장.
 모두의연구소(MODULABS) AIFFEL AI 에이전트 과정 **Main Quest 01**로, 에이전트(Claude Code)와 함께 만들었다.
@@ -8,7 +8,8 @@
 > 분명 봤는데 생각이 안 날 때, 누구나 하는 그 말.
 > 그 말이 나오는 순간 바로 열어 보라고 지은 이름이에요.
 
-- **사이트:** [k-im-rose.github.io/aiffel/study-terms-app](https://k-im-rose.github.io/aiffel/study-terms-app/) (로그인 없음, 기록은 그 브라우저에 저장)
+- **사이트:** [aiffel-study-terms.onrender.com](https://aiffel-study-terms.onrender.com/) (로그인 없음, 기록은 서버 DB에 브라우저별로 저장. 무료 서버라 오래 안 쓰면 첫 접속이 30초쯤 걸림)
+- 예전 주소 [k-im-rose.github.io/aiffel/study-terms-app](https://k-im-rose.github.io/aiffel/study-terms-app/)으로 와도 위 사이트로 넘어감
 - 무엇을 만드는지: [PRD.md](PRD.md) · 어떻게 보이는지: [DESIGN.md](DESIGN.md) · 기술 선택과 근거: [설계.md](설계.md)
 - 에이전트 작업 규칙: [AGENTS.md](AGENTS.md) · 교육자료에서 뽑은 용어 원본: [용어집.md](용어집.md) · 회고: [retrospective.md](retrospective.md)
 
@@ -194,6 +195,7 @@ npm start
 - **뒤로 가기:** 휴대폰에서 카드를 열면 방문 기록을 남겨, 사파리 뒤로 가기(스와이프 포함)로 목록에 돌아온다. 연결할 용어로 넘어간 뒤 뒤로 가면 이전 카드로. 주소 끝에 `#용어id`를 붙이면 그 카드로 바로 열린다 (예: `#rls`)
 - **머리말 라벨:** `TERM NOTES` → `WHAT'S THE WORD AGAIN?`. '팀(Team) 노트'로 읽혀 공용 노트로 오해할 수 있어서, 제목 '아, 그게 뭐더라?'를 영어 입말로 옮긴 표현으로 바꿈
 - **버전 2: API 서버와 DB:** Express API 서버 + DB(배포 Supabase, 로컬 SQLite). 용어는 `GET /api/terms`로 불러오고, 내 기록은 `/api/notes`로 저장·조회·삭제. 설명 없이 '마치기'는 서버·DB도 거절. 브라우저에 있던 옛 기록은 처음 열 때 서버로 옮김. 카드에 '기록 지우기' 추가, 불러오는 중·연결 실패·저장 실패 표시
+- **버전 2 배포:** Render(서버+화면) + Supabase(DB). 예전 GitHub Pages 주소는 Render 주소로 넘겨 줌
 - **PC 머리말 선 다시 길게:** 상태 설명이 왼쪽으로 옮겨져서, 가운데 선은 다시 길게 뻗고 작은 글씨 두 줄은 오른쪽 끝으로. 안내와 상태 설명 사이 여백 16px → 24px
 - **PC 머리말 정리:** 상태 설명을 휴대폰처럼 왼쪽 안내 바로 아래로 옮기고, 가로선 오른쪽에는 작은 글씨 두 줄만. 선과 작은 글씨는 제목 높이 가운데에 맞춤
 - **PC 머리말 선:** 가운데 선을 제목 높이 가운데에 맞추고 120px로 짧게 고정. 오른쪽 설명은 선 바로 뒤에 붙고 남는 폭은 오른쪽 여백으로. 상태 라벨과 설명 사이도 넓힘
