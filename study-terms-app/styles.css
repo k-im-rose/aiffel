@@ -31,12 +31,11 @@ button { cursor: pointer; }
 .app { max-width: 1160px; margin: 0 auto; padding: 32px 24px 64px; }
 
 /* 머리말 */
-.masthead {
-  display: flex; justify-content: space-between; align-items: flex-start; gap: 24px;
-  margin-bottom: 36px;
-}
+.masthead { margin-bottom: 36px; }
+/* 제목과 안내를 한 줄에 두고 세로 가운데로 맞춘다 */
+.mast-row { display: flex; justify-content: space-between; align-items: center; gap: 32px; }
 .brand {
-  display: inline-block; margin: 0 0 6px; padding: 4px 10px 3px;
+  display: inline-block; margin: 0 0 16px; padding: 4px 10px 3px;
   background: var(--ink); color: var(--white);
   font-weight: 600; font-size: 20px; letter-spacing: 0.02em;
 }
@@ -49,9 +48,10 @@ button { cursor: pointer; }
   background: var(--yellow); padding: 0 10px;
   -webkit-box-decoration-break: clone; box-decoration-break: clone;
 }
-.mast-note {
-  max-width: 300px; margin: 6px 0 0; font-size: 13px; line-height: 1.7; color: var(--ink);
-}
+.mast-note { font-size: 13px; line-height: 1.7; color: var(--ink); }
+.mast-note p { margin: 0; }
+.mast-note .line { white-space: nowrap; }
+.mast-note .keys { display: flex; gap: 16px; margin-top: 6px; white-space: nowrap; }
 kbd {
   display: inline-block; min-width: 20px; padding: 0 5px; border: 1.5px solid var(--ink);
   font-family: inherit; font-size: 11px; line-height: 16px; text-align: center;
@@ -201,8 +201,9 @@ mark { background: var(--yellow); color: inherit; padding: 0 1px; }
 /* 휴대폰: 목록 → 카드 → 목록 */
 @media (max-width: 820px) {
   .app { padding: 20px 16px 48px; }
-  .masthead { flex-direction: column; gap: 12px; margin-bottom: 24px; }
-  .mast-note { max-width: none; }
+  .masthead { margin-bottom: 24px; }
+  .mast-row { flex-direction: column; align-items: flex-start; gap: 12px; }
+  .mast-note .line { white-space: normal; }
   .mast-note .keys { display: none; }
   .layout { grid-template-columns: minmax(0, 1fr); gap: 0; }
   .side { position: static; max-height: none; overflow: visible; }

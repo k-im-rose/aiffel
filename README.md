@@ -10,7 +10,7 @@
 | 파쿠르 러너 | https://k-im-rose.github.io/aiffel/nyangi-ramen-shop/parkour-runner/ | [nyangi-ramen-shop/parkour-runner/](nyangi-ramen-shop/parkour-runner) |
 | Write My Way — 내 생각을 내 문체로 쓰는 Claude Code 스킬 | (스킬이라 사이트 없음) | [my-skills/](my-skills) |
 | 코드 리뷰 — castlegyun님의 Todo 앱 (ART 리뷰) | https://github.com/castlegyun/todo-app/pull/1 (합쳐짐) | [reviews/castlegyun-todo-app/](reviews/castlegyun-todo-app) |
-| 아 그게 뭐더라? — 내 말로 설명하며 외우는 용어 사전 겸 암기장 (Main Quest 01) | https://k-im-rose.github.io/aiffel/study-terms-app/ | [study-terms-app/](study-terms-app) |
+| 아, 그게 뭐더라? — 내 말로 설명하며 외우는 용어 사전 겸 암기장 (Main Quest 01) | https://k-im-rose.github.io/aiffel/study-terms-app/ | [study-terms-app/](study-terms-app) |
 
 - 저장소: https://github.com/k-im-rose/aiffel
 - 블로그(별도): https://k-im-rose.github.io/
