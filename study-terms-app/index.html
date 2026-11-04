@@ -5,15 +5,98 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>내 말로 용어장</title>
 <meta name="description" content="AI 개발 입문자가 강의 용어를 내 말로 설명해 보며 익히는 용어장">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@500;600;700&family=Instrument+Serif:ital@0;1&display=swap">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-<main class="page">
-  <p class="label"><span class="dot"></span>AI FIELD NOTES</p>
-  <h1 class="title">내 말로 용어장</h1>
-  <p class="sub">프로젝트 준비 완료. 화면은 다음 단계에서 만듭니다.</p>
-</main>
+<div class="app">
+  <header class="masthead">
+    <div>
+      <p class="brand">AI FIELD NOTES</p>
+      <h1 class="title">
+        <span class="hl">AI 용어/</span><br>
+        <span class="hl"><em>내 말로</em>/</span><br>
+        <span class="hl">설명하기</span>
+      </h1>
+    </div>
+    <p class="mast-note">
+      교육자료 01-01 – 02-07에서 고른 용어 20개.<br>
+      내 설명과 상태는 이 브라우저에 자동 저장돼요.<br>
+      <span class="keys"><kbd>/</kbd> 검색 · <kbd>Enter</kbd> 첫 결과 열기 · <kbd>Esc</kbd> 지우기</span>
+    </p>
+  </header>
+
+  <div class="layout">
+    <aside class="side" aria-label="용어 찾기와 목록">
+      <label class="sr-only" for="q">용어 검색</label>
+      <input id="q" class="search" type="search" placeholder="용어 검색 — mcp, 하네스, ㅎㄴㅅ" autocomplete="off" spellcheck="false">
+
+      <div class="progress">
+        <div class="progress-text"><span>설명 가능</span><strong id="prog">0 / 20</strong></div>
+        <div class="bar" aria-hidden="true"><div id="bar"></div></div>
+      </div>
+
+      <div class="filters" role="group" aria-label="상태로 거르기">
+        <button type="button" class="chip" data-filter="all">전체 <span></span></button>
+        <button type="button" class="chip" data-filter="0">모름 <span></span></button>
+        <button type="button" class="chip" data-filter="1">헷갈림 <span></span></button>
+        <button type="button" class="chip" data-filter="2">설명 가능 <span></span></button>
+      </div>
+
+      <ul id="list" class="list"></ul>
+      <div id="empty" class="empty" hidden>
+        <p><strong>용어집에 아직 없어요.</strong><br>다른 말이나 초성으로 찾아보세요.</p>
+        <button type="button" id="show-all" class="line-btn">전체 보기</button>
+      </div>
+    </aside>
+
+    <main class="detail">
+      <button type="button" id="back" class="back">← 목록</button>
+      <article class="card" aria-live="polite">
+        <div class="card-tags">
+          <span class="tag tag-black" id="c-no"></span>
+          <span class="tag tag-line" id="c-src"></span>
+        </div>
+
+        <div class="hero">
+          <h2 class="term" id="c-term"></h2>
+          <div class="note-ko"><strong id="c-ko"></strong><em id="c-full"></em></div>
+        </div>
+
+        <div class="flow" id="c-flow"></div>
+
+        <section class="section">
+          <div class="section-head">
+            <span class="tag tag-black" id="c-def-label">DEFINITION</span>
+            <button type="button" class="line-btn" id="c-ex-btn">예시 보기 ↗</button>
+          </div>
+          <div class="def-body" id="c-def"></div>
+        </section>
+
+        <section class="section">
+          <div class="section-head">
+            <span class="tag tag-black">MY NOTE</span>
+            <span id="saved" class="saved" aria-live="polite"></span>
+          </div>
+          <label class="sr-only" for="mine">내 설명</label>
+          <textarea id="mine" class="memo" rows="4" placeholder="이 용어를 내 말로 한두 문장 설명해 보세요."></textarea>
+          <div class="status" role="group" aria-label="이해 상태">
+            <button type="button" class="st" data-status="0">모름</button>
+            <button type="button" class="st" data-status="1">헷갈림</button>
+            <button type="button" class="st" data-status="2">설명 가능</button>
+          </div>
+          <p id="msg" class="msg" role="status"></p>
+        </section>
+
+        <footer class="related">연결할 용어 <span id="c-rel"></span></footer>
+      </article>
+    </main>
+  </div>
+</div>
+<script src="terms.js"></script>
 <script src="app.js"></script>
 </body>
 </html>
