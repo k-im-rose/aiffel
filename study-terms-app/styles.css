@@ -56,10 +56,18 @@ a, button, input, textarea { touch-action: manipulation; }
   background: var(--yellow); padding: 0 10px;
   -webkit-box-decoration-break: clone; box-decoration-break: clone;
 }
+/* 제목 바로 아래 두 줄 안내 */
+.lead { margin-top: 14px; font-size: 16px; font-weight: 500; line-height: 1.5; }
+.lead p { margin: 0; }
+/* 가로선 오른쪽: 상태 설명 + 작은 글씨 */
 .mast-note { font-size: 13px; line-height: 1.7; color: var(--ink); }
 .mast-note p { margin: 0; }
-.mast-note .line { white-space: nowrap; font-size: 15px; font-weight: 500; line-height: 1.45; }
-.mast-note .info { margin-top: 8px; color: var(--gray); white-space: nowrap; }
+.legend { margin: 0; display: grid; gap: 6px; }
+.legend div { display: flex; align-items: center; gap: 10px; }
+.legend dt { flex: none; width: 74px; }
+.legend dt .tag { width: 100%; justify-content: center; }
+.legend dd { margin: 0; font-size: 14px; white-space: nowrap; }
+.mast-note .info { margin-top: 12px; color: var(--gray); white-space: nowrap; }
 .m-only { display: none; }
 .mast-note .keys { display: flex; gap: 16px; margin-top: 6px; white-space: nowrap; }
 kbd {
@@ -240,11 +248,12 @@ body.no-card .card { display: none; } /* 홈: 카드 자리는 배경만 */
   .app { padding: 20px 16px 48px; }
   .masthead { margin-bottom: 24px; }
   .title { font-size: min(48px, 12.8vw); } /* 휴대폰에서 제목을 1.5배로 (아주 작은 폰에서는 폭에 맞춰 줄어듦) */
-  .mast-row { flex-direction: column; align-items: flex-start; gap: 40px; }
+  .mast-row { flex-direction: column; align-items: flex-start; gap: 24px; }
   .mast-note { word-break: keep-all; line-height: 1.45; }
   .mast-rule { display: none; }
   .m-only { display: inline; }
-  .mast-note .line, .mast-note .info { white-space: normal; }
+  .mast-note .info, .legend dd { white-space: normal; }
+  .lead { margin-top: 40px; word-break: keep-all; } /* 휴대폰: 제목과 안내 사이 40px (앞서 정한 간격) */
   .mast-note .keys { display: none; }
   .layout { grid-template-columns: minmax(0, 1fr); gap: 0; }
   .side { position: static; max-height: none; overflow: visible; }

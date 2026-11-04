@@ -2,7 +2,7 @@
 // 저장: 내 설명과 상태만 localStorage에 남긴다. 용어 데이터는 terms.js와 terms-02-0N.js.
 
 const STORE_KEY = 'study-terms:v1';
-const STATUS_TAG = ['알아보기', '다시 보기', '✓ 마치기'];
+const STATUS_TAG = ['알아보기', '다시보기', '✓ 마치기'];
 const CHO = 'ㄱㄲㄴㄷㄸㄹㅁㅂㅃㅅㅆㅇㅈㅉㅊㅋㅌㅍㅎ';
 // 섹션을 자료 순서로 정렬하고, 번호(WORD 001…)와 전체 목록 순서도 섹션 순서를 따른다
 SECTIONS.sort((x, y) => x.id.localeCompare(y.id));
@@ -308,7 +308,7 @@ $('mine').addEventListener('input', () => {
   n.mine = $('mine').value;
   if (n.status === 2 && !n.mine.trim()) {
     n.status = 1;
-    setMsg("설명이 비어서 '다시 보기'로 바꿨어요.");
+    setMsg("설명이 비어서 '다시보기'로 바꿨어요.");
     renderCard();
     renderList();
   } else {
