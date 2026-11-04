@@ -45,6 +45,7 @@ button { cursor: pointer; }
 .title {
   margin: 0; font-family: var(--grotesk); font-weight: 500;
   font-size: clamp(32px, 5.2vw, 60px); line-height: 1.08; letter-spacing: -0.02em;
+  white-space: nowrap;
 }
 .hl {
   background: var(--yellow); padding: 0 10px;
