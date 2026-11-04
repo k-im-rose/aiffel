@@ -1,4 +1,4 @@
-/* 색·글자 기준은 DESIGN.md를 따른다. 노랑은 배경 전용. */
+/* 색·글자 기준은 DESIGN.md를 따른다. 노랑은 배경 전용, 글꼴은 Pretendard 하나. */
 :root {
   --paper: #F5F3EE;
   --white: #FFFFFF;
@@ -6,8 +6,6 @@
   --ink: #111111;
   --gray: #5B5B5B;
   --ghost: #E4E0D8;
-  --grotesk: "Inter Tight", Pretendard, -apple-system, sans-serif;
-  --serif: "Instrument Serif", "Times New Roman", serif;
   --sans: Pretendard, -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", sans-serif;
 }
 
@@ -40,10 +38,10 @@ button { cursor: pointer; }
 .brand {
   display: inline-block; margin: 0 0 6px; padding: 4px 10px 3px;
   background: var(--ink); color: var(--white);
-  font-family: var(--grotesk); font-weight: 600; font-size: 20px; letter-spacing: 0.02em;
+  font-weight: 600; font-size: 20px; letter-spacing: 0.02em;
 }
 .title {
-  margin: 0; font-family: var(--grotesk); font-weight: 500;
+  margin: 0; font-weight: 700;
   font-size: clamp(32px, 5.2vw, 60px); line-height: 1.08; letter-spacing: -0.02em;
   white-space: nowrap;
 }
@@ -51,13 +49,12 @@ button { cursor: pointer; }
   background: var(--yellow); padding: 0 10px;
   -webkit-box-decoration-break: clone; box-decoration-break: clone;
 }
-.title em { font-family: var(--serif); font-style: italic; font-weight: 400; }
 .mast-note {
   max-width: 300px; margin: 6px 0 0; font-size: 13px; line-height: 1.7; color: var(--ink);
 }
 kbd {
   display: inline-block; min-width: 20px; padding: 0 5px; border: 1.5px solid var(--ink);
-  font-family: var(--grotesk); font-size: 11px; line-height: 16px; text-align: center;
+  font-family: inherit; font-size: 11px; line-height: 16px; text-align: center;
 }
 
 /* 2단 배치 */
@@ -77,7 +74,7 @@ kbd {
 /* 진행률 */
 .progress { margin: 18px 0 14px; }
 .progress-text { display: flex; justify-content: space-between; align-items: baseline; font-size: 13px; }
-.progress-text strong { font-family: var(--grotesk); font-size: 22px; font-weight: 600; }
+.progress-text strong { font-size: 22px; font-weight: 600; }
 .bar { height: 8px; margin-top: 6px; border: 1.5px solid var(--ink); }
 .bar div { height: 100%; width: 0; background: var(--ink); transition: width .25s; }
 
@@ -87,7 +84,7 @@ kbd {
   min-height: 40px; padding: 0 12px; border: 1.5px solid var(--ink); border-radius: 0;
   background: transparent; font-size: 14px; font-weight: 500;
 }
-.chip span { font-family: var(--grotesk); font-size: 12px; color: var(--gray); margin-left: 2px; }
+.chip span { font-size: 12px; color: var(--gray); margin-left: 2px; }
 .chip:hover { background: var(--white); }
 .chip[aria-pressed="true"] { background: var(--ink); color: var(--white); }
 .chip[aria-pressed="true"] span { color: var(--white); }
@@ -101,9 +98,9 @@ kbd {
 }
 .row:hover { background: var(--white); }
 .row[aria-current="true"] { background: var(--yellow); }
-.row-no { font-family: var(--grotesk); font-size: 12px; color: var(--gray); }
+.row-no { font-size: 12px; color: var(--gray); }
 .row[aria-current="true"] .row-no { color: var(--ink); }
-.row-name { display: block; font-family: var(--grotesk); font-size: 18px; font-weight: 600; letter-spacing: -0.01em; line-height: 1.2; }
+.row-name { display: block; font-size: 18px; font-weight: 600; letter-spacing: -0.01em; line-height: 1.2; }
 .row-ko { display: block; font-size: 13px; color: var(--gray); margin-top: 1px; }
 .row[aria-current="true"] .row-ko { color: var(--ink); }
 .row-hint { font-size: 11px; color: var(--gray); margin-left: 4px; }
@@ -116,7 +113,7 @@ mark { background: var(--yellow); color: inherit; padding: 0 1px; }
 /* 상태 라벨 (색 + 글자) */
 .tag {
   display: inline-flex; align-items: center; height: 22px; padding: 0 8px;
-  font-family: var(--grotesk); font-size: 11px; font-weight: 600; letter-spacing: 0.1em;
+  font-size: 11px; font-weight: 600; letter-spacing: 0.1em;
   text-transform: uppercase; white-space: nowrap;
 }
 .tag-black { background: var(--ink); color: var(--white); }
@@ -136,7 +133,7 @@ mark { background: var(--yellow); color: inherit; padding: 0 1px; }
 
 .hero { margin-top: 24px; }
 .term {
-  margin: 0; font-family: var(--grotesk); font-weight: 600;
+  margin: 0; font-weight: 700;
   font-size: var(--term-size, 88px); line-height: 0.92; letter-spacing: -0.045em;
   overflow-wrap: anywhere;
 }
@@ -147,11 +144,11 @@ mark { background: var(--yellow); color: inherit; padding: 0 1px; }
   background: var(--yellow); mix-blend-mode: multiply;
 }
 .note-ko strong { display: block; font-size: 20px; font-weight: 700; }
-.note-ko em { display: block; margin-top: 2px; font-family: var(--serif); font-size: 21px; }
+.note-ko em { display: block; margin-top: 2px; font-style: normal; font-size: 17px; font-weight: 500; }
 
 .flow { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 24px; }
 .flow-box { padding: 8px 12px; border: 1.5px solid var(--ink); font-size: 14px; font-weight: 500; }
-.flow-arrow { font-family: var(--grotesk); font-size: 16px; }
+.flow-arrow { font-size: 16px; }
 
 .section { margin-top: 28px; padding-top: 16px; border-top: 2px solid var(--ink); }
 .section-head { display: flex; justify-content: space-between; align-items: center; gap: 12px; min-height: 40px; }
