@@ -31,10 +31,10 @@ const call = (method, url, device, body) =>
     body: body ? JSON.stringify(body) : undefined,
   }).then(async (r) => ({ status: r.status, body: await r.json() }));
 
-test('용어 목록: 144개, 섹션 순서대로 번호', async () => {
+test('용어 목록: 172개, 섹션 순서대로 번호', async () => {
   const r = await call('GET', '/api/terms');
   assert.equal(r.status, 200);
-  assert.equal(r.body.terms.length, 144);
+  assert.equal(r.body.terms.length, 172);
   assert.equal(r.body.sections[0].id, '01-04');
   assert.deepEqual(r.body.terms.slice(0, 2).map((t) => [t.id, t.position]), [['genai', 1], ['hallucination', 2]]);
 });

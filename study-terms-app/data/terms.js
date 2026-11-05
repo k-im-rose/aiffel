@@ -5,7 +5,7 @@
 // 각 용어: id·term·ko·full·src·def·easy(쉬운 비유)·ex(실제 장면)·flow·related·level. 빈 칸은 화면에서 숨긴다.
 const TERMS = [
   {
-    id: 'genai', no: '001', term: 'GenAI', ko: '생성형 AI', full: 'Generative AI', src: '01-04',
+    id: 'genai', no: '001', term: 'GenAI', ko: '생성형 AI', full: 'Generative AI', src: '01-04 · 03-01',
     flow: ['학습한 데이터', '패턴 이해', '새 결과물'],
     def: '글·이미지·코드처럼 새 결과물을 만들어 내는 AI.',
     easy: '말만 하면 새 글이나 그림을 뚝딱 만들어 주는 손재주 좋은 친구 같아요.', level: '입문',
