@@ -44,9 +44,10 @@ function memoryStorage(initial = {}) {
   };
 }
 
-// Supabase가 토큰을 '거절'한 것(4xx)과 잠깐 연결이 안 된 것(네트워크·5xx)을 구분한다.
-// 연결 문제일 때 쿠키를 지우면 괜히 로그아웃되므로, 쿠키는 두고 503을 돌려준다.
-const rejected = (error) => error.status >= 400 && error.status < 500;
+// 요청 제한(429)·시간 초과(408)는 토큰 거절이 아니다.
+// 잠깐 실패했다고 쿠키를 지우거나 기기 기록으로 넘어가지 않도록 503으로 재시도하게 한다.
+const rejected = (error) => error.status >= 400 && error.status < 500
+  && error.status !== 408 && error.status !== 429;
 function unavailable() {
   return Object.assign(new Error('로그인 서버에 연결하지 못했어요'), { status: 503 });
 }
@@ -114,3 +115,4 @@ async function signOut(req, res) {
 }
 
 module.exports = { resolveUser, startGoogle, finishGoogle, signOut };
+
