@@ -99,7 +99,7 @@ addSection('03-01', "인공지능의 학습", [
     "term": "Parameter",
     "ko": "파라미터(가중치·편향)",
     "def": "학습하며 조정되는 모델 내부의 숫자. 가중치(weight)와 편향(bias)이 있고, 학습의 결과물은 규칙집이 아니라 이 숫자들에 압축된 패턴이다.",
-    "src": "03-01"
+    "src": "02-06 · 03-01"
   },
   {
     "full": "",
@@ -399,7 +399,8 @@ addSection('03-01', "인공지능의 학습", [
     "easy": "내 컴퓨터에 없는 좋은 계산기를 인터넷으로 잠깐 빌려 쓰는 곳이에요.",
     "ex": "런타임 → 런타임 유형 변경 → T4 GPU. 무료 GPU는 상황에 따라 배정돼서, 자리가 없으면 잠시 뒤 다시 시도해요.",
     "flow": [],
-    "related": ["gpu", "colab-mcp", "pytorch"]
+    "related": ["gpu", "colab-mcp", "pytorch"],
+    "src": "01-03 · 03-01"
   },
   {
     "id": "colab-mcp",
@@ -458,6 +459,188 @@ addSection('03-01', "인공지능의 학습", [
     "ko": "기울기",
     "src": "03-01 · 03-02",
     "def": "손실을 각 파라미터로 편미분한 값을 모은 것이에요. 파라미터가 조금 바뀔 때 손실이 어느 방향으로 얼마나 변하는지 나타내요."
+  },
+  {
+    "id": "mse",
+    "term": "MSE",
+    "ko": "평균제곱오차",
+    "full": "Mean Squared Error",
+    "level": "실전",
+    "def": "각 예시에서 예측과 정답의 차이를 제곱해 평균 낸 손실. 크게 틀린 예시일수록 제곱 때문에 벌점이 훨씬 커진다. 숫자를 맞히는 회귀에서 흔히 쓴다.",
+    "easy": "과녁에서 1칸 빗나가면 벌점 1점, 3칸 빗나가면 벌점 9점이에요. 많이 빗나갈수록 벌점이 확 커져요.",
+    "ex": "카페 실습의 loss = ((pred - y) ** 2).mean() 한 줄이 MSE예요. 학습이 진행되면 loss 그래프가 급히 떨어졌다가 평평해져요.",
+    "flow": [],
+    "related": ["loss", "regression", "gradient-descent"]
+  },
+  {
+    "id": "autograd",
+    "term": "autograd",
+    "ko": "자동 미분",
+    "full": "",
+    "level": "실전",
+    "def": "계산 과정을 기록해 두었다가, 각 파라미터가 오차에 얼마나 기여했는지(기울기)를 자동으로 계산해 주는 기능. PyTorch에서는 loss.backward() 한 줄로 역전파를 대신 밟아 준다.",
+    "easy": "수학 문제를 풀며 풀이 과정을 다 적어 두면, 어느 줄이 답을 얼마나 틀리게 했는지 자동으로 표시해 주는 거예요.",
+    "ex": "requires_grad=True로 만든 w, b는 loss.backward()를 부르면 w.grad, b.grad에 기울기가 채워져요. 다음 스텝 전에는 grad.zero_()로 비워요.",
+    "flow": [],
+    "related": ["backpropagation", "gradient", "pytorch"]
+  },
+  {
+    "id": "logit",
+    "term": "Logit",
+    "ko": "로짓 (raw 점수)",
+    "full": "",
+    "level": "심화",
+    "def": "softmax에 넣기 전, 모델이 후보마다 매긴 날것의 점수. 음수나 1보다 큰 값도 될 수 있고, softmax를 거쳐야 합이 1인 확률이 된다.",
+    "easy": "심사위원이 매긴 날 점수예요. 이 점수를 '몇 %'로 바꿔 주는 게 softmax예요.",
+    "ex": "후보 셋의 로짓 [2.0, 1.0, 0.1]은 softmax를 거쳐 약 [0.66, 0.24, 0.10]이 돼요.",
+    "flow": [],
+    "related": ["softmax", "classification", "cross-entropy"]
+  },
+  {
+    "id": "cross-entropy",
+    "term": "Cross-Entropy Loss",
+    "ko": "교차 엔트로피 손실",
+    "full": "",
+    "level": "심화",
+    "def": "분류에서 쓰는 표준 손실. 모델이 정답 후보에 준 확률이 낮을수록 커진다(정답 확률에 -log를 취한 값). PyTorch의 CrossEntropyLoss는 로짓을 받아 softmax 계산까지 함께 한다.",
+    "easy": "정답에 '10%쯤?'이라고 자신 없게 답하면 벌점이 크고, '90%!'라고 하면 벌점이 작아요.",
+    "ex": "MNIST 분류기 프롬프트의 '손실 함수는 표준 분류 방식(CrossEntropyLoss)을 쓰고'가 이 손실이에요. 정답 7의 확률이 0.9면 손실은 약 0.1, 0.1이면 약 2.3이에요.",
+    "flow": [],
+    "related": ["loss", "softmax", "classification", "logit"]
+  },
+  {
+    "id": "layer-freezing",
+    "term": "Freeze",
+    "ko": "층 고정 (얼리기)",
+    "full": "",
+    "level": "실전",
+    "def": "사전학습된 모델의 일부 층 가중치를 학습 중에 바뀌지 않게 고정하는 것. 보통 보편적인 특징을 보는 앞쪽 층을 얼리고 뒤쪽 판단 층만 새로 학습해 데이터와 계산을 아낀다.",
+    "easy": "잘 지어진 집의 기초 공사는 그대로 두고, 방 인테리어만 내 취향으로 바꾸는 거예요.",
+    "ex": "ResNet18의 앞쪽 층은 얼려 두고 마지막 분류 층만 개/고양이 2개로 바꿔 학습해요. PyTorch에서는 얼릴 층의 requires_grad를 False로 둬요.",
+    "flow": [],
+    "related": ["fine-tuning", "transfer-learning", "parameter"]
+  },
+  {
+    "id": "tpu",
+    "term": "TPU",
+    "ko": "텐서 처리 장치",
+    "full": "Tensor Processing Unit",
+    "level": "실전",
+    "def": "구글이 딥러닝의 행렬·텐서 계산을 빠르게 하려고 만든 전용 칩. GPU처럼 학습과 추론을 가속하는 데 쓴다.",
+    "easy": "GPU가 여러 일을 돕는 조수 수천 명이라면, TPU는 딥러닝 계산만 하도록 맞춘 전문 팀이에요.",
+    "ex": "Colab 무료 요금제에서는 보통 T4 GPU가 주어지고, TPU나 더 강한 A100·H100은 유료(Pro/Pro+)에서 열려요.",
+    "flow": [],
+    "related": ["gpu", "tensor", "colab"]
+  },
+  {
+    "id": "unsupervised-learning",
+    "term": "Unsupervised Learning",
+    "ko": "비지도학습",
+    "full": "",
+    "level": "입문",
+    "def": "정답(라벨) 없이 데이터만 보고 비슷한 것끼리 묶거나 숨은 구조를 찾는 학습 방식. 입력과 정답의 쌍으로 배우는 지도학습과 대비된다.",
+    "easy": "이름표 없는 단추 더미를 색깔·모양이 비슷한 것끼리 스스로 나눠 담는 거예요.",
+    "ex": "구매 기록만 보고 비슷한 손님끼리 그룹을 나누는 일은, 정해진 '정답 그룹'이 없으니 비지도학습이에요.",
+    "flow": [],
+    "related": ["supervised-learning", "reinforcement-learning", "machine-learning"]
+  },
+  {
+    "id": "batch",
+    "term": "Batch",
+    "ko": "배치 (한 묶음)",
+    "full": "",
+    "level": "실전",
+    "def": "여러 데이터를 한 번에 묶어 모델에 넣는 단위. 텐서에 '몇 번째 데이터인지' 차원이 하나 더 붙고, 보통 한 묶음의 손실 평균으로 가중치를 한 번 조정한다. 한 묶음의 개수를 배치 크기라 한다.",
+    "easy": "쿠키를 한 개씩 굽지 않고 오븐 판에 여러 개 올려 한 번에 굽는 거예요.",
+    "ex": "컬러 사진 한 장은 높이×너비×3 텐서지만, 32장을 한 번에 넣으면 32×높이×너비×3이 돼요. GPU 메모리가 모자라면 배치 크기를 줄여요.",
+    "flow": [],
+    "related": ["tensor", "gpu", "training"]
+  },
+  {
+    "id": "optimizer",
+    "term": "Optimizer (SGD)",
+    "ko": "옵티마이저",
+    "full": "Stochastic Gradient Descent (SGD)",
+    "level": "실전",
+    "def": "계산된 기울기를 받아 파라미터를 실제로 갱신해 주는 도구. 손으로 쓴 'w -= lr * w.grad'를 대신해 주며, 가장 기본이 SGD(확률적 경사하강)이고 Adam 같은 변형도 많다.",
+    "easy": "지도(기울기)를 보고 실제로 발걸음을 옮겨 주는 길잡이예요.",
+    "ex": "실무에서는 갱신 루프를 손으로 쓰지 않고 torch.optim.SGD(model.parameters(), lr=0.03)를 만든 뒤 optimizer.step()과 optimizer.zero_grad()로 줄여요.",
+    "flow": [],
+    "related": ["gradient-descent", "learning-rate", "pytorch"]
+  },
+  {
+    "id": "cuda",
+    "term": "CUDA",
+    "ko": "쿠다 (GPU 계산 플랫폼)",
+    "full": "Compute Unified Device Architecture",
+    "level": "실전",
+    "def": "엔비디아 GPU에서 범용 계산을 돌리게 해 주는 플랫폼. PyTorch에서는 장치 이름 'cuda'로 GPU를 가리키며, 데이터와 모델을 그 장치에 올려야 GPU로 계산한다.",
+    "easy": "GPU라는 공장에 일을 맡길 때 쓰는 출입증이자 작업 지시서예요.",
+    "ex": "device = \"cuda\" if torch.cuda.is_available() else \"cpu\" 한 줄로, GPU가 있으면 쓰고 없으면 CPU로 돌려요.",
+    "flow": [],
+    "related": ["gpu", "pytorch", "nvidia-smi"]
+  },
+  {
+    "id": "nvidia-smi",
+    "term": "nvidia-smi",
+    "ko": "GPU 상태 확인 명령",
+    "full": "NVIDIA System Management Interface",
+    "level": "실전",
+    "def": "엔비디아 GPU의 이름, 메모리 사용량, 사용률, 그 GPU를 쓰는 프로세스를 보여 주는 명령줄 도구.",
+    "easy": "GPU의 건강검진표예요. 지금 일하고 있는지, 기억 공간이 얼마나 찼는지 보여 줘요.",
+    "ex": "Colab에 연결한 뒤 에이전트에게 'nvidia-smi로 GPU가 연결됐는지 확인해 줘'라고 해요. 학습 중에도 사용률을 보면 코드가 정말 GPU를 쓰는지 알 수 있어요.",
+    "flow": [],
+    "related": ["gpu", "cuda", "colab-mcp"]
+  },
+  {
+    "id": "pip",
+    "term": "pip",
+    "ko": "파이썬 패키지 설치 도구",
+    "full": "",
+    "level": "입문",
+    "def": "파이썬 라이브러리를 내려받아 설치하는 기본 명령. npm이 Node.js 패키지를 설치하듯 pip는 파이썬 패키지를 설치한다.",
+    "easy": "파이썬 앱스토어에서 필요한 앱을 받아 오는 버튼이에요.",
+    "ex": "pip install torch matplotlib로 실습 준비를 해요. Colab 셀에서는 앞에 !를 붙여 !pip install sentence-transformers처럼 써요.",
+    "flow": [],
+    "related": ["npm", "uv", "dependency"],
+    "src": "03-01 · 03-02"
+  },
+  {
+    "id": "matplotlib",
+    "term": "Matplotlib",
+    "ko": "맷플롯립 (그래프 라이브러리)",
+    "full": "",
+    "level": "입문",
+    "def": "파이썬에서 데이터와 학습 결과를 그래프로 그리는 라이브러리. 보통 import matplotlib.pyplot as plt로 불러 쓴다.",
+    "easy": "숫자 표를 그림으로 바꿔 주는 크레파스 상자예요.",
+    "ex": "카페 실습에서 plt.scatter로 30일치 점을 찍고, plt.plot(losses)로 loss가 줄어드는 곡선을 그려요.",
+    "flow": [],
+    "related": ["pytorch", "colab", "loss"]
+  },
+  {
+    "id": "torchvision",
+    "term": "torchvision",
+    "ko": "토치비전",
+    "full": "",
+    "level": "실전",
+    "def": "PyTorch의 이미지용 짝 라이브러리. 유명 이미지 데이터셋, 이미지 변환 도구, ResNet 같은 사전학습 모델을 바로 불러 쓰게 해 준다.",
+    "easy": "PyTorch 공구 상자 옆에 붙은 '사진 전용 서랍'이에요.",
+    "ex": "'torchvision의 사전학습된 ResNet18을 불러와 개 vs 고양이 분류로 파인튜닝해 주세요'처럼 에이전트에게 시켜요.",
+    "flow": [],
+    "related": ["pytorch", "fine-tuning", "mnist"]
+  },
+  {
+    "id": "numpy",
+    "term": "NumPy",
+    "ko": "넘파이",
+    "full": "",
+    "level": "실전",
+    "def": "파이썬에서 숫자 배열(벡터·행렬)을 빠르게 계산하는 기본 라이브러리. PyTorch 텐서와 서로 바꾸기 쉬워 그래프 그리기나 결과 정리에 자주 쓴다.",
+    "easy": "숫자 줄과 숫자 판을 한꺼번에 계산해 주는 큰 계산기예요.",
+    "ex": "x.cpu().numpy()로 텐서를 넘파이 배열로 바꿔 그래프에 넘겨요. 03-02 실습에서는 np.argsort로 유사도 점수를 순위대로 세워요.",
+    "flow": [],
+    "related": ["tensor", "pytorch", "matplotlib"],
+    "src": "03-01 · 03-02"
   }
 ]);
 

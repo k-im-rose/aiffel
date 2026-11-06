@@ -136,7 +136,7 @@ addSection('02-06', "에이전트·MCP·스킬", [
     "term": "Slash Command",
     "ko": "슬래시 명령",
     "full": "",
-    "src": "02-06",
+    "src": "02-06 · 02-07",
     "level": "실전",
     "def": "슬래시로 시작해 정해진 동작을 바로 부르는 단축 명령.",
     "easy": "자주 쓰는 일을 한 번에 부르는 단축키예요.",
@@ -170,7 +170,7 @@ addSection('02-06', "에이전트·MCP·스킬", [
     "term": "Plugin",
     "ko": "플러그인",
     "full": "",
-    "src": "02-06",
+    "src": "02-06 · 02-07",
     "level": "실전",
     "def": "스킬, 서브에이전트, 슬래시 명령, 훅, MCP 연결을 한 꾸러미로 묶은 것.",
     "easy": "도구를 한 상자에 담은 세트예요. 상자째 설치해요.",
@@ -337,6 +337,363 @@ addSection('02-06', "에이전트·MCP·스킬", [
       "rules-file",
       "terminal",
       "diff"
+    ]
+  },
+  {
+    "id": "loop-statement",
+    "term": "Loop (while)",
+    "ko": "반복문",
+    "full": "",
+    "src": "02-06",
+    "level": "입문",
+    "def": "조건이 맞는 동안 같은 코드를 되풀이해 실행하는 문법.",
+    "easy": "\"다 먹을 때까지 한 숟갈 더\"처럼, 끝날 조건이 될 때까지 같은 일을 계속해요.",
+    "ex": "에이전트는 반복문처럼 목표를 이룰 때까지 계획-실행-관찰-반성을 되풀이해요.",
+    "flow": [],
+    "related": [
+      "agent-loop",
+      "agent",
+      "react-pattern"
+    ]
+  },
+  {
+    "id": "single-multi-turn",
+    "term": "Single-turn / Multi-turn",
+    "ko": "단일 턴 / 멀티턴",
+    "full": "",
+    "src": "02-06",
+    "level": "입문",
+    "def": "단일 턴은 한 번 묻고 한 번 답하면 끝나는 대화, 멀티턴은 앞서 주고받은 내용을 이어 가는 대화.",
+    "easy": "단일 턴은 쪽지 한 장 주고받기, 멀티턴은 앞 얘기를 기억하며 이어 가는 수다예요.",
+    "ex": "초기 GPT는 단일 턴이라 방금 한 말도 기억 못 했고, ChatGPT부터 멀티턴 대화로 코드를 부탁할 수 있게 됐어요.",
+    "flow": [],
+    "related": [
+      "context-window",
+      "llm",
+      "agent"
+    ]
+  },
+  {
+    "id": "code-completion",
+    "term": "Code Completion",
+    "ko": "코드 자동완성",
+    "full": "",
+    "src": "02-06",
+    "level": "입문",
+    "def": "편집기에서 쓰고 있는 코드의 다음 줄이나 나머지를 AI가 미리 채워 주는 기능.",
+    "easy": "휴대폰 자판이 다음 단어를 추천하듯, 코드 다음 줄을 추천해 줘요.",
+    "ex": "GitHub Copilot은 처음에 다음 줄을 채워 주는 자동완성으로 시작했어요.",
+    "flow": [],
+    "related": [
+      "ide",
+      "agent",
+      "vibe-coding"
+    ]
+  },
+  {
+    "id": "registry",
+    "term": "Registry",
+    "ko": "레지스트리",
+    "full": "",
+    "src": "02-06",
+    "level": "실전",
+    "def": "패키지나 MCP 서버처럼 내려받아 쓸 것들을 등록해 두고 찾게 하는 공식 목록 저장소.",
+    "easy": "앱스토어처럼 한곳에 모아 둔 목록에서 골라 받는 곳이에요.",
+    "ex": "붙일 MCP 서버는 공식 MCP 레지스트리에서 찾고, 회사가 직접 낸 공식 서버부터 써요.",
+    "flow": [],
+    "related": [
+      "mcp-server",
+      "npm",
+      "plugin-marketplace"
+    ]
+  },
+  {
+    "id": "browser-automation",
+    "term": "Browser Automation",
+    "ko": "브라우저 자동화",
+    "full": "",
+    "src": "02-06",
+    "level": "실전",
+    "def": "프로그램이 실제 웹브라우저를 열어 클릭·입력·화면 캡처를 대신 하게 하는 것. Playwright가 대표 도구.",
+    "easy": "로봇 손이 마우스와 키보드를 대신 눌러 주는 거예요.",
+    "ex": "Playwright MCP를 붙이면 AI가 브라우저로 내 앱을 열어 버튼을 눌러 보고 화면을 확인해요.",
+    "flow": [],
+    "related": [
+      "mcp-server",
+      "tool-use",
+      "web-scraping"
+    ]
+  },
+  {
+    "id": "web-scraping",
+    "term": "Web Scraping",
+    "ko": "스크래핑",
+    "full": "",
+    "src": "02-06",
+    "level": "실전",
+    "def": "웹페이지를 읽어 필요한 정보만 뽑아 데이터로 정리하는 일.",
+    "easy": "전단지에서 가격만 오려 공책에 붙이는 일을 컴퓨터가 대신해요.",
+    "ex": "웹사이트를 훑어 상품·가격·이미지를 표로 정리해 달라고 자연어로 시켜요. 사이트 이용 규칙은 먼저 확인해요.",
+    "flow": [],
+    "related": [
+      "browser-automation",
+      "mcp-server",
+      "json"
+    ]
+  },
+  {
+    "id": "re-prompting",
+    "term": "Re-prompting",
+    "ko": "재프롬프트",
+    "full": "",
+    "src": "02-06",
+    "level": "입문",
+    "def": "같은 작업 설명을 매번 처음부터 다시 적어 AI에게 시키는 문제. 지겹고 결과도 그때그때 달라진다.",
+    "easy": "새 짝꿍에게 매일 아침 똑같은 규칙을 처음부터 다시 설명하는 거예요.",
+    "ex": "\"우리 말투로 다듬어 줘\"를 매번 설명하는 대신 스킬로 한 번 적어 둬요.",
+    "flow": [],
+    "related": [
+      "skill",
+      "prompt",
+      "rules-file"
+    ]
+  },
+  {
+    "id": "frontmatter",
+    "term": "Frontmatter",
+    "ko": "프론트매터(머리말)",
+    "full": "",
+    "src": "02-06",
+    "level": "실전",
+    "def": "파일 맨 위 --- 사이에 이름·설명 같은 정보를 적어 두는 머리말 부분.",
+    "easy": "공책 표지에 적은 이름표예요. 표지만 보고 무슨 공책인지 알아요.",
+    "ex": "SKILL.md 프론트매터의 name·description만 보고 AI가 언제 이 스킬을 꺼낼지 판단해요.",
+    "flow": [],
+    "related": [
+      "skill",
+      "progressive-disclosure",
+      "rules-file"
+    ]
+  },
+  {
+    "id": "byok-byom",
+    "term": "BYOK / BYOM",
+    "ko": "내 키·내 모델 쓰기",
+    "full": "Bring Your Own Key / Bring Your Own Model",
+    "src": "02-06",
+    "level": "실전",
+    "def": "도구는 그대로 쓰고, AI 모델 API 키나 쓸 모델은 사용자가 직접 골라 연결하는 방식.",
+    "easy": "놀이기구는 빌리고 건전지는 내 것을 끼우는 거예요.",
+    "ex": "Cline처럼 BYOK 도구는 프로그램은 무료지만 내 API 키로 쓴 만큼 요금이 나가요.",
+    "flow": [],
+    "related": [
+      "api-key",
+      "harness",
+      "open-weight"
+    ]
+  },
+  {
+    "id": "fork",
+    "term": "Fork",
+    "ko": "포크",
+    "full": "",
+    "src": "02-06",
+    "level": "실전",
+    "def": "남의 프로젝트(저장소)를 통째로 복사해 따로 고쳐 나가는 것.",
+    "easy": "친구 레시피를 베껴 와서 내 입맛대로 바꾼 새 레시피예요.",
+    "ex": "Cursor는 VS Code를 포크해 AI 기능을 넣은 편집기예요.",
+    "flow": [],
+    "related": [
+      "git-repository",
+      "github",
+      "ide"
+    ]
+  },
+  {
+    "id": "frontier-model",
+    "term": "Frontier Model",
+    "ko": "프런티어 모델",
+    "full": "",
+    "src": "02-06",
+    "level": "입문",
+    "def": "그 시점에 가장 앞선 성능을 내는 최첨단 최상위 AI 모델.",
+    "easy": "달리기 대회에서 맨 앞에서 뛰는 선두 그룹이에요.",
+    "ex": "오픈웨이트 모델이 코딩 실력에서 프런티어 모델에 바짝 붙었지만, 가장 어려운 벤치마크 최상단은 아직 폐쇄 모델이에요.",
+    "flow": [],
+    "related": [
+      "open-weight",
+      "llm",
+      "benchmark"
+    ]
+  },
+  {
+    "id": "benchmark",
+    "term": "Benchmark",
+    "ko": "벤치마크",
+    "full": "",
+    "src": "02-06",
+    "level": "실전",
+    "def": "같은 문제 세트로 성능을 재서 모델이나 도구를 비교하는 시험. SWE-bench Verified는 실제 코드 이슈 해결로 코딩 실력을 잰다.",
+    "easy": "모두 같은 시험지로 시험을 보고 점수를 비교하는 거예요.",
+    "ex": "벤치마크 점수는 모델뿐 아니라 하네스에 따라서도 크게 달라지니, 내 작업에서 직접 시험해 봐요.",
+    "flow": [],
+    "related": [
+      "frontier-model",
+      "harness",
+      "open-weight"
+    ]
+  },
+  {
+    "id": "plan-act-mode",
+    "term": "Plan / Act Mode",
+    "ko": "계획 모드 / 실행 모드",
+    "full": "",
+    "src": "02-06 · 02-07",
+    "level": "실전",
+    "def": "AI가 먼저 계획만 세워 보여 주고, 사람이 확인한 뒤에 실제 수정·실행으로 넘어가게 나눈 작업 방식.",
+    "easy": "요리하기 전에 순서를 먼저 말해 보고, \"좋아\" 하면 그때 불을 켜는 거예요.",
+    "ex": "Claude Code에서 /plan을 치고 PRD를 붙여 넣어, 코드 전에 저장할 데이터와 정원 지키는 방법부터 계획하게 해요.",
+    "flow": [],
+    "related": [
+      "permission-mode",
+      "prd",
+      "agent-loop"
+    ]
+  },
+  {
+    "id": "agent-team",
+    "term": "Agent Team",
+    "ko": "에이전트 팀",
+    "full": "",
+    "src": "02-06",
+    "level": "심화",
+    "def": "지휘하는 AI가 조사·구현·검증 같은 일을 여러 전문 에이전트에게 나눠 병렬로 맡기고 조율하는 방식(오케스트레이션).",
+    "easy": "반장이 모둠 친구들에게 역할을 나눠 주고 결과를 모으는 거예요.",
+    "ex": "편하지만 토큰을 훨씬 많이 써서, 처음엔 에이전트 하나로 충분해요.",
+    "flow": [],
+    "related": [
+      "subagent",
+      "agent",
+      "token"
+    ]
+  },
+  {
+    "id": "plugin-marketplace",
+    "term": "Plugin Marketplace",
+    "ko": "플러그인 마켓플레이스",
+    "full": "",
+    "src": "02-06 · 02-07",
+    "level": "실전",
+    "def": "플러그인을 모아 둔 목록으로, 등록해 두면 그 안의 플러그인을 골라 설치할 수 있다.",
+    "easy": "장난감 가게를 먼저 찾아 두면, 거기서 원하는 장난감을 골라 살 수 있어요.",
+    "ex": "/plugin marketplace add로 마켓플레이스를 등록한 뒤 frontend-design 플러그인을 켜요.",
+    "flow": [],
+    "related": [
+      "plugin",
+      "registry",
+      "skill"
+    ]
+  },
+  {
+    "id": "compound-engineering",
+    "term": "Compound Engineering",
+    "ko": "컴파운드 엔지니어링",
+    "full": "",
+    "src": "02-06",
+    "level": "심화",
+    "def": "일할 때마다 얻은 교훈을 규칙 파일·스킬로 남겨, 다음 일이 이전 일 위에 쌓이게 하는 개발 방식.",
+    "easy": "틀린 문제를 오답 노트에 적어 두면 다음 시험이 점점 쉬워지는 것과 같아요.",
+    "ex": "버그를 한 번 고치면 그 교훈을 AGENTS.md에 적어 AI가 다음부터 스스로 지키게 해요.",
+    "flow": [],
+    "related": [
+      "rules-file",
+      "skill",
+      "agent"
+    ]
+  },
+  {
+    "id": "ralph-loop",
+    "term": "Ralph Loop",
+    "ko": "랄프 루프",
+    "full": "",
+    "src": "02-06",
+    "level": "심화",
+    "def": "같은 스펙을 에이전트에게 계속 다시 주고, 한 번에 한 가지씩 하고 커밋하기를 목표까지 반복하게 설계하는 방식. 진행 상황은 대화가 아니라 파일과 git에 쌓는다.",
+    "easy": "숙제 목록을 보며 한 칸씩 끝내고 체크하기를 다 할 때까지 되풀이하는 거예요.",
+    "ex": "스펙 파일과 git 기록을 근거로 매 바퀴를 돌리고, 멈출 기준과 검토는 사람이 정해요.",
+    "flow": [],
+    "related": [
+      "agent-loop",
+      "context-rot",
+      "spec-driven"
+    ]
+  },
+  {
+    "id": "entry-point",
+    "term": "Entry Point",
+    "ko": "진입점",
+    "full": "",
+    "src": "02-06",
+    "level": "실전",
+    "def": "프로그램을 실행할 때 처음 불리는 파일이나 함수. 같은 로직에 다른 입구를 하나 더 달 수 있다.",
+    "easy": "건물로 들어가는 문이에요. 정문 말고 옆문을 하나 더 달 수도 있어요.",
+    "ex": "기존 Todo 로직을 재사용해 node todo.js list처럼 터미널에서 부를 진입점만 얇게 더해요.",
+    "flow": [],
+    "related": [
+      "cli",
+      "nodejs",
+      "package-json"
+    ]
+  },
+  {
+    "id": "npx",
+    "term": "npx",
+    "ko": "엔피엑스",
+    "full": "",
+    "src": "02-06",
+    "level": "실전",
+    "def": "npm 패키지에 든 명령을 따로 전역 설치하지 않고 바로 실행하는 도구.",
+    "easy": "장난감을 사지 않고 잠깐 빌려서 한 번 갖고 노는 거예요.",
+    "ex": "MCP 설정에 \"command\": \"npx\"를 적어 파일시스템 MCP 서버를 바로 실행해요.",
+    "flow": [],
+    "related": [
+      "npm",
+      "nodejs",
+      "mcp-server"
+    ]
+  },
+  {
+    "id": "binary-file",
+    "term": "Binary File",
+    "ko": "이진 파일",
+    "full": "",
+    "src": "02-06",
+    "level": "실전",
+    "def": "사람이 읽는 글자가 아니라 0과 1의 데이터로 저장돼, 그 형식을 아는 프로그램으로만 제대로 읽을 수 있는 파일.",
+    "easy": "암호 상자예요. 맞는 열쇠(프로그램)가 있어야 안을 읽을 수 있어요.",
+    "ex": "todo.db는 이진 파일이라 파일을 읽는 MCP로는 내용을 세지 못하고, 앱 명령을 돌려야 해요.",
+    "flow": [],
+    "related": [
+      "sqlite",
+      "database",
+      "cli"
+    ]
+  },
+  {
+    "id": "lint",
+    "term": "Lint",
+    "ko": "린트",
+    "full": "",
+    "src": "02-06",
+    "level": "실전",
+    "def": "코드를 실행하기 전에 오류 가능성이나 팀 규칙(컨벤션) 위반을 자동으로 찾아 주는 검사.",
+    "easy": "받아쓰기 공책을 선생님이 빨간 펜으로 미리 훑어 주는 거예요.",
+    "ex": "코드를 고칠 때마다 팀 린트·컨벤션을 다시 알려 주는 일은 좋은 스킬 후보예요.",
+    "flow": [],
+    "related": [
+      "skill",
+      "rules-file",
+      "build"
     ]
   }
 ]);
