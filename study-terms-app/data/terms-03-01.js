@@ -94,7 +94,7 @@ addSection('03-01', "인공지능의 학습", [
     "easy": "눈을 감고 산을 내려갈 때, 발밑이 기울어진 아래쪽으로 한 발씩 내딛는 거예요.",
     "ex": "예측이 5 → 5.3 → 5.6…처럼 정답 7에 조금씩 다가가요.",
     "flow": ["기울기 구하기", "반대 방향으로 한 걸음", "반복"],
-    "related": ["learning-rate", "backpropagation", "loss"]
+    "related": ["gradient", "learning-rate", "backpropagation", "loss"]
   },
   {
     "id": "backpropagation",
@@ -106,7 +106,7 @@ addSection('03-01', "인공지능의 학습", [
     "easy": "단체 줄넘기에서 걸렸을 때, 맨 끝 사람부터 거꾸로 '누가 얼마나 늦었나'를 따져 각자 고치는 거예요.",
     "ex": "PyTorch에서는 loss.backward() 한 줄이 역전파를 대신 해 줘요.",
     "flow": [],
-    "related": ["gradient-descent", "neural-network", "pytorch"]
+    "related": ["gradient-descent", "perceptron", "neural-network", "pytorch"]
   },
   {
     "id": "learning-rate",
@@ -335,5 +335,29 @@ addSection('03-01', "인공지능의 학습", [
     "ex": "Colab MCP 준비물이 Python, git, uv예요. uvx로 colab-mcp를 바로 띄워요.",
     "flow": [],
     "related": ["colab-mcp", "npm", "cli"]
+  },
+  {
+    "id": "perceptron",
+    "term": "Perceptron",
+    "ko": "퍼셉트론",
+    "full": "",
+    "level": "입문",
+    "def": "1958년 로젠블랫이 만든 초기 학습 모델. 예측해 보고, 틀리면 틀린 정도만큼 내부 숫자(가중치)를 살짝 고치는 규칙으로 배운다. 한 겹뿐이라 복잡한 패턴은 못 배웠고, 이 한계를 역전파가 풀었다.",
+    "easy": "받아쓰기를 틀릴 때마다 틀린 만큼만 고쳐 가며 실력을 키우는 아이예요. 다만 아주 쉬운 문제까지만 풀 수 있었어요.",
+    "ex": "카페 실습의 weight 하나·bias 하나 모델이 퍼셉트론의 친척뻘이에요. 퍼셉트론은 0과 1을 갈랐고, 카페 모델은 매출 같은 숫자를 예측해요.",
+    "flow": ["예측", "틀린 만큼 가중치 고치기", "반복"],
+    "related": ["backpropagation", "neural-network", "parameter"]
+  },
+  {
+    "id": "gradient",
+    "term": "Gradient",
+    "ko": "기울기",
+    "full": "",
+    "level": "실전",
+    "def": "각 파라미터(가중치·편향)가 오차에 얼마나 기여했는지 나타내는 값. 경사하강은 이 기울기의 반대 방향으로 파라미터를 한 걸음 옮긴다.",
+    "easy": "언덕에서 발밑이 어느 쪽으로 얼마나 기울었는지예요. 그 반대쪽으로 걸으면 아래로 내려가요.",
+    "ex": "PyTorch에서 loss.backward()를 부르면 w.grad에 기울기가 계산되고, w -= lr * w.grad로 반대 방향으로 한 걸음 가요.",
+    "flow": [],
+    "related": ["gradient-descent", "backpropagation", "learning-rate"]
   }
 ]);
