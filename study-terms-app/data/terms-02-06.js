@@ -73,21 +73,21 @@ addSection('02-06', "에이전트·MCP·스킬", [
     ]
   },
   {
-    "id": "rules-file",
-    "term": "AGENTS.md / CLAUDE.md",
-    "ko": "규칙 파일",
     "full": "",
-    "src": "02-06",
-    "level": "입문",
-    "def": "프로젝트 규칙과 사용법을 적어 두면 AI가 대화 시작 때 읽는 파일.",
-    "easy": "AI에게 주는 우리 집 규칙표예요. 매번 말하지 않아도 돼요.",
-    "ex": "루트의 AGENTS.md에 실행 명령과 하지 말 것을 적어 두면 새 대화에서도 지켜요.",
     "flow": [],
     "related": [
       "skill",
       "project-root",
       "agent"
-    ]
+    ],
+    "ex": "해당 도구가 규칙 파일을 실제로 읽는지 확인해요. 02-06 실습처럼 CLAUDE.md에서 @AGENTS.md로 불러오게 설정하는 방법도 있어요.",
+    "easy": "AI에게 주는 우리 집 규칙표예요. 매번 말하지 않아도 돼요.",
+    "level": "입문",
+    "id": "rules-file",
+    "term": "AGENTS.md / CLAUDE.md",
+    "ko": "규칙 파일",
+    "src": "02-06",
+    "def": "프로젝트 규칙과 실행 방법을 적어 AI 코딩 도구가 참고하게 하는 파일이에요. 지원하는 파일명과 읽는 범위는 도구·버전·설정마다 달라요."
   },
   {
     "id": "progressive-disclosure",
@@ -251,21 +251,21 @@ addSection('02-06', "에이전트·MCP·스킬", [
     ]
   },
   {
-    "id": "local-model",
-    "term": "Local Model",
-    "ko": "로컬 모델",
     "full": "",
-    "src": "02-06",
-    "level": "실전",
-    "def": "Ollama 같은 도구로 내 컴퓨터에서 직접 돌리는 AI 모델.",
-    "easy": "인터넷 없이 내 방에서 일하는 AI예요. 내용이 밖으로 안 나가요.",
-    "ex": "계약서 같은 민감한 자료는 로컬 모델로, 어려운 작업은 클라우드로 나눠 써요.",
     "flow": [],
     "related": [
       "open-weight",
       "genai",
       "token"
-    ]
+    ],
+    "ex": "계약서 같은 민감한 자료는 로컬 모델로, 어려운 작업은 클라우드로 나눠 써요.",
+    "easy": "모델 계산을 내 컴퓨터에서 해요. 모델 파일이 준비돼 있으면 오프라인으로도 쓸 수 있지만, 연결한 검색·도구·클라우드 기능은 데이터를 밖으로 보낼 수 있어요.",
+    "level": "실전",
+    "id": "local-model",
+    "term": "Local Model",
+    "ko": "로컬 모델",
+    "src": "02-06",
+    "def": "Ollama 같은 도구로 내 컴퓨터에서 직접 돌리는 AI 모델."
   },
   {
     "id": "spec-driven",
@@ -340,3 +340,4 @@ addSection('02-06', "에이전트·MCP·스킬", [
     ]
   }
 ]);
+

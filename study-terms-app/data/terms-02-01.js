@@ -71,38 +71,38 @@ addSection('02-01', "바이브 코딩 작업대", [
     ]
   },
   {
-    "id": "nodejs",
-    "term": "Node.js",
-    "ko": "노드제이에스",
     "full": "",
-    "src": "02-01",
-    "level": "입문",
-    "def": "웹 도구가 돌아가는 JavaScript 실행 엔진.",
-    "easy": "장난감이 움직이려면 필요한 건전지 같아요.",
-    "ex": "Next.js 프로젝트를 만들고 실행하려면 Node.js가 필요해요.",
     "flow": [],
     "related": [
       "npm",
       "nvm",
       "web-layers"
-    ]
+    ],
+    "ex": "Next.js 프로젝트를 만들고 실행하려면 Node.js가 필요해요.",
+    "easy": "장난감이 움직이려면 필요한 건전지 같아요.",
+    "level": "입문",
+    "id": "nodejs",
+    "term": "Node.js",
+    "ko": "노드제이에스",
+    "src": "02-01",
+    "def": "브라우저 밖에서 JavaScript 프로그램을 실행하는 환경(런타임)이에요. V8 엔진과 파일·네트워크 같은 기능을 함께 제공해요."
   },
   {
-    "id": "npm",
-    "term": "npm",
-    "ko": "엔피엠",
-    "full": "Node Package Manager",
-    "src": "02-01",
-    "level": "입문",
-    "def": "Node.js 위에서 패키지를 설치하고 관리하는 도구.",
-    "easy": "필요한 부품을 대신 사다 주는 부품 가게예요.",
-    "ex": "Node.js를 설치하면 npm도 함께 들어와 npm --version으로 확인해요.",
+    "full": "",
     "flow": [],
     "related": [
       "nodejs",
       "nvm",
       "sudo-eacces"
-    ]
+    ],
+    "ex": "Node.js를 설치하면 npm도 함께 들어와 npm --version으로 확인해요.",
+    "easy": "필요한 부품을 대신 사다 주는 부품 가게예요.",
+    "level": "입문",
+    "id": "npm",
+    "term": "npm",
+    "ko": "엔피엠",
+    "src": "02-01",
+    "def": "JavaScript 패키지를 설치·관리하고 프로젝트에 정한 명령을 실행하는 도구예요."
   },
   {
     "id": "nvm",
@@ -270,3 +270,4 @@ addSection('02-01', "바이브 코딩 작업대", [
     ]
   }
 ]);
+

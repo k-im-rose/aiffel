@@ -39,21 +39,21 @@ addSection('02-07', "메인퀘스트: 저장·로그인·Git", [
     ]
   },
   {
-    "id": "constraint",
-    "term": "Constraint",
-    "ko": "제약",
     "full": "",
-    "src": "02-07",
-    "level": "실전",
-    "def": "DB가 잘못된 저장을 스스로 거부하는 규칙.",
-    "easy": "놀이공원 키 제한선처럼 기준에 안 맞으면 입구에서 막아요.",
-    "ex": "정원을 넘는 신청은 DB가 저장 자체를 거부하게 해요.",
     "flow": [],
     "related": [
       "transaction",
       "rls",
       "db-function"
-    ]
+    ],
+    "ex": "수량이 음수가 되지 않게 CHECK를, 같은 신청이 중복되지 않게 UNIQUE를 둘 수 있어요. 여러 행에 걸친 정원 제한은 잠금이나 원자적 갱신 등을 함께 설계해요.",
+    "easy": "놀이공원 키 제한선처럼 기준에 안 맞으면 입구에서 막아요.",
+    "level": "실전",
+    "id": "constraint",
+    "term": "Constraint",
+    "ko": "제약",
+    "src": "02-07",
+    "def": "DB가 잘못된 저장을 스스로 거부하는 규칙."
   },
   {
     "id": "db-function",
@@ -128,21 +128,21 @@ addSection('02-07', "메인퀘스트: 저장·로그인·Git", [
     ]
   },
   {
-    "id": "static-hosting",
-    "term": "Static Hosting",
-    "ko": "정적 호스팅",
     "full": "",
-    "src": "02-07",
-    "level": "입문",
-    "def": "서버 없이 HTML/CSS/JS 파일만 올려서 보여 주는 배포 방식.",
-    "easy": "미리 인쇄한 전단지를 쌓아 두고 나눠 주는 가게예요. 주문받아 만들지 않아요.",
-    "ex": "HTML·CSS·JS 한 벌이라서 서버 없이 정적 호스팅에 올려요.",
     "flow": [],
     "related": [
       "github-pages",
       "web-layers",
       "deploy"
-    ]
+    ],
+    "ex": "화면 파일은 GitHub Pages 같은 정적 호스팅에 올리고, 저장·로그인은 필요할 때 Supabase 같은 외부 API와 연결할 수 있어요.",
+    "easy": "미리 인쇄한 전단지를 쌓아 두고 나눠 주는 가게예요. 주문받아 만들지 않아요.",
+    "level": "입문",
+    "id": "static-hosting",
+    "term": "Static Hosting",
+    "ko": "정적 호스팅",
+    "src": "02-07",
+    "def": "미리 만든 HTML·CSS·JS·이미지 파일을 호스팅 서버나 CDN에서 전달하는 방식이에요. 별도의 앱 서버를 직접 운영하지 않아도 정적 파일을 배포할 수 있어요."
   },
   {
     "id": "staging-area",
@@ -204,3 +204,4 @@ addSection('02-07', "메인퀘스트: 저장·로그인·Git", [
     ]
   }
 ]);
+
