@@ -1,28 +1,42 @@
 // 03-01 인공지능의 학습 — 교육자료 PDF 기반. 처음 나온 자료에만 두고, 다시 나온 자료는 src에 함께 적는다.
 addSection('03-01', "인공지능의 학습", [
   {
+    "full": "",
+    "flow": [
+      "데이터 주기",
+      "규칙 스스로 찾기",
+      "새 입력에 적용"
+    ],
+    "related": [
+      "deep-learning",
+      "training",
+      "supervised-learning"
+    ],
+    "ex": "스팸을 '무료'·'당첨' 같은 금지어로 막으면 '무.료'로 빠져나가요. 그래서 스팸 예시를 많이 보여 주고 배우게 해요.",
+    "easy": "'귀가 뾰족하면 고양이' 같은 규칙을 다 적는 대신, 개·고양이 사진을 잔뜩 보여 주고 알아서 구분법을 익히게 해요.",
+    "level": "입문",
     "id": "machine-learning",
     "term": "Machine Learning",
     "ko": "머신러닝",
-    "full": "기계학습",
-    "level": "입문",
     "def": "사람이 규칙을 하나하나 짜 넣는 대신, 데이터(예시)를 보고 기계가 규칙을 스스로 찾게 하는 방식.",
-    "easy": "'귀가 뾰족하면 고양이' 같은 규칙을 다 적는 대신, 개·고양이 사진을 잔뜩 보여 주고 알아서 구분법을 익히게 해요.",
-    "ex": "스팸을 '무료'·'당첨' 같은 금지어로 막으면 '무.료'로 빠져나가요. 그래서 스팸 예시를 많이 보여 주고 배우게 해요.",
-    "flow": ["데이터 주기", "규칙 스스로 찾기", "새 입력에 적용"],
-    "related": ["deep-learning", "training", "supervised-learning"]
+    "src": "03-01"
   },
   {
+    "full": "",
+    "flow": [],
+    "related": [
+      "machine-learning",
+      "neural-network",
+      "genai"
+    ],
+    "ex": "사진을 알아보고, 글을 쓰고, 번역하는 요즘 AI는 거의 다 딥러닝으로 만들어요.",
+    "easy": "AI라는 큰 범위 안에 머신러닝이, 그 안에 딥러닝이 있어요. 오늘 다루는 대표적인 생성형 AI도 대개 딥러닝으로 만들어요.",
+    "level": "입문",
     "id": "deep-learning",
     "term": "Deep Learning",
     "ko": "딥러닝",
-    "full": "",
-    "level": "입문",
     "def": "머신러닝 안에서, 신경망을 여러 층 깊게 쌓아 복잡한 패턴을 배우는 방식. 요즘 생성형 AI도 대개 딥러닝 위에 서 있다.",
-    "easy": "AI ⊃ 머신러닝 ⊃ 딥러닝 ⊃ 생성형 AI. 큰 원 안에 작은 원이 차례로 들어 있는 모양이에요.",
-    "ex": "사진을 알아보고, 글을 쓰고, 번역하는 요즘 AI는 거의 다 딥러닝으로 만들어요.",
-    "flow": [],
-    "related": ["machine-learning", "neural-network", "genai"]
+    "src": "03-01"
   },
   {
     "id": "neural-network",
@@ -37,16 +51,26 @@ addSection('03-01', "인공지능의 학습", [
     "related": ["deep-learning", "parameter", "backpropagation"]
   },
   {
+    "full": "",
+    "flow": [
+      "예측",
+      "오차 계산",
+      "가중치 조정",
+      "반복"
+    ],
+    "related": [
+      "loss",
+      "gradient-descent",
+      "parameter"
+    ],
+    "ex": "03-01 카페 실습 예시에서는 30일치 기록으로 600번 학습해, 숨은 규칙 ‘매출 = 2 × 방문객 + 1’에 가까운 2.07과 0.79를 얻었어요. 데이터·초깃값·실행 조건에 따라 결과는 달라질 수 있어요.",
+    "easy": "받아쓰기를 하고 → 채점하고 → 틀린 만큼 고치고, 또 받아쓰기. 이걸 수백 번 반복하면 실력이 늘어요.",
+    "level": "입문",
     "id": "training",
     "term": "Training",
     "ko": "학습(훈련)",
-    "full": "",
-    "level": "입문",
     "def": "모델이 데이터로 예측하고, 틀린 정도(오차)를 계산하고, 내부 숫자(가중치)를 조금 고치는 일을 반복하는 과정.",
-    "easy": "받아쓰기를 하고 → 채점하고 → 틀린 만큼 고치고, 또 받아쓰기. 이걸 수백 번 반복하면 실력이 늘어요.",
-    "ex": "카페 30일치 (방문객, 매출) 기록만 주고 600번 반복시키니, 숨은 규칙 '매출 = 2 × 방문객 + 1'에 가까운 2.07과 0.79를 찾아냈어요.",
-    "flow": ["예측", "오차 계산", "가중치 조정", "반복"],
-    "related": ["loss", "gradient-descent", "parameter"]
+    "src": "03-01"
   },
   {
     "id": "supervised-learning",
@@ -61,28 +85,38 @@ addSection('03-01', "인공지능의 학습", [
     "related": ["machine-learning", "regression", "classification"]
   },
   {
+    "full": "",
+    "flow": [],
+    "related": [
+      "training",
+      "gradient-descent",
+      "llm"
+    ],
+    "ex": "카페 모델은 파라미터가 2개(w, b), ResNet18은 약 1,100만 개, LLM은 수십억~수천억 개예요.",
+    "easy": "라디오 다이얼 같아요. 소리가 또렷해질 때까지 조금씩 돌려 맞춰요. 거대 언어 모델은 이 다이얼이 수천억 개예요.",
+    "level": "입문",
     "id": "parameter",
     "term": "Parameter",
-    "ko": "파라미터(가중치)",
-    "full": "Weight · Bias",
-    "level": "입문",
+    "ko": "파라미터(가중치·편향)",
     "def": "학습하며 조정되는 모델 내부의 숫자. 가중치(weight)와 편향(bias)이 있고, 학습의 결과물은 규칙집이 아니라 이 숫자들에 압축된 패턴이다.",
-    "easy": "라디오 다이얼 같아요. 소리가 또렷해질 때까지 조금씩 돌려 맞춰요. 거대 언어 모델은 이 다이얼이 수천억 개예요.",
-    "ex": "카페 모델은 파라미터가 2개(w, b), ResNet18은 약 1,100만 개, LLM은 수십억~수천억 개예요.",
-    "flow": [],
-    "related": ["training", "gradient-descent", "llm"]
+    "src": "03-01"
   },
   {
+    "full": "",
+    "flow": [],
+    "related": [
+      "training",
+      "gradient-descent",
+      "regression"
+    ],
+    "ex": "예측이 5이고 정답이 7이면 절대오차는 2, 제곱오차는 4예요. 03-01 카페 실습은 각 예시의 제곱오차를 평균 낸 MSE를 사용해요.",
+    "easy": "과녁에서 화살이 얼마나 빗나갔는지 재는 자예요. 작을수록 잘 맞힌 거예요.",
+    "level": "실전",
     "id": "loss",
     "term": "Loss",
     "ko": "손실(오차)",
-    "full": "",
-    "level": "실전",
-    "def": "모델의 예측이 정답에서 얼마나 틀렸는지를 나타내는 숫자. 학습은 이 값을 줄이는 방향으로 진행된다. 숫자 예측에는 평균제곱오차(MSE)를 쓴다.",
-    "easy": "과녁에서 화살이 얼마나 빗나갔는지 재는 자예요. 작을수록 잘 맞힌 거예요.",
-    "ex": "모델이 5를 예측했는데 정답이 7이면 오차는 2예요. 학습이 잘되면 loss 그래프가 뚝 떨어졌다가 평평해져요.",
-    "flow": [],
-    "related": ["training", "gradient-descent", "regression"]
+    "def": "예측이 목표에서 얼마나 벗어났는지를 정한 기준으로 계산한 값이에요. 학습은 이 값을 줄이도록 진행해요. 회귀에는 MSE·MAE 등 여러 손실을 쓸 수 있어요.",
+    "src": "03-01"
   },
   {
     "id": "gradient-descent",
@@ -97,28 +131,38 @@ addSection('03-01', "인공지능의 학습", [
     "related": ["gradient", "learning-rate", "backpropagation", "loss"]
   },
   {
+    "full": "",
+    "flow": [],
+    "related": [
+      "gradient-descent",
+      "perceptron",
+      "neural-network",
+      "pytorch"
+    ],
+    "ex": "PyTorch에서 loss.backward()는 기울기를 계산하고, optimizer.step()은 그 기울기를 이용해 파라미터를 갱신해요.",
+    "easy": "결과가 달라지려면 각 조절 손잡이를 어느 쪽으로 얼마나 움직여야 할지 되짚어 계산해요. 실제로 손잡이를 돌리는 단계는 따로 있어요.",
+    "level": "심화",
     "id": "backpropagation",
     "term": "Backpropagation",
     "ko": "역전파",
-    "full": "",
-    "level": "심화",
-    "def": "여러 층의 숫자들에게 '최종 오차에 얼마나 기여했는지'를 뒤에서 앞으로 되짚어 알려 주고, 그만큼 고치게 하는 방법(1986년). 오늘날 거의 모든 신경망이 이 방식으로 학습한다.",
-    "easy": "단체 줄넘기에서 걸렸을 때, 맨 끝 사람부터 거꾸로 '누가 얼마나 늦었나'를 따져 각자 고치는 거예요.",
-    "ex": "PyTorch에서는 loss.backward() 한 줄이 역전파를 대신 해 줘요.",
-    "flow": [],
-    "related": ["gradient-descent", "perceptron", "neural-network", "pytorch"]
+    "def": "손실이 각 파라미터의 작은 변화에 얼마나 민감한지, 미분의 연쇄법칙으로 뒤에서 앞으로 계산하는 방법이에요. 계산한 기울기로 파라미터를 갱신하는 일과는 구분해요.",
+    "src": "03-01"
   },
   {
+    "full": "",
+    "flow": [],
+    "related": [
+      "gradient-descent",
+      "training"
+    ],
+    "ex": "03-01 카페 실습 코드에서는 학습률 lr = 0.03으로 600번 반복했어요. 다른 문제에서도 이 값이 최선이라는 뜻은 아니에요.",
+    "easy": "산을 내려갈 때의 보폭이에요. 너무 크면 골짜기를 건너뛰고, 너무 작으면 해가 져요.",
+    "level": "실전",
     "id": "learning-rate",
     "term": "Learning Rate",
     "ko": "학습률",
-    "full": "",
-    "level": "실전",
     "def": "경사하강에서 한 번에 가중치를 얼마나 크게 고칠지 정하는 값. 한 걸음의 크기.",
-    "easy": "산을 내려갈 때의 보폭이에요. 너무 크면 골짜기를 건너뛰고, 너무 작으면 해가 져요.",
-    "ex": "카페 실습 코드에서는 lr = 0.03으로 600번 걸었어요.",
-    "flow": [],
-    "related": ["gradient-descent", "training"]
+    "src": "03-01"
   },
   {
     "id": "regression",
@@ -145,16 +189,25 @@ addSection('03-01', "인공지능의 학습", [
     "related": ["softmax", "regression", "mnist"]
   },
   {
+    "full": "",
+    "flow": [
+      "점수(로짓)",
+      "exp로 모두 양수",
+      "합으로 나눠 확률"
+    ],
+    "related": [
+      "classification",
+      "next-token",
+      "llm"
+    ],
+    "ex": "점수 [2.0, 1.0, 0.1]은 약 [0.66, 0.24, 0.10]이 돼요. 높은 값이어도 틀릴 수 있으므로, 사람에게 넘길 기준은 검증 데이터로 평가해 정해요.",
+    "easy": "1등만 1점, 나머지 0점으로 자르는 게 아니라, 2·3등에도 점수를 조금씩 나눠 주는 부드러운 채점이에요.",
+    "level": "실전",
     "id": "softmax",
     "term": "Softmax",
     "ko": "소프트맥스",
-    "full": "",
-    "level": "실전",
-    "def": "여러 후보의 점수를 0~1 사이이고 합이 1인 확률로 바꾸는 계산. 확률 자체가 '얼마나 확신하는지'를 알려 준다. 언어모델이 다음 단어를 고를 때도 같은 장치를 쓴다.",
-    "easy": "1등만 1점, 나머지 0점으로 자르는 게 아니라, 2·3등에도 점수를 조금씩 나눠 주는 부드러운 채점이에요.",
-    "ex": "점수 [2.0, 1.0, 0.1]이 확률 [0.66, 0.24, 0.10]이 돼요. 0.66이면 애매하니 '확률이 낮으면 사람에게 넘긴다'는 기준을 세울 수 있어요.",
-    "flow": ["점수(로짓)", "exp로 모두 양수", "합으로 나눠 확률"],
-    "related": ["classification", "next-token", "llm"]
+    "def": "후보 점수를 양수이고 합이 1인 확률 분포로 바꾸는 계산이에요. 모델의 확신 정도로 쓰지만 실제 정답률과 일치한다는 보장은 없어요.",
+    "src": "03-01"
   },
   {
     "id": "vector",
@@ -194,41 +247,55 @@ addSection('03-01', "인공지능의 학습", [
     "related": ["vector", "pytorch", "mnist"]
   },
   {
+    "full": "",
+    "flow": [],
+    "related": [
+      "classification",
+      "tensor",
+      "softmax"
+    ],
+    "ex": "03-01 자료집은 간단한 신경망의 정확도 96%대를 예로 들어요. 학습 데이터를 10%로 줄여 결과를 비교해 볼 수 있어요. 정확도는 모델 구성과 학습 조건에 따라 달라져요.",
+    "easy": "AI 공부를 시작할 때 처음 푸는 연습 문제집이에요.",
+    "level": "입문",
     "id": "mnist",
     "term": "MNIST",
     "ko": "손글씨 숫자 데이터셋",
-    "full": "",
-    "level": "입문",
     "def": "손으로 쓴 숫자 0~9를 모은 7만 장짜리 데이터셋. 한 장은 28×28 밝기 숫자이고, 기계학습의 'Hello World'로 불린다.",
-    "easy": "AI 공부를 시작할 때 처음 푸는 연습 문제집이에요.",
-    "ex": "간단한 신경망으로 정확도 96%쯤 나오는데, 데이터를 10%로 줄이면 떨어져요. 모델이 아니라 볼 예시가 줄었기 때문이에요.",
-    "flow": [],
-    "related": ["classification", "tensor", "softmax"]
+    "src": "03-01"
   },
   {
+    "full": "",
+    "flow": [],
+    "related": [
+      "training",
+      "hallucination",
+      "parameter"
+    ],
+    "ex": "기출문제는 잘 풀어도 새 문제에서 틀린다면 일반화가 부족할 수 있어요. 유창하게 답하는 것과 새 문제를 정확히 푸는 것은 달라요.",
+    "easy": "기출문제 답만 외운 친구는 새 문제에서 막히고, 원리를 익힌 친구는 처음 보는 문제도 풀어요.",
+    "level": "실전",
     "id": "generalization",
     "term": "Generalization",
     "ko": "일반화",
-    "full": "",
-    "level": "실전",
-    "def": "학습에 없던 새 입력에도 그럴듯하게 대응하는 능력. 외우기와 구분되며, 일반화는 어디까지나 추정이라 모델은 자신 있게 틀릴 수 있다.",
-    "easy": "기출문제 답만 외운 친구는 새 문제에서 막히고, 원리를 익힌 친구는 처음 보는 문제도 풀어요.",
-    "ex": "AI가 처음 보는 질문에 확신하며 틀린 답을 하는 것도 일반화가 추정이기 때문이에요.",
-    "flow": [],
-    "related": ["training", "hallucination", "parameter"]
+    "def": "훈련에서 직접 보지 못한 새 데이터에서도 잘 작동하는 능력이에요. 외운 예시에만 잘 답하는 것과 구분하고, 새 데이터에서의 성능으로 평가해요.",
+    "src": "03-01"
   },
   {
+    "full": "Large Language Model",
+    "flow": [],
+    "related": [
+      "next-token",
+      "pretraining",
+      "token"
+    ],
+    "ex": "ChatGPT·Claude 같은 챗봇 속에 언어 모델이 있어요. 큰 모델을 처음부터 학습하려면 많은 계산 자원이 필요하지만, 필요한 장비와 비용은 모델 규모·학습 조건에 따라 달라요.",
+    "easy": "세상의 글을 엄청나게 읽고 '다음에 올 말 맞히기'를 연습한 아주 큰 모델이에요.",
+    "level": "입문",
     "id": "llm",
     "term": "LLM",
     "ko": "대형 언어 모델",
-    "full": "Large Language Model",
     "src": "03-01 · 03-02",
-    "level": "입문",
-    "def": "수십억~수천억 개 파라미터로 다음 토큰을 예측하도록 학습한 언어 모델. 원리는 작은 모델과 같은 '예측 → 오차 → 조정'이고, 다른 점은 규모다.",
-    "easy": "세상의 글을 엄청나게 읽고 '다음에 올 말 맞히기'를 연습한 아주 큰 모델이에요.",
-    "ex": "ChatGPT, Claude 같은 챗봇 속에 LLM이 있어요. 처음부터 학습하려면 GPU 수천 대와 수백만~수억 달러가 들어요.",
-    "flow": [],
-    "related": ["next-token", "pretraining", "token"]
+    "def": "대규모 텍스트 등으로 언어의 패턴을 학습한 큰 언어 모델이에요. 이 수업의 GPT식 생성 모델은 주로 다음 토큰을 예측해요. BERT처럼 가린 토큰을 맞히며 학습하는 언어 모델도 있어요."
   },
   {
     "id": "next-token",
@@ -244,30 +311,42 @@ addSection('03-01', "인공지능의 학습", [
     "related": ["llm", "softmax", "token"]
   },
   {
+    "full": "",
+    "flow": [],
+    "related": [
+      "fine-tuning",
+      "llm",
+      "transfer-learning"
+    ],
+    "ex": "흔히 쓰는 ImageNet-1K 사전학습 ResNet18은 약 120만 장의 훈련 이미지로 배운 특징을 활용해요. 새 작업에서 이 특징을 물려받아 쓸 수 있어요.",
+    "easy": "학교에서 기초 과목을 두루 배워 두는 단계예요. 직업 교육(파인튜닝)은 그다음이에요.",
+    "level": "실전",
     "id": "pretraining",
     "term": "Pretraining",
     "ko": "사전학습",
-    "full": "",
     "src": "03-01 · 03-02",
-    "level": "실전",
-    "def": "아주 많은 데이터로 모델을 처음부터 미리 크게 학습시키는 일. 작은 학습을 웹 전체 규모로 돌린 것이다.",
-    "easy": "학교에서 기초 과목을 두루 배워 두는 단계예요. 직업 교육(파인튜닝)은 그다음이에요.",
-    "ex": "ResNet18은 수백만 장의 이미지로 사전학습돼서 이미 선·모서리·질감을 보는 눈이 있어요.",
-    "flow": [],
-    "related": ["fine-tuning", "llm", "transfer-learning"]
+    "def": "후속 작업에 활용할 기반 표현과 패턴을 미리 학습하는 단계예요. 이미지·텍스트 등 다양한 데이터로 수행하며, 데이터 규모와 학습 방법은 모델마다 달라요."
   },
   {
+    "full": "",
+    "flow": [
+      "사전학습 모델 가져오기",
+      "학습할 부분 정하기",
+      "추가 학습·평가"
+    ],
+    "related": [
+      "transfer-learning",
+      "pretraining",
+      "gpu"
+    ],
+    "ex": "03-01 실습은 ResNet18의 앞쪽 가중치를 고정하고 마지막 분류 층을 개·고양이용으로 학습하는 전이학습 예시예요. 파인튜닝 전체가 마지막 층만 학습하는 방식으로 한정되지는 않아요.",
+    "easy": "요리를 다 배운 셰프에게 우리 가게 메뉴만 새로 알려 주는 거예요. 칼질부터 다시 가르치지 않아요.",
+    "level": "실전",
     "id": "fine-tuning",
     "term": "Fine-tuning",
     "ko": "파인튜닝",
-    "full": "",
     "src": "03-01 · 03-02",
-    "level": "실전",
-    "def": "사전학습된 모델을 가져와, 마지막 판단 부분만 내 문제에 맞게 조금 더 학습시키는 일. 적은 데이터·적은 계산으로도 잘 된다.",
-    "easy": "요리를 다 배운 셰프에게 우리 가게 메뉴만 새로 알려 주는 거예요. 칼질부터 다시 가르치지 않아요.",
-    "ex": "ResNet18의 마지막 층만 '개/고양이' 2개로 바꿔 학습시키면, 사진 몇백 장으로도 밑바닥부터 배운 모델보다 정확해요.",
-    "flow": ["사전학습 모델 가져오기", "앞쪽 층 얼리기", "마지막 층만 학습"],
-    "related": ["transfer-learning", "pretraining", "gpu"]
+    "def": "사전학습한 모델을 특정 작업이나 데이터에 맞춰 추가로 학습시키는 일이에요. 전체 또는 일부 가중치, 추가한 작은 학습 모듈 등을 조정할 수 있어요."
   },
   {
     "id": "transfer-learning",
@@ -282,16 +361,21 @@ addSection('03-01', "인공지능의 학습", [
     "related": ["fine-tuning", "pretraining"]
   },
   {
+    "full": "Graphics Processing Unit",
+    "flow": [],
+    "related": [
+      "colab",
+      "fine-tuning",
+      "pytorch"
+    ],
+    "ex": "카페 모델은 노트북에서 즉시 끝나지만, ResNet18 파인튜닝은 Colab의 무료 T4 GPU를 빌려 돌려요.",
+    "easy": "CPU가 똑똑한 요리사 몇 명이라면, GPU는 감자 깎기만 하는 조수 수천 명이에요. 감자가 많으면 GPU가 이겨요.",
+    "level": "입문",
     "id": "gpu",
     "term": "GPU",
     "ko": "그래픽 처리 장치",
-    "full": "Graphics Processing Unit",
-    "level": "입문",
-    "def": "단순한 계산을 동시에 처리하는 코어를 수천 개 가진 장치. 학습의 대부분인 행렬 곱셈을 병렬로 처리해 CPU보다 수십~수백 배 빠르다.",
-    "easy": "CPU가 똑똑한 요리사 몇 명이라면, GPU는 감자 깎기만 하는 조수 수천 명이에요. 감자가 많으면 GPU가 이겨요.",
-    "ex": "카페 모델은 노트북에서 즉시 끝나지만, ResNet18 파인튜닝은 Colab의 무료 T4 GPU를 빌려 돌려요.",
-    "flow": [],
-    "related": ["colab", "fine-tuning", "pytorch"]
+    "def": "많은 계산을 병렬로 처리하는 데 특화된 장치예요. 큰 행렬 곱셈 같은 딥러닝 계산을 빠르게 할 수 있지만, CPU와의 속도 차이는 작업 크기·장비·구현에 따라 달라요.",
+    "src": "03-01"
   },
   {
     "id": "pytorch",
@@ -330,16 +414,21 @@ addSection('03-01', "인공지능의 학습", [
     "related": ["colab", "mcp-server", "uv"]
   },
   {
+    "full": "",
+    "flow": [],
+    "related": [
+      "colab-mcp",
+      "npm",
+      "cli"
+    ],
+    "ex": "Colab MCP 준비물이 Python, git, uv예요. uvx로 colab-mcp를 바로 띄워요.",
+    "easy": "파이썬 프로그램을 뜯지 않고 바로 꺼내 쓰게 해 주는 배달 상자예요.",
+    "level": "실전",
     "id": "uv",
     "term": "uv",
     "ko": "유브이",
-    "full": "",
-    "level": "실전",
-    "def": "파이썬 패키지와 실행 환경을 빠르게 설치·관리하는 도구. 설치하면 uvx 명령으로 패키지를 따로 설치하지 않고 바로 실행할 수 있다.",
-    "easy": "파이썬 프로그램을 뜯지 않고 바로 꺼내 쓰게 해 주는 배달 상자예요.",
-    "ex": "Colab MCP 준비물이 Python, git, uv예요. uvx로 colab-mcp를 바로 띄워요.",
-    "flow": [],
-    "related": ["colab-mcp", "npm", "cli"]
+    "def": "파이썬 패키지와 실행 환경을 설치·관리하는 도구예요. uvx는 필요한 도구를 임시 격리 환경에 준비해 실행하므로, 프로젝트 환경에 미리 직접 설치하지 않고 쓸 수 있어요.",
+    "src": "03-01"
   },
   {
     "id": "perceptron",
@@ -354,16 +443,21 @@ addSection('03-01', "인공지능의 학습", [
     "related": ["backpropagation", "neural-network", "parameter"]
   },
   {
+    "full": "",
+    "flow": [],
+    "related": [
+      "gradient-descent",
+      "backpropagation",
+      "learning-rate"
+    ],
+    "ex": "loss.backward()로 기울기를 계산하고 optimizer.step()으로 갱신해요. 다음 반복 전에는 보통 optimizer.zero_grad()로 기울기를 초기화해요.",
+    "easy": "언덕에서 발밑이 어느 쪽으로 얼마나 기울었는지예요. 그 반대쪽으로 걸으면 아래로 내려가요.",
+    "level": "실전",
     "id": "gradient",
     "term": "Gradient",
     "ko": "기울기",
-    "full": "",
     "src": "03-01 · 03-02",
-    "level": "실전",
-    "def": "각 파라미터(가중치·편향)가 오차에 얼마나 기여했는지 나타내는 값. 경사하강은 이 기울기의 반대 방향으로 파라미터를 한 걸음 옮긴다.",
-    "easy": "언덕에서 발밑이 어느 쪽으로 얼마나 기울었는지예요. 그 반대쪽으로 걸으면 아래로 내려가요.",
-    "ex": "PyTorch에서 loss.backward()를 부르면 w.grad에 기울기가 계산되고, w -= lr * w.grad로 반대 방향으로 한 걸음 가요.",
-    "flow": [],
-    "related": ["gradient-descent", "backpropagation", "learning-rate"]
+    "def": "손실을 각 파라미터로 편미분한 값을 모은 것이에요. 파라미터가 조금 바뀔 때 손실이 어느 방향으로 얼마나 변하는지 나타내요."
   }
 ]);
+

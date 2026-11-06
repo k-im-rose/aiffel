@@ -1,16 +1,21 @@
 // 03-02 트랜스포머와 언어 모델 — 교육자료 PDF 기반. 처음 나온 자료에만 두고, 다시 나온 자료는 src에 함께 적는다.
 addSection('03-02', "트랜스포머와 언어 모델", [
   {
+    "full": "Convolutional Neural Network",
+    "flow": [],
+    "related": [
+      "neural-network",
+      "skip-connection",
+      "transformer"
+    ],
+    "ex": "손글씨 숫자 인식은 CNN의 초기 대표 활용 사례예요. LeCun 등의 1989년 연구가 있고, 이후 수표 판독 같은 실제 업무에도 활용됐어요.",
+    "easy": "돋보기 하나로 사진을 구석구석 훑으며 '여기 동그라미 있다, 여기 모서리 있다' 찾는 거예요.",
+    "level": "실전",
     "id": "cnn",
     "term": "CNN",
     "ko": "합성곱 신경망",
-    "full": "Convolutional Neural Network",
-    "level": "실전",
-    "def": "작은 필터를 이미지 위에 미끄러뜨리며 가장자리·모서리·곡선 같은 국소 무늬를 훑는 신경망. 같은 필터를 이미지 전체에 돌려 써서 파라미터가 적고, 화면 어느 구석에 있든 같은 무늬를 알아본다.",
-    "easy": "돋보기 하나로 사진을 구석구석 훑으며 '여기 동그라미 있다, 여기 모서리 있다' 찾는 거예요.",
-    "ex": "1990년대 은행 수표의 손글씨 숫자를 읽던 판독기가 최초의 CNN이었어요.",
-    "flow": [],
-    "related": ["neural-network", "skip-connection", "transformer"]
+    "def": "작은 필터를 이동시키며 국소 무늬를 찾는 신경망이에요. 같은 필터를 여러 위치에 재사용해 파라미터를 줄이고 비슷한 무늬를 찾아요.",
+    "src": "03-02"
   },
   {
     "id": "relu",
@@ -49,40 +54,59 @@ addSection('03-02', "트랜스포머와 언어 모델", [
     "related": ["generalization", "dropout", "training"]
   },
   {
+    "full": "",
+    "flow": [],
+    "related": [
+      "gradient",
+      "backpropagation",
+      "skip-connection",
+      "rnn"
+    ],
+    "ex": "역전파 중 기울기가 아주 작아지면 앞쪽 층이 거의 학습하지 못할 수 있어요. RNN에서는 시간 축을 따라 같은 문제가 생겨요. 깊은 모델의 훈련 성능 저하가 항상 기울기 소실 때문인 것은 아니에요.",
+    "easy": "귓속말 전달 놀이에서 줄이 너무 길면 맨 앞 사람에게는 말이 거의 안 들리는 거예요.",
+    "level": "심화",
     "id": "vanishing-gradient",
     "term": "Vanishing Gradient",
     "ko": "기울기 소실",
-    "full": "",
-    "level": "심화",
     "def": "층이 깊어지면 출력 쪽에서 계산한 학습 신호(기울기)가 앞쪽 층까지 거슬러 오는 동안 거의 0으로 사라지는 문제. 1보다 작은 값이 여러 번 곱해지기 때문이다.",
-    "easy": "귓속말 전달 놀이에서 줄이 너무 길면 맨 앞 사람에게는 말이 거의 안 들리는 거예요.",
-    "ex": "층을 더 쌓았더니 훈련 데이터마저 못 맞히게 된 이유가 기울기 소실이었어요. RNN에서는 시간 축을 따라 같은 문제가 생겨요.",
-    "flow": [],
-    "related": ["gradient", "backpropagation", "skip-connection", "rnn"]
+    "src": "03-02"
   },
   {
+    "full": "Residual Connection",
+    "flow": [
+      "입력 x",
+      "층이 잔차 F(x) 계산",
+      "F(x) + x 출력"
+    ],
+    "related": [
+      "vanishing-gradient",
+      "cnn",
+      "transfer-learning"
+    ],
+    "ex": "ResNet은 152층 모델도 학습할 수 있음을 보였어요. ResNet 앙상블은 ILSVRC 2015 분류 과제의 ImageNet 테스트에서 top-5 오류율 3.57%를 기록했어요.",
+    "easy": "계단으로만 가면 지치니까 옆에 미끄럼틀 지름길을 놓아 준 거예요.",
+    "level": "심화",
     "id": "skip-connection",
     "term": "Skip Connection",
     "ko": "잔차 연결 (건너뛰기 연결)",
-    "full": "Residual Connection",
-    "level": "심화",
     "def": "입력을 몇 개 층을 건너뛰어 출력에 그대로 더해 주는 지름길. 층은 나머지(잔차)만 배우면 되고, 학습 신호가 깎이지 않고 앞쪽 층까지 흐른다. 이 구조로 만든 신경망이 ResNet이다.",
-    "easy": "계단으로만 가면 지치니까 옆에 미끄럼틀 지름길을 놓아 준 거예요.",
-    "ex": "지름길 덕분에 152층 ResNet이 학습됐고, 2015년 대회에서 사람보다 낮은 오류율(3.57%)을 냈어요.",
-    "flow": ["입력 x", "층이 잔차 F(x) 계산", "F(x) + x 출력"],
-    "related": ["vanishing-gradient", "cnn", "transfer-learning"]
+    "src": "03-02"
   },
   {
+    "full": "",
+    "flow": [],
+    "related": [
+      "embedding",
+      "vector"
+    ],
+    "ex": "03-02의 단어 유사도 실습 출력에서는 ‘바다–해변’이 76.7점, ‘바다–고양이’가 13.7점이었어요. 사용한 임베딩 모델과 점수 환산에 따른 예시 값이에요.",
+    "easy": "두 화살표가 같은 쪽을 가리키는지 보는 거예요. 길이는 달라도 방향이 같으면 '비슷하다'예요.",
+    "level": "실전",
     "id": "cosine-similarity",
     "term": "Cosine Similarity",
     "ko": "코사인 유사도",
-    "full": "",
-    "level": "실전",
     "def": "두 벡터가 이루는 각도로 얼마나 비슷한지 재는 값. 같은 방향이면 크고, 다른 방향이면 작다.",
-    "easy": "두 화살표가 같은 쪽을 가리키는지 보는 거예요. 길이는 달라도 방향이 같으면 '비슷하다'예요.",
-    "ex": "단어 유사도 게임에서 '바다'와 '해변'은 76.7점, '바다'와 '고양이'는 13.7점이 나왔어요.",
-    "flow": [],
-    "related": ["embedding", "vector"]
+    "src": "03-02"
   },
   {
     "id": "rnn",
@@ -109,16 +133,27 @@ addSection('03-02', "트랜스포머와 언어 모델", [
     "related": ["rnn", "skip-connection", "transformer"]
   },
   {
+    "full": "",
+    "flow": [
+      "인코더가 입력 읽기",
+      "뜻 전달",
+      "디코더가 출력 생성"
+    ],
+    "related": [
+      "rnn",
+      "attention",
+      "transformer",
+      "bert",
+      "gpt"
+    ],
+    "ex": "트랜스포머도 왼쪽 기둥이 인코더, 오른쪽 기둥이 디코더예요. BERT는 인코더만, GPT는 디코더만 남겼어요.",
+    "easy": "통역사가 연설을 듣고(인코더) 다른 말로 다시 말해 주는(디코더) 거예요.",
+    "level": "실전",
     "id": "encoder-decoder",
     "term": "Encoder-Decoder",
     "ko": "인코더-디코더",
-    "full": "seq2seq",
-    "level": "실전",
     "def": "인코더가 입력 문장을 읽어 뜻을 압축하고, 디코더가 그것을 실마리로 출력 문장을 한 단어씩 만드는 구조. 처음에는 문장 전체를 벡터 하나(문맥 벡터)에 담아, 문장이 길면 앞부분이 뭉개졌다(고정벡터 병목).",
-    "easy": "통역사가 연설을 듣고(인코더) 다른 말로 다시 말해 주는(디코더) 거예요.",
-    "ex": "트랜스포머도 왼쪽 기둥이 인코더, 오른쪽 기둥이 디코더예요. BERT는 인코더만, GPT는 디코더만 남겼어요.",
-    "flow": ["인코더가 입력 읽기", "뜻 전달", "디코더가 출력 생성"],
-    "related": ["rnn", "attention", "transformer", "bert", "gpt"]
+    "src": "03-02"
   },
   {
     "id": "attention",
@@ -133,16 +168,22 @@ addSection('03-02', "트랜스포머와 언어 모델", [
     "related": ["query-key-value", "transformer", "multi-head-attention", "encoder-decoder"]
   },
   {
+    "full": "",
+    "flow": [],
+    "related": [
+      "attention",
+      "multi-head-attention",
+      "llm",
+      "encoder-decoder"
+    ],
+    "ex": "GPT·Claude 같은 LLM, 이미지 모델(ViT), 음성 인식(Whisper)이 모두 트랜스포머 위에 서 있어요.",
+    "easy": "한 명씩 차례로 말하던 회의를, 모두가 서로를 동시에 볼 수 있는 원탁 회의로 바꾼 거예요.",
+    "level": "실전",
     "id": "transformer",
     "term": "Transformer",
     "ko": "트랜스포머",
-    "full": "",
-    "level": "실전",
-    "def": "순환 구조(RNN)와 합성곱(CNN)을 버리고 어텐션만으로 문장을 다루는 신경망 구조(2017년). 모든 토큰을 동시에 보므로 GPU로 병렬 계산할 수 있어 큰 모델을 학습시킬 길이 열렸다. 오늘날 LLM의 뼈대다.",
-    "easy": "한 명씩 차례로 말하던 회의를, 모두가 서로를 동시에 볼 수 있는 원탁 회의로 바꾼 거예요.",
-    "ex": "GPT·Claude 같은 LLM, 이미지 모델(ViT), 음성 인식(Whisper)이 모두 트랜스포머 위에 서 있어요.",
-    "flow": [],
-    "related": ["attention", "multi-head-attention", "llm", "encoder-decoder"]
+    "def": "어텐션을 중심으로 토큰 사이의 관계를 계산하는 신경망 구조예요. 원형은 RNN·CNN 없이 어텐션과 피드포워드 층 등을 사용해요. 학습 때 여러 위치를 병렬 계산할 수 있지만, GPT식 생성은 보통 토큰을 차례로 만들어요.",
+    "src": "03-02"
   },
   {
     "id": "query-key-value",
@@ -169,16 +210,21 @@ addSection('03-02', "트랜스포머와 언어 모델", [
     "related": ["attention", "transformer", "causal-mask", "kv-cache"]
   },
   {
+    "full": "",
+    "flow": [],
+    "related": [
+      "multi-head-attention",
+      "next-token",
+      "gpt"
+    ],
+    "ex": "GPT가 글을 이어 쓸 때 정답의 뒷부분을 미리 훔쳐보지 못하는 이유예요.",
+    "easy": "받아쓰기 시험에서 아직 안 불러 준 뒷문장은 종이로 가려 두는 거예요.",
+    "level": "심화",
     "id": "causal-mask",
     "term": "Causal Mask",
     "ko": "인과 마스크",
-    "full": "",
-    "level": "심화",
-    "def": "디코더가 다음 토큰을 만들 때, 아직 만들지 않은 미래 위치의 점수를 가려(0이 되게 해) 앞 토큰과 자기 자신만 참고하게 하는 장치. 이렇게 가린 어텐션을 Masked Multi-Head Attention이라 한다.",
-    "easy": "받아쓰기 시험에서 아직 안 불러 준 뒷문장은 종이로 가려 두는 거예요.",
-    "ex": "GPT가 글을 이어 쓸 때 정답의 뒷부분을 미리 훔쳐보지 못하는 이유예요.",
-    "flow": [],
-    "related": ["multi-head-attention", "next-token", "gpt"]
+    "def": "현재 위치가 미래 토큰을 참고하지 못하게 가리는 장치예요. 보통 softmax 전에 미래 위치의 점수를 음의 무한대로 처리해, softmax 뒤의 어텐션 가중치가 0이 되게 해요.",
+    "src": "03-02"
   },
   {
     "id": "kv-cache",
@@ -265,40 +311,60 @@ addSection('03-02', "트랜스포머와 언어 모델", [
     "related": ["prompt", "fine-tuning", "context-window"]
   },
   {
+    "full": "",
+    "flow": [],
+    "related": [
+      "rlhf",
+      "supervised-learning",
+      "alignment"
+    ],
+    "ex": "LLM 정렬에서는 언어 모델 자신이 정책이 되고, 사람이 좋아하는 답에 보상을 줘요.",
+    "easy": "강아지가 앉으면 간식을 줘서, 시키지 않아도 앉는 법을 익히게 하는 거예요.",
+    "level": "실전",
     "id": "reinforcement-learning",
     "term": "Reinforcement Learning",
     "ko": "강화학습",
-    "full": "",
-    "level": "실전",
-    "def": "정답을 하나하나 알려 주는 대신, 잘한 행동에 보상을 주어 스스로 나아지게 하는 학습 방식. 보상을 좇아 행동을 고르는 주체를 정책이라 부른다.",
-    "easy": "강아지가 앉으면 간식을 줘서, 시키지 않아도 앉는 법을 익히게 하는 거예요.",
-    "ex": "LLM 정렬에서는 언어 모델 자신이 정책이 되고, 사람이 좋아하는 답에 보상을 줘요.",
-    "flow": [],
-    "related": ["rlhf", "supervised-learning", "alignment"]
+    "def": "환경에서 행동하고 보상을 받는 경험을 바탕으로, 앞으로 얻을 보상이 커지도록 행동 선택 방법을 배우는 방식이에요. 행동 주체는 에이전트, 행동을 고르는 규칙이나 확률 분포는 정책(policy)이에요.",
+    "src": "03-02"
   },
   {
+    "full": "",
+    "flow": [
+      "사전학습",
+      "SFT",
+      "RLHF 또는 DPO"
+    ],
+    "related": [
+      "sft",
+      "rlhf",
+      "dpo",
+      "pretraining"
+    ],
+    "ex": "정렬 전 모델은 '프랑스의 수도를 알려 줘'에 '이탈리아의 수도도 알려 줘'처럼 질문을 이어 쓰기도 했어요.",
+    "easy": "아는 건 많은데 말귀를 못 알아듣던 친구에게 대화 예절을 가르치는 거예요.",
+    "level": "실전",
     "id": "alignment",
     "term": "Alignment",
     "ko": "정렬",
-    "full": "",
-    "level": "실전",
-    "def": "사전학습만 마친 모델을 지시를 따르고, 정직하게 답하고, 해로운 요청은 거절하도록 다듬는 작업. 지식을 새로 넣는 게 아니라 아는 것을 어떻게 말하고 행동할지를 바꾼다.",
-    "easy": "아는 건 많은데 말귀를 못 알아듣던 친구에게 대화 예절을 가르치는 거예요.",
-    "ex": "정렬 전 모델은 '프랑스의 수도를 알려 줘'에 '이탈리아의 수도도 알려 줘'처럼 질문을 이어 쓰기도 했어요.",
-    "flow": ["사전학습", "SFT", "RLHF 또는 DPO"],
-    "related": ["sft", "rlhf", "dpo", "pretraining"]
+    "def": "AI의 행동이 의도한 목표·가치·요구사항에 맞도록 만드는 연구와 작업이에요. 대화형 LLM에서는 지시를 잘 따르고 정직하며 안전하게 답하도록 다듬는 일이 포함돼요. 이 과정에서 지식과 능력도 달라질 수 있어요.",
+    "src": "03-02"
   },
   {
+    "full": "Supervised Fine-Tuning",
+    "flow": [],
+    "related": [
+      "alignment",
+      "fine-tuning",
+      "rlhf"
+    ],
+    "ex": "질문에 질문으로 답하지 말고, 지시가 오면 수행하도록 바꿔 줘요.",
+    "easy": "선생님이 쓴 모범 답안을 보고 '이렇게 대답하는 거구나' 따라 쓰며 배우는 거예요.",
+    "level": "심화",
     "id": "sft",
     "term": "SFT",
     "ko": "지시학습 (지도 미세조정)",
-    "full": "Supervised Fine-Tuning",
-    "level": "심화",
-    "def": "사람이 쓴 좋은 질문과 모범 답안 쌍으로, 그 답이 나올 확률이 커지도록 모델을 미세조정하는 것. 새 지식이 아니라 지시를 따르는 대화 매너를 가르친다.",
-    "easy": "선생님이 쓴 모범 답안을 보고 '이렇게 대답하는 거구나' 따라 쓰며 배우는 거예요.",
-    "ex": "질문에 질문으로 답하지 말고, 지시가 오면 수행하도록 바꿔 줘요.",
-    "flow": [],
-    "related": ["alignment", "fine-tuning", "rlhf"]
+    "def": "입력과 바람직한 출력의 짝으로 사전학습 모델을 추가 학습시키는 방법이에요. 지시 수행·출력 형식·특정 작업을 가르칠 수 있어요. 새 사실을 학습하기도 하지만 정확한 지식 갱신이 보장되지는 않아요.",
+    "src": "03-02"
   },
   {
     "id": "rlhf",
@@ -313,40 +379,58 @@ addSection('03-02', "트랜스포머와 언어 모델", [
     "related": ["reinforcement-learning", "alignment", "dpo", "sft"]
   },
   {
+    "full": "Direct Preference Optimization",
+    "flow": [],
+    "related": [
+      "rlhf",
+      "alignment"
+    ],
+    "ex": "단순하고 안정적이라 여러 오픈 모델이 RLHF 대신 DPO를 택했어요.",
+    "easy": "심판을 따로 두지 않고, '이게 더 좋아' 표시만 보고 바로 고쳐 나가는 거예요.",
+    "level": "심화",
     "id": "dpo",
     "term": "DPO",
     "ko": "직접 선호 최적화",
-    "full": "Direct Preference Optimization",
-    "level": "심화",
-    "def": "보상 모델과 강화학습을 건너뛰고, 사람이 고른 답의 확률은 올리고 진 답의 확률은 내리는 손실 하나로 모델을 바로 최적화하는 방법(2023년). RLHF와 목표는 같고 절차가 단순하다.",
-    "easy": "심판을 따로 두지 않고, '이게 더 좋아' 표시만 보고 바로 고쳐 나가는 거예요.",
-    "ex": "단순하고 안정적이라 여러 오픈 모델이 RLHF 대신 DPO를 택했어요.",
-    "flow": [],
-    "related": ["rlhf", "alignment"]
+    "def": "선호 응답과 덜 선호하는 응답의 쌍으로, 기준 모델에 비해 선호 응답이 상대적으로 더 선택되도록 학습하는 방법이에요. 별도 보상 모델이나 PPO 같은 강화학습 루프 없이 선호 목적을 최적화해요.",
+    "src": "03-02"
   },
   {
+    "full": "",
+    "flow": [
+      "잡음",
+      "잡음 예측해 조금 지우기",
+      "반복",
+      "그림"
+    ],
+    "related": [
+      "transformer",
+      "genai"
+    ],
+    "ex": "지금 널리 쓰이는 이미지·영상 생성 AI가 확산 모델 위에 서 있어요.",
+    "easy": "뿌옇게 김 서린 유리를 조금씩 닦아서 그림이 드러나게 하는 거예요.",
+    "level": "실전",
     "id": "diffusion-model",
     "term": "Diffusion Model",
     "ko": "확산 모델",
-    "full": "",
-    "level": "실전",
-    "def": "잡음에서 출발해 단계마다 걷어 낼 잡음을 예측해 지워 가며 그림을 만드는 생성 모델. 잡음을 예측하는 일꾼이 U-Net에서 트랜스포머(DiT)로 바뀌었다.",
-    "easy": "뿌옇게 김 서린 유리를 조금씩 닦아서 그림이 드러나게 하는 거예요.",
-    "ex": "지금 널리 쓰이는 이미지·영상 생성 AI가 확산 모델 위에 서 있어요.",
-    "flow": ["잡음", "잡음 예측해 조금 지우기", "반복", "그림"],
-    "related": ["transformer", "genai"]
+    "def": "잡음에서 출발해 단계적으로 잡음을 줄이며 데이터를 생성하는 모델이에요. 대표적인 이미지 확산 모델은 단계마다 잡음 등을 예측하도록 학습하고, U-Net이나 트랜스포머 같은 구조를 사용할 수 있어요.",
+    "src": "03-02"
   },
   {
+    "full": "",
+    "flow": [],
+    "related": [
+      "context-window",
+      "context-rot",
+      "token"
+    ],
+    "ex": "긴 문서의 중간 정보를 놓칠 수 있으므로 중요한 내용의 위치를 조정하거나 나눠 넣고 결과를 확인해요. 큰 컨텍스트 창이 정확한 정보 활용까지 보장하지는 않아요.",
+    "easy": "긴 이야기를 들으면 처음과 끝은 기억나는데 중간은 흐릿한 것과 같아요.",
+    "level": "실전",
     "id": "lost-in-the-middle",
     "term": "Lost in the Middle",
     "ko": "중간 정보 놓침",
-    "full": "",
-    "level": "실전",
-    "def": "긴 입력에서 중요한 정보가 맨 앞이나 맨 뒤에 있을 때는 잘 찾지만, 중간에 있으면 성능이 눈에 띄게 떨어지는 현상(Liu 등, 2023). 컨텍스트 창이 크다고 그 안의 정보를 모두 정확히 쓰는 것은 아니다.",
-    "easy": "긴 이야기를 들으면 처음과 끝은 기억나는데 중간은 흐릿한 것과 같아요.",
-    "ex": "80쪽 문서를 통째로 넣고 요약시키면 중간 핵심 조항이 빠지기 쉬워요. 중요한 내용은 앞이나 끝에 두거나 나눠서 넣어요.",
-    "flow": [],
-    "related": ["context-window", "context-rot", "token"]
+    "def": "긴 입력을 다루는 일부 모델·과제에서 중요한 정보가 처음이나 끝보다 중간에 있을 때 활용 성능이 낮아지는 경향이에요. 모델·과제·입력 구성에 따라 정도가 달라요.",
+    "src": "03-02"
   },
   {
     "id": "sos-token",

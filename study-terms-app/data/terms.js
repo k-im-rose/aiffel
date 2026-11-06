@@ -125,12 +125,29 @@ const TERMS = [
     related: ['database', 'env'],
   },
   {
-    id: 'env', no: '016', term: '.env', ko: '환경변수', full: 'Environment variables', src: '02-04 · 02-05',
-    flow: ['비밀값', '.env 파일', '.gitignore'],
-    def: 'API 키 같은 비밀값을 코드 밖에 따로 보관하는 자리. Git에 올라가지 않게 막아 둔다.',
-    easy: '비밀번호 쪽지를 일기장(코드)에 끼우지 않고 금고에 따로 두는 거예요.', level: '실전',
-    ex: { title: 'Supabase 키', body: '키를 .env에 넣고 .gitignore에 등록해서 GitHub에 올라가지 않게 합니다.' },
-    related: ['commit', 'deploy', 'auth'],
+    "id": "env",
+    "no": "016",
+    "term": ".env",
+    "ko": "환경변수 설정 파일",
+    "full": "Environment variables",
+    "src": "02-04 · 02-05",
+    "flow": [
+      "비밀값",
+      ".env 파일",
+      ".gitignore"
+    ],
+    "def": "환경변수를 이름=값 형태로 적어 두고 실행 도구가 읽게 하는 파일이에요. 비밀값이 있다면 Git에서 제외하고 브라우저 코드로 전달하지 않아야 해요.",
+    "easy": "프로그램 설정을 적은 별도 메모지예요. 파일 자체가 비밀을 암호화해 주지는 않으므로 공개되지 않게 관리해야 해요.",
+    "level": "실전",
+    "ex": {
+      "title": "서버 전용 비밀 키",
+      "body": "비밀 키는 서버의 환경변수로 읽고 .env를 Git에서 제외해요. 브라우저에 전달되는 환경변수에는 비밀 키를 넣지 않아요."
+    },
+    "related": [
+      "commit",
+      "deploy",
+      "auth"
+    ]
   },
   {
     id: 'commit', no: '017', term: 'Commit', ko: '커밋', full: '', src: '02-04',
@@ -185,3 +202,4 @@ function addSection(id, title, list) {
     sec.ids.push(t.id);
   }
 }
+

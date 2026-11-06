@@ -1,21 +1,21 @@
 // 02-02 HTML·CSS·JavaScript — 교육자료 PDF 기반. 처음 나온 자료에만 두고, 다시 나온 자료는 src에 함께 적는다.
 addSection('02-02', "HTML·CSS·JavaScript", [
   {
-    "id": "html-tag",
-    "term": "Tag",
-    "ko": "태그",
     "full": "",
-    "src": "02-02",
-    "level": "입문",
-    "def": "HTML에서 정보에 \"이건 제목\", \"이건 버튼\"처럼 의미를 붙이는 표시.",
-    "easy": "물건에 붙이는 이름표. 이름표를 보면 무엇인지 알 수 있어요.",
-    "ex": "h1은 가장 큰 제목, button은 누르는 버튼이라고 알려 주는 태그예요.",
     "flow": [],
     "related": [
       "web-layers",
       "dom",
       "event-listener"
-    ]
+    ],
+    "ex": "h1은 가장 높은 단계의 제목, button은 누르는 버튼을 나타내요. 실제 글자 크기나 색은 CSS로 바꿀 수 있어요.",
+    "easy": "물건에 붙이는 이름표. 이름표를 보면 무엇인지 알 수 있어요.",
+    "level": "입문",
+    "id": "html-tag",
+    "term": "Tag",
+    "ko": "태그",
+    "src": "02-02",
+    "def": "HTML에서 정보에 \"이건 제목\", \"이건 버튼\"처럼 의미를 붙이는 표시."
   },
   {
     "id": "box-model",
@@ -165,15 +165,7 @@ addSection('02-02', "HTML·CSS·JavaScript", [
     ]
   },
   {
-    "id": "async",
-    "term": "Asynchronous",
-    "ko": "비동기",
     "full": "",
-    "src": "02-02",
-    "level": "실전",
-    "def": "오래 걸리는 작업을 걸어두고 다른 일을 하다가 끝나면 결과를 처리하는 방식.",
-    "easy": "카페 진동벨. 기다리는 동안 자리에서 할 일을 해요.",
-    "ex": "AI 코드의 async, await, setTimeout, .then은 기다리지 않고 걸어두는 부분이에요.",
     "flow": [
       "작업 걸기",
       "다른 일",
@@ -183,24 +175,32 @@ addSection('02-02', "HTML·CSS·JavaScript", [
       "event-loop",
       "single-thread",
       "ajax"
-    ]
+    ],
+    "ex": "await는 결과가 준비될 때까지 현재 async 함수의 이어지는 실행을 잠시 멈춰요. 그동안 메인 스레드는 다른 작업을 처리할 수 있어요. async를 붙였다고 모든 계산이 자동으로 병렬 실행되지는 않아요.",
+    "easy": "카페 진동벨. 기다리는 동안 자리에서 할 일을 해요.",
+    "level": "실전",
+    "id": "async",
+    "term": "Asynchronous",
+    "ko": "비동기",
+    "src": "02-02",
+    "def": "오래 걸리는 작업을 걸어두고 다른 일을 하다가 끝나면 결과를 처리하는 방식."
   },
   {
-    "id": "single-thread",
-    "term": "Single Thread",
-    "ko": "싱글 스레드",
     "full": "",
-    "src": "02-02",
-    "level": "심화",
-    "def": "웹페이지 안 JavaScript가 한 번에 한 가지 일만 하는 구조.",
-    "easy": "계산대에 직원이 한 명뿐인 가게. 한 손님씩 차례로 받아요.",
-    "ex": "서버 응답을 3초간 기다리면 스크롤도 버튼도 모두 멈춰 버려요.",
     "flow": [],
     "related": [
       "async",
       "event-loop",
       "process"
-    ]
+    ],
+    "ex": "fetch로 서버 응답을 기다리는 동안에는 버튼도 반응할 수 있어요. 반면 긴 동기 계산이 메인 스레드를 붙잡으면 버튼 반응과 화면 갱신이 늦어질 수 있어요.",
+    "easy": "계산대에 직원이 한 명뿐인 가게. 한 손님씩 차례로 받아요.",
+    "level": "심화",
+    "id": "single-thread",
+    "term": "Single Thread",
+    "ko": "싱글 스레드",
+    "src": "02-02",
+    "def": "JavaScript의 메인 스레드는 한 번에 하나의 작업을 처리해요. 비동기 작업을 기다리는 동안에는 다른 작업을 처리할 수 있어요."
   },
   {
     "id": "event-loop",
@@ -224,20 +224,20 @@ addSection('02-02', "HTML·CSS·JavaScript", [
     ]
   },
   {
-    "id": "process",
-    "term": "Process",
-    "ko": "프로세스",
     "full": "",
-    "src": "02-02",
-    "level": "심화",
-    "def": "실행 중인 프로그램 하나로, 독립된 메모리를 쓰는 단위.",
-    "easy": "각자 문을 잠그고 쓰는 작업실이에요. 옆방 물건은 못 만져요.",
-    "ex": "크롬은 탭마다 프로세스가 따로라 한 탭이 죽어도 다른 탭은 멀쩡해요.",
     "flow": [],
     "related": [
       "single-thread",
       "async"
-    ]
+    ],
+    "ex": "Chrome은 페이지 등을 여러 프로세스로 나눠 실행해 오류의 영향을 줄여요. 한 탭에 여러 프로세스를 쓰거나 여러 탭이 프로세스를 공유할 수도 있어요.",
+    "easy": "각자 문을 잠그고 쓰는 작업실이에요. 옆방 물건은 못 만져요.",
+    "level": "심화",
+    "id": "process",
+    "term": "Process",
+    "ko": "프로세스",
+    "src": "02-02",
+    "def": "실행 중인 프로그램 하나로, 독립된 메모리를 쓰는 단위."
   },
   {
     "id": "state",
@@ -327,3 +327,4 @@ addSection('02-02', "HTML·CSS·JavaScript", [
     ]
   }
 ]);
+
