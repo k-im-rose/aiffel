@@ -31,12 +31,14 @@ const call = (method, url, device, body) =>
     body: body ? JSON.stringify(body) : undefined,
   }).then(async (r) => ({ status: r.status, body: await r.json() }));
 
-test('용어 목록: 204개, 섹션 순서대로 번호', async () => {
+test('용어 목록: 390개, 섹션 순서대로 번호', async () => {
   const r = await call('GET', '/api/terms');
   assert.equal(r.status, 200);
-  assert.equal(r.body.terms.length, 204);
-  assert.equal(r.body.sections[0].id, '01-04');
-  assert.deepEqual(r.body.terms.slice(0, 2).map((t) => [t.id, t.position]), [['genai', 1], ['hallucination', 2]]);
+  assert.equal(r.body.terms.length, 390);
+  assert.deepEqual(r.body.sections.slice(0, 5).map((s) => s.id), ['01-01', '01-02', '01-03', '01-04', '01-05']);
+  assert.deepEqual(r.body.terms.slice(0, 2).map((t) => [t.id, t.position]), [['markdown', 1], ['cloud', 2]]);
+  const genai = r.body.terms.find((t) => t.id === 'genai');
+  assert.equal(genai.section_id, '01-04');
 });
 
 test('기기 ID가 없거나 이상하면 거절', async () => {

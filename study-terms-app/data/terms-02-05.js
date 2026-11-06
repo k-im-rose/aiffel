@@ -98,7 +98,7 @@ addSection('02-05', "네트워크·보안·배포", [
     "term": "Tunnel",
     "ko": "터널",
     "full": "",
-    "src": "02-05",
+    "src": "02-04 · 02-05",
     "level": "실전",
     "def": "포트를 열지 않고 내 컴퓨터의 서버를 바깥과 연결해 주는 방법.",
     "easy": "닫힌 문 옆에 임시 비밀 통로를 뚫어 손님을 들이는 것 같아요.",
@@ -318,7 +318,7 @@ addSection('02-05', "네트워크·보안·배포", [
     "term": "Free tier",
     "ko": "무료 티어",
     "full": "",
-    "src": "02-05",
+    "src": "02-04 · 02-05",
     "level": "입문",
     "def": "무료 한도 안에서만 쓸 수 있는 요금제.",
     "easy": "시식 코너처럼 정해진 양까지만 공짜로 먹을 수 있어요.",
@@ -328,6 +328,562 @@ addSection('02-05', "네트워크·보안·배포", [
       "hosting",
       "deploy",
       "api-key"
+    ]
+  },
+  {
+    "id": "lan-wan",
+    "term": "LAN / WAN",
+    "ko": "내부망 / 외부망",
+    "full": "Local Area Network / Wide Area Network",
+    "src": "02-05",
+    "level": "입문",
+    "def": "집·회사 안에서 공유기로 묶인 좁은 네트워크(LAN)와 그 바깥의 넓은 네트워크(WAN).",
+    "easy": "우리 아파트 단지 안 길이 LAN이고, 단지 밖으로 이어진 큰 도로가 WAN이에요.",
+    "ex": "집 안 노트북과 휴대폰은 같은 LAN에서 192.168.0.x 주소로 통신하고, 인터넷으로 나갈 때는 공유기를 거쳐 WAN으로 나가요.",
+    "flow": [],
+    "related": [
+      "private-ip",
+      "nat",
+      "ip-address"
+    ]
+  },
+  {
+    "id": "private-ip",
+    "term": "Private IP / Public IP",
+    "ko": "사설 IP / 공인 IP",
+    "full": "",
+    "src": "02-05",
+    "level": "실전",
+    "def": "내부망 안에서만 쓰는 주소(사설 IP)와 인터넷 어디서나 찾을 수 있는 주소(공인 IP).",
+    "easy": "사설 IP는 집 안에서 부르는 '큰방·작은방'이고, 공인 IP는 우편물이 찾아오는 집 주소예요.",
+    "ex": "내 노트북의 192.168.0.5는 사설 IP라서 친구에게 알려 줘도 바깥에서는 내 컴퓨터를 찾지 못해요.",
+    "flow": [],
+    "related": [
+      "ip-address",
+      "nat",
+      "lan-wan"
+    ]
+  },
+  {
+    "id": "nat",
+    "term": "NAT",
+    "ko": "주소 변환",
+    "full": "Network Address Translation",
+    "src": "02-05",
+    "level": "실전",
+    "def": "공유기가 내부 기기의 사설 주소와 외부 통신에 쓰는 공인 주소를 바꿔 연결해 주는 기능.",
+    "easy": "아파트 경비실이 '몇 동 몇 호' 택배를 받아 대신 전해 주는 것 같아요. 모르는 손님은 어느 집으로 보낼지 몰라요.",
+    "ex": "내가 먼저 보낸 요청의 응답은 돌아오지만, 바깥에서 갑자기 들어온 요청은 NAT가 어느 기기로 보낼지 몰라 막혀요.",
+    "flow": [],
+    "related": [
+      "private-ip",
+      "port-forwarding",
+      "lan-wan"
+    ]
+  },
+  {
+    "id": "port-forwarding",
+    "term": "Port Forwarding",
+    "ko": "포트 포워딩",
+    "full": "",
+    "src": "02-05",
+    "level": "실전",
+    "def": "공유기의 특정 포트로 들어온 외부 요청을 내부의 정해진 컴퓨터·포트로 넘겨 주도록 설정하는 것.",
+    "easy": "경비실에 '3000번으로 오는 손님은 101호로 보내 주세요'라고 미리 말해 두는 거예요.",
+    "ex": "집 서버를 공개하려고 공유기에서 포트 포워딩을 설정하면, 그 포트가 인터넷에 노출되니 위험도 함께 따져야 해요.",
+    "flow": [],
+    "related": [
+      "nat",
+      "port",
+      "ddns"
+    ]
+  },
+  {
+    "id": "ddns",
+    "term": "DDNS",
+    "ko": "동적 DNS",
+    "full": "Dynamic Domain Name System",
+    "src": "02-05",
+    "level": "실전",
+    "def": "자주 바뀌는 집 회선의 공인 IP를 도메인 이름에 자동으로 다시 연결해 주는 서비스.",
+    "easy": "이사를 자주 다니는 친구의 새 주소를 전화번호부가 알아서 고쳐 주는 거예요.",
+    "ex": "포트 포워딩으로 집 서버를 열고, DDNS로 바뀌는 IP에도 같은 주소로 접속하게 해요.",
+    "flow": [],
+    "related": [
+      "dns",
+      "port-forwarding",
+      "private-ip"
+    ]
+  },
+  {
+    "id": "packet",
+    "term": "Packet",
+    "ko": "패킷",
+    "full": "",
+    "src": "02-05",
+    "level": "실전",
+    "def": "네트워크로 보낼 데이터를 잘게 나눈 조각. 각 조각에 받는 곳 주소가 붙어 따로 이동한다.",
+    "easy": "큰 퍼즐을 조각조각 나눠 택배 상자 여러 개로 보내고, 받는 쪽에서 다시 맞추는 거예요.",
+    "ex": "사진 한 장을 보낼 때도 여러 패킷으로 나뉘어 이동한 뒤 받는 컴퓨터에서 다시 합쳐져요.",
+    "flow": [],
+    "related": [
+      "tcp-ip",
+      "ip-address",
+      "http"
+    ]
+  },
+  {
+    "id": "tcp-ip",
+    "term": "TCP/IP",
+    "ko": "TCP/IP",
+    "full": "Transmission Control Protocol / Internet Protocol",
+    "src": "02-05",
+    "level": "심화",
+    "def": "IP가 패킷을 목적지 주소로 보내고, TCP가 빠짐없이 순서대로 도착했는지 확인하는 인터넷의 기본 통신 규칙.",
+    "easy": "IP는 택배 주소를 보고 배달하는 기사님, TCP는 상자가 다 왔는지 번호를 세어 보는 사람이에요.",
+    "ex": "HTTP 요청도 TCP/IP 위에서 패킷으로 나뉘어 오가고, 빠진 조각은 TCP가 다시 보내 달라고 해요.",
+    "flow": [],
+    "related": [
+      "packet",
+      "http",
+      "ip-address"
+    ]
+  },
+  {
+    "id": "encryption",
+    "term": "Encryption",
+    "ko": "암호화",
+    "full": "",
+    "src": "02-05",
+    "level": "입문",
+    "def": "정해진 키가 있어야만 읽을 수 있도록 데이터를 알아볼 수 없는 형태로 바꾸는 것.",
+    "easy": "친구와 둘만 아는 비밀 암호로 쪽지를 써서, 중간에 누가 봐도 못 읽게 하는 거예요.",
+    "ex": "HTTPS는 브라우저와 서버 사이의 대화를 암호화해서, 중간에서 엿봐도 내용을 알 수 없게 해요.",
+    "flow": [],
+    "related": [
+      "https",
+      "tls",
+      "plaintext"
+    ]
+  },
+  {
+    "id": "tls",
+    "term": "TLS / SSL",
+    "ko": "전송 계층 보안",
+    "full": "Transport Layer Security / Secure Sockets Layer",
+    "src": "02-05",
+    "level": "실전",
+    "def": "HTTPS에서 대화를 암호화하고 상대 서버를 확인하는 보안 기술. 연결 전 인증서를 확인하고 키를 정하는 과정을 TLS 핸드셰이크라고 한다.",
+    "easy": "편지를 보내기 전에 받는 사람 신분증을 확인하고, 둘만 여는 자물쇠를 정한 뒤 봉투를 잠그는 거예요.",
+    "ex": "https://mysite.com에 접속하면 TLS 핸드셰이크로 인증서를 확인한 뒤에야 HTTP 요청이 오가요. SSL은 TLS의 옛 이름이에요.",
+    "flow": [
+      "인증서 확인",
+      "키 마련",
+      "암호화 통신"
+    ],
+    "related": [
+      "https",
+      "certificate",
+      "encryption"
+    ]
+  },
+  {
+    "id": "certificate",
+    "term": "Certificate",
+    "ko": "인증서",
+    "full": "",
+    "src": "02-05",
+    "level": "실전",
+    "def": "도메인 이름·공개키·유효기간이 담기고 인증기관(CA)의 서명이 붙은 전자 증명서. 접속한 서버가 그 도메인의 서버인지 확인하는 데 쓴다.",
+    "easy": "가게 벽에 걸린 영업 허가증이에요. 나라에서 도장을 찍어 줘서 진짜 그 가게인지 믿을 수 있어요.",
+    "ex": "배포 플랫폼이 인증서를 자동으로 발급·갱신해 주니, 공개 주소에서 인증서 경고가 없는지만 확인해요.",
+    "flow": [],
+    "related": [
+      "tls",
+      "https",
+      "public-key"
+    ]
+  },
+  {
+    "id": "public-key",
+    "term": "Public Key / Private Key",
+    "ko": "공개키 / 개인키",
+    "full": "",
+    "src": "02-05",
+    "level": "심화",
+    "def": "누구에게나 알려도 되는 공개키와 주인만 가진 개인키를 한 쌍으로 쓰는 암호 방식. 공개키로 잠근 것은 짝인 개인키로만 연다.",
+    "easy": "누구나 넣을 수 있는 우체통 투입구(공개키)와 주인만 가진 우체통 열쇠(개인키)예요.",
+    "ex": "TLS 연결 중 서버는 인증서의 공개키에 짝이 맞는 개인키를 가지고 있음을 보여 줘요.",
+    "flow": [],
+    "related": [
+      "certificate",
+      "tls",
+      "encryption"
+    ]
+  },
+  {
+    "id": "origin",
+    "term": "Origin",
+    "ko": "출처",
+    "full": "",
+    "src": "02-05",
+    "level": "실전",
+    "def": "웹 주소의 프로토콜·호스트·포트 조합. 셋 중 하나라도 다르면 다른 출처로 본다.",
+    "easy": "같은 건물(호스트)이라도 다른 문(포트)이나 다른 길(프로토콜)로 오면 다른 손님으로 보는 거예요.",
+    "ex": "화면은 https://mysite.com, API는 https://api.mysite.com이면 호스트가 달라 다른 출처라서 CORS 허용이 필요해요.",
+    "flow": [],
+    "related": [
+      "cors",
+      "port",
+      "domain"
+    ]
+  },
+  {
+    "id": "rate-limit",
+    "term": "Rate Limit",
+    "ko": "요청 횟수 제한",
+    "full": "",
+    "src": "02-05 · 02-07",
+    "level": "실전",
+    "def": "정해진 시간 안에 보낼 수 있는 요청 수의 한도. 넘으면 서버가 429 Too Many Requests 등으로 거절한다.",
+    "easy": "놀이기구를 한 사람이 계속 타지 못하게 '한 시간에 세 번까지'로 정해 둔 거예요.",
+    "ex": "짧은 시간에 API를 너무 자주 부르면 429가 오고, Supabase 기본 메일은 몇 통 넘게 보내면 over_email_send_rate_limit 오류가 나요.",
+    "flow": [],
+    "related": [
+      "status-code",
+      "api",
+      "smtp"
+    ]
+  },
+  {
+    "id": "xss",
+    "term": "XSS",
+    "ko": "크로스 사이트 스크립팅",
+    "full": "Cross-Site Scripting",
+    "src": "02-05",
+    "level": "실전",
+    "def": "사용자 입력에 스크립트를 숨겨 넣어 다른 사람의 브라우저에서 실행되게 하는 공격.",
+    "easy": "게시판 글에 몰래 '읽는 사람 지갑을 열어라'는 마법 주문을 써 두면, 읽는 사람마다 당하는 거예요.",
+    "ex": "댓글 칸에 <script>를 넣었을 때 그대로 화면에 실행되지 않도록 입력을 검증하고 출력할 때 처리해 달라고 AI에게 요구해요.",
+    "flow": [],
+    "related": [
+      "sql-injection",
+      "server-side-validation",
+      "vulnerability"
+    ]
+  },
+  {
+    "id": "vulnerability",
+    "term": "Vulnerability",
+    "ko": "취약점",
+    "full": "",
+    "src": "02-05 · 02-07",
+    "level": "입문",
+    "def": "공격자가 악용할 수 있는 프로그램의 보안 허점. 알려진 취약점은 업데이트(패치)로 막는다.",
+    "easy": "잠기지 않는 창문 같은 허점이에요. 도둑이 알기 전에 고쳐 두어야 해요.",
+    "ex": "이미 공개된 취약점을 패치하지 않고 방치했다가 대규모 개인정보 유출로 이어진 사고들이 있어요.",
+    "flow": [],
+    "related": [
+      "xss",
+      "sql-injection",
+      "dependency"
+    ]
+  },
+  {
+    "id": "plaintext",
+    "term": "Plaintext",
+    "ko": "평문",
+    "full": "",
+    "src": "02-04 · 02-05",
+    "level": "입문",
+    "def": "암호화나 해시를 거치지 않아 그대로 읽을 수 있는 원래 데이터.",
+    "easy": "봉투 없이 그대로 보내는 엽서 글씨처럼, 누구나 바로 읽을 수 있어요.",
+    "ex": "비밀번호를 평문으로 저장한 서비스가 털리면 공격자가 그 값을 바로 써 버릴 수 있어요.",
+    "flow": [],
+    "related": [
+      "password-hash",
+      "encryption",
+      "salt"
+    ]
+  },
+  {
+    "id": "salt",
+    "term": "Salt",
+    "ko": "솔트",
+    "full": "",
+    "src": "02-04 · 02-05",
+    "level": "실전",
+    "def": "비밀번호를 해시하기 전에 사람마다 섞는 무작위 값. 같은 비밀번호라도 해시 결과가 달라진다.",
+    "easy": "똑같은 반죽이라도 사람마다 다른 양념을 한 꼬집 넣으면 맛(결과)이 모두 달라져요.",
+    "ex": "AI에게 '비밀번호는 솔트를 섞어 bcrypt로 해시해서 저장해 줘'라고 요구해요.",
+    "flow": [],
+    "related": [
+      "password-hash",
+      "plaintext",
+      "auth"
+    ]
+  },
+  {
+    "id": "phishing",
+    "term": "Phishing",
+    "ko": "피싱",
+    "full": "",
+    "src": "02-05",
+    "level": "입문",
+    "def": "진짜와 비슷한 가짜 사이트나 메시지로 속여 비밀번호·개인정보를 빼내는 공격.",
+    "easy": "은행 직원인 척 전화해서 비밀번호를 물어보는 사기꾼과 같아요.",
+    "ex": "가짜 도메인의 피싱 사이트도 HTTPS 인증서를 받을 수 있으니, 자물쇠 표시뿐 아니라 도메인 철자도 확인해요.",
+    "flow": [],
+    "related": [
+      "https",
+      "domain",
+      "certificate"
+    ]
+  },
+  {
+    "id": "api-spec",
+    "term": "API Specification (OpenAPI)",
+    "ko": "API 명세",
+    "full": "",
+    "src": "02-05",
+    "level": "실전",
+    "def": "엔드포인트 목록과 각 요청·응답의 JSON 모양을 적어 둔 문서. 프론트와 백엔드가 같은 문서를 기준으로 짜서 계약 불일치를 막는다. OpenAPI는 이를 적는 표준 형식이다.",
+    "easy": "친구와 편지 주고받기 전에 '봉투엔 이름, 안엔 날짜와 내용'처럼 쓰는 양식을 먼저 정해 두는 거예요.",
+    "ex": "화면에 undefined가 뜨면 API 명세의 응답 예시와 실제 응답 모양을 비교하고, 기능이 바뀌면 명세부터 고쳐요.",
+    "flow": [
+      "명세 작성",
+      "양쪽 구현",
+      "명세로 확인"
+    ],
+    "related": [
+      "endpoint",
+      "json",
+      "front-back"
+    ]
+  },
+  {
+    "id": "vertical-slice",
+    "term": "Vertical Slice",
+    "ko": "수직 슬라이스",
+    "full": "",
+    "src": "02-05",
+    "level": "실전",
+    "def": "화면·API·저장을 층별로 따로 만들지 않고, 한 기능을 끝까지 관통해 완성하고 바로 테스트하는 방식.",
+    "easy": "케이크를 층마다 따로 굽지 않고, 한 조각을 위에서 아래까지 잘라 맛보는 거예요.",
+    "ex": "회원가입 한 기능만 화면→API→DB 저장까지 완성해 확인하고, 그다음 기능으로 넘어가요.",
+    "flow": [
+      "한 기능 선택",
+      "화면·API·저장",
+      "바로 테스트"
+    ],
+    "related": [
+      "mvp",
+      "api-spec",
+      "front-back"
+    ]
+  },
+  {
+    "id": "undefined",
+    "term": "undefined",
+    "ko": "정의되지 않은 값",
+    "full": "",
+    "src": "02-05",
+    "level": "입문",
+    "def": "JavaScript에서 값이 아직 없거나 없는 속성을 읽었을 때 나오는 값.",
+    "easy": "선물 상자를 열었는데 텅 비어 있는 거예요. 상자는 있는데 안에 든 게 없어요.",
+    "ex": "프론트가 기대한 데이터 모양과 백엔드 응답이 달라 없는 칸을 읽으면 화면에 undefined가 떠요.",
+    "flow": [],
+    "related": [
+      "json",
+      "api-spec",
+      "devtools-console"
+    ]
+  },
+  {
+    "id": "checkpoint",
+    "term": "Checkpoint",
+    "ko": "체크포인트",
+    "full": "",
+    "src": "02-05 · 02-07",
+    "level": "입문",
+    "def": "잘 작동하는 상태를 커밋 등으로 남겨 문제가 생기면 돌아갈 수 있게 해 둔 지점.",
+    "easy": "게임 중간 저장 지점이에요. 실수해도 처음부터가 아니라 여기서 다시 시작해요.",
+    "ex": "AI에게 한 단계를 시킬 때마다 실행·확인 후 커밋해 체크포인트를 남겨 둬요.",
+    "flow": [],
+    "related": [
+      "commit",
+      "git-reset-revert",
+      "git-branch"
+    ]
+  },
+  {
+    "id": "spin-down",
+    "term": "Spin-down (Cold Start)",
+    "ko": "잠듦(콜드 스타트)",
+    "full": "",
+    "src": "02-05",
+    "level": "실전",
+    "def": "무료 서버가 한동안 요청이 없으면 꺼졌다가, 다음 요청이 오면 다시 켜지느라 첫 응답이 느려지는 현상.",
+    "easy": "손님이 없으면 불을 끄고 쉬는 가게예요. 손님이 오면 불 켜고 준비하느라 잠깐 기다려요.",
+    "ex": "Render 무료 웹 서비스는 15분 동안 요청이 없으면 잠들고, 다음 요청에 다시 켜지는 데 1분쯤 걸릴 수 있어요.",
+    "flow": [],
+    "related": [
+      "free-tier",
+      "hosting",
+      "deploy"
+    ]
+  },
+  {
+    "id": "virtual-machine",
+    "term": "Virtual Machine (VM)",
+    "ko": "가상 머신",
+    "full": "",
+    "src": "02-05",
+    "level": "실전",
+    "def": "실제 컴퓨터 한 대 안에 소프트웨어로 만든 독립된 가상의 컴퓨터. 운영체제를 깔고 서버처럼 쓴다.",
+    "easy": "큰 집 안에 칸막이를 쳐서 만든 작은 방이에요. 방마다 따로 살림을 차릴 수 있어요.",
+    "ex": "Oracle Always Free처럼 리눅스 VM을 받으면 서버 설정을 직접 만지며 공부할 수 있어요.",
+    "flow": [],
+    "related": [
+      "hosting",
+      "deploy",
+      "terminal"
+    ]
+  },
+  {
+    "id": "bandwidth",
+    "term": "Bandwidth",
+    "ko": "대역폭",
+    "full": "",
+    "src": "02-05 · 03-02",
+    "level": "입문",
+    "def": "일정 시간 동안 주고받을 수 있는 데이터의 양.",
+    "easy": "도로의 차선 수예요. 차선이 넓을수록 한 번에 많은 차가 지나가요.",
+    "ex": "호스팅 요금표에서 대역폭 한도를 넘으면 접속이 막히거나 요금이 붙을 수 있으니 확인해요.",
+    "flow": [],
+    "related": [
+      "free-tier",
+      "hosting",
+      "packet"
+    ]
+  },
+  {
+    "id": "billing-alert",
+    "term": "Billing / Budget Alert",
+    "ko": "요금 알림",
+    "full": "",
+    "src": "02-05",
+    "level": "입문",
+    "def": "사용 요금이 정한 금액을 넘으면 알려 주는 설정. 알려 주기만 하고 자동으로 막아 주지는 않는다.",
+    "easy": "용돈을 반 넘게 쓰면 엄마가 '조심해' 하고 알려 주는 거예요. 지갑을 잠가 주지는 않아요.",
+    "ex": "클라우드에 '한 달 1만 원 넘으면 알려 줘'를 걸어 두면 키 유출이나 무한 반복으로 요금이 급증할 때 빨리 알아차려요.",
+    "flow": [],
+    "related": [
+      "free-tier",
+      "api-key",
+      "env"
+    ]
+  },
+  {
+    "id": "public-env-prefix",
+    "term": "NEXT_PUBLIC_ / VITE_",
+    "ko": "공개 환경변수 접두사",
+    "full": "",
+    "src": "02-05",
+    "level": "실전",
+    "def": "이 접두사가 붙은 환경변수는 빌드할 때 화면 코드에 그대로 들어가 브라우저에 공개된다.",
+    "easy": "이름표에 '공개'라고 붙인 쪽지는 진열장에 걸려서 누구나 볼 수 있어요.",
+    "ex": "VITE_API_URL 같은 공개 주소는 괜찮지만, 비밀 키에 NEXT_PUBLIC_·VITE_를 붙이면 개발자도구로 다 보여요.",
+    "flow": [],
+    "related": [
+      "env",
+      "api-key",
+      "build"
+    ]
+  },
+  {
+    "id": "vercel",
+    "term": "Vercel",
+    "ko": "버셀",
+    "full": "",
+    "src": "02-05",
+    "level": "입문",
+    "def": "GitHub 저장소를 연결해 프론트와 Next.js 서버 기능까지 배포해 주는 호스팅 플랫폼.",
+    "easy": "그림을 걸어 주는 전시장인데, 그림을 바꾸면 알아서 새 그림으로 바꿔 걸어 줘요.",
+    "ex": "Next.js 앱을 Vercel에 연결하면 push할 때마다 자동 배포되고 내프로젝트.vercel.app 주소가 생겨요.",
+    "flow": [],
+    "related": [
+      "hosting",
+      "nextjs",
+      "auto-deploy"
+    ]
+  },
+  {
+    "id": "netlify",
+    "term": "Netlify",
+    "ko": "네트리파이",
+    "full": "",
+    "src": "02-05",
+    "level": "입문",
+    "def": "정적 사이트와 일부 프레임워크의 서버 기능을 GitHub와 연결해 배포하는 호스팅 플랫폼.",
+    "easy": "Vercel과 비슷한 다른 전시장이에요. 규칙과 잘하는 것이 조금씩 달라요.",
+    "ex": "화면만 있는 포트폴리오를 Netlify에 연결해 배포하고, 무료 요금제의 상업적 이용 조건을 확인해요.",
+    "flow": [],
+    "related": [
+      "static-hosting",
+      "hosting",
+      "vercel"
+    ]
+  },
+  {
+    "id": "railway",
+    "term": "Railway",
+    "ko": "레일웨이",
+    "full": "",
+    "src": "02-05",
+    "level": "입문",
+    "def": "Express·FastAPI 등으로 만든 백엔드 API 서버를 시작 명령으로 실행해 주는 클라우드 플랫폼.",
+    "easy": "부엌(서버)을 통째로 빌려 주는 공유 주방이에요. 요리법(코드)만 가져가면 돼요.",
+    "ex": "화면은 Vercel에, 직접 만든 API 서버는 Railway에 올리고 CORS로 두 주소를 이어요.",
+    "flow": [],
+    "related": [
+      "hosting",
+      "deploy",
+      "front-back"
+    ]
+  },
+  {
+    "id": "firebase",
+    "term": "Firebase",
+    "ko": "파이어베이스",
+    "full": "",
+    "src": "02-05",
+    "level": "입문",
+    "def": "구글의 BaaS. 로그인(인증)·Firestore 데이터 저장·호스팅 등을 무료 한도 안에서 쓸 수 있다.",
+    "easy": "주방과 창고를 다 갖춰 둔 구글의 공유 주방이에요. 재료만 넣으면 돼요.",
+    "ex": "Spark 요금제는 카드 없이 시작하지만, 서버 코드를 돌리는 Cloud Functions는 Blaze 요금제가 필요해요.",
+    "flow": [],
+    "related": [
+      "baas",
+      "supabase",
+      "free-tier"
+    ]
+  },
+  {
+    "id": "ngrok",
+    "term": "ngrok",
+    "ko": "엔그록",
+    "full": "",
+    "src": "02-05",
+    "level": "입문",
+    "def": "한 줄 명령으로 내 컴퓨터의 서버에 임시 공개 주소를 붙여 주는 터널 도구.",
+    "easy": "내 방 문 앞까지 이어지는 임시 비밀 통로를 순식간에 만들어 주는 마법 지팡이예요.",
+    "ex": "localhost:3000에서 도는 앱을 ngrok으로 열어 친구에게 잠깐 보여 주되, 무료 사용량 한도를 확인해요.",
+    "flow": [],
+    "related": [
+      "tunnel",
+      "localhost",
+      "port"
     ]
   }
 ]);

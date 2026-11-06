@@ -350,6 +350,159 @@ addSection('02-03', "프레임워크와 화면 구성", [
       "mock-data",
       "state"
     ]
+  },
+  {
+    "id": "graphql",
+    "term": "GraphQL",
+    "ko": "그래프큐엘",
+    "full": "",
+    "src": "02-03",
+    "level": "심화",
+    "def": "클라이언트가 필요한 데이터의 모양을 질의(query)로 적어 보내면 서버가 딱 그만큼만 돌려주는 API 방식. 보통 주소 하나로 여러 데이터를 요청한다.",
+    "easy": "뷔페에서 담을 음식을 쪽지에 적어 내면, 그대로만 담아 주는 거예요.",
+    "ex": "{ products { name price } }처럼 이름과 가격만 요청하면 다른 필드는 오지 않아요.",
+    "flow": [],
+    "related": [
+      "api",
+      "rest",
+      "rpc",
+      "soap"
+    ]
+  },
+  {
+    "id": "rpc",
+    "term": "RPC",
+    "ko": "원격 프로시저 호출",
+    "full": "Remote Procedure Call",
+    "src": "02-03",
+    "level": "심화",
+    "def": "다른 컴퓨터(서버)에 있는 함수를 같은 프로그램 안의 함수처럼 이름으로 불러 실행하는 API 방식.",
+    "easy": "멀리 사는 친구에게 전화로 \"이거 계산 좀 해 줘\"라고 부탁하고 답만 받는 거예요.",
+    "ex": "REST가 \"/api/products 주소에 GET\"처럼 자원을 다룬다면, RPC는 getProducts()처럼 할 일의 이름을 불러요.",
+    "flow": [],
+    "related": [
+      "api",
+      "rest",
+      "graphql",
+      "db-function"
+    ]
+  },
+  {
+    "id": "soap",
+    "term": "SOAP",
+    "ko": "솝",
+    "full": "Simple Object Access Protocol",
+    "src": "02-03",
+    "level": "심화",
+    "def": "XML 형식의 정해진 봉투에 요청과 응답을 담아 주고받는 API 규약. 규칙이 엄격하다.",
+    "easy": "칸이 다 정해진 공문서 양식이에요. 형식을 꼭 지켜야 접수돼요.",
+    "ex": "API 방식 비교에서 REST·GraphQL·RPC와 함께 나오는 오래된 방식이에요. 새 웹 API는 JSON을 쓰는 REST가 더 흔해요.",
+    "flow": [],
+    "related": [
+      "api",
+      "rest",
+      "json"
+    ]
+  },
+  {
+    "id": "modularization",
+    "term": "Modularization",
+    "ko": "모듈화",
+    "full": "",
+    "src": "02-03",
+    "level": "실전",
+    "def": "프로그램을 역할과 경계가 있는 단위로 나누는 것. 경계를 잘 정하면 한 부분을 고칠 때 다른 부분에 미치는 영향이 줄어든다. 내부 세부를 감추는 정보 은닉과 짝을 이룬다.",
+    "easy": "레고 블록이에요. 블록 하나를 바꿔 끼워도 나머지 성은 그대로예요.",
+    "ex": "일정 화면을 검색창과 일정 카드로 나누고, 각각 어떤 데이터를 받아 무엇을 보여줄지 정해요.",
+    "flow": [],
+    "related": [
+      "component",
+      "abstraction",
+      "separation-of-concerns"
+    ]
+  },
+  {
+    "id": "virtual-dom",
+    "term": "Virtual DOM",
+    "ko": "가상 DOM",
+    "full": "",
+    "src": "02-03",
+    "level": "심화",
+    "def": "실제 화면(DOM)을 바로 고치지 않고, 메모리에 화면의 사본을 만들어 바뀐 부분을 비교한 뒤 필요한 곳만 실제 화면에 반영하는 방식.",
+    "easy": "그림을 바로 고치지 않고 투명 종이에 먼저 그려 본 뒤, 달라진 곳만 덧칠하는 거예요.",
+    "ex": "React는 상태가 바뀌면 이전 화면과 차이를 계산해 바뀐 카드만 다시 그려요.",
+    "flow": [],
+    "related": [
+      "dom",
+      "react",
+      "declarative-ui"
+    ]
+  },
+  {
+    "id": "compile",
+    "term": "Compile",
+    "ko": "컴파일",
+    "full": "",
+    "src": "02-03",
+    "level": "실전",
+    "def": "사람이 쓴 코드를 실행 가능한 형태로 변환하는 작업. 컴파일에 성공해도 원하는 화면과 기능이 완성됐다는 뜻은 아니다.",
+    "easy": "편지를 외국 친구가 읽을 수 있게 번역하는 거예요. 번역이 됐다고 내용까지 맞는 건 아니에요.",
+    "ex": "AI가 만든 React 코드가 컴파일에 성공해도, 요청한 상품 정보가 화면에 제대로 뜨는지는 따로 확인해요.",
+    "flow": [],
+    "related": [
+      "build",
+      "framework"
+    ]
+  },
+  {
+    "id": "server-client-component",
+    "term": "Server / Client Component",
+    "ko": "서버·클라이언트 컴포넌트",
+    "full": "",
+    "src": "02-03",
+    "level": "심화",
+    "def": "서버에서 실행해 화면 HTML을 만들어 보내는 화면 단위(서버 컴포넌트)와, 브라우저에서 실행돼 클릭 같은 상호작용을 처리하는 화면 단위(클라이언트 컴포넌트).",
+    "easy": "주방에서 다 만들어 내오는 요리와, 식탁에서 손님이 직접 굽는 고기의 차이예요.",
+    "ex": "Next.js 문서는 화면 파일의 위치로 주소를 연결하는 라우팅과 함께 서버·클라이언트 컴포넌트를 설명해요.",
+    "flow": [],
+    "related": [
+      "component",
+      "ssr",
+      "nextjs"
+    ]
+  },
+  {
+    "id": "seo",
+    "term": "SEO",
+    "ko": "검색 노출",
+    "full": "Search Engine Optimization",
+    "src": "02-03",
+    "level": "실전",
+    "def": "검색 서비스가 페이지 내용을 잘 읽고 검색 결과에 보여 주도록 만드는 일.",
+    "easy": "도서관 책등에 제목을 크게 써 붙여서 찾는 사람이 쉽게 고르게 하는 거예요.",
+    "ex": "공개 상품 페이지의 검색 노출을 고려해, 서버에서 상품 내용이 담긴 HTML을 만들 수 있는 Next.js를 골라요.",
+    "flow": [],
+    "related": [
+      "ssr",
+      "nextjs"
+    ]
+  },
+  {
+    "id": "vue-svelte-angular",
+    "term": "Vue / Svelte / Angular",
+    "ko": "다른 UI 프레임워크",
+    "full": "",
+    "src": "02-03",
+    "level": "실전",
+    "def": "React처럼 화면을 컴포넌트로 만들고 데이터 변화에 맞춰 갱신하는 UI 프레임워크들. Vue는 점진적으로 도입하기 쉽고, Svelte는 컴파일러로 코드를 변환하며, Angular는 장기 유지보수 도구를 함께 갖췄다.",
+    "easy": "같은 자전거라도 브랜드마다 타는 느낌과 부품이 다른 것과 같아요.",
+    "ex": "프레임워크를 고를 때 React·Vue·Svelte·Angular 중 후보 2~3개를 같은 요구사항으로 비교하고 채택·기각 이유를 적어요.",
+    "flow": [],
+    "related": [
+      "react",
+      "framework",
+      "meta-framework"
+    ]
   }
 ]);
 
