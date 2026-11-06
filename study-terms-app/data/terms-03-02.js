@@ -347,5 +347,17 @@ addSection('03-02', "트랜스포머와 언어 모델", [
     "ex": "80쪽 문서를 통째로 넣고 요약시키면 중간 핵심 조항이 빠지기 쉬워요. 중요한 내용은 앞이나 끝에 두거나 나눠서 넣어요.",
     "flow": [],
     "related": ["context-window", "context-rot", "token"]
+  },
+  {
+    "id": "sos-token",
+    "term": "SOS",
+    "ko": "문장 시작 토큰",
+    "full": "Start of Sequence (Start of Sentence)",
+    "level": "심화",
+    "def": "디코더에게 '이제 문장을 쓰기 시작해'라고 알리는 특별한 첫 토큰. 디코더는 이 토큰에서 출발해 다음 토큰을 하나씩 만들고, 끝을 알리는 EOS(End of Sequence) 토큰이 나오면 멈춘다. 모델에 따라 <s>, BOS라고도 쓴다. (교육자료 PDF가 아니라 03-02 수업 설명에서 나온 용어)",
+    "easy": "달리기 출발선의 '탕!' 신호예요. 신호가 울리면 출발하고, 결승선(EOS)에 닿으면 멈춰요.",
+    "ex": "번역할 때 디코더에 [SOS]를 먼저 넣으면 첫 단어 '나는'을 만들고, '나는'을 다시 넣어 다음 단어를 만드는 식으로 이어 가요.",
+    "flow": ["SOS 넣기", "다음 토큰 생성", "반복", "EOS에서 멈춤"],
+    "related": ["encoder-decoder", "causal-mask", "next-token", "token"]
   }
 ]);
