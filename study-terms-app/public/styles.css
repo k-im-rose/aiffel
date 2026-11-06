@@ -95,6 +95,7 @@ kbd {
 .layout { display: grid; grid-template-columns: minmax(0, 340px) minmax(0, 1fr); gap: 40px; align-items: start; }
 .side { position: sticky; top: 16px; display: flex; flex-direction: column; max-height: calc(100vh - 32px); padding: 2px; }
 /* PC: 검색·거르기는 위에 고정, 목록만 따로 스크롤. 아래에 더 있으면 흐려지는 끝과 늘 보이는 스크롤 막대로 알린다 */
+.side > * { flex-shrink: 0; } /* 목록이 길어도 검색창·거르기는 줄어들지 않게. 줄어드는 건 목록만 */
 .side .list { flex: 0 1 auto; min-height: 0; overflow-y: auto; overscroll-behavior: contain; scrollbar-gutter: stable; }
 .side .list.more-below { -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 64px), transparent); mask-image: linear-gradient(to bottom, #000 calc(100% - 64px), transparent); }
 .side .list::-webkit-scrollbar { width: 8px; }
