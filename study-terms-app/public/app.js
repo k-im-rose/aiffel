@@ -139,6 +139,7 @@ function renderList() {
     }
   }
   $('list').innerHTML = rows.join('');
+  updateListFade();
   $('empty').hidden = visible.length > 0 || (!q && view === 'sections' && rows.length > 0);
 
   const counts = { all: TERMS.length, 0: 0, 1: 0, 2: 0 };
@@ -151,6 +152,14 @@ function renderList() {
   $('prog').textContent = `${counts[2]} / ${TERMS.length}`;
   $('bar').style.width = Math.round(counts[2] / TERMS.length * 100) + '%';
 }
+
+// PC: 목록 아래에 더 있으면 끝을 흐리게 해서 스크롤할 수 있다는 걸 알린다
+function updateListFade() {
+  const l = $('list');
+  l.classList.toggle('more-below', l.scrollHeight - l.scrollTop - l.clientHeight > 4);
+}
+$('list').addEventListener('scroll', updateListFade, { passive: true });
+window.addEventListener('resize', updateListFade);
 
 function termSize(word) {
   const n = word.length;
@@ -264,6 +273,13 @@ function select(id, openCard) {
   if (openCard) openCardView(id);
   // PC: 방문 기록은 쌓지 않고 주소만 그 용어로 바꾼다 (주소를 복사해 공유할 수 있게)
   else if (!isPhone()) history.replaceState(null, '', '#' + id);
+  if (openCard && !isPhone()) scrollToCard();
+}
+
+// PC: 카드를 내려 본 채로 새 용어를 누르면 카드 맨 위가 보이게 올린다
+function scrollToCard() {
+  const top = document.querySelector('.card').getBoundingClientRect().top;
+  if (top < 0) window.scrollTo(0, window.scrollY + top - 16);
 }
 
 // 휴대폰: 카드를 열 때 방문 기록을 남겨서 브라우저 뒤로 가기(사파리 스와이프 포함)로 목록에 돌아오게 한다
