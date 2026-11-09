@@ -37,7 +37,7 @@ const TERMS = [
     related: ['vibe-coding', 'genai'],
   },
   {
-    id: 'agent', no: '005', term: 'Agent', ko: '에이전트', full: '', src: '01-04 · 02-06',
+    id: 'agent', no: '005', term: 'Agent', ko: '에이전트', full: '', src: '01-04 · 02-06 · 03-03',
     flow: ['목표', '도구 사용', '결과 확인'],
     def: '목표를 주면 필요한 도구를 골라 쓰고, 결과를 보며 끝까지 해내는 AI.',
     easy: '시키면 알아서 장 보고 요리까지 끝내 오는 똑똑한 심부름꾼이에요.', level: '입문',
@@ -101,7 +101,7 @@ const TERMS = [
     related: ['api', 'database', 'web-layers'],
   },
   {
-    id: 'api', no: '013', term: 'API', ko: '프로그램 사이의 약속', full: 'Application Programming Interface', src: '02-03',
+    id: 'api', no: '013', term: 'API', ko: '프로그램 사이의 약속', full: 'Application Programming Interface', src: '02-03 · 03-03',
     flow: ['요청', '처리', '응답'],
     def: '프로그램끼리 기능이나 데이터를 주고받을 때 따르는 약속. 주소·방법·입력·응답 형식을 정한다.',
     easy: '식당 메뉴판이에요. 손님은 메뉴판에 적힌 대로만 주문할 수 있어요.', level: '입문',
@@ -117,7 +117,7 @@ const TERMS = [
     related: ['api', 'auth'],
   },
   {
-    id: 'auth', no: '015', term: 'Auth', ko: '인증 / 인가', full: 'Authentication / Authorization', src: '02-04 · 02-05',
+    id: 'auth', no: '015', term: 'Auth', ko: '인증 / 인가', full: 'Authentication / Authorization', src: '02-04 · 02-05 · 03-03',
     flow: ['로그인', '누구인지 확인', '권한 확인'],
     def: '인증은 누구인지 확인하는 것, 인가는 그 사람에게 무엇을 허용할지 정하는 것.',
     easy: '놀이공원 입구에서 표 확인(인증), 손목띠 색으로 탈 기구 정하기(인가)예요.', level: '실전',
