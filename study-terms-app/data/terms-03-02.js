@@ -228,6 +228,7 @@ addSection('03-02', "트랜스포머와 언어 모델", [
   },
   {
     "id": "kv-cache",
+    "src": "03-02 · 03-03",
     "term": "KV Cache",
     "ko": "KV 캐시",
     "full": "",
@@ -252,6 +253,7 @@ addSection('03-02', "트랜스포머와 언어 모델", [
   },
   {
     "id": "tokenizer",
+    "src": "03-02 · 03-03",
     "term": "Tokenizer",
     "ko": "토크나이저",
     "full": "",
