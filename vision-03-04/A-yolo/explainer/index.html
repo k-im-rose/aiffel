@@ -157,7 +157,6 @@ button:focus-visible, input:focus-visible { outline: 2px solid var(--box); outli
 .key { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: 13px; color: var(--muted); }
 .key i { display: inline-block; width: 12px; height: 12px; border-radius: 3px; margin-right: 6px; vertical-align: -1px; }
 ul.plain { margin: 0; padding-left: 1.2em; display: flex; flex-direction: column; gap: 6px; max-width: 72ch; }
-.grade td:first-child { font-weight: 500; white-space: nowrap; }
 footer { font-size: 13.5px; color: var(--muted); border-top: 1px solid var(--line); padding-top: 18px; }
 </style>
 </head>
@@ -409,20 +408,9 @@ footer { font-size: 13.5px; color: var(--muted); border-top: 1px solid var(--lin
   </section>
 
   <section class="concept">
-    <div class="eyebrow">채점 기준과 연결</div>
-    <h2>100점이 어디서 나오는가</h2>
-    <div class="tablewrap">
-      <table class="grade">
-        <thead><tr><th>항목 (각 25점)</th><th>A에서 해당하는 부분</th></tr></thead>
-        <tbody>
-          <tr><td>실행 가능성</td><td>requirements.txt와 실행 명령, outputs/ 저장, 새 환경에서 재실행 확인 <span class="muted">(6번)</span></td></tr>
-          <tr><td>원본 대조·근거</td><td>findings/ 확대 이미지 4장, 좌표를 붙인 대조 기록 <span class="muted">(1·2·5번)</span></td></tr>
-          <tr><td>범위 정직성</td><td>오탐으로 본 근거, 확인 못 한 점을 따로 표시 <span class="muted">(3·6번)</span></td></tr>
-          <tr><td>설명</td><td>로컬 CPU와 두 모델을 고른 이유를 결과와 연결 <span class="muted">(1·3·4번)</span></td></tr>
-        </tbody>
-      </table>
-    </div>
-    <p class="thesis" style="border-color:var(--mask)">한 줄 요약: 내 사진에서 "임계값을 올리니 나뭇가지 오탐은 사라졌지만 컵도 같이 사라졌다"는 장면이, 교안의 안전모 예시를 직접 재현한 결과입니다.</p>
+    <div class="eyebrow">정리</div>
+    <h2>한 줄로 정리하면</h2>
+    <p class="thesis" style="border-color:var(--mask)">내 사진에서 "임계값을 올리니 나뭇가지 오탐은 사라졌지만 컵도 같이 사라졌다"는 장면이, 교안의 안전모 예시를 직접 재현한 결과입니다.</p>
   </section>
 
   <footer>코드와 결과 파일: <a href="https://github.com/k-im-rose/aiffel/tree/main/vision-03-04/A-yolo" style="color:var(--box)">github.com/k-im-rose/aiffel/tree/main/vision-03-04/A-yolo</a> · 모든 숫자는 outputs/의 JSON에서 가져왔습니다.</footer>
