@@ -1,0 +1,3 @@
+# 실행에 쓴 버전 (Python 3.12, manifest.json의 packages와 같음)
+paddlepaddle==3.3.1
+paddleocr==3.7.0

@@ -1,0 +1,50 @@
+{
+  "run_at": "2026-11-10T11:54:52+00:00",
+  "command": "python ocr_table.py",
+  "source": {
+    "title": "Census Table 1 — 면적과 인구 (1910년 인구조사)",
+    "document": "미국 인구조사국, Thirteenth Census of the United States, 1910 인구조사 보고서 (1913년 발행)",
+    "page": "PDF 2쪽, 인쇄 22쪽, Table 1",
+    "license": "미국 연방정부 발행 자료, 퍼블릭 도메인"
+  },
+  "input": {
+    "file": "input/census-table.png",
+    "sha256": "d38d03d669a47b3ba8c705c69e7c39c769bde9246c7699241c30af5fde78c524",
+    "size_px": [
+      1050,
+      505
+    ]
+  },
+  "ocr": {
+    "engine": "PaddleOCR",
+    "pipeline": "OCR (text detection + recognition)",
+    "lang": "en",
+    "models": [
+      "PP-OCRv6_medium_det",
+      "PP-OCRv6_medium_rec"
+    ],
+    "options": {
+      "use_doc_orientation_classify": false,
+      "use_doc_unwarping": false,
+      "use_textline_orientation": false
+    }
+  },
+  "structure": {
+    "method": "글자 영역 좌표로 행(y 중심 ±12px)과 열(x 670, 860 경계)을 나눔",
+    "header_max_y": 100,
+    "footnote_min_y": 450
+  },
+  "review": "review.json (사람이 원본과 대조해 적은 수정 내역, 자동 수정 없음)",
+  "packages": {
+    "python": "3.12.15",
+    "paddlepaddle": "3.3.1",
+    "paddleocr": "3.7.0",
+    "opencv": "4.10.0",
+    "numpy": "2.3.5"
+  },
+  "run_location": {
+    "where": "local (own computer, no cloud)",
+    "os": "macOS-15.6.1-arm64-arm-64bit",
+    "machine": "arm64"
+  }
+}
