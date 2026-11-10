@@ -15,6 +15,7 @@
 - `public/` 화면 (`index.html` 구조 / `styles.css` 표현 / `app.js` 동작). 데이터는 API로만 주고받는다
 - `server/` API 서버(Express)와 저장소(`store/supabase.js`, `store/sqlite.js`). DB에 접근하는 코드는 server/에만 둔다
 - `data/terms.js` 처음 만든 기본 용어 20개와 `addSection()`. 섹션은 용어 src의 첫 자료 기준이고, 번호(WORD 001…)는 서버(server/terms.js)가 섹션 순서대로 매긴다. `data/terms-02-0N.js` 자료별 용어 (자료마다 파일 하나, 섹션 하나)
+- 새 교육자료 용어 추가는 `.claude/skills/add-terms/` 스킬의 절차와 스크립트(PDF 글 뽑기·기존 용어 목록·출처 덧붙이기·점검)를 쓴다
 - 용어 id는 저장된 기록과 이어지므로 바꾸지 않는다. 새 자료 용어는 `data/`에 새 `terms-NN-NN.js` 파일로 추가하고 서버를 다시 켜면 DB에 들어간다
 - 용어 추가 기준: 교육자료 PDF에 나온 실전 개발·AI 용어만. 지나가듯 한 번만 나온 용어도 넣는다(사전처럼 찾아보는 앱이라서). 사람·회사 이름, 과정 운영 용어는 빼고. 뜻(def)은 PDF 설명 기반, easy는 초등학생 눈높이 비유, ex는 실제 장면. 이미 있는 개념이면 새로 만들지 않고 src에 자료 번호만 덧붙인다
 - 저장: 내 설명과 상태는 API → DB(notes 표, 주인은 `device:…` / `user:…`). 브라우저에는 화면 상태(펼친 섹션 등)와 기기 ID만. 로그인 토큰은 httpOnly 쿠키로 서버만 다룬다 (`server/auth.js`)

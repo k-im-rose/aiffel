@@ -1,0 +1,81 @@
+---
+name: add-terms
+description: 새 교육자료 PDF(예 03-05.pdf)의 용어를 아그뭐에 추가하고 배포까지 한다. "03-05 용어 추가해줘", "오늘 자료 용어 업데이트", "다운로드에 새 PDF 넣었어" 같은 요청에 쓴다.
+---
+
+# 새 교육자료 용어 추가 (아그뭐)
+
+인자: 자료 번호(예 `03-05`). 없으면 `~/Downloads`에서 가장 최근 `NN-NN.pdf`를 찾는다.
+용어 기준·말투·파일 규칙은 `AGENTS.md`를 따른다. 아래는 그 규칙을 매일 같은 순서로 돌리는 절차다.
+
+스크립트 위치: `.claude/skills/add-terms/scripts/` (아래에서 `$SK`). 작업 폴더는 `study-terms-app/`.
+
+## 1. PDF 옮기고 글 뽑기
+
+```bash
+mv -n ~/Downloads/NN-NN.pdf "$HOME/Downloads/모두연 교육 자료/"
+swift $SK/pdf-text.swift "$HOME/Downloads/모두연 교육 자료/NN-NN.pdf" > <scratchpad>/NN-NN.txt
+```
+- 같은 이름 파일이 이미 폴더에 있으면 옮기지 말고 사용자에게 묻는다.
+- 뽑은 글은 Read로 **처음부터 끝까지** 읽는다 (지나가듯 나온 용어도 넣는 앱이라 건너뛰지 않는다).
+
+## 2. 기존 용어와 대조
+
+```bash
+node $SK/list-terms.js . > <scratchpad>/existing.txt
+```
+- 목록을 보고 PDF 용어를 **새 용어**와 **이미 있는 용어**(같은 개념이면 이름이 달라도)로 나눈다.
+- 넣는 것: 실전 개발·AI 용어, 모델·도구·데이터셋·라이선스 이름. 빼는 것: 사람·회사 이름, 과정 운영 용어(배점, 제출란 등).
+- 이미 있는 용어는 PDF에 실제로 다시 나온 것만 고른다.
+
+## 3. 새 용어 파일 쓰기: `data/terms-NN-NN.js`
+
+앞 자료 파일(예 `data/terms-03-04.js`)과 같은 모양으로 쓴다.
+```js
+// NN-NN 섹션 제목 — 교육자료 PDF 기반. 처음 나온 자료에만 두고, 다시 나온 자료는 src에 함께 적는다.
+addSection('NN-NN', "섹션 제목", [
+  { "id": "kebab-case", "term": "English", "ko": "한국어", "full": "약어 풀네임 또는 빈칸",
+    "level": "입문|실전|심화", "def": "PDF 설명 기반 뜻", "easy": "초등학생 눈높이 비유 (~예요)",
+    "ex": "실제 장면 (자료의 예시·실습 장면이면 더 좋다)", "related": ["기존 또는 새 id"] },
+]);
+```
+- id는 한 번 정하면 바꾸지 않는다 (저장된 내 설명과 이어짐). 기존 id와 겹치지 않게.
+- `src`는 쓰지 않는다 (섹션 번호가 자동으로 들어감).
+- 섹션 제목은 자료 주제를 짧게 (예 "로컬 LLM과 실행 위치", "문서 인식과 객체 탐지").
+- 숫자·사례는 PDF에 있는 것만 쓰고, 자료의 가상 예시라면 그렇다고 밝힌다.
+
+## 4. 기존 용어 출처 덧붙이기
+
+```bash
+node $SK/add-src.js data NN-NN id1 id2 id3 ...
+```
+- `없음`이 나오면 id 오타다. 고쳐서 다시 실행한다.
+
+## 5. 점검과 시험
+
+```bash
+node $SK/check.js . NN-NN    # 총 개수, 중복 id, 끊긴 related, 섹션 WORD 범위
+```
+- 끊긴 related가 있으면 고친다.
+- 총 개수(N)로 갱신: `test/api.test.js`(제목과 `terms.length`), `AGENTS.md` 개요의 개수·자료 범위, `README.md`의 `마치기 3 / N`과 `용어 N개:` 줄, `PRD.md` 개수 이력(`→ NN-NN 추가로 N개.`).
+- `README.md` "수정 기록" 맨 위에 `### YYYY-MM-DD · NN-NN 용어 K개 추가 (N개)` 항목: 새 섹션과 WORD 범위, 대표 용어, 출처를 덧붙인 기존 용어 수.
+- `npm test` 통과를 확인한다.
+
+## 6. 커밋 → PR → merge
+
+브랜치 `study-terms-app`에서 `git fetch` 후 `origin/main`을 fast-forward로 맞추고 시작한다.
+- 커밋 제목: `study-terms-app: NN-NN 용어 K개 추가 (N개)`
+- `gh pr create --base main --head study-terms-app` 후 `gh pr merge --merge` (사용자가 PR merge까지 맡겼다).
+
+## 7. 배포 확인
+
+main에 merge하면 Render가 자동 배포한다 (GitHub의 Render 앱 연결, 2~3분).
+```bash
+curl -s https://aiffel-study-terms.onrender.com/api/terms | python3 -I -c "import sys,json; print(len(json.load(sys.stdin)['terms']))"
+```
+- 백그라운드로 20초 간격, 최대 10분 확인해서 N이 나오면 끝이다.
+- 10분이 지나도 옛 개수면 Render 자동 배포가 다시 끊긴 것이다. Render 대시보드 Events에서 새 배포가 시작됐는지 보고, 사용자에게 알린다 (GitHub 설정 → Applications에 Render 앱이 있는지가 첫 확인 지점).
+
+## 마무리 보고
+
+옮긴 PDF 위치, 새 섹션 이름과 WORD 범위, 대표 용어, 출처를 붙인 기존 용어 수, 시험 결과, PR 링크, 사이트 반영 여부를 짧게 알린다.
