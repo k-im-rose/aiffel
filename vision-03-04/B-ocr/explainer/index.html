@@ -1,0 +1,455 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>OCR 표 과제 해설</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+html { -webkit-text-size-adjust: 100%; }
+img { max-width: 100%; }
+[hidden] { display: none !important; }
+body { margin: 0; }
+/* Layout: one reading column; each lesson concept is a band with the lesson's claim, then the evidence from this run. */
+:root {
+  --bg: #f6f7f9;
+  --surface: #ffffff;
+  --fg: #1b2230;
+  --muted: #5b6577;
+  --line: #dde1e8;
+  --box: #2449d8;      /* detection 박스 색 */
+  --mask: #b4239b;     /* segmentation 마스크 색 */
+  --good: #1f7a4d;
+  --bad: #b3361f;
+  --chip: #eef1f6;
+  --lesson-bg: #f0f3ff;
+  --warn: #b26a00;
+  --tp-c: #18b26b;
+  --fp-c: #ff3b30;
+  --dup-c: #ff9f0a;
+  --font-body: "IBM Plex Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #12151b; --surface: #1a1f28; --fg: #e6e9ef; --muted: #9aa3b4; --line: #2c3340;
+    --box: #7d97ff; --mask: #ec7fd6; --good: #5cc98f; --bad: #ff8a72; --chip: #232a36; --lesson-bg: #1c2236; --warn: #ffb547;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #12151b; --surface: #1a1f28; --fg: #e6e9ef; --muted: #9aa3b4; --line: #2c3340;
+  --box: #7d97ff; --mask: #ec7fd6; --good: #5cc98f; --bad: #ff8a72; --chip: #232a36; --lesson-bg: #1c2236; --warn: #ffb547;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body {
+  background: var(--bg); color: var(--fg); font-family: var(--font-body);
+  font-size: 16px; line-height: 1.7; word-break: keep-all; overflow-wrap: anywhere;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 40px 72px;
+}
+.wrap { max-width: 920px; margin: 0 auto; display: flex; flex-direction: column; gap: 56px; }
+h1, h2, h3 { text-wrap: balance; line-height: 1.35; margin: 0; }
+h1 { font-size: clamp(26px, 4.6vw, 38px); font-weight: 700; }
+h2 { font-size: clamp(21px, 3.2vw, 26px); font-weight: 700; }
+h3 { font-size: 17px; font-weight: 700; }
+p { margin: 0; max-width: 68ch; }
+.eyebrow { font-family: var(--font-mono); font-size: 12.5px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+.stack { display: flex; flex-direction: column; gap: 14px; }
+.muted { color: var(--muted); }
+code, .mono { font-family: var(--font-mono); font-size: .9em; }
+.thesis { font-size: 19px; font-weight: 500; border-left: 4px solid var(--box); padding: 4px 0 4px 16px; max-width: 64ch; }
+
+/* 범례 */
+.legend { display: flex; flex-wrap: wrap; gap: 8px 18px; font-size: 14px; color: var(--muted); }
+.legend span { display: inline-flex; align-items: center; gap: 8px; }
+.sw { width: 14px; height: 14px; border-radius: 3px; display: inline-block; }
+.sw.box { border: 2.5px solid var(--box); }
+.sw.mask { background: var(--mask); opacity: .75; }
+
+/* 네 팀 질문 */
+.teams { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
+.team { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 14px; display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.team .q { font-size: 14.5px; }
+.team .out { font-family: var(--font-mono); font-size: 12.5px; background: var(--chip); border-radius: 6px; padding: 6px 8px; }
+.team.dim { opacity: .62; }
+@media (max-width: 720px) { .teams { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+
+/* 개념 섹션 */
+section.concept { display: flex; flex-direction: column; gap: 18px; padding-top: 28px; border-top: 1px solid var(--line); }
+.head { display: flex; gap: 14px; align-items: baseline; }
+.num { font-family: var(--font-mono); font-size: 14px; color: var(--muted); flex: none; }
+.lesson { background: var(--lesson-bg); border-radius: 10px; padding: 14px 16px; display: flex; flex-direction: column; gap: 4px; }
+.lesson .eyebrow { color: var(--box); }
+figure { margin: 0; display: flex; flex-direction: column; gap: 8px; }
+figure img { width: 100%; height: auto; border-radius: 8px; border: 1px solid var(--line); display: block; }
+figcaption { font-size: 14px; color: var(--muted); max-width: 72ch; }
+.pair { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+@media (max-width: 680px) { .pair { grid-template-columns: 1fr; } }
+.takeaway { font-weight: 500; }
+.takeaway::before { content: "→ "; color: var(--box); }
+
+/* 막대 */
+.bars { display: flex; flex-direction: column; gap: 8px; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 16px; }
+.bar { display: grid; grid-template-columns: 9.5em minmax(0, 1fr) 3.4em; gap: 10px; align-items: center; font-size: 14px; }
+.track { height: 14px; background: var(--chip); border-radius: 7px; overflow: hidden; }
+.fill { height: 100%; border-radius: 7px; }
+.fill.mask { background: var(--mask); }
+.fill.box { background: var(--box); }
+.bar .v { font-family: var(--font-mono); font-variant-numeric: tabular-nums; text-align: right; }
+.bars .note { font-size: 13px; color: var(--muted); }
+
+/* JSON ↔ 화면 */
+.json { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; overflow-x: auto; font-family: var(--font-mono); font-size: 13.5px; line-height: 1.6; white-space: pre; }
+.json .k { color: var(--muted); }
+.json .hl { color: var(--box); font-weight: 500; }
+
+/* 표 */
+.tablewrap { overflow-x: auto; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; }
+table { border-collapse: collapse; width: 100%; font-size: 14.5px; min-width: 520px; }
+th, td { text-align: left; padding: 10px 14px; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { font-weight: 500; color: var(--muted); font-size: 13px; }
+tr:last-child td { border-bottom: none; }
+td.num-cell { font-family: var(--font-mono); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.pill { display: inline-block; font-size: 12.5px; padding: 1px 8px; border-radius: 999px; margin: 2px 4px 2px 0; white-space: nowrap; border: 1px solid currentColor; }
+.pill.tp { color: var(--good); }
+.pill.fp { color: var(--bad); }
+.pill.fn { color: var(--bad); border-style: dashed; }
+.up { color: var(--good); font-weight: 500; }
+.same { color: var(--muted); }
+
+/* 비교 카드 */
+.vs { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.vs > div { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+@media (max-width: 680px) { .vs { grid-template-columns: 1fr; } }
+
+/* 임계값 실험실 */
+.lab { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 18px; display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); gap: 20px; }
+@media (max-width: 780px) { .lab { grid-template-columns: 1fr; } }
+.lab canvas { width: 100%; height: auto; border-radius: 8px; display: block; background: var(--chip); }
+.controls { display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+.seg-ctl { display: inline-flex; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; align-self: flex-start; }
+.seg-ctl button { font: inherit; font-size: 14px; padding: 6px 14px; border: 0; background: transparent; color: var(--fg); cursor: pointer; }
+.seg-ctl button[aria-pressed="true"] { background: var(--fg); color: var(--bg); }
+.conf-read { display: flex; align-items: baseline; gap: 10px; }
+.conf-read .big { font-family: var(--font-mono); font-size: 34px; font-weight: 500; font-variant-numeric: tabular-nums; }
+input[type=range] { width: 100%; accent-color: var(--box); }
+.presets { display: flex; flex-wrap: wrap; gap: 6px; }
+.presets button { font-family: var(--font-mono); font-size: 13px; padding: 3px 9px; border-radius: 999px; border: 1px solid var(--line); background: transparent; color: var(--fg); cursor: pointer; }
+.presets button:hover, .seg-ctl button:hover { outline: 1px solid var(--box); }
+button:focus-visible, input:focus-visible { outline: 2px solid var(--box); outline-offset: 2px; }
+.stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+.stat { border: 1px solid var(--line); border-radius: 8px; padding: 8px 10px; display: flex; flex-direction: column; min-width: 0; }
+.stat .l { font-size: 12.5px; color: var(--muted); }
+.stat .n { font-family: var(--font-mono); font-size: 22px; font-variant-numeric: tabular-nums; }
+.stat.tp .n { color: var(--good); } .stat.fp .n, .stat.fn .n { color: var(--bad); }
+.missing { font-size: 14px; }
+.curve { width: 100%; height: auto; display: block; }
+.curve text { fill: var(--muted); font-family: var(--font-mono); font-size: 11px; }
+.cand { font-size: 13.5px; }
+.cand td { padding: 6px 12px; }
+.cand tr.off td { opacity: .38; }
+.kind { font-size: 12px; padding: 0 7px; border-radius: 999px; border: 1px solid currentColor; white-space: nowrap; }
+.kind.tp { color: var(--good); } .kind.fp { color: var(--bad); } .kind.dup { color: var(--warn); }
+.key { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: 13px; color: var(--muted); }
+.key i { display: inline-block; width: 12px; height: 12px; border-radius: 3px; margin-right: 6px; vertical-align: -1px; }
+ul.plain { margin: 0; padding-left: 1.2em; display: flex; flex-direction: column; gap: 6px; max-width: 72ch; }
+footer { font-size: 13.5px; color: var(--muted); border-top: 1px solid var(--line); padding-top: 18px; }
+</style>
+<style>
+/* B 전용 */
+.steps { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
+@media (max-width: 760px) { .steps { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.step { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 14px; display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.step .sn { font-family: var(--font-mono); font-size: 12px; color: var(--muted); }
+.step .what { font-size: 14px; }
+.step .here { font-size: 13.5px; border-top: 1px dashed var(--line); padding-top: 8px; }
+.step.hot { border-color: var(--bad); box-shadow: inset 0 0 0 1px var(--bad); }
+.step.hot .sn { color: var(--bad); }
+.doc { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 16px; display: flex; flex-direction: column; gap: 14px; }
+.docwrap { position: relative; overflow-x: auto; }
+.docwrap svg { display: block; width: 100%; min-width: 560px; height: auto; border-radius: 6px; }
+.box { fill: transparent; stroke-width: 2; cursor: pointer; }
+.box.num { stroke: var(--good); }
+.box.txt { stroke: var(--muted); stroke-dasharray: 4 3; }
+.box.bad { stroke: var(--bad); stroke-width: 3.5; fill: color-mix(in srgb, var(--bad) 12%, transparent); }
+.box.sel { stroke: var(--box); stroke-width: 4; }
+.box:focus-visible { outline: none; stroke: var(--box); stroke-width: 4; }
+.detail { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
+@media (max-width: 640px) { .detail { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.detail div { border: 1px solid var(--line); border-radius: 8px; padding: 8px 10px; display: flex; flex-direction: column; min-width: 0; }
+.detail .l { font-size: 12.5px; color: var(--muted); }
+.detail .v { font-family: var(--font-mono); font-size: 17px; overflow-wrap: anywhere; }
+.detail .v.bad { color: var(--bad); } .detail .v.good { color: var(--good); }
+.hint { font-size: 14px; color: var(--muted); }
+.strip { width: 100%; height: auto; display: block; }
+.strip text { fill: var(--muted); font-family: var(--font-mono); font-size: 11px; }
+.ctlrow { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px; }
+.ctlrow input[type=range] { flex: 1 1 220px; accent-color: var(--box); }
+.ctlrow .big { font-family: var(--font-mono); font-size: 22px; font-variant-numeric: tabular-nums; }
+.verdict { font-size: 15px; }
+.sumbars { display: flex; flex-direction: column; gap: 10px; }
+.sumbar { display: grid; grid-template-columns: 8.5em minmax(0, 1fr) 7.5em; gap: 10px; align-items: center; font-size: 14px; }
+.sumbar .v { font-family: var(--font-mono); text-align: right; font-variant-numeric: tabular-nums; }
+.fill.bad { background: var(--bad); } .fill.good { background: var(--good); } .fill.ref { background: var(--muted); }
+table.data td.n { font-family: var(--font-mono); text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+table.data td.n.bad { color: var(--bad); font-weight: 500; }
+table.data tr.sum td { border-top: 2px solid var(--line); font-weight: 500; }
+.chain { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; font-family: var(--font-mono); font-size: 13px; }
+.chain span.f { border: 1px solid var(--line); background: var(--surface); border-radius: 6px; padding: 4px 8px; }
+.chain span.f.h { border-color: var(--mask); color: var(--mask); }
+.chain .arr { color: var(--muted); }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="stack">
+    <div class="eyebrow">03-04 선택 과제 B · OCR 표 문서화 결과 해설</div>
+    <h1>글자를 읽었다고 표가 된 것은 아니다</h1>
+    <p class="thesis">B는 그림으로 된 표를 검색·복사할 수 있는 표로 바꾸는 과제입니다. 핵심은 OCR이 읽은 값이 <b>원본의 어느 자리에서 왔는지</b>를 끝까지 연결해 두고, 틀린 곳을 사람이 근거와 함께 고치는 것입니다.</p>
+    <p><a href="#cells" style="color:var(--box);font-weight:500">표 위의 글자 영역 직접 눌러 보기 ↓</a></p>
+  </header>
+
+  <section class="stack">
+    <div class="eyebrow">교안의 출발점</div>
+    <h2>"AI가 잘못 읽었다"는 두 가지 다른 문제다</h2>
+    <div class="vs">
+      <div>
+        <h3>글자를 잘못 읽음 (인식)</h3>
+        <p>계약서의 32,000,000을 3,200,000으로 읽은 경우입니다. 문자 인식 단계를 봐야 합니다.</p>
+      </div>
+      <div>
+        <h3>짝을 잘못 붙임 (구조)</h3>
+        <p>금액은 맞게 읽었는데 아래 행의 부가세와 짝을 바꾼 경우입니다. 항목과 값의 관계를 봐야 합니다.</p>
+      </div>
+    </div>
+    <p class="muted">이번 표에서 나온 오류는 앞쪽, <b>글자를 잘못 읽은</b> 문제였습니다. 행과 열의 짝은 22칸 모두 맞았습니다.</p>
+  </section>
+
+  <section class="concept">
+    <div class="head"><span class="num">1/4</span><h2>OCR의 네 작업과 이번 실행</h2></div>
+    <div class="lesson">
+      <span class="eyebrow">교안</span>
+      <p>전처리 → 검출 → 인식 → 레이아웃 분석으로 나누어 두면, 결과가 이상할 때 입력·영역·문자열·구조 중 어디서 어긋났는지 짚을 수 있습니다. 앞 단계의 문제가 뒤 결과로 이어지는 것을 오류 전파라고 합니다.</p>
+    </div>
+    <div class="steps">
+      <div class="step"><span class="sn">전처리</span><span class="what">기울기·대비·해상도 조정</span><span class="here">과제에서 200 dpi로 잘라 준 이미지를 그대로 씀. 방향 보정 모듈은 끔.</span></div>
+      <div class="step hot"><span class="sn">검출 ← 오류 시작</span><span class="what">글자가 있는 영역 찾기</span><span class="here">영역 41개를 찾음. 그런데 <b>각주 위첨자와 숫자를 한 영역으로 묶음.</b></span></div>
+      <div class="step hot"><span class="sn">인식 ← 오류 드러남</span><span class="what">잘라낸 영역을 문자열로</span><span class="here">묶인 영역의 위첨자 ¹, ²를 보통 숫자 1, 2로 읽음 → <b>2칸 틀림</b>.</span></div>
+      <div class="step"><span class="sn">레이아웃 분석</span><span class="what">조각을 행·열로 연결</span><span class="here">x 좌표(670, 860)로 열을, y 중심으로 행을 나눔. 22칸 짝은 모두 맞음.</span></div>
+    </div>
+    <p class="takeaway">틀린 값은 인식 결과에서 보였지만, 시작은 위첨자를 숫자와 같은 줄로 묶은 검출 단계였습니다. 교안의 오류 전파가 실제로 일어난 모습입니다.</p>
+  </section>
+
+  <section class="concept" id="cells">
+    <div class="head"><span class="num">실험</span><h2>표 위의 글자 영역을 눌러 보기</h2></div>
+    <p>OCR이 찾은 글자 영역 41개를 원본 위에 그렸습니다. 숫자 칸을 누르면 OCR이 읽은 문자열, 점수, 검토 후 값이 나옵니다. <b style="color:var(--bad)">빨간 칸</b>이 틀린 2칸입니다.</p>
+    <div class="doc">
+      <div class="docwrap"><svg id="doc" viewBox="0 0 1050 505" role="img" aria-label="Census Table 1 원본과 OCR 글자 영역"></svg></div>
+      <div class="key"><span><i style="background:var(--good)"></i>숫자, 그대로 맞음</span><span><i style="background:var(--bad)"></i>숫자, 고친 칸</span><span><i style="background:var(--muted)"></i>지역명·제목·각주</span></div>
+      <div class="detail" aria-live="polite">
+        <div><span class="l">OCR이 읽은 문자열</span><span class="v" id="d-raw">–</span></div>
+        <div><span class="l">OCR 점수</span><span class="v" id="d-score">–</span></div>
+        <div><span class="l">검토 후 값</span><span class="v" id="d-final">–</span></div>
+        <div><span class="l">원본 좌표 (x1, y1, x2, y2)</span><span class="v" id="d-box" style="font-size:14px">–</span></div>
+      </div>
+      <p class="hint" id="d-note">필리핀(Philippine Islands) 인구 칸을 먼저 눌러 보세요.</p>
+    </div>
+  </section>
+
+  <section class="concept">
+    <div class="head"><span class="num">2/4</span><h2>점수는 틀린 칸을 알려 주지 않았다</h2></div>
+    <div class="lesson">
+      <span class="eyebrow">A 과제와 같은 교훈</span>
+      <p>confidence는 후보를 추리는 데 쓰는 모델의 점수일 뿐, 맞을 확률이 아닙니다. OCR 인식 점수도 마찬가지입니다.</p>
+    </div>
+    <p>숫자 21개의 인식 점수를 한 줄에 놓았습니다. "점수가 이 값보다 낮은 칸만 사람이 다시 본다"고 정하면 무엇을 잡고 무엇을 놓치는지 움직여 보세요.</p>
+    <div class="doc">
+      <div class="ctlrow">
+        <span class="eyebrow">이 점수 미만만 검토</span><span class="big" id="th-out">0.970</span>
+        <input type="range" id="th" min="0.94" max="1.0" step="0.001" value="0.97" aria-label="검토 기준 점수">
+      </div>
+      <svg class="strip" id="strip" viewBox="0 0 640 120" role="img" aria-label="숫자 21개의 OCR 점수 분포"></svg>
+      <div class="key"><span><i style="background:var(--good)"></i>맞게 읽은 숫자</span><span><i style="background:var(--bad)"></i>틀리게 읽은 숫자</span><span>세로선 왼쪽 = 사람이 검토</span></div>
+      <p class="verdict" id="verdict"></p>
+    </div>
+    <p class="takeaway">필리핀 칸(0.989)은 맞게 읽은 두 칸(0.962, 0.964)보다 점수가 높습니다. 점수 기준만으로는 틀린 칸 두 개를 모두 잡으려면 맞는 칸까지 같이 봐야 합니다.</p>
+  </section>
+
+  <section class="concept">
+    <div class="head"><span class="num">3/4</span><h2>계산으로 오류를 찾고, 원본으로 확인한다</h2></div>
+    <div class="lesson">
+      <span class="eyebrow">교안</span>
+      <p>계약서의 값은 단가와 수량을 곱하거나 날짜 범위를 확인해 오류를 찾아볼 수 있습니다. 계산이 맞는 값도 원본과 대조해야 검토가 마무리됩니다.</p>
+    </div>
+    <p>이 표는 하위 지역 8곳의 인구를 더하면 <b>Outlying possessions</b>의 값과 같아야 합니다.</p>
+    <div class="seg-ctl" role="group" aria-label="표 보기 선택">
+      <button type="button" id="v-raw" aria-pressed="true">OCR 원시값</button>
+      <button type="button" id="v-fix" aria-pressed="false">검토 후</button>
+    </div>
+    <div class="tablewrap">
+      <table class="data" style="min-width:420px">
+        <thead><tr><th>하위 지역</th><th style="text-align:right">인구</th></tr></thead>
+        <tbody id="sum-body"></tbody>
+      </table>
+    </div>
+    <div class="bars sumbars" id="sumbars"></div>
+    <p class="takeaway">원시값의 합은 19,343,221로 1,020만 명이 남습니다. 필리핀 앞에 붙은 1(10,000,000)과 파나마 앞에 붙은 2(200,000)를 더한 값과 정확히 같습니다. 검산이 "어딘가 틀렸다"를 알려 주고, 원본 확대가 "어디가 왜"를 알려 줍니다.</p>
+  </section>
+
+  <section class="concept">
+    <div class="head"><span class="num">4/4</span><h2>원시 결과와 사람의 수정을 따로 남긴다</h2></div>
+    <div class="lesson">
+      <span class="eyebrow">교안</span>
+      <p>보기 좋게 정리한 파일은 원시 결과와 따로 두고, 수정 전 내용과 이유를 기록합니다. 원본 페이지, PNG, 글자 영역 좌표, 인식 문자열, 최종 구조를 연결해 보존하면 오류가 시작된 곳을 찾을 수 있습니다.</p>
+    </div>
+    <div class="chain" aria-label="파일이 이어지는 순서">
+      <span class="f">census-table.png</span><span class="arr">→</span>
+      <span class="f">raw_ocr.json</span><span class="arr">→</span>
+      <span class="f">ocr_lines.csv</span><span class="arr">→</span>
+      <span class="f h">review.json</span><span class="arr">→</span>
+      <span class="f">table.csv · document.md</span>
+    </div>
+    <div class="json"><span class="k">// review.json: 사람이 원본과 대조해 적은 수정 (스크립트는 자동으로 고치지 않음)</span>
+{
+  <span class="k">"row":</span> "Philippine Islands",  <span class="k">"col":</span> "pop",
+  <span class="k">"raw":</span> <span class="hl">"17,635,426"</span>,   <span class="k">// OCR이 읽은 그대로</span>
+  <span class="k">"value":</span> <span class="hl">7635426</span>,       <span class="k">// 원본 대조 후</span>
+  <span class="k">"footnote":</span> "Population in 1903.",
+  <span class="k">"reason":</span> "위첨자 1(각주 번호)을 숫자로 붙여 읽음 …"
+}</div>
+    <ul class="plain">
+      <li>다음에 OCR을 다시 돌렸을 때 원시값이 <code>"17,635,426"</code>이 아니면 스크립트가 멈춥니다. 예전 판단을 새 결과에 잘못 덮어쓰지 않게 하려는 장치입니다.</li>
+      <li>해외 복무 군인의 면적 칸은 원본에 점선만 있어 <b>0이 아니라 빈칸</b>으로 두었습니다. 추측으로 채우지 않는다는 교안의 원칙입니다.</li>
+      <li>필리핀(1903년)과 파나마 운하 지대(1912년)의 인구는 1910년 값이 아닌데도 원본 합계에 더해져 있습니다. 이 점을 각주 열과 문서에 함께 남겼습니다.</li>
+    </ul>
+  </section>
+
+  <section class="concept">
+    <div class="eyebrow">정리</div>
+    <h2>한 줄로 정리하면</h2>
+    <p class="thesis" style="border-color:var(--mask)">점수 0.989로 자신 있게 틀린 숫자를, 표 안의 합계 검산이 먼저 의심하게 만들고 원본 확대가 확인했습니다. 그 과정을 review.json에 남겨 다음 검토자도 같은 자리로 돌아갈 수 있게 했습니다.</p>
+  </section>
+
+  <footer>코드와 결과 파일: <a href="https://github.com/k-im-rose/aiffel/tree/main/vision-03-04/B-ocr" style="color:var(--box)">github.com/k-im-rose/aiffel/tree/main/vision-03-04/B-ocr</a> · 숫자는 outputs/ocr/의 OCR 결과에서 가져왔습니다.</footer>
+</div>
+
+<script id="ocr-data" type="application/json">[{"t":"Table 1","s":0.962,"b":[21,24,110,44],"k":"header"},{"t":"Gross area","s":0.9994,"b":[720,26,808,43],"k":"header"},{"t":"(land and water)","s":0.9997,"b":[692,41,837,61],"k":"header"},{"t":"Population:","s":0.9605,"b":[907,33,1006,53],"k":"header"},{"t":"AREA.","s":0.9756,"b":[310,40,367,63],"k":"header"},{"t":"1910","s":0.9391,"b":[941,49,989,71],"k":"header"},{"t":"in square miles.","s":0.989,"b":[693,59,832,79],"k":"header"},{"t":"United States, with outlying possessions","s":0.9993,"b":[93,119,515,142],"k":"label"},{"t":"3,743,306","s":0.9965,"b":[727,118,833,142],"k":"area","v":3743306},{"t":"101, 115, 487","s":0.9624,"b":[909,118,1033,144],"k":"pop","v":101115487},{"t":"United States, exclusive of outlying possessions.","s":0.9995,"b":[28,163,543,186],"k":"label"},{"t":"3,026,789","s":0.9997,"b":[726,161,833,188],"k":"area","v":3026789},{"t":"91, 972,266","s":0.9638,"b":[922,163,1034,187],"k":"pop","v":91972266},{"t":"Outlying possessions.","s":0.9993,"b":[27,208,246,232],"k":"label"},{"t":"716,517","s":0.9999,"b":[747,203,834,235],"k":"area","v":716517},{"t":"9,143,221","s":0.9998,"b":[929,204,1035,235],"k":"pop","v":9143221},{"t":"Alaska.","s":0.9992,"b":[69,251,149,275],"k":"label"},{"t":"590,884","s":1.0,"b":[749,249,835,276],"k":"area","v":590884},{"t":"64,356","s":0.9999,"b":[963,251,1036,276],"k":"pop","v":64356},{"t":"Hawaii.","s":0.9359,"b":[68,273,152,298],"k":"label"},{"t":"6,449","s":0.9992,"b":[769,271,835,300],"k":"area","v":6449},{"t":"191,909","s":0.9998,"b":[952,274,1035,299],"k":"pop","v":191909},{"t":"Porto Rico.","s":0.9988,"b":[69,296,189,320],"k":"label"},{"t":"3,435","s":0.9965,"b":[769,294,837,323],"k":"area","v":3435},{"t":"1,118,012","s":0.9998,"b":[930,297,1035,321],"k":"pop","v":1118012},{"t":"Military and naval service abroad","s":0.9996,"b":[69,319,424,342],"k":"label"},{"t":"55,608","s":0.9994,"b":[962,319,1034,343],"k":"pop","v":55608},{"t":"Philippine Islands.","s":0.9828,"b":[69,340,274,365],"k":"label"},{"t":"115,026","s":0.9998,"b":[748,338,834,366],"k":"area","v":115026},{"t":"17,635,426","s":0.9885,"b":[921,340,1035,365],"k":"pop","v":17635426,"fix":7635426},{"t":"Panama Canal Zone","s":0.9918,"b":[70,365,281,386],"k":"label"},{"t":"436","s":1.0,"b":[793,362,834,386],"k":"area","v":436},{"t":"262,810","s":0.9448,"b":[952,363,1035,388],"k":"pop","v":262810,"fix":62810},{"t":"Guam (population estimated)","s":0.9973,"b":[69,385,377,409],"k":"label"},{"t":"210","s":1.0,"b":[792,385,833,408],"k":"area","v":210},{"t":"9,000","s":0.9999,"b":[971,386,1034,410],"k":"pop","v":9000},{"t":"Samoa (population estimated)","s":0.9984,"b":[69,408,383,432],"k":"label"},{"t":"77","s":1.0,"b":[802,406,834,431],"k":"area","v":77},{"t":"6,100","s":0.9999,"b":[971,406,1036,435],"k":"pop","v":6100},{"t":"1 Population in 1903.","s":0.9737,"b":[163,471,336,491],"k":"foot"},{"t":"2 Population in 1912.","s":0.9845,"b":[723,470,897,491],"k":"foot"}]</script>
+<script>
+(function () {
+  const L = JSON.parse(document.getElementById('ocr-data').textContent);
+  const nums = L.filter(o => o.k === 'area' || o.k === 'pop');
+  const fmt = n => n.toLocaleString('en-US');
+  const NS = 'http://www.w3.org/2000/svg';
+  const rowName = o => {
+    const yc = (o.b[1] + o.b[3]) / 2;
+    const lab = L.find(x => x.k === 'label' && Math.abs((x.b[1] + x.b[3]) / 2 - yc) <= 12);
+    return lab ? lab.t.replace(/[.\s]+$/, '') : '';
+  };
+
+  // 1) 원본 위 글자 영역
+  const svg = document.getElementById('doc');
+  const im = document.createElementNS(NS, 'image');
+  im.setAttribute('href', 'img/census-table.png'); im.setAttribute('width', 1050); im.setAttribute('height', 505);
+  svg.appendChild(im);
+  let selected = null;
+  function show(o, el) {
+    if (selected) selected.classList.remove('sel');
+    selected = el; el.classList.add('sel');
+    const isNum = 'v' in o;
+    document.getElementById('d-raw').textContent = o.t;
+    document.getElementById('d-raw').className = 'v' + (o.fix !== undefined ? ' bad' : '');
+    document.getElementById('d-score').textContent = o.s.toFixed(3);
+    const fin = document.getElementById('d-final');
+    fin.textContent = isNum ? fmt(o.fix !== undefined ? o.fix : o.v) : '(숫자 아님)';
+    fin.className = 'v' + (o.fix !== undefined ? ' good' : '');
+    document.getElementById('d-box').textContent = o.b.join(', ');
+    const col = o.k === 'area' ? '면적' : o.k === 'pop' ? '인구' : o.k === 'label' ? '지역명' : o.k === 'header' ? '열 제목' : '각주';
+    let note = (isNum ? rowName(o) + ' · ' : '') + col + ' 칸입니다.';
+    if (o.fix !== undefined) note += ' 원본 숫자 앞의 작은 위첨자 각주 번호를 숫자로 붙여 읽었습니다. 점수가 높아도 틀린 칸입니다.';
+    else if (isNum) note += ' 원본과 대조해 그대로 맞았습니다.';
+    document.getElementById('d-note').textContent = note;
+  }
+  L.forEach(o => {
+    const r = document.createElementNS(NS, 'rect');
+    const [x1, y1, x2, y2] = o.b;
+    r.setAttribute('x', x1 - 3); r.setAttribute('y', y1 - 2);
+    r.setAttribute('width', x2 - x1 + 6); r.setAttribute('height', y2 - y1 + 4); r.setAttribute('rx', 3);
+    r.setAttribute('class', 'box ' + (o.fix !== undefined ? 'bad' : ('v' in o ? 'num' : 'txt')));
+    r.setAttribute('tabindex', '0'); r.setAttribute('role', 'button');
+    r.setAttribute('aria-label', o.t + ' 점수 ' + o.s.toFixed(3));
+    r.addEventListener('click', () => show(o, r));
+    r.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); show(o, r); } });
+    svg.appendChild(r);
+    o.el = r;
+  });
+  const phil = L.find(o => o.t === '17,635,426');
+  if (phil) show(phil, phil.el);
+
+  // 2) 점수 띠
+  const th = document.getElementById('th');
+  function strip() {
+    const t = +th.value, s = document.getElementById('strip');
+    const lo = 0.94, hi = 1.0, X = v => 30 + (v - lo) / (hi - lo) * 590;
+    let h = '';
+    [0.94, 0.95, 0.96, 0.97, 0.98, 0.99, 1.0].forEach(v => {
+      h += `<line x1="${X(v)}" x2="${X(v)}" y1="20" y2="86" stroke="var(--line)"/><text x="${X(v)}" y="104" text-anchor="middle">${v.toFixed(2)}</text>`;
+    });
+    h += `<rect x="${X(lo)}" y="20" width="${Math.max(0, X(t) - X(lo))}" height="66" fill="var(--box)" opacity="0.08"/>`;
+    const sorted = nums.slice().sort((a, b) => a.s - b.s);
+    const stack = {};
+    sorted.forEach(o => {
+      const key = Math.round(X(o.s) / 9); stack[key] = (stack[key] || 0) + 1;
+      const y = 78 - (stack[key] - 1) * 11;
+      const bad = o.fix !== undefined;
+      h += `<circle cx="${X(o.s)}" cy="${y}" r="${bad ? 6.5 : 4.5}" fill="${bad ? 'var(--bad)' : 'var(--good)'}"><title>${o.t} · ${o.s.toFixed(3)}</title></circle>`;
+      if (bad) h += `<text x="${X(o.s)}" y="${y - 11}" text-anchor="middle" style="fill:var(--bad)">${o.t}</text>`;
+    });
+    h += `<line x1="${X(t)}" x2="${X(t)}" y1="14" y2="90" stroke="var(--fg)" stroke-width="1.5"/>`;
+    s.innerHTML = h;
+    document.getElementById('th-out').textContent = t.toFixed(3);
+    const flagged = nums.filter(o => o.s < t), caught = flagged.filter(o => o.fix !== undefined).length;
+    const wasted = flagged.length - caught;
+    document.getElementById('verdict').innerHTML =
+      `검토할 칸 <b>${flagged.length}개</b> · 틀린 칸 2개 중 <b style="color:${caught === 2 ? 'var(--good)' : 'var(--bad)'}">${caught}개</b>를 잡음` +
+      (wasted ? ` · 맞는 칸 ${wasted}개도 함께 봐야 함` : '') +
+      (caught < 2 ? ` · <b style="color:var(--bad)">틀린 칸 ${2 - caught}개를 그대로 통과시킴</b>` : '');
+  }
+  th.addEventListener('input', strip);
+
+  // 3) 합계 검산
+  const subs = ['Alaska', 'Hawaii', 'Porto Rico', 'Military and naval service abroad', 'Philippine Islands', 'Panama Canal Zone', 'Guam (population estimated)', 'Samoa (population estimated)'];
+  const popOf = name => nums.find(o => o.k === 'pop' && rowName(o) === name);
+  const target = popOf('Outlying possessions').v;
+  let mode = 'raw';
+  function sums() {
+    let total = 0, rows = '';
+    subs.forEach(n => {
+      const o = popOf(n); const v = mode === 'fix' && o.fix !== undefined ? o.fix : o.v; total += v;
+      const bad = mode === 'raw' && o.fix !== undefined;
+      rows += `<tr><td>${n}</td><td class="n${bad ? ' bad' : ''}">${fmt(v)}</td></tr>`;
+    });
+    const ok = total === target;
+    rows += `<tr class="sum"><td>합계</td><td class="n${ok ? '' : ' bad'}">${fmt(total)}</td></tr>`;
+    rows += `<tr><td class="muted">표에 적힌 Outlying possessions</td><td class="n">${fmt(target)}</td></tr>`;
+    document.getElementById('sum-body').innerHTML = rows;
+    const max = 19343221;
+    document.getElementById('sumbars').innerHTML =
+      `<div class="sumbar"><span>8곳의 합</span><div class="track"><div class="fill ${ok ? 'good' : 'bad'}" style="width:${total / max * 100}%"></div></div><span class="v">${fmt(total)}</span></div>` +
+      `<div class="sumbar"><span>표의 합계</span><div class="track"><div class="fill ref" style="width:${target / max * 100}%"></div></div><span class="v">${fmt(target)}</span></div>` +
+      `<p class="note">${ok ? '일치합니다. 고친 두 칸이 원본과도, 표의 합계와도 맞습니다.' : '1,020만 명이 남습니다. 어딘가 숫자가 틀렸다는 신호입니다.'}</p>`;
+    document.getElementById('v-raw').setAttribute('aria-pressed', mode === 'raw');
+    document.getElementById('v-fix').setAttribute('aria-pressed', mode === 'fix');
+  }
+  document.getElementById('v-raw').addEventListener('click', () => { mode = 'raw'; sums(); });
+  document.getElementById('v-fix').addEventListener('click', () => { mode = 'fix'; sums(); });
+
+  strip(); sums();
+})();
+</script>
+</body>
+</html>
