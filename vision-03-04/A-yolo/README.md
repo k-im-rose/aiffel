@@ -2,6 +2,9 @@
 
 사진 경로를 넣으면 detection 박스(`yolo26n.pt`)와 segmentation 마스크(`yolo26n-seg.pt`)를 그려 보여 주고, 결과 이미지·박스 좌표 JSON·마스크 PNG·실행 기록을 파일로 남기는 작은 명령줄 서비스입니다.
 
+> **결과 해설 페이지:** [https://k-im-rose.github.io/aiffel/vision-03-04/A-yolo/explainer/](https://k-im-rose.github.io/aiffel/vision-03-04/A-yolo/explainer/)
+> 교안 개념과 결과 이미지를 연결한 해설과, 자기 사진의 후보 25개로 임계값을 직접 움직여 보는 실험이 있습니다. 페이지 파일은 [`explainer/`](explainer/)에 있습니다.
+
 ## 실행 방법
 
 ```bash
