@@ -1,0 +1,37 @@
+{
+  "image": "my_photo.jpg",
+  "model": "yolo26n.pt",
+  "low_conf": 0.25,
+  "high_conf": 0.5,
+  "count_low": 3,
+  "count_high": 2,
+  "dropped_at_high": [
+    {
+      "id": 2,
+      "class": "potted plant",
+      "class_id": 58,
+      "score": 0.2808,
+      "xyxy": [
+        936.1,
+        322.5,
+        1170.0,
+        631.1
+      ]
+    }
+  ],
+  "lowest_score_kept_at_high": 0.8676,
+  "candidates_below_low_conf_0.05": [
+    {
+      "id": 3,
+      "class": "cup",
+      "class_id": 41,
+      "score": 0.1804,
+      "xyxy": [
+        484.8,
+        611.7,
+        549.3,
+        701.7
+      ]
+    }
+  ]
+}

@@ -1,0 +1,5 @@
+# 실행에 쓴 버전 (manifest.json의 packages와 같음)
+ultralytics==8.4.208
+torch==2.15.0
+opencv-python==5.0.0.93
+numpy==2.5.4

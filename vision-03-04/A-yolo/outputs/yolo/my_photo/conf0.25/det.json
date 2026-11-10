@@ -1,0 +1,47 @@
+{
+  "image": "my_photo.jpg",
+  "model": "yolo26n.pt",
+  "conf": 0.25,
+  "image_size": [
+    1170,
+    1446
+  ],
+  "boxes": [
+    {
+      "id": 0,
+      "class": "person",
+      "class_id": 0,
+      "score": 0.9047,
+      "xyxy": [
+        293.1,
+        331.0,
+        605.4,
+        1443.6
+      ]
+    },
+    {
+      "id": 1,
+      "class": "umbrella",
+      "class_id": 25,
+      "score": 0.8676,
+      "xyxy": [
+        16.0,
+        195.6,
+        676.7,
+        672.3
+      ]
+    },
+    {
+      "id": 2,
+      "class": "potted plant",
+      "class_id": 58,
+      "score": 0.2808,
+      "xyxy": [
+        936.1,
+        322.5,
+        1170.0,
+        631.1
+      ]
+    }
+  ]
+}

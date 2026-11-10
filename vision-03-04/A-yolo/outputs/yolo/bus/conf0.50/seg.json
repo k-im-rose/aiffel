@@ -1,0 +1,86 @@
+{
+  "image": "bus.jpg",
+  "model": "yolo26n-seg.pt",
+  "conf": 0.5,
+  "image_size": [
+    810,
+    1080
+  ],
+  "masks": [
+    {
+      "id": 0,
+      "class": "person",
+      "class_id": 0,
+      "score": 0.8767,
+      "xyxy": [
+        52.8,
+        396.7,
+        243.5,
+        905.9
+      ],
+      "mask_file": "masks/mask_00_person.png",
+      "mask_area_px": 49401,
+      "mask_fill_of_box": 0.509
+    },
+    {
+      "id": 1,
+      "class": "person",
+      "class_id": 0,
+      "score": 0.8634,
+      "xyxy": [
+        669.2,
+        396.3,
+        809.9,
+        880.4
+      ],
+      "mask_file": "masks/mask_01_person.png",
+      "mask_area_px": 21344,
+      "mask_fill_of_box": 0.313
+    },
+    {
+      "id": 2,
+      "class": "bus",
+      "class_id": 5,
+      "score": 0.856,
+      "xyxy": [
+        4.7,
+        228.4,
+        806.6,
+        739.9
+      ],
+      "mask_file": "masks/mask_02_bus.png",
+      "mask_area_px": 255486,
+      "mask_fill_of_box": 0.623
+    },
+    {
+      "id": 3,
+      "class": "person",
+      "class_id": 0,
+      "score": 0.8113,
+      "xyxy": [
+        221.1,
+        405.4,
+        344.5,
+        859.4
+      ],
+      "mask_file": "masks/mask_03_person.png",
+      "mask_area_px": 33453,
+      "mask_fill_of_box": 0.597
+    },
+    {
+      "id": 4,
+      "class": "person",
+      "class_id": 0,
+      "score": 0.6448,
+      "xyxy": [
+        0.5,
+        550.5,
+        74.1,
+        872.3
+      ],
+      "mask_file": "masks/mask_04_person.png",
+      "mask_area_px": 10762,
+      "mask_fill_of_box": 0.454
+    }
+  ]
+}

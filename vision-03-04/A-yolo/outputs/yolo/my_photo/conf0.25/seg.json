@@ -1,0 +1,56 @@
+{
+  "image": "my_photo.jpg",
+  "model": "yolo26n-seg.pt",
+  "conf": 0.25,
+  "image_size": [
+    1170,
+    1446
+  ],
+  "masks": [
+    {
+      "id": 0,
+      "class": "umbrella",
+      "class_id": 25,
+      "score": 0.9179,
+      "xyxy": [
+        20.7,
+        197.6,
+        676.4,
+        668.5
+      ],
+      "mask_file": "masks/mask_00_umbrella.png",
+      "mask_area_px": 168060,
+      "mask_fill_of_box": 0.544
+    },
+    {
+      "id": 1,
+      "class": "person",
+      "class_id": 0,
+      "score": 0.9019,
+      "xyxy": [
+        295.3,
+        337.1,
+        607.3,
+        1442.4
+      ],
+      "mask_file": "masks/mask_01_person.png",
+      "mask_area_px": 234605,
+      "mask_fill_of_box": 0.68
+    },
+    {
+      "id": 2,
+      "class": "cup",
+      "class_id": 41,
+      "score": 0.3373,
+      "xyxy": [
+        484.6,
+        612.4,
+        553.2,
+        692.5
+      ],
+      "mask_file": "masks/mask_02_cup.png",
+      "mask_area_px": 3719,
+      "mask_fill_of_box": 0.677
+    }
+  ]
+}
