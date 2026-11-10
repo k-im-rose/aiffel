@@ -1,0 +1,12 @@
+region,level,parent,gross_area_sq_mi,population_1910,population_note,review
+"United States, with outlying possessions",total,,3743306,101115487,,
+"United States, exclusive of outlying possessions",main,,3026789,91972266,,
+Outlying possessions,main,,716517,9143221,,
+Alaska,sub,Outlying possessions,590884,64356,,
+Hawaii,sub,Outlying possessions,6449,191909,,
+Porto Rico,sub,Outlying possessions,3435,1118012,,
+Military and naval service abroad,sub,Outlying possessions,,55608,,area:blank
+Philippine Islands,sub,Outlying possessions,115026,7635426,Population in 1903.,pop:corrected
+Panama Canal Zone,sub,Outlying possessions,436,62810,Population in 1912.,pop:corrected
+Guam (population estimated),sub,Outlying possessions,210,9000,,
+Samoa (population estimated),sub,Outlying possessions,77,6100,,
