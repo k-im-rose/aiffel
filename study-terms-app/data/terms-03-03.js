@@ -299,6 +299,7 @@ addSection('03-03', "로컬 LLM과 실행 위치", [
   },
   {
     "id": "notebook-cell",
+    "src": "03-03 · 03-04",
     "term": "Notebook / Cell",
     "ko": "노트북과 셀",
     "full": "",
@@ -563,6 +564,7 @@ addSection('03-03', "로컬 LLM과 실행 위치", [
   },
   {
     "id": "license",
+    "src": "03-03 · 03-04",
     "term": "License",
     "ko": "라이선스 (사용 허가 조건)",
     "full": "",
@@ -651,6 +653,7 @@ addSection('03-03', "로컬 LLM과 실행 위치", [
   },
   {
     "id": "human-review",
+    "src": "03-03 · 03-04",
     "term": "Human Review",
     "ko": "사람 검토",
     "full": "",
@@ -662,6 +665,7 @@ addSection('03-03', "로컬 LLM과 실행 위치", [
   },
   {
     "id": "preprocessing",
+    "src": "03-03 · 03-04",
     "term": "Preprocessing",
     "ko": "전처리",
     "full": "",
