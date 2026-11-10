@@ -1,0 +1,58 @@
+{
+  "run_at": "2026-11-10T10:24:49+00:00",
+  "command": "python yolo_service.py input/bus.jpg input/my_photo.jpg --source-note bus.jpg=Ultralytics 공식 예제 사진 https://ultralytics.com/images/bus.jpg --source-note my_photo.jpg=제출자 본인이 나온 사진, 본인이 공개에 동의함. 원본의 메타데이터(EXIF)는 지운 사본",
+  "inputs": [
+    {
+      "file": "input/bus.jpg",
+      "sha256": "c02019c4979c191eb739ddd944445ef408dad5679acab6fd520ef9d434bfbc63",
+      "size_px": [
+        810,
+        1080
+      ],
+      "source": "Ultralytics 공식 예제 사진 https://ultralytics.com/images/bus.jpg"
+    },
+    {
+      "file": "input/my_photo.jpg",
+      "sha256": "593a893462738a3eb07ddc68ecb3a991ed5869e483499014e55523cada33ddc3",
+      "size_px": [
+        1170,
+        1446
+      ],
+      "source": "제출자 본인이 나온 사진, 본인이 공개에 동의함. 원본의 메타데이터(EXIF)는 지운 사본"
+    }
+  ],
+  "models": [
+    {
+      "task": "detect",
+      "file": "yolo26n.pt",
+      "sha256": "9b09cc8bf347f0fc8a5f7657480587f25db09b34bf33b0652110fb03a8ad4fef"
+    },
+    {
+      "task": "segment",
+      "file": "yolo26n-seg.pt",
+      "sha256": "361fbfabab285c3237700b6bb91d7ecfa602cd945fffda8dbe1242829b71e73f"
+    }
+  ],
+  "settings": {
+    "imgsz": 640,
+    "device": "cpu",
+    "conf": [
+      0.25,
+      0.5
+    ],
+    "classes": "all (80 COCO classes)"
+  },
+  "packages": {
+    "python": "3.12.15",
+    "ultralytics": "8.4.208",
+    "torch": "2.15.0",
+    "opencv": "5.0.0",
+    "numpy": "2.5.4"
+  },
+  "run_location": {
+    "where": "local (own computer, no cloud)",
+    "os": "macOS-15.6.1-arm64-arm-64bit",
+    "machine": "arm64",
+    "processor": "arm"
+  }
+}

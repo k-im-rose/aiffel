@@ -1,0 +1,60 @@
+{
+  "image": "bus.jpg",
+  "model": "yolo26n.pt",
+  "low_conf": 0.25,
+  "high_conf": 0.5,
+  "count_low": 5,
+  "count_high": 5,
+  "dropped_at_high": [],
+  "lowest_score_kept_at_high": 0.654,
+  "candidates_below_low_conf_0.05": [
+    {
+      "id": 5,
+      "class": "stop sign",
+      "class_id": 11,
+      "score": 0.1239,
+      "xyxy": [
+        0.2,
+        252.4,
+        35.4,
+        326.1
+      ]
+    },
+    {
+      "id": 6,
+      "class": "handbag",
+      "class_id": 26,
+      "score": 0.0766,
+      "xyxy": [
+        43.1,
+        731.5,
+        78.1,
+        811.6
+      ]
+    },
+    {
+      "id": 7,
+      "class": "skateboard",
+      "class_id": 36,
+      "score": 0.0702,
+      "xyxy": [
+        668.7,
+        822.1,
+        808.0,
+        880.9
+      ]
+    },
+    {
+      "id": 8,
+      "class": "handbag",
+      "class_id": 26,
+      "score": 0.056,
+      "xyxy": [
+        225.5,
+        633.7,
+        290.7,
+        705.2
+      ]
+    }
+  ]
+}
