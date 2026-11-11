@@ -58,7 +58,33 @@ function toCho(text) {
   }
   return out;
 }
-function isChoQuery(q) { return /^[ㄱ-ㅎ]+$/.test(q); }
+// 'ㅈㅇㅇ ㅊㄹ'처럼 띄어 쓴 초성도 초성 검색으로 본다
+function isChoQuery(q) { return /^[ㄱ-ㅎ][ㄱ-ㅎ\s]*$/.test(q); }
+
+// 한영 키를 안 바꾸고 친 글('ㅕㅜㄷㅅ')을 영문 자판 글자('unet')로 되돌린다
+const KEY = {
+  ㄱ: 'r', ㄲ: 'R', ㄳ: 'rt', ㄴ: 's', ㄵ: 'sw', ㄶ: 'sg', ㄷ: 'e', ㄸ: 'E', ㄹ: 'f', ㄺ: 'fr', ㄻ: 'fa', ㄼ: 'fq',
+  ㄽ: 'ft', ㄾ: 'fx', ㄿ: 'fv', ㅀ: 'fg', ㅁ: 'a', ㅂ: 'q', ㅃ: 'Q', ㅄ: 'qt', ㅅ: 't', ㅆ: 'T', ㅇ: 'd', ㅈ: 'w',
+  ㅉ: 'W', ㅊ: 'c', ㅋ: 'z', ㅌ: 'x', ㅍ: 'v', ㅎ: 'g', ㅏ: 'k', ㅐ: 'o', ㅑ: 'i', ㅒ: 'O', ㅓ: 'j', ㅔ: 'p',
+  ㅕ: 'u', ㅖ: 'P', ㅗ: 'h', ㅘ: 'hk', ㅙ: 'ho', ㅚ: 'hl', ㅛ: 'y', ㅜ: 'n', ㅝ: 'nj', ㅞ: 'np', ㅟ: 'nl',
+  ㅠ: 'b', ㅡ: 'm', ㅢ: 'ml', ㅣ: 'l',
+};
+const JUNG = 'ㅏㅐㅑㅒㅓㅔㅕㅖㅗㅘㅙㅚㅛㅜㅝㅞㅟㅠㅡㅢㅣ';
+const JONG = ' ㄱㄲㄳㄴㄵㄶㄷㄹㄺㄻㄼㄽㄾㄿㅀㅁㅂㅄㅅㅆㅇㅈㅊㅋㅌㅍㅎ';
+function hangulToKeys(text) {
+  let out = '';
+  for (const ch of text) {
+    const code = ch.charCodeAt(0) - 0xAC00;
+    if (code >= 0 && code <= 11171) {
+      const jong = code % 28;
+      out += KEY[CHO[Math.floor(code / 588)]] + KEY[JUNG[Math.floor(code % 588 / 28)]] + (jong ? KEY[JONG[jong]] : '');
+    } else {
+      out += KEY[ch] || ch;
+    }
+  }
+  return out.toLowerCase();
+}
+function hasHangul(q) { return /[ㄱ-ㅣ가-힣]/.test(q); }
 // 'unet'으로 'U-Net', 'fewshot'으로 'Few-shot'을 찾도록 띄어쓰기·-·_·.·/·· 는 빼고 비교한다
 const LOOSE = /[\s\-_.·/]/;
 // 찾으면 { i: 시작 위치, len: 원문에서 걸친 길이 }, 못 찾으면 null
@@ -92,14 +118,54 @@ function highlight(text, q) {
   const end = m.i + m.len;
   return esc(text.slice(0, m.i)) + '<mark>' + esc(text.slice(m.i, end)) + '</mark>' + esc(text.slice(end));
 }
-// 제목·한글 이름에서 못 찾으면 어디서 찾았는지 알려 준다
+// ---- 오타 허용: 글자 몇 개가 다른 이름 찾기 ----
+function packName(s) { return baseName(s).toLowerCase().replace(new RegExp(LOOSE.source, 'g'), ''); }
+// 두 글자열이 몇 글자 고치면 같아지는지 (max보다 크면 일찍 멈춘다)
+function editDistance(a, b, max) {
+  if (Math.abs(a.length - b.length) > max) return max + 1;
+  let prev = Array.from({ length: b.length + 1 }, (_, j) => j);
+  for (let i = 1; i <= a.length; i++) {
+    const cur = [i];
+    let best = i;
+    for (let j = 1; j <= b.length; j++) {
+      cur[j] = Math.min(prev[j] + 1, cur[j - 1] + 1, prev[j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1));
+      best = Math.min(best, cur[j]);
+    }
+    if (best > max) return max + 1;
+    prev = cur;
+  }
+  return prev[b.length];
+}
+function similarTerms(q) {
+  const p = packName(q);
+  if (p.length < 3) return [];
+  const max = p.length <= 5 ? 1 : 2; // 짧은 말은 한 글자, 긴 말은 두 글자까지 틀려도 찾는다
+  return TERMS
+    .map(t => ({ t, d: Math.min(editDistance(p, packName(t.term), max), editDistance(p, packName(t.ko), max)) }))
+    .filter(x => x.d <= max)
+    .sort((a, b) => a.d - b.d)
+    .slice(0, 5)
+    .map(x => x.t);
+}
+
+// 제목·한글 이름에서 못 찾으면 어디서 찾았는지 알려 준다.
+// rank가 작을수록 위에 보인다: 이름이 똑같음 0 → 이름이 그 말로 시작 1 → 이름에 들어 있음 2 → 영문 3 → 뜻 4 → 설명 5 → 내 설명 6
+function nameRank(text, q) {
+  const m = findIn(text, q);
+  if (!m) return 9;
+  if (m.i > 0) return 2;
+  return m.len === text.length ? 0 : 1;
+}
 function matchTerm(t, q) {
-  if (!q) return { ok: true, hint: '' };
-  if (findIn(t.term, q) || findIn(t.ko, q)) return { ok: true, hint: '' };
-  if (findIn(t.full, q)) return { ok: true, hint: '영문' };
-  if (findIn(t.def, q)) return { ok: true, hint: '뜻' };
-  if (findIn(t.easy, q) || findIn(exText(t), q)) return { ok: true, hint: '설명' };
-  if (findIn(note(t.id).mine, q)) return { ok: true, hint: '내 설명' };
+  if (!q) return { ok: true, hint: '', rank: 0 };
+  const r = Math.min(nameRank(t.term, q), nameRank(t.ko, q));
+  if (r < 9) return { ok: true, hint: '', rank: r };
+  // 초성은 이름에서만 찾는다 (뜻·설명 글에서는 우연히 맞는 초성이 많다)
+  if (isChoQuery(q)) return { ok: false };
+  if (findIn(t.full, q)) return { ok: true, hint: '영문', rank: 3 };
+  if (findIn(t.def, q)) return { ok: true, hint: '뜻', rank: 4 };
+  if (findIn(t.easy, q) || findIn(exText(t), q)) return { ok: true, hint: '설명', rank: 5 };
+  if (findIn(note(t.id).mine, q)) return { ok: true, hint: '내 설명', rank: 6 };
   return { ok: false };
 }
 
@@ -124,7 +190,7 @@ function rowHtml(t, q, hint) {
 
 // 검색 중이거나 '전체 목록'이면 한 줄 목록, 아니면 자료별 섹션(펼치고 접기)
 function renderList() {
-  const q = query();
+  let q = query();
   visible = [];
   const pass = id => {
     const t = byId[id];
@@ -133,9 +199,29 @@ function renderList() {
   };
   const rows = [];
   if (q || view === 'all') {
-    for (const t of TERMS) {
-      const m = pass(t.id);
-      if (!m || !m.ok) continue;
+    const collect = () => TERMS
+      .map((t, i) => ({ t, i, m: pass(t.id) }))
+      .filter(x => x.m && x.m.ok)
+      .sort((a, b) => a.m.rank - b.m.rank || a.i - b.i);
+    let found = collect();
+    // 못 찾았는데 한글이 섞여 있으면 한영 키를 안 바꾼 것으로 보고 영문 자판 글자로 다시 찾는다
+    if (!found.length && hasHangul(q) && !isChoQuery(q)) {
+      const typed = q;
+      q = hangulToKeys(q);
+      found = collect();
+      if (found.length) rows.push(`<li class="list-note">한영 키를 바꿔서 찾았어요: ${esc(typed)} → <strong>${esc(q)}</strong></li>`);
+      else q = typed;
+    }
+    // 그래도 없으면 오타로 보고 이름이 비슷한 용어를 보여 준다 ('quantizaton' → Quantization)
+    if (!found.length && !isChoQuery(q)) {
+      const near = similarTerms(q).filter(t => filter === 'all' || String(note(t.id).status) === filter);
+      if (near.length) {
+        rows.push('<li class="list-note">찾는 용어가 없어요. 혹시 이 용어인가요?</li>');
+        found = near.map(t => ({ t, m: { hint: '' } }));
+        q = '';
+      }
+    }
+    for (const { t, m } of found) {
       visible.push(t.id);
       rows.push(rowHtml(t, q, m.hint));
     }
@@ -189,9 +275,65 @@ function termSize(word) {
   return 'clamp(34px, 6.5vw, 56px)';
 }
 
-function setSub(el, text) {
-  el.hidden = !text;
-  el.querySelector('.def-v').textContent = text || '';
+// ---- 설명 속 용어 링크 ----
+// 뜻·쉽게 말하면·예를 들면 글에서 용어집에 있는 이름을 찾아 그 카드로 가는 링크로 바꾼다
+let linkRe = null;
+let linkTo = {};
+function baseName(s) { return (s || '').replace(/\s*\(.*?\)\s*/g, ' ').trim(); }
+// 한글 이름이 보통 낱말로 더 자주 쓰여서 엉뚱한 카드로 가는 것 ('화면 배치', '출처 표시'). 영문 이름으로는 링크한다
+const NO_LINK = new Set(['상태', '배치', '출처', '보정']);
+function buildLinks() {
+  linkTo = {};
+  const dup = new Set();
+  for (const t of TERMS) {
+    for (const name of [baseName(t.term), baseName(t.ko)]) {
+      // '키'·'B'처럼 한 글자는 다른 낱말 속에 너무 자주 섞인다
+      if (name.length < 2 || NO_LINK.has(name)) continue;
+      // 두 용어가 같은 이름이면('비트' = Bit·Vite) 어느 쪽인지 몰라 링크하지 않는다
+      if (linkTo[name] && linkTo[name] !== t.id) dup.add(name);
+      else linkTo[name] = t.id;
+    }
+  }
+  dup.forEach(name => delete linkTo[name]);
+  // 긴 이름부터 맞춰야 '로그인'이 '로그'로 잘리지 않는다
+  const names = Object.keys(linkTo).sort((a, b) => b.length - a.length);
+  linkRe = new RegExp(names.map(n => n.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|'), 'g');
+}
+// 한글 이름 뒤에 붙어도 되는 글자(조사): '데이터셋을', '모델과'는 링크, '감사합니다'의 '감사'는 링크 아님
+const PARTICLE = /[은는이가을를의에와과도로으만랑처까부께엔들]/;
+function okBoundary(text, i, name) {
+  const before = text[i - 1] || '';
+  const after = text[i + name.length] || '';
+  if (/[A-Za-z0-9]/.test(name[0])) return !/[A-Za-z0-9]/.test(before) && !/[A-Za-z0-9]/.test(after);
+  return !/[가-힣]/.test(before) && (!/[가-힣]/.test(after) || PARTICLE.test(after));
+}
+function shortDef(t) {
+  const s = t.def.split(/(?<=[.다])\s/)[0];
+  return s.length > 70 ? s.slice(0, 68) + '…' : s;
+}
+// used: 한 카드에서 이미 링크한 용어 (같은 용어는 처음 한 번만)
+function linkify(text, used) {
+  if (!text) return '';
+  let out = '';
+  let last = 0;
+  linkRe.lastIndex = 0;
+  let m;
+  while ((m = linkRe.exec(text))) {
+    const name = m[0];
+    const id = linkTo[name];
+    if (used.has(id) || !okBoundary(text, m.index, name)) { linkRe.lastIndex = m.index + 1; continue; }
+    used.add(id);
+    const t = byId[id];
+    out += esc(text.slice(last, m.index)) +
+      `<a class="tlink" href="#${id}" data-id="${id}" data-tip="${esc(t.ko + ' · ' + shortDef(t))}">${esc(name)}</a>`;
+    last = m.index + name.length;
+  }
+  return out + esc(text.slice(last));
+}
+
+function setSub(el, html) {
+  el.hidden = !html;
+  el.querySelector('.def-v').innerHTML = html;
 }
 
 function renderCard() {
@@ -209,9 +351,10 @@ function renderCard() {
   $('c-full').hidden = !t.full;
   // 개념 흐름(t.flow)은 화면에 보이지 않는다. 뜻을 알기 어려워 쉬운 설명·예시로 대신한다. 데이터는 남겨 둔다
 
-  $('c-def').textContent = t.def;
-  setSub($('c-easy'), t.easy);
-  setSub($('c-ex'), exText(t));
+  const used = new Set([t.id]);
+  $('c-def').innerHTML = linkify(t.def, used);
+  setSub($('c-easy'), linkify(t.easy, used));
+  setSub($('c-ex'), linkify(exText(t), used));
 
   if (document.activeElement !== $('mine')) $('mine').value = n.mine;
   document.querySelectorAll('.st').forEach(b => b.setAttribute('aria-pressed', String(Number(b.dataset.status) === n.status)));
@@ -388,6 +531,23 @@ $('show-all').addEventListener('click', () => {
   $('q').focus();
 });
 
+// 설명 속 용어 링크: 그 카드로 간다. PC에서도 방문 기록을 남겨 뒤로 가기로 원래 카드에 돌아오게 한다
+document.querySelector('.def-body').addEventListener('click', e => {
+  const a = e.target.closest('.tlink');
+  if (!a) return;
+  e.preventDefault();
+  const id = a.dataset.id;
+  if (filter !== 'all' && String(note(id).status) !== filter) {
+    filter = 'all';
+    store.ui.filter = filter;
+  }
+  if (!isPhone()) {
+    history.replaceState({ card: current }, '', '#' + current);
+    history.pushState({ card: id }, '', '#' + id);
+  }
+  select(id, true);
+});
+
 $('c-rel').addEventListener('click', e => {
   const b = e.target.closest('button');
   if (!b) return;
@@ -496,6 +656,7 @@ function fixNoteWidth() {
 function useCatalog({ sections, terms }) {
   TERMS = terms.map(t => ({ ...t, full: t.full_name, no: String(t.position).padStart(3, '0') }));
   byId = Object.fromEntries(TERMS.map(t => [t.id, t]));
+  buildLinks();
   SECTIONS = sections.map(s => ({ ...s, ids: TERMS.filter(t => t.section_id === s.id).map(t => t.id) }));
 }
 
