@@ -13,6 +13,7 @@ addSection('03-03', "로컬 LLM과 실행 위치", [
   },
   {
     "id": "quantization",
+    "src": "03-03 · 03-05",
     "term": "Quantization",
     "ko": "양자화",
     "full": "",
@@ -46,6 +47,7 @@ addSection('03-03', "로컬 LLM과 실행 위치", [
   },
   {
     "id": "dtype",
+    "src": "03-03 · 03-05",
     "term": "dtype",
     "ko": "자료형 (계산 정밀도)",
     "full": "Data Type",
@@ -90,6 +92,7 @@ addSection('03-03', "로컬 LLM과 실행 위치", [
   },
   {
     "id": "gguf",
+    "src": "03-03 · 03-05",
     "term": "GGUF",
     "ko": "지지유에프 (모델 파일 형식)",
     "full": "",
@@ -145,6 +148,7 @@ addSection('03-03', "로컬 LLM과 실행 위치", [
   },
   {
     "id": "vram",
+    "src": "03-03 · 03-05",
     "term": "VRAM",
     "ko": "그래픽카드 전용 메모리",
     "full": "Video RAM",
@@ -178,6 +182,7 @@ addSection('03-03', "로컬 LLM과 실행 위치", [
   },
   {
     "id": "offloading",
+    "src": "03-03 · 03-05",
     "term": "Offloading",
     "ko": "오프로딩 (CPU에 나눠 올리기)",
     "full": "",
@@ -222,6 +227,7 @@ addSection('03-03', "로컬 LLM과 실행 위치", [
   },
   {
     "id": "qwen",
+    "src": "03-03 · 03-05",
     "term": "Qwen",
     "ko": "큐웬 (Qwen 모델 계열)",
     "full": "",
@@ -277,6 +283,7 @@ addSection('03-03', "로컬 LLM과 실행 위치", [
   },
   {
     "id": "hardware-accelerator",
+    "src": "03-03 · 03-05",
     "term": "Hardware Accelerator",
     "ko": "하드웨어 가속기 (GPU 가속)",
     "full": "",
@@ -288,6 +295,7 @@ addSection('03-03', "로컬 LLM과 실행 위치", [
   },
   {
     "id": "runtime",
+    "src": "03-03 · 03-05",
     "term": "Runtime (Colab)",
     "ko": "런타임 (실행 환경)",
     "full": "",
@@ -299,7 +307,7 @@ addSection('03-03', "로컬 LLM과 실행 위치", [
   },
   {
     "id": "notebook-cell",
-    "src": "03-03 · 03-04",
+    "src": "03-03 · 03-04 · 03-05",
     "term": "Notebook / Cell",
     "ko": "노트북과 셀",
     "full": "",
@@ -564,7 +572,7 @@ addSection('03-03', "로컬 LLM과 실행 위치", [
   },
   {
     "id": "license",
-    "src": "03-03 · 03-04",
+    "src": "03-03 · 03-04 · 03-05",
     "term": "License",
     "ko": "라이선스 (사용 허가 조건)",
     "full": "",
@@ -688,6 +696,7 @@ addSection('03-03', "로컬 LLM과 실행 위치", [
   },
   {
     "id": "arxiv",
+    "src": "03-03 · 03-05",
     "term": "arXiv",
     "ko": "아카이브 (논문 공개 사이트)",
     "full": "",
