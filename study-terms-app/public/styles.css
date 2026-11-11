@@ -237,6 +237,7 @@ body.no-card .card { display: none; } /* 홈: 카드 자리는 배경만 */
 .text-btn:hover { color: var(--ink); }
 .saved.is-error { color: var(--ink); font-weight: 700; }
 .loading-msg { padding: 20px 4px; font-size: 15px; color: var(--gray); }
+.list-note { padding: 10px 8px; border-bottom: 2px solid var(--ink); background: var(--yellow); font-size: 13px; color: var(--ink); }
 body.loading .detail { visibility: hidden; }
 
 /* 내 설명: 줄 그은 노란 메모장 */

@@ -58,7 +58,33 @@ function toCho(text) {
   }
   return out;
 }
-function isChoQuery(q) { return /^[ㄱ-ㅎ]+$/.test(q); }
+// 'ㅈㅇㅇ ㅊㄹ'처럼 띄어 쓴 초성도 초성 검색으로 본다
+function isChoQuery(q) { return /^[ㄱ-ㅎ][ㄱ-ㅎ\s]*$/.test(q); }
+
+// 한영 키를 안 바꾸고 친 글('ㅕㅜㄷㅅ')을 영문 자판 글자('unet')로 되돌린다
+const KEY = {
+  ㄱ: 'r', ㄲ: 'R', ㄳ: 'rt', ㄴ: 's', ㄵ: 'sw', ㄶ: 'sg', ㄷ: 'e', ㄸ: 'E', ㄹ: 'f', ㄺ: 'fr', ㄻ: 'fa', ㄼ: 'fq',
+  ㄽ: 'ft', ㄾ: 'fx', ㄿ: 'fv', ㅀ: 'fg', ㅁ: 'a', ㅂ: 'q', ㅃ: 'Q', ㅄ: 'qt', ㅅ: 't', ㅆ: 'T', ㅇ: 'd', ㅈ: 'w',
+  ㅉ: 'W', ㅊ: 'c', ㅋ: 'z', ㅌ: 'x', ㅍ: 'v', ㅎ: 'g', ㅏ: 'k', ㅐ: 'o', ㅑ: 'i', ㅒ: 'O', ㅓ: 'j', ㅔ: 'p',
+  ㅕ: 'u', ㅖ: 'P', ㅗ: 'h', ㅘ: 'hk', ㅙ: 'ho', ㅚ: 'hl', ㅛ: 'y', ㅜ: 'n', ㅝ: 'nj', ㅞ: 'np', ㅟ: 'nl',
+  ㅠ: 'b', ㅡ: 'm', ㅢ: 'ml', ㅣ: 'l',
+};
+const JUNG = 'ㅏㅐㅑㅒㅓㅔㅕㅖㅗㅘㅙㅚㅛㅜㅝㅞㅟㅠㅡㅢㅣ';
+const JONG = ' ㄱㄲㄳㄴㄵㄶㄷㄹㄺㄻㄼㄽㄾㄿㅀㅁㅂㅄㅅㅆㅇㅈㅊㅋㅌㅍㅎ';
+function hangulToKeys(text) {
+  let out = '';
+  for (const ch of text) {
+    const code = ch.charCodeAt(0) - 0xAC00;
+    if (code >= 0 && code <= 11171) {
+      const jong = code % 28;
+      out += KEY[CHO[Math.floor(code / 588)]] + KEY[JUNG[Math.floor(code % 588 / 28)]] + (jong ? KEY[JONG[jong]] : '');
+    } else {
+      out += KEY[ch] || ch;
+    }
+  }
+  return out.toLowerCase();
+}
+function hasHangul(q) { return /[ㄱ-ㅣ가-힣]/.test(q); }
 // 'unet'으로 'U-Net', 'fewshot'으로 'Few-shot'을 찾도록 띄어쓰기·-·_·.·/·· 는 빼고 비교한다
 const LOOSE = /[\s\-_.·/]/;
 // 찾으면 { i: 시작 위치, len: 원문에서 걸친 길이 }, 못 찾으면 null
@@ -92,14 +118,24 @@ function highlight(text, q) {
   const end = m.i + m.len;
   return esc(text.slice(0, m.i)) + '<mark>' + esc(text.slice(m.i, end)) + '</mark>' + esc(text.slice(end));
 }
-// 제목·한글 이름에서 못 찾으면 어디서 찾았는지 알려 준다
+// 제목·한글 이름에서 못 찾으면 어디서 찾았는지 알려 준다.
+// rank가 작을수록 위에 보인다: 이름이 똑같음 0 → 이름이 그 말로 시작 1 → 이름에 들어 있음 2 → 영문 3 → 뜻 4 → 설명 5 → 내 설명 6
+function nameRank(text, q) {
+  const m = findIn(text, q);
+  if (!m) return 9;
+  if (m.i > 0) return 2;
+  return m.len === text.length ? 0 : 1;
+}
 function matchTerm(t, q) {
-  if (!q) return { ok: true, hint: '' };
-  if (findIn(t.term, q) || findIn(t.ko, q)) return { ok: true, hint: '' };
-  if (findIn(t.full, q)) return { ok: true, hint: '영문' };
-  if (findIn(t.def, q)) return { ok: true, hint: '뜻' };
-  if (findIn(t.easy, q) || findIn(exText(t), q)) return { ok: true, hint: '설명' };
-  if (findIn(note(t.id).mine, q)) return { ok: true, hint: '내 설명' };
+  if (!q) return { ok: true, hint: '', rank: 0 };
+  const r = Math.min(nameRank(t.term, q), nameRank(t.ko, q));
+  if (r < 9) return { ok: true, hint: '', rank: r };
+  // 초성은 이름에서만 찾는다 (뜻·설명 글에서는 우연히 맞는 초성이 많다)
+  if (isChoQuery(q)) return { ok: false };
+  if (findIn(t.full, q)) return { ok: true, hint: '영문', rank: 3 };
+  if (findIn(t.def, q)) return { ok: true, hint: '뜻', rank: 4 };
+  if (findIn(t.easy, q) || findIn(exText(t), q)) return { ok: true, hint: '설명', rank: 5 };
+  if (findIn(note(t.id).mine, q)) return { ok: true, hint: '내 설명', rank: 6 };
   return { ok: false };
 }
 
@@ -124,7 +160,7 @@ function rowHtml(t, q, hint) {
 
 // 검색 중이거나 '전체 목록'이면 한 줄 목록, 아니면 자료별 섹션(펼치고 접기)
 function renderList() {
-  const q = query();
+  let q = query();
   visible = [];
   const pass = id => {
     const t = byId[id];
@@ -133,9 +169,19 @@ function renderList() {
   };
   const rows = [];
   if (q || view === 'all') {
-    for (const t of TERMS) {
-      const m = pass(t.id);
-      if (!m || !m.ok) continue;
+    const collect = () => TERMS
+      .map((t, i) => ({ t, i, m: pass(t.id) }))
+      .filter(x => x.m && x.m.ok)
+      .sort((a, b) => a.m.rank - b.m.rank || a.i - b.i);
+    let found = collect();
+    // 못 찾았는데 한글이 섞여 있으면 한영 키를 안 바꾼 것으로 보고 영문 자판 글자로 다시 찾는다
+    if (!found.length && hasHangul(q) && !isChoQuery(q)) {
+      const typed = q;
+      q = hangulToKeys(q);
+      found = collect();
+      if (found.length) rows.push(`<li class="list-note">한영 키를 바꿔서 찾았어요: ${esc(typed)} → <strong>${esc(q)}</strong></li>`);
+    }
+    for (const { t, m } of found) {
       visible.push(t.id);
       rows.push(rowHtml(t, q, m.hint));
     }
