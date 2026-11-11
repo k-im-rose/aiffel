@@ -235,9 +235,65 @@ function termSize(word) {
   return 'clamp(34px, 6.5vw, 56px)';
 }
 
-function setSub(el, text) {
-  el.hidden = !text;
-  el.querySelector('.def-v').textContent = text || '';
+// ---- 설명 속 용어 링크 ----
+// 뜻·쉽게 말하면·예를 들면 글에서 용어집에 있는 이름을 찾아 그 카드로 가는 링크로 바꾼다
+let linkRe = null;
+let linkTo = {};
+function baseName(s) { return (s || '').replace(/\s*\(.*?\)\s*/g, ' ').trim(); }
+// 한글 이름이 보통 낱말로 더 자주 쓰여서 엉뚱한 카드로 가는 것 ('화면 배치', '출처 표시'). 영문 이름으로는 링크한다
+const NO_LINK = new Set(['상태', '배치', '출처', '보정']);
+function buildLinks() {
+  linkTo = {};
+  const dup = new Set();
+  for (const t of TERMS) {
+    for (const name of [baseName(t.term), baseName(t.ko)]) {
+      // '키'·'B'처럼 한 글자는 다른 낱말 속에 너무 자주 섞인다
+      if (name.length < 2 || NO_LINK.has(name)) continue;
+      // 두 용어가 같은 이름이면('비트' = Bit·Vite) 어느 쪽인지 몰라 링크하지 않는다
+      if (linkTo[name] && linkTo[name] !== t.id) dup.add(name);
+      else linkTo[name] = t.id;
+    }
+  }
+  dup.forEach(name => delete linkTo[name]);
+  // 긴 이름부터 맞춰야 '로그인'이 '로그'로 잘리지 않는다
+  const names = Object.keys(linkTo).sort((a, b) => b.length - a.length);
+  linkRe = new RegExp(names.map(n => n.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|'), 'g');
+}
+// 한글 이름 뒤에 붙어도 되는 글자(조사): '데이터셋을', '모델과'는 링크, '감사합니다'의 '감사'는 링크 아님
+const PARTICLE = /[은는이가을를의에와과도로으만랑처까부께엔들]/;
+function okBoundary(text, i, name) {
+  const before = text[i - 1] || '';
+  const after = text[i + name.length] || '';
+  if (/[A-Za-z0-9]/.test(name[0])) return !/[A-Za-z0-9]/.test(before) && !/[A-Za-z0-9]/.test(after);
+  return !/[가-힣]/.test(before) && (!/[가-힣]/.test(after) || PARTICLE.test(after));
+}
+function shortDef(t) {
+  const s = t.def.split(/(?<=[.다])\s/)[0];
+  return s.length > 70 ? s.slice(0, 68) + '…' : s;
+}
+// used: 한 카드에서 이미 링크한 용어 (같은 용어는 처음 한 번만)
+function linkify(text, used) {
+  if (!text) return '';
+  let out = '';
+  let last = 0;
+  linkRe.lastIndex = 0;
+  let m;
+  while ((m = linkRe.exec(text))) {
+    const name = m[0];
+    const id = linkTo[name];
+    if (used.has(id) || !okBoundary(text, m.index, name)) { linkRe.lastIndex = m.index + 1; continue; }
+    used.add(id);
+    const t = byId[id];
+    out += esc(text.slice(last, m.index)) +
+      `<a class="tlink" href="#${id}" data-id="${id}" data-tip="${esc(t.ko + ' · ' + shortDef(t))}">${esc(name)}</a>`;
+    last = m.index + name.length;
+  }
+  return out + esc(text.slice(last));
+}
+
+function setSub(el, html) {
+  el.hidden = !html;
+  el.querySelector('.def-v').innerHTML = html;
 }
 
 function renderCard() {
@@ -255,9 +311,10 @@ function renderCard() {
   $('c-full').hidden = !t.full;
   // 개념 흐름(t.flow)은 화면에 보이지 않는다. 뜻을 알기 어려워 쉬운 설명·예시로 대신한다. 데이터는 남겨 둔다
 
-  $('c-def').textContent = t.def;
-  setSub($('c-easy'), t.easy);
-  setSub($('c-ex'), exText(t));
+  const used = new Set([t.id]);
+  $('c-def').innerHTML = linkify(t.def, used);
+  setSub($('c-easy'), linkify(t.easy, used));
+  setSub($('c-ex'), linkify(exText(t), used));
 
   if (document.activeElement !== $('mine')) $('mine').value = n.mine;
   document.querySelectorAll('.st').forEach(b => b.setAttribute('aria-pressed', String(Number(b.dataset.status) === n.status)));
@@ -434,6 +491,23 @@ $('show-all').addEventListener('click', () => {
   $('q').focus();
 });
 
+// 설명 속 용어 링크: 그 카드로 간다. PC에서도 방문 기록을 남겨 뒤로 가기로 원래 카드에 돌아오게 한다
+document.querySelector('.def-body').addEventListener('click', e => {
+  const a = e.target.closest('.tlink');
+  if (!a) return;
+  e.preventDefault();
+  const id = a.dataset.id;
+  if (filter !== 'all' && String(note(id).status) !== filter) {
+    filter = 'all';
+    store.ui.filter = filter;
+  }
+  if (!isPhone()) {
+    history.replaceState({ card: current }, '', '#' + current);
+    history.pushState({ card: id }, '', '#' + id);
+  }
+  select(id, true);
+});
+
 $('c-rel').addEventListener('click', e => {
   const b = e.target.closest('button');
   if (!b) return;
@@ -542,6 +616,7 @@ function fixNoteWidth() {
 function useCatalog({ sections, terms }) {
   TERMS = terms.map(t => ({ ...t, full: t.full_name, no: String(t.position).padStart(3, '0') }));
   byId = Object.fromEntries(TERMS.map(t => [t.id, t]));
+  buildLinks();
   SECTIONS = sections.map(s => ({ ...s, ids: TERMS.filter(t => t.section_id === s.id).map(t => t.id) }));
 }
 
