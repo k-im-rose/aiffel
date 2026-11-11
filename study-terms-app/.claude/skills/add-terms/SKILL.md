@@ -5,7 +5,7 @@ description: 새 교육자료 PDF(예 03-05.pdf)의 용어를 아그뭐에 추�
 
 # 새 교육자료 용어 추가 (아그뭐)
 
-인자: 자료 번호(예 `03-05`). 없으면 `~/Downloads`에서 가장 최근 `NN-NN.pdf`를 찾는다.
+인자: 자료 번호(예 `03-05`). 없으면 `~/Downloads`와 `~/Downloads/교안/`에서 가장 최근 `NN-NN.pdf`를 찾는다.
 용어 기준·말투·파일 규칙은 `AGENTS.md`를 따른다. 아래는 그 규칙을 매일 같은 순서로 돌리는 절차다.
 
 스크립트 위치: `.claude/skills/add-terms/scripts/` (아래에서 `$SK`). 작업 폴더는 `study-terms-app/`.
@@ -13,10 +13,10 @@ description: 새 교육자료 PDF(예 03-05.pdf)의 용어를 아그뭐에 추�
 ## 1. PDF 옮기고 글 뽑기
 
 ```bash
-mv -n ~/Downloads/NN-NN.pdf "$HOME/Downloads/모두연 교육 자료/"
-swift $SK/pdf-text.swift "$HOME/Downloads/모두연 교육 자료/NN-NN.pdf" > <scratchpad>/NN-NN.txt
+mv -n ~/Downloads/NN-NN.pdf "$HOME/Downloads/교안/"   # 이미 교안에 있으면 건너뜀
+swift $SK/pdf-text.swift "$HOME/Downloads/교안/NN-NN.pdf" > <scratchpad>/NN-NN.txt
 ```
-- 같은 이름 파일이 이미 폴더에 있으면 옮기지 말고 사용자에게 묻는다.
+- PDF 모음 폴더는 `~/Downloads/교안/`이다. 사용자가 이미 넣어 두기도 한다. 다운로드와 교안 양쪽에 다른 같은 이름 파일이 있으면 옮기지 말고 묻는다.
 - 뽑은 글은 Read로 **처음부터 끝까지** 읽는다 (지나가듯 나온 용어도 넣는 앱이라 건너뛰지 않는다).
 
 ## 2. 기존 용어와 대조

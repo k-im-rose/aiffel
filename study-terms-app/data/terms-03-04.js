@@ -68,6 +68,7 @@ addSection('03-04', "문서 인식과 객체 탐지", [
   },
   {
     "id": "pipeline",
+    "src": "03-04 · 03-05",
     "term": "Pipeline",
     "ko": "파이프라인 (단계별 처리 흐름)",
     "full": "",
@@ -255,6 +256,7 @@ addSection('03-04', "문서 인식과 객체 탐지", [
   },
   {
     "id": "pixel",
+    "src": "03-04 · 03-05",
     "term": "Pixel",
     "ko": "픽셀 (화소)",
     "full": "Picture Element",
@@ -387,6 +389,7 @@ addSection('03-04', "문서 인식과 객체 탐지", [
   },
   {
     "id": "csv",
+    "src": "03-04 · 03-05",
     "term": "CSV",
     "ko": "쉼표로 구분한 표 파일",
     "full": "Comma-Separated Values",
@@ -398,6 +401,7 @@ addSection('03-04', "문서 인식과 객체 탐지", [
   },
   {
     "id": "png",
+    "src": "03-04 · 03-05",
     "term": "PNG",
     "ko": "PNG 이미지 형식",
     "full": "Portable Network Graphics",
@@ -420,6 +424,7 @@ addSection('03-04', "문서 인식과 객체 탐지", [
   },
   {
     "id": "reproducibility",
+    "src": "03-04 · 03-05",
     "term": "Reproducibility",
     "ko": "재현성",
     "full": "",
@@ -442,6 +447,7 @@ addSection('03-04', "문서 인식과 객체 탐지", [
   },
   {
     "id": "creative-commons",
+    "src": "03-04 · 03-05",
     "term": "Creative Commons / Public Domain",
     "ko": "CC 라이선스 / 퍼블릭 도메인",
     "full": "",

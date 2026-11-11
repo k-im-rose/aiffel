@@ -29,7 +29,7 @@ const TERMS = [
     related: ['prompt', 'harness', 'commit'],
   },
   {
-    id: 'prompt', no: '004', term: 'Prompt', ko: '프롬프트', full: '', src: '02-01',
+    id: 'prompt', no: '004', term: 'Prompt', ko: '프롬프트', full: '', src: '02-01 · 03-05',
     flow: ['만들 것', '조건', '지킬 것'],
     def: 'AI에게 보내는 지시문. 만들 것과 조건, 지킬 것을 함께 말한다.',
     easy: '심부름 쪽지예요. 무엇을, 어떻게, 하지 말 것까지 적을수록 정확해져요.', level: '입문',
@@ -37,7 +37,7 @@ const TERMS = [
     related: ['vibe-coding', 'genai'],
   },
   {
-    id: 'agent', no: '005', term: 'Agent', ko: '에이전트', full: '', src: '01-04 · 02-06 · 03-03 · 03-04',
+    id: 'agent', no: '005', term: 'Agent', ko: '에이전트', full: '', src: '01-04 · 02-06 · 03-03 · 03-04 · 03-05',
     flow: ['목표', '도구 사용', '결과 확인'],
     def: '목표를 주면 필요한 도구를 골라 쓰고, 결과를 보며 끝까지 해내는 AI.',
     easy: '시키면 알아서 장 보고 요리까지 끝내 오는 똑똑한 심부름꾼이에요.', level: '입문',
@@ -77,7 +77,7 @@ const TERMS = [
     related: ['tool-use', 'skill'],
   },
   {
-    id: 'skill', no: '010', term: 'Skill', ko: '스킬', full: '', src: '02-06 · 02-07',
+    id: 'skill', no: '010', term: 'Skill', ko: '스킬', full: '', src: '02-06 · 02-07 · 03-05',
     flow: ['작업 방법 정리', '폴더에 저장', '필요할 때 사용'],
     def: '자주 하는 작업 방법을 한 번 적어 두고 계속 꺼내 쓰는 재사용 설명서. 폴더 하나로 되어 있다.',
     easy: '자주 만드는 요리의 레시피 카드예요. 한 번 적어 두면 계속 꺼내 봐요.', level: '실전',
@@ -101,7 +101,7 @@ const TERMS = [
     related: ['api', 'database', 'web-layers'],
   },
   {
-    id: 'api', no: '013', term: 'API', ko: '프로그램 사이의 약속', full: 'Application Programming Interface', src: '02-03 · 03-03',
+    id: 'api', no: '013', term: 'API', ko: '프로그램 사이의 약속', full: 'Application Programming Interface', src: '02-03 · 03-03 · 03-05',
     flow: ['요청', '처리', '응답'],
     def: '프로그램끼리 기능이나 데이터를 주고받을 때 따르는 약속. 주소·방법·입력·응답 형식을 정한다.',
     easy: '식당 메뉴판이에요. 손님은 메뉴판에 적힌 대로만 주문할 수 있어요.', level: '입문',
