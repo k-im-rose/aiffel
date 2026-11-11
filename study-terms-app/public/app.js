@@ -49,7 +49,7 @@ async function api(path, options = {}) {
   return body;
 }
 
-// ---- 검색 (대소문자 무시 + 초성) ----
+// ---- 검색 (대소문자 무시 + 초성 + 띄어쓰기·기호 무시) ----
 function toCho(text) {
   let out = '';
   for (const ch of text) {
@@ -59,27 +59,47 @@ function toCho(text) {
   return out;
 }
 function isChoQuery(q) { return /^[ㄱ-ㅎ]+$/.test(q); }
+// 'unet'으로 'U-Net', 'fewshot'으로 'Few-shot'을 찾도록 띄어쓰기·-·_·.·/·· 는 빼고 비교한다
+const LOOSE = /[\s\-_.·/]/;
+// 찾으면 { i: 시작 위치, len: 원문에서 걸친 길이 }, 못 찾으면 null
 function findIn(text, q) {
-  const hay = isChoQuery(q) ? toCho(text) : text.toLowerCase();
-  return hay.indexOf(isChoQuery(q) ? q : q.toLowerCase());
+  if (!text || !q) return null;
+  const cho = isChoQuery(q);
+  const hay = cho ? toCho(text) : text.toLowerCase();
+  const needle = cho ? q : q.toLowerCase();
+  const i = hay.indexOf(needle);
+  if (i >= 0) return { i, len: needle.length };
+  // 기호를 뺀 글자와 원문 위치를 짝지어 두고 다시 찾는다
+  const pos = [];
+  let packed = '';
+  for (let k = 0; k < hay.length; k++) {
+    if (LOOSE.test(hay[k])) continue;
+    packed += hay[k];
+    pos.push(k);
+  }
+  const n = [...needle].filter(c => !LOOSE.test(c)).join('');
+  const j = n ? packed.indexOf(n) : -1;
+  if (j < 0) return null;
+  return { i: pos[j], len: pos[j + n.length - 1] - pos[j] + 1 };
 }
 function exText(t) { return t.ex || ''; }
 function esc(s) {
   return s.replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 }
 function highlight(text, q) {
-  const i = q ? findIn(text, q) : -1;
-  if (i < 0) return esc(text);
-  return esc(text.slice(0, i)) + '<mark>' + esc(text.slice(i, i + q.length)) + '</mark>' + esc(text.slice(i + q.length));
+  const m = q ? findIn(text, q) : null;
+  if (!m) return esc(text);
+  const end = m.i + m.len;
+  return esc(text.slice(0, m.i)) + '<mark>' + esc(text.slice(m.i, end)) + '</mark>' + esc(text.slice(end));
 }
 // 제목·한글 이름에서 못 찾으면 어디서 찾았는지 알려 준다
 function matchTerm(t, q) {
   if (!q) return { ok: true, hint: '' };
-  if (findIn(t.term, q) >= 0 || findIn(t.ko, q) >= 0) return { ok: true, hint: '' };
-  if (findIn(t.full, q) >= 0) return { ok: true, hint: '영문' };
-  if (findIn(t.def, q) >= 0) return { ok: true, hint: '뜻' };
-  if (findIn(t.easy || '', q) >= 0 || findIn(exText(t), q) >= 0) return { ok: true, hint: '설명' };
-  if (findIn(note(t.id).mine, q) >= 0) return { ok: true, hint: '내 설명' };
+  if (findIn(t.term, q) || findIn(t.ko, q)) return { ok: true, hint: '' };
+  if (findIn(t.full, q)) return { ok: true, hint: '영문' };
+  if (findIn(t.def, q)) return { ok: true, hint: '뜻' };
+  if (findIn(t.easy, q) || findIn(exText(t), q)) return { ok: true, hint: '설명' };
+  if (findIn(note(t.id).mine, q)) return { ok: true, hint: '내 설명' };
   return { ok: false };
 }
 
