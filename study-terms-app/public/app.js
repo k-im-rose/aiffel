@@ -118,6 +118,36 @@ function highlight(text, q) {
   const end = m.i + m.len;
   return esc(text.slice(0, m.i)) + '<mark>' + esc(text.slice(m.i, end)) + '</mark>' + esc(text.slice(end));
 }
+// ---- 오타 허용: 글자 몇 개가 다른 이름 찾기 ----
+function packName(s) { return baseName(s).toLowerCase().replace(new RegExp(LOOSE.source, 'g'), ''); }
+// 두 글자열이 몇 글자 고치면 같아지는지 (max보다 크면 일찍 멈춘다)
+function editDistance(a, b, max) {
+  if (Math.abs(a.length - b.length) > max) return max + 1;
+  let prev = Array.from({ length: b.length + 1 }, (_, j) => j);
+  for (let i = 1; i <= a.length; i++) {
+    const cur = [i];
+    let best = i;
+    for (let j = 1; j <= b.length; j++) {
+      cur[j] = Math.min(prev[j] + 1, cur[j - 1] + 1, prev[j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1));
+      best = Math.min(best, cur[j]);
+    }
+    if (best > max) return max + 1;
+    prev = cur;
+  }
+  return prev[b.length];
+}
+function similarTerms(q) {
+  const p = packName(q);
+  if (p.length < 3) return [];
+  const max = p.length <= 5 ? 1 : 2; // 짧은 말은 한 글자, 긴 말은 두 글자까지 틀려도 찾는다
+  return TERMS
+    .map(t => ({ t, d: Math.min(editDistance(p, packName(t.term), max), editDistance(p, packName(t.ko), max)) }))
+    .filter(x => x.d <= max)
+    .sort((a, b) => a.d - b.d)
+    .slice(0, 5)
+    .map(x => x.t);
+}
+
 // 제목·한글 이름에서 못 찾으면 어디서 찾았는지 알려 준다.
 // rank가 작을수록 위에 보인다: 이름이 똑같음 0 → 이름이 그 말로 시작 1 → 이름에 들어 있음 2 → 영문 3 → 뜻 4 → 설명 5 → 내 설명 6
 function nameRank(text, q) {
@@ -180,6 +210,16 @@ function renderList() {
       q = hangulToKeys(q);
       found = collect();
       if (found.length) rows.push(`<li class="list-note">한영 키를 바꿔서 찾았어요: ${esc(typed)} → <strong>${esc(q)}</strong></li>`);
+      else q = typed;
+    }
+    // 그래도 없으면 오타로 보고 이름이 비슷한 용어를 보여 준다 ('quantizaton' → Quantization)
+    if (!found.length && !isChoQuery(q)) {
+      const near = similarTerms(q).filter(t => filter === 'all' || String(note(t.id).status) === filter);
+      if (near.length) {
+        rows.push('<li class="list-note">찾는 용어가 없어요. 혹시 이 용어인가요?</li>');
+        found = near.map(t => ({ t, m: { hint: '' } }));
+        q = '';
+      }
     }
     for (const { t, m } of found) {
       visible.push(t.id);
