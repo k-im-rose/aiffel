@@ -178,6 +178,10 @@ npm start
 
 작업 순서대로 정리했다. 자세한 내용은 [커밋 기록](https://github.com/k-im-rose/aiffel/commits/main/study-terms-app)에 있다.
 
+### 2026-11-11 · 검색에서 띄어쓰기·기호 무시
+
+- 'unet'으로 'U-Net', 'fewshot'으로 'Few-shot'을 찾도록 검색할 때 띄어쓰기와 `-` `_` `.` `/` `·`를 빼고 비교한다. 노란 표시도 원문에서 걸친 부분(U-Net 전체)에 칠한다.
+
 ### 2026-11-11 · 03-05 용어 40개 추가 (534개)
 
 - 새 섹션 '03-05 이미지·영상 생성'(WORD 495~534): 이미지 생성·프롬프트 여섯 칸·카메라 칸·시드·스텝 수·노이즈 제거·미분 가능, GAN·모드 붕괴·StyleGAN·DDPM·CLIP·텍스트 인코더·Imagen, 잠재 공간·잠재 확산·오토인코더·VAE·인페인팅·이미지 변형·LoRA·증류·가이던스(CFG)·네거티브 프롬프트, FLUX.2-klein·SDXL-Turbo·Apache 2.0/MIT·비상업 라이선스, 허깅페이스·Space·diffusers·ComfyUI·ControlNet·OpenPose, 영상 생성·프롬프트 리라이터, 해시 함수·requests·타임아웃·URL 인코딩.
