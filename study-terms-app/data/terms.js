@@ -13,7 +13,7 @@ const TERMS = [
     related: ['hallucination', 'prompt', 'agent'],
   },
   {
-    id: 'hallucination', no: '002', term: 'Hallucination', ko: '환각', full: '', src: '01-04',
+    id: 'hallucination', no: '002', term: 'Hallucination', ko: '환각', full: '', src: '01-04 · 03-06',
     flow: ['질문', '그럴듯한 답', '사실 확인'],
     def: 'AI가 없는 사실이나 파일명을 사실처럼 지어내는 현상. 그럴듯함과 정확함은 다르다.',
     easy: '모르는 걸 물으면 아는 척 지어내는 친구처럼, 틀린 걸 진짜처럼 말해요.', level: '입문',
@@ -29,7 +29,7 @@ const TERMS = [
     related: ['prompt', 'harness', 'commit'],
   },
   {
-    id: 'prompt', no: '004', term: 'Prompt', ko: '프롬프트', full: '', src: '02-01 · 03-05',
+    id: 'prompt', no: '004', term: 'Prompt', ko: '프롬프트', full: '', src: '02-01 · 03-05 · 03-06',
     flow: ['만들 것', '조건', '지킬 것'],
     def: 'AI에게 보내는 지시문. 만들 것과 조건, 지킬 것을 함께 말한다.',
     easy: '심부름 쪽지예요. 무엇을, 어떻게, 하지 말 것까지 적을수록 정확해져요.', level: '입문',
@@ -37,7 +37,7 @@ const TERMS = [
     related: ['vibe-coding', 'genai'],
   },
   {
-    id: 'agent', no: '005', term: 'Agent', ko: '에이전트', full: '', src: '01-04 · 02-06 · 03-03 · 03-04 · 03-05',
+    id: 'agent', no: '005', term: 'Agent', ko: '에이전트', full: '', src: '01-04 · 02-06 · 03-03 · 03-04 · 03-05 · 03-06',
     flow: ['목표', '도구 사용', '결과 확인'],
     def: '목표를 주면 필요한 도구를 골라 쓰고, 결과를 보며 끝까지 해내는 AI.',
     easy: '시키면 알아서 장 보고 요리까지 끝내 오는 똑똑한 심부름꾼이에요.', level: '입문',
