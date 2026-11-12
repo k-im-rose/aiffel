@@ -184,7 +184,7 @@ addSection('03-02', "트랜스포머와 언어 모델", [
     "term": "Transformer",
     "ko": "트랜스포머",
     "def": "어텐션을 중심으로 토큰 사이의 관계를 계산하는 신경망 구조예요. 원형은 RNN·CNN 없이 어텐션과 피드포워드 층 등을 사용해요. 학습 때 여러 위치를 병렬 계산할 수 있지만, GPT식 생성은 보통 토큰을 차례로 만들어요.",
-    "src": "03-02 · 03-05"
+    "src": "03-02 · 03-05 · 03-06"
   },
   {
     "id": "query-key-value",
@@ -229,7 +229,7 @@ addSection('03-02', "트랜스포머와 언어 모델", [
   },
   {
     "id": "kv-cache",
-    "src": "03-02 · 03-03",
+    "src": "03-02 · 03-03 · 03-06",
     "term": "KV Cache",
     "ko": "KV 캐시",
     "full": "",
@@ -607,7 +607,7 @@ addSection('03-02', "트랜스포머와 언어 모델", [
   },
   {
     "id": "model-card",
-    "src": "03-02 · 03-05",
+    "src": "03-02 · 03-05 · 03-06",
     "term": "Model Card",
     "ko": "모델 카드",
     "full": "",
@@ -620,6 +620,7 @@ addSection('03-02', "트랜스포머와 언어 모델", [
   },
   {
     "id": "vision-language-model",
+    "src": "03-02 · 03-06",
     "term": "VLM",
     "ko": "시각-언어 모델",
     "full": "Vision-Language Model",
@@ -632,6 +633,7 @@ addSection('03-02', "트랜스포머와 언어 모델", [
   },
   {
     "id": "spectrogram",
+    "src": "03-02 · 03-06",
     "term": "Spectrogram",
     "ko": "스펙트로그램",
     "full": "",

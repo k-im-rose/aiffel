@@ -68,7 +68,7 @@ addSection('03-04', "문서 인식과 객체 탐지", [
   },
   {
     "id": "pipeline",
-    "src": "03-04 · 03-05",
+    "src": "03-04 · 03-05 · 03-06",
     "term": "Pipeline",
     "ko": "파이프라인 (단계별 처리 흐름)",
     "full": "",
@@ -447,7 +447,7 @@ addSection('03-04', "문서 인식과 객체 탐지", [
   },
   {
     "id": "creative-commons",
-    "src": "03-04 · 03-05",
+    "src": "03-04 · 03-05 · 03-06",
     "term": "Creative Commons / Public Domain",
     "ko": "CC 라이선스 / 퍼블릭 도메인",
     "full": "",

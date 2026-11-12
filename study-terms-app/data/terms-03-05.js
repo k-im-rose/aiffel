@@ -123,6 +123,7 @@ addSection('03-05', "이미지·영상 생성", [
   },
   {
     "id": "clip",
+    "src": "03-05 · 03-06",
     "term": "CLIP",
     "ko": "클립 (글·그림 공통 좌표 모델)",
     "full": "Contrastive Language-Image Pre-training",
@@ -134,6 +135,7 @@ addSection('03-05', "이미지·영상 생성", [
   },
   {
     "id": "text-encoder",
+    "src": "03-05 · 03-06",
     "term": "Text Encoder",
     "ko": "텍스트 인코더",
     "full": "",
@@ -156,6 +158,7 @@ addSection('03-05', "이미지·영상 생성", [
   },
   {
     "id": "latent-space",
+    "src": "03-05 · 03-06",
     "term": "Latent Space",
     "ko": "잠재 공간",
     "full": "",
@@ -288,6 +291,7 @@ addSection('03-05', "이미지·영상 생성", [
   },
   {
     "id": "permissive-license",
+    "src": "03-05 · 03-06",
     "term": "Apache 2.0 / MIT",
     "ko": "허용형 오픈소스 라이선스",
     "full": "",
@@ -299,6 +303,7 @@ addSection('03-05', "이미지·영상 생성", [
   },
   {
     "id": "non-commercial-license",
+    "src": "03-05 · 03-06",
     "term": "Non-commercial License",
     "ko": "비상업 라이선스",
     "full": "",
@@ -310,6 +315,7 @@ addSection('03-05', "이미지·영상 생성", [
   },
   {
     "id": "hugging-face",
+    "src": "03-05 · 03-06",
     "term": "Hugging Face",
     "ko": "허깅페이스",
     "full": "",

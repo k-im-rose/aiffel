@@ -2,6 +2,7 @@
 addSection('03-03', "로컬 LLM과 실행 위치", [
   {
     "id": "inference",
+    "src": "03-03 · 03-06",
     "term": "Inference",
     "ko": "추론",
     "full": "",
@@ -13,7 +14,7 @@ addSection('03-03', "로컬 LLM과 실행 위치", [
   },
   {
     "id": "quantization",
-    "src": "03-03 · 03-05",
+    "src": "03-03 · 03-05 · 03-06",
     "term": "Quantization",
     "ko": "양자화",
     "full": "",
@@ -92,7 +93,7 @@ addSection('03-03', "로컬 LLM과 실행 위치", [
   },
   {
     "id": "gguf",
-    "src": "03-03 · 03-05",
+    "src": "03-03 · 03-05 · 03-06",
     "term": "GGUF",
     "ko": "지지유에프 (모델 파일 형식)",
     "full": "",
@@ -137,6 +138,7 @@ addSection('03-03', "로컬 LLM과 실행 위치", [
   },
   {
     "id": "billion-params",
+    "src": "03-03 · 03-06",
     "term": "B (7B · 0.8B)",
     "ko": "파라미터 수 표기 (십억 개)",
     "full": "Billion",
@@ -148,7 +150,7 @@ addSection('03-03', "로컬 LLM과 실행 위치", [
   },
   {
     "id": "vram",
-    "src": "03-03 · 03-05",
+    "src": "03-03 · 03-05 · 03-06",
     "term": "VRAM",
     "ko": "그래픽카드 전용 메모리",
     "full": "Video RAM",
@@ -160,6 +162,7 @@ addSection('03-03', "로컬 LLM과 실행 위치", [
   },
   {
     "id": "unified-memory",
+    "src": "03-03 · 03-06",
     "term": "Unified Memory",
     "ko": "통합 메모리",
     "full": "",
@@ -205,6 +208,7 @@ addSection('03-03', "로컬 LLM과 실행 위치", [
   },
   {
     "id": "ollama",
+    "src": "03-03 · 03-06",
     "term": "Ollama",
     "ko": "올라마",
     "full": "",
@@ -216,6 +220,7 @@ addSection('03-03', "로컬 LLM과 실행 위치", [
   },
   {
     "id": "model-tag",
+    "src": "03-03 · 03-06",
     "term": "Model Tag",
     "ko": "모델 태그",
     "full": "",
@@ -227,7 +232,7 @@ addSection('03-03', "로컬 LLM과 실행 위치", [
   },
   {
     "id": "qwen",
-    "src": "03-03 · 03-05",
+    "src": "03-03 · 03-05 · 03-06",
     "term": "Qwen",
     "ko": "큐웬 (Qwen 모델 계열)",
     "full": "",
@@ -261,6 +266,7 @@ addSection('03-03', "로컬 LLM과 실행 위치", [
   },
   {
     "id": "vllm",
+    "src": "03-03 · 03-06",
     "term": "vLLM",
     "ko": "브이엘엘엠 (GPU 추론 서버 엔진)",
     "full": "",
@@ -272,6 +278,7 @@ addSection('03-03', "로컬 LLM과 실행 위치", [
   },
   {
     "id": "inference-engine",
+    "src": "03-03 · 03-06",
     "term": "Inference Engine",
     "ko": "실행 엔진 (추론 엔진)",
     "full": "",
@@ -295,7 +302,7 @@ addSection('03-03', "로컬 LLM과 실행 위치", [
   },
   {
     "id": "runtime",
-    "src": "03-03 · 03-05",
+    "src": "03-03 · 03-05 · 03-06",
     "term": "Runtime (Colab)",
     "ko": "런타임 (실행 환경)",
     "full": "",
@@ -517,6 +524,7 @@ addSection('03-03', "로컬 LLM과 실행 위치", [
   },
   {
     "id": "audit",
+    "src": "03-03 · 03-06",
     "term": "Audit",
     "ko": "감사 (검토 기록)",
     "full": "",
@@ -572,7 +580,7 @@ addSection('03-03', "로컬 LLM과 실행 위치", [
   },
   {
     "id": "license",
-    "src": "03-03 · 03-04 · 03-05",
+    "src": "03-03 · 03-04 · 03-05 · 03-06",
     "term": "License",
     "ko": "라이선스 (사용 허가 조건)",
     "full": "",
@@ -628,6 +636,7 @@ addSection('03-03', "로컬 LLM과 실행 위치", [
   },
   {
     "id": "latency",
+    "src": "03-03 · 03-06",
     "term": "Latency",
     "ko": "지연 시간 (응답 시간)",
     "full": "",
@@ -696,7 +705,7 @@ addSection('03-03', "로컬 LLM과 실행 위치", [
   },
   {
     "id": "arxiv",
-    "src": "03-03 · 03-05",
+    "src": "03-03 · 03-05 · 03-06",
     "term": "arXiv",
     "ko": "아카이브 (논문 공개 사이트)",
     "full": "",
