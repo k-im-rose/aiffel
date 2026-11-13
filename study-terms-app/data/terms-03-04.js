@@ -135,6 +135,7 @@ addSection('03-04', "문서 인식과 객체 탐지", [
   },
   {
     "id": "bounding-box",
+    "src": "03-04 · 03-07",
     "term": "Bounding Box",
     "ko": "바운딩 박스 (사각 박스)",
     "full": "",
@@ -256,7 +257,7 @@ addSection('03-04', "문서 인식과 객체 탐지", [
   },
   {
     "id": "pixel",
-    "src": "03-04 · 03-05",
+    "src": "03-04 · 03-05 · 03-07",
     "term": "Pixel",
     "ko": "픽셀 (화소)",
     "full": "Picture Element",
@@ -401,7 +402,7 @@ addSection('03-04', "문서 인식과 객체 탐지", [
   },
   {
     "id": "png",
-    "src": "03-04 · 03-05",
+    "src": "03-04 · 03-05 · 03-07",
     "term": "PNG",
     "ko": "PNG 이미지 형식",
     "full": "Portable Network Graphics",
@@ -447,7 +448,7 @@ addSection('03-04', "문서 인식과 객체 탐지", [
   },
   {
     "id": "creative-commons",
-    "src": "03-04 · 03-05 · 03-06",
+    "src": "03-04 · 03-05 · 03-06 · 03-07",
     "term": "Creative Commons / Public Domain",
     "ko": "CC 라이선스 / 퍼블릭 도메인",
     "full": "",
