@@ -732,7 +732,7 @@ addSection('02-04', "백엔드와 데이터베이스", [
   },
   {
     "id": "pii",
-    "src": "02-04 · 03-03 · 03-06",
+    "src": "02-04 · 03-03 · 03-06 · 03-07",
     "term": "PII",
     "ko": "개인정보(개인 식별 정보)",
     "full": "Personally Identifiable Information",

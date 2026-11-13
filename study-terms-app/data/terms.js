@@ -37,7 +37,7 @@ const TERMS = [
     related: ['vibe-coding', 'genai'],
   },
   {
-    id: 'agent', no: '005', term: 'Agent', ko: '에이전트', full: '', src: '01-04 · 02-06 · 03-03 · 03-04 · 03-05 · 03-06',
+    id: 'agent', no: '005', term: 'Agent', ko: '에이전트', full: '', src: '01-04 · 02-06 · 03-03 · 03-04 · 03-05 · 03-06 · 03-07',
     flow: ['목표', '도구 사용', '결과 확인'],
     def: '목표를 주면 필요한 도구를 골라 쓰고, 결과를 보며 끝까지 해내는 AI.',
     easy: '시키면 알아서 장 보고 요리까지 끝내 오는 똑똑한 심부름꾼이에요.', level: '입문',
@@ -69,7 +69,7 @@ const TERMS = [
     related: ['mcp', 'harness'],
   },
   {
-    id: 'mcp', no: '009', term: 'MCP', ko: '연결 규격', full: 'Model Context Protocol', src: '02-06 · 02-07',
+    id: 'mcp', no: '009', term: 'MCP', ko: '연결 규격', full: 'Model Context Protocol', src: '02-06 · 02-07 · 03-07',
     flow: ['AI 앱', 'MCP', '외부 도구'],
     def: 'AI 앱과 외부 데이터·도구를 같은 방식으로 잇는 표준 규격. "AI를 위한 USB-C".',
     easy: '어떤 기기든 꽂으면 되는 USB-C 단자처럼, AI와 도구를 같은 모양으로 이어 줘요.', level: '실전',
@@ -77,7 +77,7 @@ const TERMS = [
     related: ['tool-use', 'skill'],
   },
   {
-    id: 'skill', no: '010', term: 'Skill', ko: '스킬', full: '', src: '02-06 · 02-07 · 03-05',
+    id: 'skill', no: '010', term: 'Skill', ko: '스킬', full: '', src: '02-06 · 02-07 · 03-05 · 03-07',
     flow: ['작업 방법 정리', '폴더에 저장', '필요할 때 사용'],
     def: '자주 하는 작업 방법을 한 번 적어 두고 계속 꺼내 쓰는 재사용 설명서. 폴더 하나로 되어 있다.',
     easy: '자주 만드는 요리의 레시피 카드예요. 한 번 적어 두면 계속 꺼내 봐요.', level: '실전',
