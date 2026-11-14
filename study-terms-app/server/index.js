@@ -12,7 +12,7 @@ app.set('trust proxy', 1); // Render 앞단을 거쳐 와도 https 주소로 로
 app.disable('x-powered-by');
 app.use(express.json({ limit: '20kb' }));
 
-const MAX_NOTE = 2000; // 내 설명 최대 글자 수
+const MAX_NOTE = 5000; // 내 설명 최대 글자 수
 const DEVICE_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 
 // 기기 ID: 브라우저가 처음에 만든 무작위 ID(UUID). X-Device-Id 헤더로 보낸다

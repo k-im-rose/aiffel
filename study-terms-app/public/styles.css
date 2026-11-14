@@ -243,7 +243,7 @@ body.loading .detail { visibility: hidden; }
 /* 내 설명: 줄 그은 노란 메모장 */
 .saved { font-size: 12px; color: var(--gray); }
 .memo {
-  display: block; width: 100%; min-height: 136px; margin-top: 12px; padding: 4px 14px;
+  display: block; width: 100%; min-height: 264px; margin-top: 12px; padding: 4px 14px; /* PC 기본 8줄 */
   border: none; border-radius: 0; resize: vertical;
   background-color: var(--yellow);
   background-image: repeating-linear-gradient(to bottom, transparent 0, transparent 31px, rgba(17, 17, 17, 0.22) 31px, rgba(17, 17, 17, 0.22) 32px);
@@ -296,6 +296,7 @@ body.loading .detail { visibility: hidden; }
   .side .list { overflow: visible; scrollbar-gutter: auto; }
   .side .list.more-below { -webkit-mask-image: none; mask-image: none; }
   .detail { display: none; }
+  .memo { min-height: 136px; resize: none; overflow: hidden; } /* 휴대폰: 4줄에서 시작해 글자만큼 늘어난다 (app.js updateMemo) */
   body.view-card .side, body.view-card .masthead { display: none; }
   body.view-card .detail { display: block; }
   .back {
@@ -318,4 +319,5 @@ body.loading .detail { visibility: hidden; }
     font-size: 13px; font-weight: 400; line-height: 1.5; text-decoration: none; white-space: normal;
     pointer-events: none;
   }
+  .tlink.tip-right:hover::after { left: auto; right: 0; } /* 카드 오른쪽 끝을 넘으면 오른쪽에 맞춘다 (app.js) */
 }

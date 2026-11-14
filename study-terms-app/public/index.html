@@ -11,7 +11,7 @@
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="icon" href="favicon-32.png" type="image/png" sizes="32x32">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
-<link rel="stylesheet" href="styles.css?v=35">
+<link rel="stylesheet" href="styles.css?v=36">
 </head>
 <body>
 <div class="app">
@@ -104,10 +104,10 @@
         <section class="section">
           <div class="section-head">
             <span class="tag tag-black">MY NOTE</span>
-            <span class="note-tools"><span id="saved" class="saved" aria-live="polite"></span><button type="button" id="reset" class="text-btn">기록 지우기</button></span>
+            <span class="note-tools"><span id="count" class="saved">0 / 5,000자</span><span id="saved" class="saved" aria-live="polite"></span><button type="button" id="reset" class="text-btn">기록 지우기</button></span>
           </div>
           <label class="sr-only" for="mine">내 설명</label>
-          <textarea id="mine" class="memo" rows="4" placeholder="이 용어를 나의 언어로 한두 문장 설명해 보세요."></textarea>
+          <textarea id="mine" class="memo" rows="4" maxlength="5000" placeholder="이 용어를 나의 언어로 한두 문장 설명해 보세요."></textarea>
           <div class="status" role="group" aria-label="이해 상태">
             <button type="button" class="st" data-status="0" title="처음 보거나 아직 잘 모를 때">알아보기</button>
             <button type="button" class="st" data-status="1" title="조금 알겠는데 아직 헷갈릴 때">다시보기</button>
@@ -122,6 +122,6 @@
   </div>
   <p class="site-foot"><a href="privacy.html">개인정보처리방침</a></p>
 </div>
-<script src="app.js?v=25"></script>
+<script src="app.js?v=26"></script>
 </body>
 </html>

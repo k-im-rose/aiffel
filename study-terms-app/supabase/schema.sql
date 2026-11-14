@@ -28,7 +28,7 @@ create table if not exists public.terms (
 create table if not exists public.notes (
   owner_id   text not null check (owner_id ~ '^(device|user):[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$'),
   term_id    text not null references public.terms(id) on delete cascade,
-  mine       text not null default '' check (char_length(mine) <= 2000),
+  mine       text not null default '' check (char_length(mine) <= 5000),
   status     smallint not null default 0 check (status in (0, 1, 2)),
   updated_at timestamptz not null default now(),
   primary key (owner_id, term_id),
@@ -53,3 +53,7 @@ begin
       check (owner_id ~ '^(device|user):[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$');
   end if;
 end $$;
+
+-- 내 설명 한도를 2000자 → 5000자로 늘릴 때 (이미 만든 DB에 한 번만 실행)
+-- alter table public.notes drop constraint if exists notes_mine_check;
+-- alter table public.notes add constraint notes_mine_check check (char_length(mine) <= 5000);
