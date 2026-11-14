@@ -1,4 +1,4 @@
-// 용어 id별로 full(풀네임)·cmd(터미널 명령어)·use(언제 쓰나요)를 넣거나 바꾼다. 다른 칸은 건드리지 않는다.
+// 용어 id별로 full(풀네임)·cmd(터미널 명령어)·use(언제 쓰냐면)를 넣거나 바꾼다. 다른 칸은 건드리지 않는다.
 // 사용: node set-fields.js <data 폴더> <patch.json>
 //   patch.json 예: { "npm": { "full": "Node Package Manager", "cmd": true, "use": "..." } }
 //   full을 ""로 주면 비운다. cmd는 true일 때만 적고 false면 지운다.

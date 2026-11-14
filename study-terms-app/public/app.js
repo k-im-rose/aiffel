@@ -325,7 +325,7 @@ function linkify(text, used) {
     used.add(id);
     const t = byId[id];
     out += esc(text.slice(last, m.index)) +
-      `<a class="tlink" href="#${id}" data-id="${id}" data-tip="${esc(t.ko + ' · ' + shortDef(t))}">${esc(name)}</a>`;
+      `<a class="tlink" href="#${id}" target="_blank" rel="noopener" data-id="${id}" data-tip="${esc(t.ko + ' · ' + shortDef(t))}">${esc(name)}</a>`;
     last = m.index + name.length;
   }
   return out + esc(text.slice(last));
@@ -357,7 +357,7 @@ function renderCard() {
   $('c-def').innerHTML = linkify(t.def, used);
   setSub($('c-easy'), linkify(t.easy, used));
   setSub($('c-ex'), linkify(exText(t), used));
-  setSub($('c-use'), linkify(t.usage || '', used));
+  setSub($('c-use'), linkify(t.usage || '', new Set([t.id]))); // 이 줄은 위에서 이미 링크된 용어도 다시 링크한다 (따로 읽어도 이어지게)
 
   if (document.activeElement !== $('mine')) $('mine').value = n.mine;
   updateMemo();
@@ -587,19 +587,7 @@ window.addEventListener('scroll', hideTip, { passive: true });
 // 설명 속 용어 링크: 그 카드로 간다. PC에서도 방문 기록을 남겨 뒤로 가기로 원래 카드에 돌아오게 한다
 document.querySelector('.def-body').addEventListener('click', e => {
   hideTip();
-  const a = e.target.closest('.tlink');
-  if (!a) return;
-  e.preventDefault();
-  const id = a.dataset.id;
-  if (filter !== 'all' && String(note(id).status) !== filter) {
-    filter = 'all';
-    store.ui.filter = filter;
-  }
-  if (!isPhone()) {
-    history.replaceState({ card: current }, '', '#' + current);
-    history.pushState({ card: id }, '', '#' + id);
-  }
-  select(id, true);
+  // 용어 링크는 target="_blank"라서 브라우저가 새 탭에 그 카드(#id)를 연다. 지금 카드는 그대로 남는다
 });
 
 $('c-rel').addEventListener('click', e => {
@@ -778,6 +766,7 @@ async function boot() {
   const startId = decodeURIComponent(location.hash.slice(1));
   if (byId[startId]) {
     current = startId;
+    if (filter !== 'all' && String(note(startId).status) !== filter) { filter = 'all'; store.ui.filter = filter; } // 목록에서도 보이게
     if (isPhone()) {
       history.replaceState(null, '', location.pathname + location.search);
       history.pushState({ card: startId }, '', '#' + startId);
