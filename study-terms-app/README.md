@@ -178,6 +178,14 @@ npm start
 
 작업 순서대로 정리했다. 자세한 내용은 [커밋 기록](https://github.com/k-im-rose/aiffel/commits/main/study-terms-app)에 있다.
 
+### 2026-11-14 · 터미널 명령어 표시, '언제 쓰나요', 빠진 풀네임
+
+- 터미널에 직접 치는 명령어 27개(npm·git·cd·ls·pip·nvidia-smi 등)에 `>_ 터미널` 칩을 붙이고 이름을 코드 글씨로 보여 준다.
+- 카드에 '언제 쓰나요' 줄을 더해, 용어 629개 모두에 실제 개발에서 언제·어디서 마주치는지를 1~2문장으로 적었다. 검색에도 걸린다.
+- 빠진 풀네임 채움: npm(Node Package Manager), ls(list), mkdir(make directory), curl(Client URL), diff, sudo, npx, pip, NumPy, Colab, MNIST, AJAX, Redis, GGUF, SQL Injection, KV Cache, GPT-4o 등.
+- 용어 표에 `is_cmd`·`usage` 칸 추가(Supabase·SQLite). 기존 용어를 고칠 때 쓰는 `set-fields.js` 스크립트를 add-terms 스킬에 더했다.
+- 휴대폰에서 글자 수·기록 지우기가 두 줄로 깨지던 것을 한 줄로.
+
 ### 2026-11-14 · 내 설명 칸 넓히기, 글자 수 표시, 말풍선 위치
 
 - 내 설명 한도 2000자 → 5000자, 칸 위에 글자 수(예: 120 / 5,000자)를 보여 주고 한도에서 더 써지지 않게 막았다.

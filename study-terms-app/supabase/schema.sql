@@ -20,7 +20,9 @@ create table if not exists public.terms (
   def        text not null,
   easy       text not null default '',
   ex         text not null default '',
-  related    text[] not null default '{}'
+  related    text[] not null default '{}',
+  is_cmd     boolean not null default false, -- 터미널에 직접 치는 명령어면 true
+  usage      text not null default ''        -- 실제로 언제 쓰나요
 );
 
 -- 내 기록 (사람마다 따로)
@@ -57,3 +59,6 @@ end $$;
 -- 내 설명 한도를 2000자 → 5000자로 늘릴 때 (이미 만든 DB에 한 번만 실행)
 -- alter table public.notes drop constraint if exists notes_mine_check;
 -- alter table public.notes add constraint notes_mine_check check (char_length(mine) <= 5000);
+
+-- 터미널 표시·쓰임 칸을 더할 때 (이미 만든 DB에 한 번만 실행)
+-- alter table public.terms add column if not exists is_cmd boolean not null default false, add column if not exists usage text not null default '';

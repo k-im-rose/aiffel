@@ -11,6 +11,7 @@ addSection('02-01', "바이브 코딩 작업대", [
     "easy": "글자로 말을 걸고 답을 받는 채팅창 같아요.",
     "ex": "node --version 같은 명령은 Claude Code 입력란이 아니라 터미널에 입력해요.",
     "flow": [],
+    "use": "프로젝트를 만들고(npm install), 서버를 켜고(npm start), Claude Code를 부르는 일까지 개발의 대부분을 이 창에서 해요. 에러 메시지도 여기에 떠요.",
     "related": [
       "shell",
       "cli",
@@ -32,6 +33,7 @@ addSection('02-01', "바이브 코딩 작업대", [
       "셸이 해석",
       "프로그램 실행"
     ],
+    "use": "터미널에 친 명령은 늘 셸이 받아서 실행해요. 'zsh: command not found'처럼 셸 이름이 붙은 오류를 보면 셸이 그 명령을 못 찾았다는 뜻이에요.",
     "related": [
       "terminal",
       "cli"
@@ -48,6 +50,7 @@ addSection('02-01', "바이브 코딩 작업대", [
     "easy": "버튼 대신 글자로 주문하는 방식이에요.",
     "ex": "터미널에서 claude 명령을 실행해 Claude Code를 CLI로 써요.",
     "flow": [],
+    "use": "git, npm, claude처럼 개발 도구 대부분이 CLI로 먼저 나와요. 설치 안내에 '터미널에 이 명령을 입력하세요'가 나오면 CLI를 쓰는 거예요.",
     "related": [
       "terminal",
       "shell",
@@ -58,13 +61,15 @@ addSection('02-01', "바이브 코딩 작업대", [
     "id": "diff",
     "term": "diff",
     "ko": "변경내역",
-    "full": "",
+    "full": "difference",
     "src": "02-01 · 02-06",
     "level": "입문",
     "def": "파일이 무엇이 어떻게 바뀌었는지 비교해 보여 주는 것.",
     "easy": "틀린 그림 찾기처럼 달라진 곳만 콕 집어 보여 줘요.",
     "ex": "Claude Desktop은 AI가 고친 내용을 diff로 보여 줘서 검토하기 쉬워요.",
     "flow": [],
+    "cmd": true,
+    "use": "AI가 코드를 고친 뒤 무엇이 바뀌었는지 확인할 때 봐요. 커밋하기 전 git diff로 의도하지 않은 변경이 없는지 점검해요.",
     "related": [
       "git",
       "commit"
@@ -73,6 +78,7 @@ addSection('02-01', "바이브 코딩 작업대", [
   {
     "full": "",
     "flow": [],
+    "use": "웹 앱 서버를 돌리거나 npm으로 패키지를 설치할 때 필요해요. 대부분의 JavaScript 프로젝트는 시작하기 전에 Node.js부터 설치해요.",
     "related": [
       "npm",
       "nvm",
@@ -88,8 +94,10 @@ addSection('02-01', "바이브 코딩 작업대", [
     "def": "브라우저 밖에서 JavaScript 프로그램을 실행하는 환경(런타임)이에요. V8 엔진과 파일·네트워크 같은 기능을 함께 제공해요."
   },
   {
-    "full": "",
+    "full": "Node Package Manager",
     "flow": [],
+    "cmd": true,
+    "use": "새 프로젝트를 받으면 npm install로 필요한 패키지를 깔고, npm start나 npm test로 실행·시험해요. JavaScript 프로젝트를 열 때마다 거의 매번 써요.",
     "related": [
       "nodejs",
       "nvm",
@@ -119,6 +127,8 @@ addSection('02-01', "바이브 코딩 작업대", [
       "버전 설치",
       "nvm use"
     ],
+    "cmd": true,
+    "use": "프로젝트마다 요구하는 Node.js 버전이 다를 때 nvm use로 바꿔 끼워요. 'Node 버전이 안 맞는다'는 오류가 나면 가장 먼저 꺼내는 도구예요.",
     "related": [
       "nodejs",
       "npm",
@@ -136,6 +146,8 @@ addSection('02-01', "바이브 코딩 작업대", [
     "easy": "게임 저장 기능처럼 언제든 예전 상태로 돌아가게 해요.",
     "ex": "변경을 기록해 두면 AI가 고친 내용을 비교하고 되돌릴 수 있어요.",
     "flow": [],
+    "cmd": true,
+    "use": "작업을 한 단계 마칠 때마다 git commit으로 기록을 남기고, git push로 GitHub에 올려요. AI가 코드를 망가뜨렸을 때 이전 상태로 돌아가는 안전망이기도 해요.",
     "related": [
       "commit",
       "diff",
@@ -153,6 +165,7 @@ addSection('02-01', "바이브 코딩 작업대", [
     "easy": "없는 가게에 주문한 것처럼 못 알아듣겠다는 대답이에요.",
     "ex": "node --version에서 이 오류가 나면 그 한 줄을 그대로 AI에게 보여 줘요.",
     "flow": [],
+    "use": "새 도구를 설치한 직후나 오타를 냈을 때 자주 만나요. 설치가 됐는지, 터미널을 다시 열어야 하는지부터 확인해요.",
     "related": [
       "terminal",
       "nodejs",
@@ -170,6 +183,8 @@ addSection('02-01', "바이브 코딩 작업대", [
     "easy": "지도 앱의 '내 위치' 버튼 같아요.",
     "ex": "위치가 불안하면 pwd부터 실행해 어느 폴더인지 확인해요.",
     "flow": [],
+    "cmd": true,
+    "use": "명령이 엉뚱한 폴더에서 실행되는 것 같을 때, 지금 어디에 있는지 확인하려고 쳐요.",
     "related": [
       "cd",
       "path",
@@ -191,6 +206,8 @@ addSection('02-01', "바이브 코딩 작업대", [
       "pwd 확인",
       "ls 목록"
     ],
+    "cmd": true,
+    "use": "프로젝트 폴더로 들어가서 npm start나 claude를 실행하기 전에 꼭 거쳐요. 대부분의 명령은 '어느 폴더에서 치느냐'가 중요해요.",
     "related": [
       "pwd",
       "path",
@@ -208,6 +225,8 @@ addSection('02-01', "바이브 코딩 작업대", [
     "easy": "책상 위 물건을 서랍으로 옮기는 일이에요.",
     "ex": "같은 이름이 있으면 덮어쓸 수 있어서 이동 전에 대상을 확인해요.",
     "flow": [],
+    "cmd": true,
+    "use": "파일을 다른 폴더로 정리하거나 이름을 바꿀 때 써요. AI가 파일 구조를 정리할 때도 이 명령을 실행하는 모습을 자주 봐요.",
     "related": [
       "path",
       "dry-run",
@@ -225,6 +244,7 @@ addSection('02-01', "바이브 코딩 작업대", [
     "easy": "우리 집 주소처럼 파일이 어디 있는지 알려 줘요.",
     "ex": "현재 작업 폴더는 상대 경로의 기준일 뿐 보안 경계가 아니에요.",
     "flow": [],
+    "use": "설정 파일이나 명령에 파일 위치를 적을 때 매번 나와요. 'No such file or directory' 오류는 대개 경로가 틀렸다는 뜻이에요.",
     "related": [
       "pwd",
       "cd",
@@ -246,6 +266,7 @@ addSection('02-01', "바이브 코딩 작업대", [
       "승인",
       "실행"
     ],
+    "use": "파일을 지우거나 대량으로 바꾸는 명령을 실행하기 전에, 무엇이 바뀔지 먼저 확인하려고 붙여요(예: --dry-run).",
     "related": [
       "mv",
       "agent",
@@ -256,13 +277,15 @@ addSection('02-01', "바이브 코딩 작업대", [
     "id": "sudo-eacces",
     "term": "sudo / EACCES",
     "ko": "관리자 권한과 권한 오류",
-    "full": "",
+    "full": "superuser do / Error: ACCESS",
     "src": "02-01",
     "level": "실전",
     "def": "쓰기 권한 부족 오류와 관리자 권한으로 실행하는 명령.",
     "easy": "잠긴 방에 들어가려고 관리자 열쇠를 빌리는 일이에요.",
     "ex": "시스템 위치에 설치하면 EACCES가 나기 쉬워 sudo npm install -g는 쓰지 않아요.",
     "flow": [],
+    "cmd": true,
+    "use": "npm install -g를 하다가 EACCES 권한 오류가 날 때 만나요. sudo로 억지로 덮기보다 nvm으로 설치 위치를 바꾸는 게 안전해요.",
     "related": [
       "nvm",
       "npm",
@@ -280,6 +303,7 @@ addSection('02-01', "바이브 코딩 작업대", [
     "easy": "말로 부탁하면 직접 연필을 들고 숙제를 고쳐 주는 짝꿍이에요. 고친 뒤에는 꼭 함께 확인해요.",
     "ex": "프로젝트 폴더에서 claude를 실행하고 \"index.html에 첫 화면을 만들어 줘\"라고 입력하면 파일이 생겨요.",
     "flow": [],
+    "use": "프로젝트 폴더에서 claude를 실행하거나 Desktop 앱을 열어, 기능 추가·버그 수정·커밋을 말로 시켜요. 이 앱(아그뭐)도 이렇게 만들었어요.",
     "related": [
       "agent",
       "harness",
@@ -298,6 +322,7 @@ addSection('02-01', "바이브 코딩 작업대", [
     "easy": "Windows 컴퓨터의 말을 알아듣는 통역사예요. macOS의 통역사(zsh)와 말투가 조금 달라요.",
     "ex": "Windows에서는 빈 파일을 만들 때 touch 대신 New-Item index.html -ItemType File 같은 PowerShell 명령을 써요.",
     "flow": [],
+    "use": "Windows에서 개발할 때 기본 터미널이에요. 맥·리눅스용 설치 안내를 그대로 따라 치면 안 되는 명령이 있어서, Windows용 명령인지 확인해야 해요.",
     "related": [
       "shell",
       "terminal",
@@ -315,6 +340,7 @@ addSection('02-01', "바이브 코딩 작업대", [
     "easy": "Windows 집 안에 리눅스 방을 하나 따로 들인 거예요.",
     "ex": "macOS·Linux·WSL에서는 nvm 공식 설치 스크립트를 터미널에서 실행해 설치해요.",
     "flow": [],
+    "use": "Windows에서 리눅스 기준으로 쓰인 설치 안내·명령을 그대로 따라 하고 싶을 때 켜요.",
     "related": [
       "powershell",
       "shell",
@@ -332,6 +358,7 @@ addSection('02-01', "바이브 코딩 작업대", [
     "easy": "새로 나온 맛보다, 오래 팔고 문제가 생기면 고쳐 주는 기본 맛 과자예요.",
     "ex": "nvm install --lts는 현재 LTS Node.js를 설치하고, nvm use --lts는 지금 터미널에서 그 버전을 써요.",
     "flow": [],
+    "use": "Node.js를 처음 설치할 때 어떤 버전을 고를지 정하는 기준이에요. 특별한 이유가 없으면 LTS를 골라요.",
     "related": [
       "nodejs",
       "nvm"
@@ -348,6 +375,7 @@ addSection('02-01', "바이브 코딩 작업대", [
     "easy": "글자로 주문하는 대신 그림 메뉴판을 손가락으로 누르는 거예요.",
     "ex": "Claude Desktop은 GUI라 diff를 눈으로 보기 쉬워요. Cursor 같은 GUI 에디터를 써도 돼요.",
     "flow": [],
+    "use": "같은 일을 터미널 명령(CLI) 대신 버튼으로 하고 싶을 때 써요. GitHub Desktop, Claude Desktop 앱이 그 예예요.",
     "related": [
       "cli",
       "ui",
@@ -365,6 +393,7 @@ addSection('02-01', "바이브 코딩 작업대", [
     "easy": "글자마다 번호를 매긴 세계 공용 글자 사전이에요. 같은 사전을 써야 글자가 안 깨져요.",
     "ex": "HTML 머리에 <meta charset=\"UTF-8\">이 있어야 한국어 문서가 깨지지 않고 보여요.",
     "flow": [],
+    "use": "파일 속 한글이 깨져 보일 때 가장 먼저 확인하는 설정이에요. 웹페이지 <meta charset=\"utf-8\">도 이 뜻이에요.",
     "related": [
       "web-layers",
       "html-tag"
@@ -381,6 +410,7 @@ addSection('02-01', "바이브 코딩 작업대", [
     "easy": "학교 행정실이에요. 교실·체육관·컴퓨터실을 누가 언제 쓸지 나눠 줘요.",
     "ex": "셸이 명령을 해석해 프로그램을 실행하면, 커널이 그 프로그램에 메모리와 CPU 시간을 나눠 줘요.",
     "flow": [],
+    "use": "직접 다룰 일은 거의 없지만, 앱이 메모리·파일을 쓰다 막히는 오류가 났을 때 그 뒤에서 판정하는 쪽이 커널이에요.",
     "related": [
       "shell",
       "process",
@@ -399,6 +429,7 @@ addSection('02-01', "바이브 코딩 작업대", [
     "easy": "공부할 때 펼쳐 두는 책상 위예요. 넓을수록 여러 책을 펼칠 수 있지만, 퇴근하면 치워져요.",
     "ex": "프로세스는 각자 독립된 메모리를 쓰고, 같은 프로세스 안의 스레드끼리는 메모리를 공유해요.",
     "flow": [],
+    "use": "AI 모델을 돌리거나 큰 파일을 열다 '메모리 부족(Out of memory)'으로 멈출 때 마주쳐요. 모델 크기를 고를 때의 기준이 되기도 해요.",
     "related": [
       "process",
       "thread",
@@ -417,6 +448,7 @@ addSection('02-01', "바이브 코딩 작업대", [
     "easy": "선생님이 \"자, 말해 보세요\" 하고 기다리는 신호예요.",
     "ex": "Claude Code CLI 대화 중이라면 /exit로 나와 셸 프롬프트가 보일 때 node --version을 입력해요.",
     "flow": [],
+    "use": "설치 안내에 '$ npm install'처럼 앞에 $가 붙어 있으면 $는 빼고 그 뒤만 입력해요. 프롬프트가 다시 나타나야 명령이 끝난 거예요.",
     "related": [
       "shell",
       "terminal",
@@ -427,13 +459,15 @@ addSection('02-01', "바이브 코딩 작업대", [
     "id": "ls",
     "term": "ls",
     "ko": "목록 보기",
-    "full": "",
+    "full": "list",
     "src": "02-01",
     "level": "입문",
     "def": "현재 폴더 안의 파일·폴더 이름을 보여 주는 명령.",
     "easy": "서랍을 열어 안에 무엇이 들었는지 훑어보는 거예요.",
     "ex": "mv로 파일을 옮긴 뒤 ls assets/images로 정말 옮겨졌는지 확인해요.",
     "flow": [],
+    "cmd": true,
+    "use": "폴더 안에 무슨 파일이 있는지, 방금 만든 파일이 정말 생겼는지 확인할 때 쳐요.",
     "related": [
       "pwd",
       "cd",
@@ -444,13 +478,15 @@ addSection('02-01', "바이브 코딩 작업대", [
     "id": "mkdir",
     "term": "mkdir",
     "ko": "폴더 만들기",
-    "full": "",
+    "full": "make directory",
     "src": "02-01 · 02-07 · 03-07",
     "level": "입문",
     "def": "새 폴더를 만드는 명령.",
     "easy": "책상 서랍에 새 칸막이를 하나 끼우는 거예요.",
     "ex": "mkdir my-first-web으로 첫 프로젝트 폴더를 만들고 cd로 들어가요.",
     "flow": [],
+    "cmd": true,
+    "use": "새 프로젝트를 시작할 때 폴더부터 만들어요. AI에게 새 기능을 맡기면 폴더를 만드는 명령으로 시작하기도 해요.",
     "related": [
       "cd",
       "ls",
@@ -468,6 +504,8 @@ addSection('02-01', "바이브 코딩 작업대", [
     "easy": "빈 공책 한 권을 책장에 꽂아 두는 거예요.",
     "ex": "macOS 터미널에서 touch index.html로 빈 HTML 파일을 만들어요.",
     "flow": [],
+    "cmd": true,
+    "use": "빈 설정 파일(.env, README.md 등)을 먼저 만들어 두고 내용을 채울 때 써요.",
     "related": [
       "mkdir",
       "ls",
@@ -485,6 +523,7 @@ addSection('02-01', "바이브 코딩 작업대", [
     "easy": "도시락 뚜껑에 붙인 \"김밥\", \"샌드위치\" 이름표예요.",
     "ex": "AI에게 폴더 정리를 맡길 때 \"이름을 추측하지 말고 확장자로 분류해\"라고 규칙을 줘요. .md로 저장할 때 .txt가 덧붙지 않았는지도 확인해요.",
     "flow": [],
+    "use": "에디터가 색칠할 언어를 고르고, 서버가 브라우저에 파일 종류를 알려 주는 기준이에요. .js를 .ts로 바꾸는 식으로 파일 성격이 달라지기도 해요.",
     "related": [
       "path",
       "markdown"
@@ -494,13 +533,15 @@ addSection('02-01', "바이브 코딩 작업대", [
     "id": "curl",
     "term": "curl",
     "ko": "컬",
-    "full": "",
+    "full": "Client URL",
     "src": "02-01 · 03-03",
     "level": "실전",
     "def": "터미널에서 주소(URL)로 요청을 보내 내용을 받아 오는 명령. 설치 스크립트를 내려받을 때 자주 쓴다.",
     "easy": "주소만 적어 주면 그 집에 가서 편지를 받아 오는 심부름꾼이에요.",
     "ex": "curl -o- …/install.sh | bash처럼 받은 스크립트를 바로 실행하는 명령은 링크의 태그와 공식 릴리스 페이지를 확인한 뒤 실행해요.",
     "flow": [],
+    "cmd": true,
+    "use": "도구 설치 스크립트를 내려받거나, 만든 API 서버가 제대로 대답하는지 터미널에서 바로 확인할 때 써요.",
     "related": [
       "url",
       "terminal",
@@ -518,6 +559,7 @@ addSection('02-01', "바이브 코딩 작업대", [
     "easy": "인터넷 세상의 집 주소예요. 주소만 알면 누구든 찾아올 수 있어요.",
     "ex": "GitHub Pages로 배포하면 https://아이디.github.io/my-game/ 같은 URL이 생겨 링크로 공유할 수 있어요.",
     "flow": [],
+    "use": "배포한 웹 앱 주소, API를 부르는 주소, GitHub 저장소 주소처럼 개발 내내 주고받아요.",
     "related": [
       "domain",
       "routing",
@@ -536,6 +578,7 @@ addSection('02-01', "바이브 코딩 작업대", [
     "easy": "모래놀이 상자예요. 상자 안에서는 마음껏 놀아도 밖으로 모래가 넘치지 않아요.",
     "ex": "작업 폴더를 고른다고 바깥 파일 접근이 막히지는 않아요. 실제 범위는 운영체제 권한, Claude Code 권한 설정, 샌드박스 설정에 따라 달라져요.",
     "flow": [],
+    "use": "Claude Code 같은 AI 도구가 내 컴퓨터의 다른 파일을 함부로 건드리지 못하게 막는 데 써요. 낯선 코드를 시험 삼아 돌릴 때도 샌드박스 안에서 돌려요.",
     "related": [
       "permission-mode",
       "claude-code",
