@@ -357,11 +357,22 @@ function renderCard() {
   setSub($('c-ex'), linkify(exText(t), used));
 
   if (document.activeElement !== $('mine')) $('mine').value = n.mine;
+  updateMemo();
   document.querySelectorAll('.st').forEach(b => b.setAttribute('aria-pressed', String(Number(b.dataset.status) === n.status)));
   const rel = t.related.filter(id => byId[id] && id !== t.id);
   $('c-rel').innerHTML = rel.map(id => `<button type="button" data-id="${id}">${esc(byId[id].ko)}</button>`).join('');
   $('c-related').hidden = !rel.length;
 }
+
+// 내 설명: 글자 수를 보여 주고, 휴대폰에서는 글자만큼 칸을 늘려 칸 안 스크롤이 없게 한다
+const MAX_NOTE = 5000;
+function updateMemo() {
+  const m = $('mine');
+  $('count').textContent = `${m.value.length.toLocaleString()} / ${MAX_NOTE.toLocaleString()}자`;
+  m.style.height = '';
+  if (isPhone()) m.style.height = m.scrollHeight + 'px';
+}
+window.addEventListener('resize', updateMemo);
 
 function setMsg(text) { $('msg').textContent = text; }
 function setSaved(state) {
@@ -399,6 +410,22 @@ async function flushSaves() {
     delete saveTimers[id];
   }));
 }
+
+// 탭·앱을 닫거나 다른 앱으로 넘어갈 때, 아직 안 보낸 기록을 바로 보낸다 (keepalive: 페이지가 닫혀도 요청은 끝까지 간다)
+function sendSavesNow() {
+  Object.keys(saveTimers).forEach(id => {
+    clearTimeout(saveTimers[id]);
+    delete saveTimers[id];
+    const n = note(id);
+    fetch(`/api/notes/${encodeURIComponent(id)}`, {
+      method: 'PUT', keepalive: true,
+      headers: { 'Content-Type': 'application/json', 'X-Device-Id': DEVICE },
+      body: JSON.stringify({ mine: n.mine, status: n.status }),
+    }).then(r => { if (!r.ok && r.status !== 400) saveNote(id, 3000); }, () => saveNote(id, 3000)); // 못 보냈으면 돌아왔을 때 다시 시도
+  });
+}
+window.addEventListener('pagehide', sendSavesNow);
+document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'hidden') sendSavesNow(); });
 
 // ---- 구글 로그인 ----
 // 로그인하면 휴대폰·PC에서 같은 기록을 본다. 토큰은 서버가 httpOnly 쿠키로만 다루므로 화면 코드는 모른다
@@ -531,6 +558,14 @@ $('show-all').addEventListener('click', () => {
   $('q').focus();
 });
 
+// 설명 속 용어 링크의 말풍선(최대 280px)이 카드 오른쪽을 넘으면 오른쪽 정렬로 바꾼다
+document.querySelector('.def-body').addEventListener('mouseover', e => {
+  const a = e.target.closest('.tlink');
+  if (!a) return;
+  const card = a.closest('.card').getBoundingClientRect();
+  a.classList.toggle('tip-right', a.getBoundingClientRect().left + 280 > card.right);
+});
+
 // 설명 속 용어 링크: 그 카드로 간다. PC에서도 방문 기록을 남겨 뒤로 가기로 원래 카드에 돌아오게 한다
 document.querySelector('.def-body').addEventListener('click', e => {
   const a = e.target.closest('.tlink');
@@ -561,6 +596,7 @@ $('c-rel').addEventListener('click', e => {
 $('mine').addEventListener('input', () => {
   const n = note(current);
   n.mine = $('mine').value;
+  updateMemo();
   if (n.status === 2 && !n.mine.trim()) {
     n.status = 1;
     setMsg("설명이 비어서 '다시보기'로 바꿨어요.");
