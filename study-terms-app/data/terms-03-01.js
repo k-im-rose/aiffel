@@ -7,6 +7,7 @@ addSection('03-01', "인공지능의 학습", [
       "규칙 스스로 찾기",
       "새 입력에 적용"
     ],
+    "use": "스팸 필터나 추천 기능을 만들 때 규칙을 직접 짜는 대신 예시 데이터로 학습시켜요. 데이터가 부족하면 성능이 떨어지니 데이터부터 살펴봐요.",
     "related": [
       "deep-learning",
       "training",
@@ -24,6 +25,7 @@ addSection('03-01', "인공지능의 학습", [
   {
     "full": "",
     "flow": [],
+    "use": "이미지 분류나 ChatGPT 같은 모델 소개 글에 자주 나와요. PyTorch로 신경망을 쌓아 학습시키는 실습이 이 범주예요.",
     "related": [
       "machine-learning",
       "neural-network",
@@ -49,6 +51,7 @@ addSection('03-01', "인공지능의 학습", [
     "easy": "여러 단계의 검사대가 줄지어 있어요. 앞쪽은 선·모서리를, 뒤쪽은 눈·귀 같은 모양을 알아봐요.",
     "ex": "손글씨 사진의 784개 숫자를 넣으면 층을 지나 '이건 7일 확률 95%'가 나와요.",
     "flow": ["입력 층", "숨은 층들", "출력 층"],
+    "use": "PyTorch에서 nn.Sequential이나 nn.Linear로 층을 쌓을 때 마주쳐요. 입력 크기와 출력 크기가 층마다 맞아야 오류가 나지 않아요.",
     "related": ["deep-learning", "parameter", "backpropagation"]
   },
   {
@@ -59,6 +62,7 @@ addSection('03-01', "인공지능의 학습", [
       "가중치 조정",
       "반복"
     ],
+    "use": "PyTorch에서 for 반복문으로 예측, 손실 계산, 가중치 갱신을 돌릴 때 써요. 손실 그래프가 내려가는지 보며 학습이 잘 되는지 확인해요.",
     "related": [
       "loss",
       "gradient-descent",
@@ -83,11 +87,13 @@ addSection('03-01', "인공지능의 학습", [
     "easy": "문제집 뒤에 정답이 붙어 있어서, 풀고 맞춰 보며 배우는 공부예요.",
     "ex": "매출이 적힌 카페 기록, 정답 숫자가 붙은 손글씨, '개/고양이' 이름표가 붙은 사진이 모두 지도학습 데이터예요.",
     "flow": [],
+    "use": "데이터셋을 준비할 때 입력마다 정답 라벨이 있는지 확인해요. 라벨이 틀리면 모델도 틀리게 배우니 라벨 품질부터 점검해요.",
     "related": ["machine-learning", "regression", "classification"]
   },
   {
     "full": "",
     "flow": [],
+    "use": "모델 소개에서 70억 파라미터 같은 크기를 만나요. 파라미터가 많을수록 GPU 메모리와 저장 공간이 더 필요해요.",
     "related": [
       "training",
       "gradient-descent",
@@ -105,6 +111,7 @@ addSection('03-01', "인공지능의 학습", [
   {
     "full": "",
     "flow": [],
+    "use": "학습 로그에 loss 값이 줄어드는지 보면 학습이 잘 되는지 알 수 있어요. 값이 늘거나 nan이 나오면 학습률이나 데이터를 점검해요.",
     "related": [
       "training",
       "gradient-descent",
@@ -129,11 +136,13 @@ addSection('03-01', "인공지능의 학습", [
     "easy": "눈을 감고 산을 내려갈 때, 발밑이 기울어진 아래쪽으로 한 발씩 내딛는 거예요.",
     "ex": "예측이 5 → 5.3 → 5.6…처럼 정답 7에 조금씩 다가가요.",
     "flow": ["기울기 구하기", "반대 방향으로 한 걸음", "반복"],
+    "use": "학습 코드에서 가중치를 조금씩 고치는 단계가 경사하강이에요. 학습이 안 되거나 발산할 때 원리를 알아야 학습률을 조절할 수 있어요.",
     "related": ["gradient", "learning-rate", "backpropagation", "loss"]
   },
   {
     "full": "",
     "flow": [],
+    "use": "PyTorch에서 loss.backward()를 호출하면 일어나는 일이에요. 이 줄을 빼면 기울기가 계산되지 않아 학습이 전혀 안 돼요.",
     "related": [
       "gradient-descent",
       "perceptron",
@@ -152,6 +161,7 @@ addSection('03-01', "인공지능의 학습", [
   {
     "full": "",
     "flow": [],
+    "use": "학습 코드의 lr 값을 정할 때 마주쳐요. 너무 크면 손실이 튀고 너무 작으면 학습이 느려서, 손실 그래프를 보며 조절해요.",
     "related": [
       "gradient-descent",
       "training"
@@ -175,6 +185,7 @@ addSection('03-01', "인공지능의 학습", [
     "easy": "'내일 몇 명 올까?'처럼 답이 숫자로 나오는 문제예요.",
     "ex": "하루 방문객 수로 그날 매출을 예측하는 카페 실습이 회귀예요.",
     "flow": [],
+    "use": "매출, 집값, 온도처럼 숫자를 맞히는 모델을 만들 때 고르는 문제 유형이에요. 이 경우 보통 MSE를 손실로 써요.",
     "related": ["classification", "supervised-learning", "loss"]
   },
   {
@@ -188,6 +199,7 @@ addSection('03-01', "인공지능의 학습", [
     "easy": "'이건 사과야, 배야?'처럼 정해진 보기 중에서 고르는 문제예요.",
     "ex": "손글씨가 0~9 중 무엇인지, 메일이 스팸인지, 사진이 개인지 고양이인지 고르는 일이에요.",
     "flow": [],
+    "use": "스팸 메일 구분이나 손글씨 숫자 인식처럼 정해진 범주를 고르는 모델을 만들 때 써요. 출력 층 크기는 범주 수와 같게 맞춰요.",
     "related": ["softmax", "regression", "mnist"]
   },
   {
@@ -197,6 +209,7 @@ addSection('03-01', "인공지능의 학습", [
       "exp로 모두 양수",
       "합으로 나눠 확률"
     ],
+    "use": "분류 모델의 마지막 점수를 확률로 바꿔 볼 때 써요. 확률이 높다고 꼭 맞는 건 아니니 검증 데이터로 확인해요.",
     "related": [
       "classification",
       "next-token",
@@ -221,6 +234,7 @@ addSection('03-01', "인공지능의 학습", [
     "easy": "지도 위의 좌표예요. 서울과 인천은 가깝고, 서울과 부산은 멀죠.",
     "ex": "점 A=(2, 3)과 B=(2, 4)는 거리 1이라 비슷하고, C=(9, 1)은 멀어서 달라요.",
     "flow": [],
+    "use": "임베딩이나 검색 기능을 만들 때 텍스트가 숫자 벡터로 바뀌어 저장돼요. 벡터 사이의 거리나 각도로 비슷한 문서를 찾아요.",
     "related": ["embedding", "tensor", "token"]
   },
   {
@@ -234,6 +248,7 @@ addSection('03-01', "인공지능의 학습", [
     "easy": "단어마다 '뜻 지도'의 주소를 붙여 줘요. 뜻이 비슷한 단어끼리 옆집에 살아요.",
     "ex": "문서 검색에서 '휴가'를 찾으면 벡터가 가까운 '연차' 문서도 함께 찾아 줘요.",
     "flow": ["글", "토큰으로 자르기", "벡터로 바꾸기"],
+    "use": "문서 검색이나 RAG를 만들 때 문서와 질문을 임베딩으로 바꿔 가까운 것을 찾아요. 임베딩 모델을 바꾸면 이미 저장한 벡터도 다시 만들어야 해요.",
     "related": ["vector", "token", "llm"]
   },
   {
@@ -246,11 +261,13 @@ addSection('03-01', "인공지능의 학습", [
     "easy": "숫자 한 알 → 한 줄 목걸이 → 바둑판 → 바둑판을 여러 장 쌓은 탑. 다 텐서예요.",
     "ex": "손글씨 한 장은 28×28 행렬(784개 숫자), 컬러 사진은 높이×너비×3(빨강·초록·파랑) 텐서로 모델에 들어가요.",
     "flow": ["스칼라", "벡터", "행렬", "텐서"],
+    "use": "PyTorch에서 데이터를 다루다 shape 오류가 나면 텐서의 크기를 print(x.shape)로 먼저 확인해요. 차원이 맞아야 계산이 돼요.",
     "related": ["vector", "pytorch", "mnist"]
   },
   {
-    "full": "",
+    "full": "Modified National Institute of Standards and Technology",
     "flow": [],
+    "use": "딥러닝 첫 실습에서 손글씨 분류 예제로 가장 자주 쓰여요. torchvision.datasets.MNIST로 바로 내려받아 파이프라인이 도는지 확인해요.",
     "related": [
       "classification",
       "tensor",
@@ -268,6 +285,7 @@ addSection('03-01', "인공지능의 학습", [
   {
     "full": "",
     "flow": [],
+    "use": "학습 정확도는 높은데 검증 정확도가 낮으면 일반화가 안 된 거예요. 데이터를 나눠 평가하고 데이터를 늘리거나 모델을 단순하게 해 봐요.",
     "related": [
       "training",
       "hallucination",
@@ -285,6 +303,7 @@ addSection('03-01', "인공지능의 학습", [
   {
     "full": "Large Language Model",
     "flow": [],
+    "use": "ChatGPT, Claude 같은 AI 도구를 쓰거나 API로 앱에 붙일 때 마주쳐요. 모델마다 크기, 가격, 컨텍스트 창이 달라 용도에 맞게 골라요.",
     "related": [
       "next-token",
       "pretraining",
@@ -310,11 +329,13 @@ addSection('03-01', "인공지능의 학습", [
     "easy": "'옛날 옛적에 호랑이가…' 다음 말을 맞히는 끝말 이어 가기 게임이에요.",
     "ex": "모델이 다음 토큰 후보 수만 개에 softmax로 확률을 매기고 하나를 골라 문장을 이어 써요.",
     "flow": [],
+    "use": "AI가 같은 질문에도 매번 다르게 답하는 이유를 이해할 때 필요해요. temperature 같은 설정이 다음 토큰을 고르는 방식을 바꿔요.",
     "related": ["llm", "softmax", "token"]
   },
   {
     "full": "",
     "flow": [],
+    "use": "Hugging Face에서 사전학습된 모델을 불러와 쓸 때 만나요. 처음부터 학습하지 않고 이미 배운 모델에서 시작해 시간과 비용을 아껴요.",
     "related": [
       "fine-tuning",
       "llm",
@@ -336,6 +357,7 @@ addSection('03-01', "인공지능의 학습", [
       "학습할 부분 정하기",
       "추가 학습·평가"
     ],
+    "use": "사전학습된 모델을 우리 데이터에 맞게 더 학습시킬 때 써요. 먼저 프롬프트나 RAG로 해결되는지 보고, 안 될 때 파인튜닝을 검토해요.",
     "related": [
       "transfer-learning",
       "pretraining",
@@ -360,11 +382,13 @@ addSection('03-01', "인공지능의 학습", [
     "easy": "자전거를 탈 줄 알면 오토바이 균형 잡기도 금방 배워요. 이미 배운 감각을 옮겨 쓰는 거예요.",
     "ex": "이미지를 보는 앞쪽 층의 '선·모서리 보는 눈'은 개든 고양이든 자동차든 똑같이 쓸모 있어요.",
     "flow": [],
+    "use": "데이터가 적을 때 ResNet 같은 사전학습 모델을 가져와 마지막 층만 바꿔 학습해요. 처음부터 학습하는 것보다 훨씬 적은 데이터로도 돼요.",
     "related": ["fine-tuning", "pretraining"]
   },
   {
     "full": "Graphics Processing Unit",
     "flow": [],
+    "use": "Colab에서 런타임을 GPU로 바꾸거나 모델이 느릴 때 마주쳐요. 코드를 .to(\"cuda\")로 GPU에 올려야 실제로 GPU를 써요.",
     "related": [
       "colab",
       "fine-tuning",
@@ -390,18 +414,20 @@ addSection('03-01', "인공지능의 학습", [
     "easy": "학습에 필요한 계산기와 공구가 다 들어 있는 공구 상자예요.",
     "ex": "loss.backward() 한 줄이면 각 파라미터의 기울기를 알아서 구해요. 실무에서는 torch.optim.SGD 같은 도구로 갱신 코드도 짧게 줄여요.",
     "flow": [],
+    "use": "딥러닝 실습 코드 맨 위에서 import torch로 불러와요. 텐서 계산, 자동 미분, GPU 사용을 한 라이브러리로 처리해요.",
     "related": ["tensor", "backpropagation", "library"]
   },
   {
     "id": "colab",
     "term": "Google Colab",
     "ko": "구글 코랩",
-    "full": "",
+    "full": "Colaboratory",
     "level": "입문",
     "def": "브라우저에서 파이썬 노트북을 열어 실행하는 구글 서비스. 런타임 유형을 T4 GPU로 바꾸면 무료 GPU를 빌려 쓸 수 있다.",
     "easy": "내 컴퓨터에 없는 좋은 계산기를 인터넷으로 잠깐 빌려 쓰는 곳이에요.",
     "ex": "런타임 → 런타임 유형 변경 → T4 GPU. 무료 GPU는 상황에 따라 배정돼서, 자리가 없으면 잠시 뒤 다시 시도해요.",
     "flow": [],
+    "use": "내 노트북에 GPU가 없어도 브라우저에서 딥러닝 코드를 돌릴 때 써요. 런타임 유형을 T4 GPU로 바꾸고, 세션이 끊기면 변수가 사라지니 중요한 결과는 저장해요.",
     "related": ["gpu", "colab-mcp", "pytorch"],
     "src": "01-03 · 03-01 · 03-03 · 03-04 · 03-05 · 03-06 · 03-07"
   },
@@ -410,17 +436,20 @@ addSection('03-01', "인공지능의 학습", [
     "src": "03-01 · 03-07",
     "term": "Colab MCP",
     "ko": "코랩 MCP 서버",
-    "full": "",
+    "full": "Colaboratory Model Context Protocol",
     "level": "실전",
     "def": "에이전트가 Colab 노트북에 연결해 셀을 넣고, 코드를 실행하고, 결과를 가져오게 해 주는 구글 공식 MCP 서버.",
     "easy": "에이전트에게 Colab 리모컨을 쥐여 주는 거예요. 내가 버튼을 안 눌러도 에이전트가 대신 돌려요.",
     "ex": "claude mcp add colab -- uvx git+https://github.com/googlecolab/colab-mcp 로 연결하고 'nvidia-smi로 GPU 연결을 확인해 줘'라고 시켜요.",
     "flow": ["노트북 열고 T4 선택", "에이전트에 연결 요청", "GPU 확인", "학습 실행"],
+    "use": "Claude Code에 claude mcp add로 연결하면 AI가 Colab 노트북에서 직접 코드를 실행해요. 연결 뒤 nvidia-smi로 GPU가 잡혔는지 먼저 확인해요.",
     "related": ["colab", "mcp-server", "uv"]
   },
   {
     "full": "",
     "flow": [],
+    "cmd": true,
+    "use": "파이썬 도구를 설치하거나 uvx로 MCP 서버를 실행할 때 마주쳐요. 설치되어 있지 않으면 uvx 명령을 찾을 수 없다는 오류가 나와요.",
     "related": [
       "colab-mcp",
       "npm",
@@ -445,11 +474,13 @@ addSection('03-01', "인공지능의 학습", [
     "easy": "받아쓰기를 틀릴 때마다 틀린 만큼만 고쳐 가며 실력을 키우는 아이예요. 다만 아주 쉬운 문제까지만 풀 수 있었어요.",
     "ex": "카페 실습의 weight 하나·bias 하나 모델이 퍼셉트론의 친척뻘이에요. 퍼셉트론은 0과 1을 갈랐고, 카페 모델은 매출 같은 숫자를 예측해요.",
     "flow": ["예측", "틀린 만큼 가중치 고치기", "반복"],
+    "use": "신경망의 가장 단순한 조상으로 소개돼요. 한 층짜리 모델의 한계를 알면 왜 층을 여러 겹 쌓는 신경망이 필요한지 이해돼요.",
     "related": ["backpropagation", "neural-network", "parameter"]
   },
   {
     "full": "",
     "flow": [],
+    "use": "PyTorch에서 w.grad로 기울기 값을 확인할 수 있어요. 기울기가 0이거나 너무 크면 학습이 멈추거나 튀어서 디버깅할 때 살펴봐요.",
     "related": [
       "gradient-descent",
       "backpropagation",
@@ -475,18 +506,20 @@ addSection('03-01', "인공지능의 학습", [
     "easy": "과녁에서 1칸 빗나가면 벌점 1점, 3칸 빗나가면 벌점 9점이에요. 많이 빗나갈수록 벌점이 확 커져요.",
     "ex": "카페 실습의 loss = ((pred - y) ** 2).mean() 한 줄이 MSE예요. 학습이 진행되면 loss 그래프가 급히 떨어졌다가 평평해져요.",
     "flow": [],
+    "use": "숫자를 예측하는 회귀 모델의 손실로 nn.MSELoss()를 써요. 이상치가 있으면 값이 크게 튀니 데이터를 함께 살펴봐요.",
     "related": ["loss", "regression", "gradient-descent"]
   },
   {
     "id": "autograd",
     "term": "autograd",
     "ko": "자동 미분",
-    "full": "",
+    "full": "automatic differentiation",
     "level": "실전",
     "def": "계산 과정을 기록해 두었다가, 각 파라미터가 오차에 얼마나 기여했는지(기울기)를 자동으로 계산해 주는 기능. PyTorch에서는 loss.backward() 한 줄로 역전파를 대신 밟아 준다.",
     "easy": "수학 문제를 풀며 풀이 과정을 다 적어 두면, 어느 줄이 답을 얼마나 틀리게 했는지 자동으로 표시해 주는 거예요.",
     "ex": "requires_grad=True로 만든 w, b는 loss.backward()를 부르면 w.grad, b.grad에 기울기가 채워져요. 다음 스텝 전에는 grad.zero_()로 비워요.",
     "flow": [],
+    "use": "PyTorch에서 requires_grad=True를 주고 loss.backward()를 부르면 기울기가 자동으로 채워져요. 직접 미분 공식을 짜지 않아도 돼요.",
     "related": ["backpropagation", "gradient", "pytorch"]
   },
   {
@@ -499,6 +532,7 @@ addSection('03-01', "인공지능의 학습", [
     "easy": "심사위원이 매긴 날 점수예요. 이 점수를 '몇 %'로 바꿔 주는 게 softmax예요.",
     "ex": "후보 셋의 로짓 [2.0, 1.0, 0.1]은 softmax를 거쳐 약 [0.66, 0.24, 0.10]이 돼요.",
     "flow": [],
+    "use": "PyTorch 분류 모델의 마지막 층 출력이 보통 로짓이에요. CrossEntropyLoss에 로짓을 그대로 넣고, 확률이 필요할 때만 softmax를 따로 적용해요.",
     "related": ["softmax", "classification", "cross-entropy"]
   },
   {
@@ -511,6 +545,7 @@ addSection('03-01', "인공지능의 학습", [
     "easy": "정답에 '10%쯤?'이라고 자신 없게 답하면 벌점이 크고, '90%!'라고 하면 벌점이 작아요.",
     "ex": "MNIST 분류기 프롬프트의 '손실 함수는 표준 분류 방식(CrossEntropyLoss)을 쓰고'가 이 손실이에요. 정답 7의 확률이 0.9면 손실은 약 0.1, 0.1이면 약 2.3이에요.",
     "flow": [],
+    "use": "분류 모델을 학습시킬 때 nn.CrossEntropyLoss()를 손실로 골라요. 정답을 확신 있게 틀릴수록 손실이 크게 올라가요.",
     "related": ["loss", "softmax", "classification", "logit"]
   },
   {
@@ -523,6 +558,7 @@ addSection('03-01', "인공지능의 학습", [
     "easy": "잘 지어진 집의 기초 공사는 그대로 두고, 방 인테리어만 내 취향으로 바꾸는 거예요.",
     "ex": "ResNet18의 앞쪽 층은 얼려 두고 마지막 분류 층만 개/고양이 2개로 바꿔 학습해요. PyTorch에서는 얼릴 층의 requires_grad를 False로 둬요.",
     "flow": [],
+    "use": "사전학습 모델로 파인튜닝할 때 앞쪽 층의 requires_grad를 False로 바꿔요. 학습할 숫자가 줄어 GPU 메모리와 시간을 아낄 수 있어요.",
     "related": ["fine-tuning", "transfer-learning", "parameter"]
   },
   {
@@ -535,6 +571,7 @@ addSection('03-01', "인공지능의 학습", [
     "easy": "GPU가 여러 일을 돕는 조수 수천 명이라면, TPU는 딥러닝 계산만 하도록 맞춘 전문 팀이에요.",
     "ex": "Colab 무료 요금제에서는 보통 T4 GPU가 주어지고, TPU나 더 강한 A100·H100은 유료(Pro/Pro+)에서 열려요.",
     "flow": [],
+    "use": "Colab 런타임 유형 목록에서 GPU와 함께 TPU 선택지를 만나요. 대규모 학습에 쓰이지만 입문 실습은 보통 T4 GPU로 충분해요.",
     "related": ["gpu", "tensor", "colab"]
   },
   {
@@ -547,6 +584,7 @@ addSection('03-01', "인공지능의 학습", [
     "easy": "이름표 없는 단추 더미를 색깔·모양이 비슷한 것끼리 스스로 나눠 담는 거예요.",
     "ex": "구매 기록만 보고 비슷한 손님끼리 그룹을 나누는 일은, 정해진 '정답 그룹'이 없으니 비지도학습이에요.",
     "flow": [],
+    "use": "라벨 없이 고객을 비슷한 그룹으로 나누거나 이상한 데이터를 찾고 싶을 때 써요. 정답이 있는 라벨 데이터가 없어도 시작할 수 있어요.",
     "related": ["supervised-learning", "reinforcement-learning", "machine-learning"]
   },
   {
@@ -560,6 +598,7 @@ addSection('03-01', "인공지능의 학습", [
     "easy": "쿠키를 한 개씩 굽지 않고 오븐 판에 여러 개 올려 한 번에 굽는 거예요.",
     "ex": "컬러 사진 한 장은 높이×너비×3 텐서지만, 32장을 한 번에 넣으면 32×높이×너비×3이 돼요. GPU 메모리가 모자라면 배치 크기를 줄여요.",
     "flow": [],
+    "use": "DataLoader의 batch_size를 정할 때 마주쳐요. CUDA out of memory 오류가 나면 먼저 배치 크기를 줄여 봐요.",
     "related": ["tensor", "gpu", "training"]
   },
   {
@@ -573,6 +612,7 @@ addSection('03-01', "인공지능의 학습", [
     "easy": "지도(기울기)를 보고 실제로 발걸음을 옮겨 주는 길잡이예요.",
     "ex": "실무에서는 갱신 루프를 손으로 쓰지 않고 torch.optim.SGD(model.parameters(), lr=0.03)를 만든 뒤 optimizer.step()과 optimizer.zero_grad()로 줄여요.",
     "flow": [],
+    "use": "학습 코드에서 torch.optim.SGD나 Adam을 만들고 step()과 zero_grad()를 불러요. 학습이 불안하면 옵티마이저나 lr을 바꿔 봐요.",
     "related": ["gradient-descent", "learning-rate", "pytorch"]
   },
   {
@@ -586,6 +626,7 @@ addSection('03-01', "인공지능의 학습", [
     "easy": "GPU라는 공장에 일을 맡길 때 쓰는 출입증이자 작업 지시서예요.",
     "ex": "device = \"cuda\" if torch.cuda.is_available() else \"cpu\" 한 줄로, GPU가 있으면 쓰고 없으면 CPU로 돌려요.",
     "flow": [],
+    "use": "PyTorch에서 torch.cuda.is_available()로 GPU를 쓸 수 있는지 확인해요. 모델과 데이터를 서로 다른 장치에 두면 device 불일치 오류가 나요.",
     "related": ["gpu", "pytorch", "nvidia-smi"]
   },
   {
@@ -598,18 +639,22 @@ addSection('03-01', "인공지능의 학습", [
     "easy": "GPU의 건강검진표예요. 지금 일하고 있는지, 기억 공간이 얼마나 찼는지 보여 줘요.",
     "ex": "Colab에 연결한 뒤 에이전트에게 'nvidia-smi로 GPU가 연결됐는지 확인해 줘'라고 해요. 학습 중에도 사용률을 보면 코드가 정말 GPU를 쓰는지 알 수 있어요.",
     "flow": [],
+    "cmd": true,
+    "use": "터미널이나 Colab 셀에서 nvidia-smi를 쳐서 GPU가 잡혔는지, 메모리가 얼마나 찼는지 확인해요. 메모리 부족 오류가 날 때 가장 먼저 봐요.",
     "related": ["gpu", "cuda", "colab-mcp"]
   },
   {
     "id": "pip",
     "term": "pip",
     "ko": "파이썬 패키지 설치 도구",
-    "full": "",
+    "full": "Pip Installs Packages",
     "level": "입문",
     "def": "파이썬 라이브러리를 내려받아 설치하는 기본 명령. npm이 Node.js 패키지를 설치하듯 pip는 파이썬 패키지를 설치한다.",
     "easy": "파이썬 앱스토어에서 필요한 앱을 받아 오는 버튼이에요.",
     "ex": "pip install torch matplotlib로 실습 준비를 해요. Colab 셀에서는 앞에 !를 붙여 !pip install sentence-transformers처럼 써요.",
     "flow": [],
+    "cmd": true,
+    "use": "파이썬 실습을 시작할 때 pip install torch처럼 필요한 라이브러리를 설치해요. ModuleNotFoundError가 나면 해당 패키지를 pip로 설치했는지 확인해요.",
     "related": ["npm", "uv", "dependency"],
     "src": "03-01 · 03-02 · 03-05 · 03-06 · 03-07"
   },
@@ -623,6 +668,7 @@ addSection('03-01', "인공지능의 학습", [
     "easy": "숫자 표를 그림으로 바꿔 주는 크레파스 상자예요.",
     "ex": "카페 실습에서 plt.scatter로 30일치 점을 찍고, plt.plot(losses)로 loss가 줄어드는 곡선을 그려요.",
     "flow": [],
+    "use": "학습 중 loss가 줄어드는지 보려고 plt.plot()으로 그래프를 그려요. Colab에서는 plt.show()를 부르면 셀 아래에 그림이 나와요.",
     "related": ["pytorch", "colab", "loss"]
   },
   {
@@ -635,18 +681,20 @@ addSection('03-01', "인공지능의 학습", [
     "easy": "PyTorch 공구 상자 옆에 붙은 '사진 전용 서랍'이에요.",
     "ex": "'torchvision의 사전학습된 ResNet18을 불러와 개 vs 고양이 분류로 파인튜닝해 주세요'처럼 에이전트에게 시켜요.",
     "flow": [],
+    "use": "이미지 실습에서 MNIST 같은 데이터셋과 ResNet 사전학습 모델을 불러올 때 import해요. torch와 버전이 맞지 않으면 설치 오류가 날 수 있어요.",
     "related": ["pytorch", "fine-tuning", "mnist"]
   },
   {
     "id": "numpy",
     "term": "NumPy",
     "ko": "넘파이",
-    "full": "",
+    "full": "Numerical Python",
     "level": "실전",
     "def": "파이썬에서 숫자 배열(벡터·행렬)을 빠르게 계산하는 기본 라이브러리. PyTorch 텐서와 서로 바꾸기 쉬워 그래프 그리기나 결과 정리에 자주 쓴다.",
     "easy": "숫자 줄과 숫자 판을 한꺼번에 계산해 주는 큰 계산기예요.",
     "ex": "x.cpu().numpy()로 텐서를 넘파이 배열로 바꿔 그래프에 넘겨요. 03-02 실습에서는 np.argsort로 유사도 점수를 순위대로 세워요.",
     "flow": [],
+    "use": "데이터 전처리나 그래프 그리기에서 import numpy as np로 불러와요. GPU 텐서는 .cpu().numpy()로 바꿔야 넘파이에서 쓸 수 있어요.",
     "related": ["tensor", "pytorch", "matplotlib"],
     "src": "03-01 · 03-02"
   }

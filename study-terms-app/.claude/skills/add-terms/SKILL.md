@@ -36,11 +36,16 @@ node $SK/list-terms.js . > <scratchpad>/existing.txt
 addSection('NN-NN', "섹션 제목", [
   { "id": "kebab-case", "term": "English", "ko": "한국어", "full": "약어 풀네임 또는 빈칸",
     "level": "입문|실전|심화", "def": "PDF 설명 기반 뜻", "easy": "초등학생 눈높이 비유 (~예요)",
-    "ex": "실제 장면 (자료의 예시·실습 장면이면 더 좋다)", "related": ["기존 또는 새 id"] },
+    "ex": "실제 장면 (자료의 예시·실습 장면이면 더 좋다)",
+    "use": "실제 개발에서 언제·어디서 마주치는지 1~2문장 (~해요)", "cmd": true, "related": ["기존 또는 새 id"] },
 ]);
 ```
 - id는 한 번 정하면 바꾸지 않는다 (저장된 내 설명과 이어짐). 기존 id와 겹치지 않게.
 - `src`는 쓰지 않는다 (섹션 번호가 자동으로 들어감).
+- `full`: 약어면 영문 풀네임을 꼭 채운다. 줄임말에서 온 터미널 명령(ls → list, mkdir → make directory)도 포함.
+- `cmd: true`: 터미널에 직접 치는 명령어(ls, git, npm, pip, curl 등)일 때만 넣는다. 카드에 `>_ 터미널` 칩이 붙는다.
+- `use`: 카드의 '언제 쓰나요' 줄. def·easy·ex를 되풀이하지 말고 실제 개발 흐름 속 장면(설치·실행·오류·배포·학습·평가)을 쓴다.
+- 기존 용어의 full·cmd·use를 한꺼번에 고칠 때는 `node $SK/set-fields.js data patch.json` (patch: `{ "id": { "full": "...", "cmd": true, "use": "..." } }`).
 - 섹션 제목은 자료 주제를 짧게 (예 "로컬 LLM과 실행 위치", "문서 인식과 객체 탐지").
 - 숫자·사례는 PDF에 있는 것만 쓰고, 자료의 가상 예시라면 그렇다고 밝힌다.
 

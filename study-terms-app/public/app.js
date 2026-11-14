@@ -164,7 +164,7 @@ function matchTerm(t, q) {
   if (isChoQuery(q)) return { ok: false };
   if (findIn(t.full, q)) return { ok: true, hint: '영문', rank: 3 };
   if (findIn(t.def, q)) return { ok: true, hint: '뜻', rank: 4 };
-  if (findIn(t.easy, q) || findIn(exText(t), q)) return { ok: true, hint: '설명', rank: 5 };
+  if (findIn(t.easy, q) || findIn(exText(t), q) || findIn(t.usage, q)) return { ok: true, hint: '설명', rank: 5 };
   if (findIn(note(t.id).mine, q)) return { ok: true, hint: '내 설명', rank: 6 };
   return { ok: false };
 }
@@ -182,7 +182,7 @@ function rowHtml(t, q, hint) {
   const st = note(t.id).status;
   return `<li><button type="button" class="row" data-id="${t.id}" aria-current="${t.id === current && !document.body.classList.contains('no-card')}">` +
     `<span class="row-no">${t.no}</span>` +
-    `<span><span class="row-name">${highlight(t.term, q)}</span>` +
+    `<span><span class="row-name${t.is_cmd ? ' is-cmd' : ''}">${highlight(t.term, q)}</span>` +
     `<span class="row-ko">${highlight(t.ko, q)}${hint ? `<span class="row-hint">· ${hint}에서 찾음</span>` : ''}</span></span>` +
     `<span class="tag state state-${st}">${STATUS_TAG[st]}</span>` +
     `</button></li>`;
@@ -344,6 +344,8 @@ function renderCard() {
   $('c-level').textContent = t.level || '';
   $('c-level').hidden = !t.level;
   $('c-term').textContent = t.term;
+  $('c-term').classList.toggle('is-cmd', !!t.is_cmd);
+  $('c-cmd').hidden = !t.is_cmd;
   $('c-term').style.setProperty('--term-size', termSize(t.term));
   document.querySelector('.note-ko').style.setProperty('--term-size', termSize(t.term));
   $('c-ko').textContent = t.ko;
@@ -355,6 +357,7 @@ function renderCard() {
   $('c-def').innerHTML = linkify(t.def, used);
   setSub($('c-easy'), linkify(t.easy, used));
   setSub($('c-ex'), linkify(exText(t), used));
+  setSub($('c-use'), linkify(t.usage || '', used));
 
   if (document.activeElement !== $('mine')) $('mine').value = n.mine;
   updateMemo();

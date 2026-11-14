@@ -37,6 +37,8 @@ function buildCatalog() {
         easy: t.easy || '',
         ex: typeof t.ex === 'string' ? t.ex : `${t.ex.title} — ${t.ex.body}`,
         related: (t.related || []).filter((r) => byId[r]),
+        is_cmd: !!t.cmd,
+        usage: t.use || '',
       });
     }
   }
