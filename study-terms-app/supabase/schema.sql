@@ -22,7 +22,7 @@ create table if not exists public.terms (
   ex         text not null default '',
   related    text[] not null default '{}',
   is_cmd     boolean not null default false, -- 터미널에 직접 치는 명령어면 true
-  usage      text not null default ''        -- 실제로 언제 쓰나요
+  usage      text not null default ''        -- 실제로 언제 쓰냐면
 );
 
 -- 내 기록 (사람마다 따로)
