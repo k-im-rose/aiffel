@@ -564,15 +564,29 @@ $('show-all').addEventListener('click', () => {
 });
 
 // 설명 속 용어 링크의 말풍선(최대 280px)이 카드 오른쪽을 넘으면 오른쪽 정렬로 바꾼다
+// 줄바꿈된 링크도 첫 줄 조각 아래에 붙이고, 실제 폭을 재서 카드 안쪽으로 밀어 넣는다
+const tip = Object.assign(document.createElement('div'), { className: 'tip', hidden: true });
+tip.setAttribute('role', 'tooltip');
+document.body.append(tip);
+const hideTip = () => { tip.hidden = true; };
 document.querySelector('.def-body').addEventListener('mouseover', e => {
   const a = e.target.closest('.tlink');
-  if (!a) return;
+  if (!a || !window.matchMedia('(hover: hover)').matches) return;
+  tip.textContent = a.dataset.tip;
+  tip.hidden = false;
   const card = a.closest('.card').getBoundingClientRect();
-  a.classList.toggle('tip-right', a.getBoundingClientRect().left + 280 > card.right);
+  const line = a.getClientRects()[0];
+  tip.style.maxWidth = `${Math.min(280, card.width - 16)}px`;
+  const w = tip.offsetWidth;
+  tip.style.left = `${Math.max(card.left + 8, Math.min(line.left, card.right - 8 - w))}px`;
+  tip.style.top = `${line.bottom + 6}px`;
 });
+document.querySelector('.def-body').addEventListener('mouseout', e => { if (e.target.closest('.tlink')) hideTip(); });
+window.addEventListener('scroll', hideTip, { passive: true });
 
 // 설명 속 용어 링크: 그 카드로 간다. PC에서도 방문 기록을 남겨 뒤로 가기로 원래 카드에 돌아오게 한다
 document.querySelector('.def-body').addEventListener('click', e => {
+  hideTip();
   const a = e.target.closest('.tlink');
   if (!a) return;
   e.preventDefault();
