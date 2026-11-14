@@ -317,11 +317,10 @@ body.loading .detail { visibility: hidden; }
 }
 .tlink:hover, .tlink:focus-visible { background: var(--yellow); }
 @media (hover: hover) {
-  .tlink:hover::after {
-    content: attr(data-tip); position: absolute; left: 0; top: calc(100% + 6px); z-index: 20;
-    width: max-content; max-width: 280px; padding: 8px 10px; background: var(--ink); color: var(--white);
-    font-size: 13px; font-weight: 400; line-height: 1.5; text-decoration: none; white-space: normal;
-    pointer-events: none;
+  /* 용어 말풍선: 하나만 두고 app.js가 위치를 정한다. 카드 좌우 안쪽에만 놓인다 */
+  .tip {
+    position: fixed; z-index: 20; max-width: 280px; padding: 8px 10px; background: var(--ink); color: var(--white);
+    font-size: 13px; font-weight: 400; line-height: 1.5; pointer-events: none;
   }
-  .tlink.tip-right:hover::after { left: auto; right: 0; } /* 카드 오른쪽 끝을 넘으면 오른쪽에 맞춘다 (app.js) */
 }
+.tip[hidden] { display: none; }
