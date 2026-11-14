@@ -331,6 +331,8 @@ function linkify(text, used) {
   return out + esc(text.slice(last));
 }
 
+const STAGES = ['준비', '만들기', '실행·확인', '오류 해결', '배포·공유'];
+
 function setSub(el, html) {
   el.hidden = !html;
   el.querySelector('.def-v').innerHTML = html;
@@ -357,7 +359,12 @@ function renderCard() {
   $('c-def').innerHTML = linkify(t.def, used);
   setSub($('c-easy'), linkify(t.easy, used));
   setSub($('c-ex'), linkify(exText(t), used));
-  setSub($('c-use'), linkify(t.usage || '', new Set([t.id]))); // 이 줄은 위에서 이미 링크된 용어도 다시 링크한다 (따로 읽어도 이어지게)
+  // 개발 흐름 속 위치: 다섯 단계 중 이 용어의 단계를 검은 칩으로 (글자로도 aria-current로도 알린다), 그 아래 쉬운 장면 설명
+  const stage = t.stage ? `<ol class="stage-flow" aria-label="개발 흐름에서 이 용어가 나오는 단계">${STAGES.map(s => s === t.stage
+    ? `<li class="on" aria-current="step">${s}</li>` : `<li>${s}</li>`).join('<li aria-hidden="true">›</li>')}</ol>` : '';
+  const use = linkify(t.usage || '', new Set([t.id])); // 이 줄은 위에서 이미 링크된 용어도 다시 링크한다
+  setSub($('c-use'), use && stage + `<span>${use}</span>`);
+  setSub($('c-ai'), linkify(t.ai || '', new Set([t.id]))); // AI 코딩 도구와 함께 쓸 때 주의할 점 또는 신경 쓸 일이 적다는 안내
 
   if (document.activeElement !== $('mine')) $('mine').value = n.mine;
   updateMemo();
