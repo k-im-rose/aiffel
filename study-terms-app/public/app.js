@@ -548,6 +548,8 @@ document.addEventListener('keydown', e => {
 document.querySelectorAll('.chip').forEach(b => b.addEventListener('click', () => {
   filter = b.dataset.filter;
   store.ui.filter = filter;
+  for (const k of Object.keys(open)) delete open[k]; // 분류를 바꾸면 홈처럼 섹션을 모두 닫고 시작한다
+  store.ui.open = open;
   persist();
   renderList();
 }));
