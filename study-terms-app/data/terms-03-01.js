@@ -10,6 +10,7 @@ addSection('03-01', "인공지능의 학습", [
     "stage": "만들기",
     "use": "스팸 필터나 추천 기능처럼 규칙을 직접 짜기 어려운 기능을 만들 때 쓰는 방식이에요.",
     "ai": "\"이 문제를 머신러닝으로 풀 수 있을까, 간단한 규칙으로 충분할까?\"라고 먼저 물어보세요. 데이터가 적으면 성능이 잘 안 나와요.",
+    "word": "Machine: 기계\nLearning: 배우기\nMachine Learning: 기계가 데이터로 규칙을 배우는 것",
     "related": [
       "deep-learning",
       "training",
@@ -30,6 +31,7 @@ addSection('03-01', "인공지능의 학습", [
     "stage": "만들기",
     "use": "이미지 분류나 ChatGPT 같은 모델 소개에서 자주 나와요. 층을 깊게 쌓아서 배우는 방식이에요.",
     "ai": "학습 코드를 대신 써 줄 수 있어요. 학습이 오래 걸리니 \"작은 데이터로 먼저 돌려서 동작만 확인해 줘\"라고 시키세요.",
+    "word": "Deep: 깊은\nLearning: 배우기\nDeep Learning: 층을 깊게 쌓아 배우는 방식",
     "related": [
       "machine-learning",
       "neural-network",
@@ -58,6 +60,7 @@ addSection('03-01', "인공지능의 학습", [
     "stage": "만들기",
     "use": "딥러닝 실습에서 층을 쌓아 모델을 만들 때 만나요. 입력과 출력의 크기를 맞추는 게 중요해요.",
     "ai": "크기가 안 맞는 오류가 자주 나요. 오류 메시지를 그대로 붙여 넣고 \"각 층의 입출력 크기를 표로 보여 줘\"라고 시키세요.",
+    "word": "Neural: 신경의\nNetwork: 망, 연결된 그물\nNeural Network: 신경처럼 연결된 계산 층 구조",
     "related": ["deep-learning", "parameter", "backpropagation"]
   },
   {
@@ -71,6 +74,7 @@ addSection('03-01', "인공지능의 학습", [
     "stage": "만들기",
     "use": "모델이 데이터로 예측하고 틀린 만큼 고치기를 반복하는 과정이에요. 손실 그래프가 내려가는지 봐요.",
     "ai": "\"학습 중 손실이 매번 출력되게 해 줘\"라고 시키세요. 그래프가 내려가지 않으면 코드를 더 짜기 전에 데이터와 설정부터 점검하세요.",
+    "word": "Training: 훈련, 반복해서 익히게 하는 것",
     "related": [
       "loss",
       "gradient-descent",
@@ -98,6 +102,7 @@ addSection('03-01', "인공지능의 학습", [
     "stage": "준비",
     "use": "데이터를 준비할 때 입력마다 정답이 붙어 있는지 확인하는 이유를 알 때 나오는 말이에요.",
     "ai": "정답이 틀리면 모델도 틀리게 배워요. AI가 만든 정답 표는 일부를 직접 골라 맞는지 확인하세요.",
+    "word": "Supervised: 감독받는, 지켜보며 가르침받는\nLearning: 배우기\nSupervised Learning: 정답을 보며 배우는 방식",
     "related": ["machine-learning", "regression", "classification"]
   },
   {
@@ -106,6 +111,8 @@ addSection('03-01', "인공지능의 학습", [
     "stage": "만들기",
     "use": "모델 소개에서 70억 파라미터처럼 모델 크기를 말할 때 만나요. 학습으로 조정되는 모델 속 숫자예요.",
     "ai": "직접 고칠 일은 거의 없어요. 숫자가 클수록 더 좋은 컴퓨터가 필요해서, 내 컴퓨터로 돌릴 수 있는지 먼저 확인하세요.",
+    "word": "Parameter: 매개변수, 결과를 좌우하는 수치",
+    "code": "# 모델의 파라미터 개수 세기 (PyTorch)\nsum(p.numel() for p in model.parameters())",
     "related": [
       "training",
       "gradient-descent",
@@ -126,6 +133,8 @@ addSection('03-01', "인공지능의 학습", [
     "stage": "실행·확인",
     "use": "학습 로그에서 계속 출력되는 숫자예요. 줄어들면 학습이 잘 되고 있다는 신호예요.",
     "ai": "값이 늘거나 nan이 나오면 학습이 잘못된 거예요. 그 로그를 붙여 넣고 \"원인을 알려 줘\"라고 시키세요.",
+    "word": "Loss: 손실, 잃은 양",
+    "code": "# 예측과 정답의 오차(손실) 계산하기\nloss = nn.MSELoss()(pred, y)",
     "related": [
       "training",
       "gradient-descent",
@@ -153,6 +162,8 @@ addSection('03-01', "인공지능의 학습", [
     "stage": "만들기",
     "use": "학습 코드에서 가중치를 조금씩 고치는 단계가 이거예요. 학습이 안 될 때 원리를 알면 도움돼요.",
     "ai": "직접 구현할 일은 거의 없어요. 학습이 흔들리면 \"학습 속도를 바꿔 가며 비교해 줘\"라고 시키세요.",
+    "word": "Gradient: 기울기, 경사\nDescent: 내려가기\nGradient Descent: 기울기를 따라 내려가며 오차를 줄이는 방법",
+    "code": "# 경사하강으로 가중치를 고치는 도구 만들기\nopt = torch.optim.SGD(model.parameters(), lr=0.01)",
     "related": ["gradient", "learning-rate", "backpropagation", "loss"]
   },
   {
@@ -161,6 +172,8 @@ addSection('03-01', "인공지능의 학습", [
     "stage": "만들기",
     "use": "학습 코드에서 loss.backward()를 부를 때 일어나는 일이에요. 오차를 뒤에서 앞으로 따져 가는 계산이에요.",
     "ai": "직접 계산할 일은 거의 없어요. AI가 짠 학습 코드에 이 줄이 빠지지 않았는지만 확인하세요.",
+    "word": "Back: 뒤로\nPropagation: 퍼뜨림, 전달\nBackpropagation: 오차를 뒤로 전달하며 기울기를 구하는 방법",
+    "code": "# 손실에서 각 파라미터의 기울기 계산하기\nloss.backward()",
     "related": [
       "gradient-descent",
       "perceptron",
@@ -182,6 +195,8 @@ addSection('03-01', "인공지능의 학습", [
     "stage": "만들기",
     "use": "학습 코드에서 한 번에 얼마나 고칠지 정하는 값이에요. 너무 크면 손실이 튀고 너무 작으면 학습이 느려요.",
     "ai": "\"학습 속도를 몇 가지로 바꿔서 손실 그래프를 비교해 줘\"라고 시키세요. 손실이 튀면 값부터 줄여 보세요.",
+    "word": "Learning: 배우기\nRate: 비율, 속도\nLearning Rate: 배우는 속도, 한 걸음의 크기",
+    "code": "# 학습률(한 걸음의 크기) 정하기\nlearning_rate = 0.01",
     "related": [
       "gradient-descent",
       "training"
@@ -208,6 +223,8 @@ addSection('03-01', "인공지능의 학습", [
     "stage": "만들기",
     "use": "집값이나 온도처럼 숫자 하나를 맞히는 모델을 만들 때 고르는 문제 종류예요.",
     "ai": "\"숫자를 예측하는 문제니까 회귀로 만들어 줘\"라고 분명히 말하세요. 분류와 헷갈려 잘못 만들 때가 있어요.",
+    "word": "Regression: 되돌아감, 평균 쪽으로 돌아가는 경향",
+    "code": "# 숫자를 예측하는 선형 회귀 모델 만들기\nfrom sklearn.linear_model import LinearRegression\nmodel = LinearRegression()",
     "related": ["classification", "supervised-learning", "loss"]
   },
   {
@@ -224,6 +241,7 @@ addSection('03-01', "인공지능의 학습", [
     "stage": "만들기",
     "use": "스팸인지 아닌지, 어떤 숫자인지처럼 정해진 칸 중에서 고르는 모델을 만들 때 써요.",
     "ai": "출력 개수는 분류할 종류 수와 같아야 해요. AI가 만든 코드에서 이 숫자가 맞는지 확인하세요.",
+    "word": "Classification: 분류, 종류별로 나누는 것",
     "related": ["softmax", "regression", "mnist"]
   },
   {
@@ -236,6 +254,8 @@ addSection('03-01', "인공지능의 학습", [
     "stage": "실행·확인",
     "use": "분류 모델의 점수를 합이 1인 확률로 바꿔 볼 때 써요. 확률이 높다고 꼭 맞는 건 아니에요.",
     "ai": "직접 다룰 일은 거의 없어요. 손실 함수에 이미 들어 있는 경우가 많으니, 코드에 중복으로 넣지 않았는지 확인하세요.",
+    "word": "Soft: 부드러운\nMax: 최댓값\nSoftmax: 최댓값을 부드럽게 고르는 함수",
+    "code": "# 점수를 확률로 바꾸기\nprobs = torch.softmax(logits, dim=0)",
     "related": [
       "classification",
       "next-token",
@@ -263,6 +283,7 @@ addSection('03-01', "인공지능의 학습", [
     "stage": "만들기",
     "use": "검색 기능을 만들 때 글이 숫자 묶음으로 바뀌어 저장돼요. 이 숫자 묶음이 벡터예요.",
     "ai": "직접 계산할 일은 거의 없어요. 벡터가 안 맞으면 길이가 같은지부터 확인하세요.",
+    "word": "Vector: 방향과 크기를 가진 것, 숫자 묶음",
     "related": ["embedding", "tensor", "token"]
   },
   {
@@ -279,6 +300,8 @@ addSection('03-01', "인공지능의 학습", [
     "stage": "만들기",
     "use": "문서 검색을 만들 때 글을 뜻이 담긴 숫자로 바꿔 비슷한 글을 찾는 데 써요.",
     "ai": "저장해 둔 때와 검색할 때 같은 모델을 써야 해요. 모델을 바꾸면 전부 다시 만들어야 하니, 바꾸기 전에 물어보세요.",
+    "word": "Embedding: 어딘가에 박아 넣는 것, 끼워 넣기",
+    "code": "# 단어 번호를 64칸짜리 벡터로 바꾸는 층\nemb = nn.Embedding(10000, 64)",
     "related": ["vector", "token", "llm"]
   },
   {
@@ -294,6 +317,8 @@ addSection('03-01', "인공지능의 학습", [
     "stage": "오류 해결",
     "use": "PyTorch로 데이터를 다루다 크기가 안 맞는다는 오류를 만나면 가장 먼저 확인하는 대상이에요.",
     "ai": "오류가 나면 \"각 텐서의 shape을 출력해 줘\"라고 시키세요. 크기가 맞는지 눈으로 보면 원인이 금방 보여요.",
+    "word": "Tensor: 수학에서 숫자를 여러 방향으로 늘어놓은 것",
+    "code": "# 2×2 격자 모양의 텐서 만들기\nx = torch.tensor([[1, 2], [3, 4]])",
     "related": ["vector", "pytorch", "mnist"]
   },
   {
@@ -302,6 +327,7 @@ addSection('03-01', "인공지능의 학습", [
     "stage": "실행·확인",
     "use": "딥러닝 첫 실습에서 손글씨 숫자를 맞히는 예제로 가장 자주 쓰여요.",
     "ai": "\"MNIST로 숫자 맞히는 모델을 만들어 줘\"처럼 처음 연습용으로 쓰기 좋아요. 처음 실행하면 데이터를 내려받느라 시간이 걸려요.",
+    "code": "# 손글씨 숫자 데이터 내려받기\nds = datasets.MNIST(\".\", download=True)",
     "related": [
       "classification",
       "tensor",
@@ -322,6 +348,7 @@ addSection('03-01', "인공지능의 학습", [
     "stage": "실행·확인",
     "use": "학습 점수는 높은데 처음 보는 데이터에서는 점수가 낮을 때 부족하다고 말하는 능력이에요.",
     "ai": "\"학습용과 검증용 데이터를 나눠서 점수를 따로 보여 줘\"라고 시키세요. 학습 점수만 믿으면 속기 쉬워요.",
+    "word": "General: 일반적인, 두루 통하는\nGeneralization: 처음 보는 데이터에도 두루 통하게 하는 것",
     "related": [
       "training",
       "hallucination",
@@ -342,6 +369,7 @@ addSection('03-01', "인공지능의 학습", [
     "stage": "준비",
     "use": "ChatGPT나 Claude 같은 AI를 쓰거나 내 앱에 붙일 때 만나는 말이에요. 모델마다 크기와 가격이 달라요.",
     "ai": "그럴듯하게 틀린 답을 지어낼 수 있어요. 중요한 내용은 직접 확인하고, 일에 맞는 크기의 모델을 고르세요.",
+    "word": "Large: 큰\nLanguage: 언어\nModel: 모델\nLLM: 아주 큰 규모의 언어 모델",
     "related": [
       "next-token",
       "pretraining",
@@ -370,6 +398,7 @@ addSection('03-01', "인공지능의 학습", [
     "stage": "실행·확인",
     "use": "AI가 같은 질문에도 매번 다르게 답하는 이유를 알 때 나오는 말이에요.",
     "ai": "직접 다룰 일은 거의 없어요. 매번 같은 답이 필요하면 설정에서 무작위성을 낮추라고 시키세요.",
+    "word": "Next: 다음\nToken: 작은 조각\nPrediction: 예측\nNext-token Prediction: 다음 조각을 맞히는 일",
     "related": ["llm", "softmax", "token"]
   },
   {
@@ -378,6 +407,7 @@ addSection('03-01', "인공지능의 학습", [
     "stage": "준비",
     "use": "Hugging Face에서 이미 배워 둔 모델을 가져와 쓸 때 만나요. 처음부터 학습하지 않아도 돼요.",
     "ai": "\"사전학습된 모델을 가져와서 시작해 줘\"라고 시키세요. 직접 하려면 데이터와 시간이 아주 많이 들어요.",
+    "word": "Pre: 미리\nTraining: 훈련, 학습\nPretraining: 본 작업 전에 미리 학습해 두는 것",
     "related": [
       "fine-tuning",
       "llm",
@@ -402,6 +432,7 @@ addSection('03-01', "인공지능의 학습", [
     "stage": "만들기",
     "use": "이미 배운 모델을 내 데이터에 맞게 더 학습시킬 때 써요. 프롬프트로 안 풀릴 때 고려해요.",
     "ai": "먼저 \"프롬프트나 검색으로 해결할 수 있는지 알려 줘\"라고 물어보세요. 데이터가 적으면 오히려 성능이 나빠질 수 있어요.",
+    "word": "Fine: 미세한, 정교한\nTuning: 조율, 맞추기\nFine-tuning: 학습된 모델을 조금씩 다시 조정하는 것",
     "related": [
       "transfer-learning",
       "pretraining",
@@ -429,6 +460,7 @@ addSection('03-01', "인공지능의 학습", [
     "stage": "만들기",
     "use": "데이터가 적을 때 이미 배운 모델을 가져와 마지막 부분만 바꿔 학습시키는 방법이에요.",
     "ai": "\"사전학습 모델을 가져와 마지막 층만 바꿔 학습해 줘\"라고 시키세요. 처음부터 학습하는 것보다 훨씬 적은 데이터로 돼요.",
+    "word": "Transfer: 옮기다, 전달하다\nLearning: 학습\nTransfer Learning: 배운 것을 다른 문제로 옮겨 쓰는 학습",
     "related": ["fine-tuning", "pretraining"]
   },
   {
@@ -437,6 +469,7 @@ addSection('03-01', "인공지능의 학습", [
     "stage": "준비",
     "use": "모델이 너무 느리거나, Colab에서 런타임을 GPU로 바꿀 때 만나요. 큰 계산을 빠르게 해 줘요.",
     "ai": "모델과 데이터를 같은 장치로 옮기지 않아 오류가 자주 나요. \"GPU에서 돌아가게 고쳐 줘\"라고 시키세요.",
+    "word": "Graphics: 그래픽, 그림\nProcessing: 처리\nUnit: 장치\nGPU: 많은 계산을 한꺼번에 처리하는 장치",
     "related": [
       "colab",
       "fine-tuning",
@@ -506,6 +539,7 @@ addSection('03-01', "인공지능의 학습", [
     "stage": "준비",
     "use": "파이썬 도구를 설치하거나 uvx로 MCP 서버를 실행할 때 만나요. 설치돼 있지 않으면 명령을 못 찾아요.",
     "ai": "\"명령을 찾을 수 없다\"는 오류가 나면 uv 설치부터 의심하세요. \"uv 설치돼 있는지 확인해 줘\"라고 시키면 돼요.",
+    "code": "# 파이썬 패키지 추가하기\nuv add requests\n# 도구를 임시 환경에서 실행\nuvx ruff check",
     "related": [
       "colab-mcp",
       "npm",
@@ -533,6 +567,7 @@ addSection('03-01', "인공지능의 학습", [
     "stage": "만들기",
     "use": "신경망의 가장 단순한 조상으로 소개돼요. 한 층짜리라서 왜 여러 층이 필요한지 알 때 나와요.",
     "ai": "직접 만들 일은 거의 없어요. 신경망 원리를 공부할 때 \"퍼셉트론을 아주 작은 코드로 보여 줘\"라고 시켜 보세요.",
+    "word": "Perception: 지각, 인식\nPerceptron: 인식하는 뉴런을 흉내 낸 초기 학습 모델",
     "related": ["backpropagation", "neural-network", "parameter"]
   },
   {
@@ -541,6 +576,8 @@ addSection('03-01', "인공지능의 학습", [
     "stage": "오류 해결",
     "use": "PyTorch에서 w.grad로 확인하는 값이에요. 0이거나 너무 크면 학습이 멈추거나 튀어요.",
     "ai": "학습이 이상하면 \"기울기 값을 출력해 줘\"라고 시키세요. 값이 0이면 연결이 끊겼는지, 너무 크면 학습 속도를 의심하세요.",
+    "word": "Gradient: 경사, 기울기",
+    "code": "# 파라미터의 기울기 확인하기\nprint(w.grad)",
     "related": [
       "gradient-descent",
       "backpropagation",
@@ -569,6 +606,8 @@ addSection('03-01', "인공지능의 학습", [
     "stage": "만들기",
     "use": "숫자를 맞히는 모델의 손실로 써요. 크게 틀릴수록 벌점이 훨씬 커져서, 큰 이상값에 흔들려요.",
     "ai": "이상값이 있으면 값이 크게 튀니 데이터를 먼저 살펴보세요. 숫자 예측이면 보통 이걸 써요. 분류 문제에는 쓰지 않아요.",
+    "word": "Mean: 평균\nSquared: 제곱한\nError: 오차\nMSE: 오차를 제곱해 평균 낸 값",
+    "code": "# 평균제곱오차 손실 계산\nloss_fn = nn.MSELoss()\nloss = loss_fn(pred, target)",
     "related": ["loss", "regression", "gradient-descent"]
   },
   {
@@ -584,6 +623,8 @@ addSection('03-01', "인공지능의 학습", [
     "stage": "만들기",
     "use": "PyTorch에서 loss.backward()를 부르면 기울기를 자동으로 계산해 주는 기능이에요.",
     "ai": "직접 다룰 일은 거의 없어요. 추론할 때는 기울기 계산을 꺼서 메모리를 아끼도록 \"기울기 계산을 끄고 돌려 줘\"라고 시키세요.",
+    "word": "Auto: 스스로, 자동\nGrad: Gradient의 줄임, 기울기\nautograd: 기울기를 자동으로 계산해 주는 기능",
+    "code": "# 기울기를 자동 계산하는 텐서\nw = torch.tensor(2.0, requires_grad=True)\nloss.backward()",
     "related": ["backpropagation", "gradient", "pytorch"]
   },
   {
@@ -599,6 +640,7 @@ addSection('03-01', "인공지능의 학습", [
     "stage": "만들기",
     "use": "분류 모델 마지막 층의 출력을 말해요. 확률로 바꾸기 전의 날것의 점수예요.",
     "ai": "손실 함수에는 이 값을 그대로 넣어요. 확률로 바꾼 값을 넣으면 학습이 이상해지니, 코드에서 두 번 바꾸지 않았는지 확인하세요.",
+    "word": "Logit: 확률로 바꾸기 전의 날것의 점수",
     "related": ["softmax", "classification", "cross-entropy"]
   },
   {
@@ -614,6 +656,8 @@ addSection('03-01', "인공지능의 학습", [
     "stage": "만들기",
     "use": "분류 모델을 학습시킬 때 손실로 가장 흔히 고르는 함수예요. 정답을 확신 있게 틀리면 큰 벌점을 받아요.",
     "ai": "\"분류 문제니까 크로스엔트로피를 손실로 써 줘\"라고 시키세요. 입력은 확률이 아니라 로짓이어야 하니 코드에서 확인하세요.",
+    "word": "Cross: 교차\nEntropy: 엔트로피, 불확실한 정도\nCross-Entropy: 예측과 정답이 얼마나 어긋나는지 재는 값",
+    "code": "# 분류용 교차 엔트로피 손실\nloss_fn = nn.CrossEntropyLoss()",
     "related": ["loss", "softmax", "classification", "logit"]
   },
   {
@@ -629,6 +673,8 @@ addSection('03-01', "인공지능의 학습", [
     "stage": "만들기",
     "use": "이미 배운 모델을 내 데이터에 맞춰 더 학습시킬 때, 앞쪽 층은 고정해서 바뀌지 않게 하는 방법이에요.",
     "ai": "\"앞쪽 층은 얼리고 마지막 층만 학습하게 해 줘\"라고 시키세요. 고정할 층을 잘못 고르면 학습이 안 되니 몇 개가 학습되는지 확인하세요.",
+    "word": "Freeze: 얼리다, 고정하다",
+    "code": "# 이 모델은 학습 때 바뀌지 않게 고정\nfor p in model.parameters():\n    p.requires_grad = False",
     "related": ["fine-tuning", "transfer-learning", "parameter"]
   },
   {
@@ -644,6 +690,7 @@ addSection('03-01', "인공지능의 학습", [
     "stage": "준비",
     "use": "Colab에서 런타임을 고를 때 GPU와 함께 나오는 선택지예요. 구글이 만든 계산용 칩이에요.",
     "ai": "입문 실습에는 GPU로 충분해요. TPU는 코드를 따로 고쳐야 할 수 있으니 처음엔 쓰지 않아도 돼요.",
+    "word": "Tensor: 숫자를 격자로 담은 묶음\nProcessing: 처리\nUnit: 장치\nTPU: 텐서 계산에 특화된 구글의 칩",
     "related": ["gpu", "tensor", "colab"]
   },
   {
@@ -659,6 +706,7 @@ addSection('03-01', "인공지능의 학습", [
     "stage": "준비",
     "use": "정답 표 없이 고객을 비슷한 그룹으로 나누거나 이상한 데이터를 찾고 싶을 때 써요.",
     "ai": "그룹 결과가 의미 있는지는 AI가 알려 주지 않아요. 나온 그룹을 직접 살펴보고 판단하세요.",
+    "word": "Un: ~하지 않는\nSupervised: 감독받는, 지도받는\nUnsupervised Learning: 정답 없이 스스로 패턴을 찾는 학습",
     "related": ["supervised-learning", "reinforcement-learning", "machine-learning"]
   },
   {
@@ -675,6 +723,8 @@ addSection('03-01', "인공지능의 학습", [
     "stage": "실행·확인",
     "use": "데이터를 한꺼번에 몇 개씩 묶어 모델에 넣을지 정할 때 만나요. 크게 잡으면 메모리가 모자라요.",
     "ai": "메모리 부족 오류가 나면 \"배치 크기를 줄여 줘\"라고 시키세요. 크기를 바꾸면 학습 결과도 조금 달라질 수 있어요.",
+    "word": "Batch: 한 묶음, 한 무더기",
+    "code": "# 데이터를 32개씩 묶어 꺼내기\nloader = DataLoader(dataset, batch_size=32)",
     "related": ["tensor", "gpu", "training"]
   },
   {
@@ -691,6 +741,8 @@ addSection('03-01', "인공지능의 학습", [
     "stage": "만들기",
     "use": "학습 코드에서 가중치를 실제로 고쳐 주는 도구를 만들고 step()을 부를 때 만나요.",
     "ai": "초기화 줄이 빠지면 기울기가 계속 쌓여 학습이 이상해져요. AI가 짠 코드에 이 줄이 있는지 확인하세요.",
+    "word": "Optimizer: 가장 좋은 상태로 만들어 주는 도구\nStochastic: 확률적인, 무작위가 섞인\nGradient: 경사, 기울기\nDescent: 내려감\nSGD: 기울기를 따라 조금씩 내려가며 학습하는 방법",
+    "code": "# SGD로 파라미터 갱신하기\nopt = torch.optim.SGD(model.parameters(), lr=0.01)\nopt.step()",
     "related": ["gradient-descent", "learning-rate", "pytorch"]
   },
   {
@@ -707,6 +759,8 @@ addSection('03-01', "인공지능의 학습", [
     "stage": "준비",
     "use": "PyTorch에서 GPU를 쓸 수 있는지 확인하거나 장치 이름을 'cuda'로 쓸 때 만나요.",
     "ai": "모델과 데이터를 같은 장치에 올려야 해요. \"cuda를 쓸 수 있는지 확인하고, 안 되면 CPU로 돌게 고쳐 줘\"라고 시키세요.",
+    "word": "Compute: 계산하다\nUnified: 통합된\nDevice: 장치\nArchitecture: 구조, 설계\nCUDA: GPU로 계산을 돌리게 하는 엔비디아 플랫폼",
+    "code": "# GPU를 쓸 수 있는지 확인\nprint(torch.cuda.is_available())",
     "related": ["gpu", "pytorch", "nvidia-smi"]
   },
   {
@@ -723,6 +777,7 @@ addSection('03-01', "인공지능의 학습", [
     "stage": "실행·확인",
     "use": "GPU가 제대로 잡혔는지, 메모리가 얼마나 찼는지 터미널이나 Colab에서 확인할 때 치는 명령이에요.",
     "ai": "메모리 부족 오류가 나면 이 결과를 붙여 넣고 \"원인을 알려 줘\"라고 물어보세요. 이미 돌고 있는 다른 작업이 메모리를 차지한 경우도 많아요.",
+    "code": "# GPU 상태 보기\nnvidia-smi",
     "related": ["gpu", "cuda", "colab-mcp"]
   },
   {
@@ -739,6 +794,8 @@ addSection('03-01', "인공지능의 학습", [
     "stage": "준비",
     "use": "파이썬 실습을 시작할 때 pip install로 필요한 라이브러리를 설치하는 명령이에요.",
     "ai": "처음 보는 패키지는 이름이 진짜인지 확인하세요. 없는 패키지 이름을 지어내기도 해요.",
+    "word": "Install: 설치하다\nPackage: 꾸러미, 묶음\npip: 파이썬 꾸러미를 설치해 주는 도구",
+    "code": "# 파이썬 라이브러리 설치\npip install requests",
     "related": ["npm", "uv", "dependency"],
     "src": "03-01 · 03-02 · 03-05 · 03-06 · 03-07"
   },
@@ -755,6 +812,7 @@ addSection('03-01', "인공지능의 학습", [
     "stage": "실행·확인",
     "use": "학습 중 손실이 줄어드는지 보려고 그래프를 그릴 때 써요.",
     "ai": "\"학습 손실을 그래프로 그려 줘\"라고 시키면 돼요. 그래프 모양을 직접 보고 학습이 잘 되는지 판단하세요.",
+    "code": "# 그래프 그려서 보여 주기\nimport matplotlib.pyplot as plt\nplt.plot(losses)\nplt.show()",
     "related": ["pytorch", "colab", "loss"]
   },
   {
@@ -770,6 +828,7 @@ addSection('03-01', "인공지능의 학습", [
     "stage": "준비",
     "use": "이미지 실습에서 MNIST 같은 데이터와 미리 학습된 모델을 불러올 때 import해요.",
     "ai": "PyTorch와 버전이 안 맞으면 오류가 나요. 설치 오류가 나면 두 버전을 함께 알려 주고 맞춰 달라고 하세요.",
+    "code": "# 이미지 데이터셋 불러오기\nfrom torchvision import datasets\nds = datasets.MNIST(\"data\", download=True)",
     "related": ["pytorch", "fine-tuning", "mnist"]
   },
   {
@@ -785,6 +844,8 @@ addSection('03-01', "인공지능의 학습", [
     "stage": "준비",
     "use": "데이터를 다듬거나 그래프를 그릴 때 숫자 배열을 다루려고 불러오는 기본 라이브러리예요.",
     "ai": "GPU에 올라간 데이터는 그대로 못 바꿔서 오류가 나요. 오류가 나면 메시지를 붙여 넣고 물어보세요.",
+    "word": "Numerical: 숫자를 다루는, 수치의\nNumPy: 파이썬에서 숫자 배열을 계산하는 라이브러리",
+    "code": "# 숫자 배열 만들어 평균 구하기\nimport numpy as np\nprint(np.array([1, 2, 3]).mean())",
     "related": ["tensor", "pytorch", "matplotlib"],
     "src": "03-01 · 03-02"
   }

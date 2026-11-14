@@ -24,7 +24,9 @@ create table if not exists public.terms (
   is_cmd     boolean not null default false, -- 터미널에 직접 치는 명령어면 true
   usage      text not null default '',       -- 언제 쓰냐면
   stage      text not null default '',       -- 개발 단계: 준비·만들기·실행·확인·오류 해결·배포·공유
-  ai         text not null default ''        -- AI를 쓰면
+  ai         text not null default '',       -- AI를 쓰면 ('언제 쓰냐면' 안 AI 칩)
+  code       text not null default '',       -- 실제 코드 모양 ('언제 쓰냐면' 안 회색 상자)
+  word       text not null default ''        -- 영어 단어의 원래 뜻 (노란 칸 아래)
 );
 
 -- 내 기록 (사람마다 따로)
@@ -67,3 +69,6 @@ end $$;
 
 -- 개발 단계·AI를 쓰면 칸을 더할 때 (이미 만든 DB에 한 번만 실행)
 -- alter table public.terms add column if not exists stage text not null default '', add column if not exists ai text not null default '';
+
+-- 코드 모양·영어 단어 뜻 칸을 더할 때 (이미 만든 DB에 한 번만 실행)
+-- alter table public.terms add column if not exists code text not null default '', add column if not exists word text not null default '';

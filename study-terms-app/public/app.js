@@ -351,6 +351,8 @@ function renderCard() {
   $('c-ko').textContent = t.ko;
   $('c-full').textContent = t.full;
   $('c-full').hidden = !t.full;
+  $('c-word').textContent = t.word || ''; // 영어 단어의 원래 뜻 (예: fetch: 가져오다)
+  $('c-word').hidden = !t.word;
   // 개념 흐름(t.flow)은 화면에 보이지 않는다. 뜻을 알기 어려워 쉬운 설명·예시로 대신한다. 데이터는 남겨 둔다
 
   const used = new Set([t.id]);
@@ -360,8 +362,11 @@ function renderCard() {
   // 이 용어를 주로 만나는 단계 하나를 문장 앞 칩으로 (순서 줄은 '이 순서대로 간다'는 오해를 불러 뺐다)
   const stage = t.stage ? `<span class="stage-chip" title="이 용어를 주로 만나는 개발 단계">${esc(t.stage)}</span>` : '';
   const use = linkify(t.usage || '', new Set([t.id])); // 이 줄은 위에서 이미 링크된 용어도 다시 링크한다
-  setSub($('c-use'), use && stage + `<span>${use}</span>`);
-  setSub($('c-ai'), linkify(t.ai || '', new Set([t.id]))); // AI 코딩 도구와 함께 쓸 때 주의할 점 또는 신경 쓸 일이 적다는 안내
+  // 한 줄에 상황 → 실제 코드 → AI 조언 순서로 (코드는 코드로 생기는 용어에만)
+  const code = t.code ? `<pre class="code">${esc(t.code)}</pre>` : '';
+  const ai = linkify(t.ai || '', new Set([t.id]));
+  setSub($('c-use'), use && `<p class="use-line">${stage}<span>${use}</span></p>` + code
+    + (ai ? `<p class="use-line"><span class="ai-chip" title="AI 코딩 도구로 개발할 때">AI</span><span>${ai}</span></p>` : ''));
 
   if (document.activeElement !== $('mine')) $('mine').value = n.mine;
   updateMemo();

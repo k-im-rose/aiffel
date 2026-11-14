@@ -12,6 +12,7 @@ addSection('03-05', "이미지·영상 생성", [
     "stage": "만들기",
     "use": "프롬프트 한 줄로 그림을 얻는 이미지 생성 앱이나 API를 쓸 때 만나요.",
     "ai": "마음에 안 들면 한 번에 하나씩만 바꿔 보세요. \"배경만 밤으로 바꿔 줘\"처럼 구체적으로 시키면 좋아요.",
+    "word": "Text: 글\nTo: ~에서 ~로\nImage: 그림",
     "related": ["diffusion-model", "prompt-slots", "seed", "genai"]
   },
   {
@@ -26,6 +27,7 @@ addSection('03-05', "이미지·영상 생성", [
     "stage": "만들기",
     "use": "이미지 생성 프롬프트를 쓸 때 빠뜨린 게 없는지 점검하는 체크리스트로 써요. 결과가 의도와 다를 때 살펴봐요.",
     "ai": "비워 둔 칸은 AI가 마음대로 채워요. \"피사체, 동작, 카메라, 조명, 환경, 스타일을 모두 채워 프롬프트를 써 줘\"라고 시키세요.",
+    "word": "Prompt: 지시문\nSlot: 끼워 넣는 칸",
     "related": ["prompt", "text-to-image", "camera-shot", "negative-prompt"]
   },
   {
@@ -40,6 +42,7 @@ addSection('03-05', "이미지·영상 생성", [
     "stage": "만들기",
     "use": "이미지나 영상 생성 프롬프트에 '하이 앵글, 50mm' 같은 말을 적을 때 써요. 구도가 마음에 안 들 때 바꿔 봐요.",
     "ai": "샷 크기, 각도, 렌즈를 하나씩만 정해서 적으세요. 여러 개를 섞으면 모델이 헷갈려서 엉뚱한 구도가 나와요.",
+    "word": "Shot: 한 컷\nAngle: 각도\nLens: 렌즈",
     "related": ["prompt-slots", "text-to-video"]
   },
   {
@@ -54,6 +57,8 @@ addSection('03-05', "이미지·영상 생성", [
     "stage": "실행·확인",
     "use": "이미지 생성 코드에 manual_seed(42)처럼 숫자로 들어가요. 같은 그림을 다시 뽑고 싶을 때 써요.",
     "ai": "같은 결과가 필요하면 \"시드를 고정해 줘\"라고 시키세요. 기기나 버전이 다르면 그래도 결과가 조금 달라질 수 있어요.",
+    "word": "Seed: 씨앗, 모든 것의 시작점",
+    "code": "# 같은 그림이 나오게 시드를 42로 고정\nimport torch\ng = torch.Generator().manual_seed(42)",
     "related": ["reproducibility", "text-to-image", "noise-denoising"]
   },
   {
@@ -68,6 +73,8 @@ addSection('03-05', "이미지·영상 생성", [
     "stage": "실행·확인",
     "use": "이미지 생성 코드의 num_inference_steps나 도구의 steps 칸에서 만나요. 클수록 오래 걸리는 대신 더 다듬어져요.",
     "ai": "빨리 확인하려면 \"스텝 수를 줄여서 돌려 줘\"라고 시키세요. 빠른 전용 모델은 권장 스텝 수가 따로 있으니 그대로 따르세요.",
+    "word": "Inference: 추론\nSteps: 단계",
+    "code": "# 20단계만 거쳐서 그림 한 장 만들기\nimage = pipe(prompt, num_inference_steps=20).images[0]",
     "related": ["diffusion-model", "distillation", "guidance-scale"]
   },
   {
@@ -82,6 +89,7 @@ addSection('03-05', "이미지·영상 생성", [
     "stage": "만들기",
     "use": "이미지 생성 모델이 어떻게 그림을 만드는지 설명하는 글에서 계속 나와요. 생성이 여러 스텝으로 나뉘는 이유와 이어져요.",
     "ai": "직접 다룰 일은 거의 없어요. 작동 방식이 궁금하면 \"잡음에서 그림이 나오는 과정을 비유로 설명해 줘\"라고 물어보세요.",
+    "word": "Noise: 잡음\nDe: 없애다\nDenoising: 잡음을 걷어 내기",
     "related": ["diffusion-model", "ddpm", "seed"]
   },
   {
@@ -96,6 +104,7 @@ addSection('03-05', "이미지·영상 생성", [
     "stage": "만들기",
     "use": "직접 손실 함수를 만들다가 학습이 안 될 때 '이 계산이 미분되는가'를 따져 보게 돼요.",
     "ai": "반올림이나 if문처럼 끊기는 계산이 들어가면 학습이 멈추기도 해요. \"이 손실 함수가 미분 가능한지 확인해 줘\"라고 시키세요.",
+    "word": "Differentiate: 미분하다\nDifferentiable: 미분할 수 있는",
     "related": ["gradient", "loss", "gradient-descent"]
   },
   {
@@ -110,6 +119,7 @@ addSection('03-05', "이미지·영상 생성", [
     "stage": "만들기",
     "use": "얼굴 생성이나 화질 개선을 다루는 옛 코드나 논문에서 만나요. 확산 모델 이전에 이미지 생성의 주류였어요.",
     "ai": "새로 시작한다면 보통 확산 모델이 더 쉬워요. GAN은 학습이 불안정하니 AI가 제안하면 이유를 먼저 물어보세요.",
+    "word": "Generative: 생성하는\nAdversarial: 적대적인, 서로 겨루는\nNetwork: 신경망",
     "related": ["mode-collapse", "stylegan", "diffusion-model", "distillation"]
   },
   {
@@ -124,6 +134,7 @@ addSection('03-05', "이미지·영상 생성", [
     "stage": "오류 해결",
     "use": "GAN을 학습하는데 비슷한 이미지만 계속 나올 때 마주치는 문제예요.",
     "ai": "샘플을 여러 장 뽑아서 서로 다른지 직접 확인하세요. 비슷하면 \"모드 붕괴를 줄이는 방법을 알려 줘\"라고 물어보세요.",
+    "word": "Mode: 유형, 방식\nCollapse: 무너짐\nMode Collapse: 한 가지 결과만 반복하는 현상",
     "related": ["gan", "mnist"]
   },
   {
@@ -152,6 +163,7 @@ addSection('03-05', "이미지·영상 생성", [
     "stage": "만들기",
     "use": "diffusers의 DDPMScheduler나 확산 모델 논문 목록에서 이름으로 만나요. 확산 모델이 실제로 쓸 만해진 계기가 된 방법이에요.",
     "ai": "직접 구현할 일은 거의 없어요. 코드에 나오면 \"이 스케줄러가 하는 일을 설명해 줘\"라고 물어보세요.",
+    "word": "Denoising: 잡음 제거\nDiffusion: 퍼짐, 확산\nProbabilistic: 확률적인\nModels: 모델",
     "related": ["diffusion-model", "noise-denoising", "gan"]
   },
   {
@@ -167,6 +179,7 @@ addSection('03-05', "이미지·영상 생성", [
     "stage": "준비",
     "use": "Stable Diffusion의 텍스트 인코더나 이미지 검색·분류 예제에서 만나요. 글과 그림을 같은 기준으로 비교하는 모델이에요.",
     "ai": "\"문장으로 이미지를 검색하는 코드를 CLIP으로 만들어 줘\"라고 시킬 수 있어요. 모델 이름이 여러 개라 어떤 걸 쓰는지 확인하세요.",
+    "word": "Contrastive: 비교해 구분하는\nLanguage-Image: 언어와 이미지\nPre-training: 미리 학습하기",
     "related": ["text-encoder", "embedding", "cosine-similarity"]
   },
   {
@@ -182,6 +195,7 @@ addSection('03-05', "이미지·영상 생성", [
     "stage": "만들기",
     "use": "이미지 생성 코드의 pipe.text_encoder나 모델 폴더의 text_encoder 항목에서 만나요. 프롬프트를 모델이 읽는 숫자로 바꾸는 부분이에요.",
     "ai": "직접 다룰 일은 거의 없어요. 모델 폴더에 이 항목이 있으면 글 입력을 처리하는 부품이라고만 알아 두세요.",
+    "word": "Text: 글\nEncoder: 숫자로 바꿔 주는 장치",
     "related": ["clip", "imagen", "encoder-decoder", "llm"]
   },
   {
@@ -211,6 +225,7 @@ addSection('03-05', "이미지·영상 생성", [
     "stage": "만들기",
     "use": "Stable Diffusion 설명서나 VAE 이야기에서 나와요. 큰 이미지를 작게 압축해서 계산하는 공간이라는 뜻이에요.",
     "ai": "직접 다룰 일은 거의 없어요. 이미지 생성이 빠른 이유가 궁금하면 \"왜 잠재 공간에서 계산하면 빨라?\"라고 물어보세요.",
+    "word": "Latent: 숨은, 겉으로 안 드러난\nSpace: 공간",
     "related": ["latent-diffusion", "autoencoder", "vae"]
   },
   {
@@ -225,6 +240,7 @@ addSection('03-05', "이미지·영상 생성", [
     "stage": "만들기",
     "use": "Stable Diffusion이 만들어진 방식으로 소개돼요. 일반 PC의 GPU로도 이미지 생성이 가능해진 이유로 나와요.",
     "ai": "직접 구현할 일은 거의 없어요. 이미지 생성 도구를 고를 때 \"내 GPU 메모리로 돌아가는 모델인지\" 확인해 달라고 하세요.",
+    "word": "Latent: 숨은, 겉으로 안 드러난\nDiffusion: 퍼짐, 확산",
     "related": ["latent-space", "diffusion-model", "open-weight"]
   },
   {
@@ -239,6 +255,7 @@ addSection('03-05', "이미지·영상 생성", [
     "stage": "만들기",
     "use": "이미지 생성 모델 폴더의 vae 항목이나 데이터를 작게 줄였다 되돌리는 예제에서 만나요.",
     "ai": "직접 만들 일은 드물어요. 코드에 나오면 \"압축하는 부분과 복원하는 부분을 나눠서 설명해 줘\"라고 시키세요.",
+    "word": "Auto: 스스로\nEncoder: 숫자로 바꿔 주는 장치\nAutoencoder: 스스로 줄였다 되살리는 신경망",
     "related": ["vae", "latent-space", "encoder-decoder"]
   },
   {
@@ -253,6 +270,7 @@ addSection('03-05', "이미지·영상 생성", [
     "stage": "실행·확인",
     "use": "이미지 생성 코드의 pipe.vae나 모델 폴더의 vae 항목에서 만나요. 결과가 번지거나 색이 이상하면 이 부품을 의심해요.",
     "ai": "색이 뿌옇거나 이상하면 \"다른 VAE로 바꿔서 다시 돌려 줘\"라고 시켜 보세요. 모델과 맞는 VAE를 써야 해요.",
+    "word": "Variational: 변화를 주는, 확률적인\nAutoencoder: 줄였다 되살리는 신경망",
     "related": ["autoencoder", "latent-space", "dit"]
   },
   {
@@ -267,6 +285,7 @@ addSection('03-05', "이미지·영상 생성", [
     "stage": "만들기",
     "use": "이미지 한 곳만 마음에 안 들 때 그 부분만 다시 그리게 하는 기능이에요. 생성형 채우기 같은 메뉴가 이 방식이에요.",
     "ai": "고칠 영역을 정확히 칠하고 \"여기만 이렇게 바꿔 줘\"라고 시키세요. 칠한 범위가 너무 좁거나 넓으면 어색하게 나와요.",
+    "word": "In: 안쪽\nPainting: 그리기\nInpainting: 일부 안쪽을 다시 그리기",
     "related": ["image-to-image", "text-to-image", "mask"]
   },
   {
@@ -281,6 +300,7 @@ addSection('03-05', "이미지·영상 생성", [
     "stage": "만들기",
     "use": "이미 있는 그림을 넣고 스타일이나 내용을 바꾸고 싶을 때 쓰는 기능이에요. 참조 이미지를 넣는 방식도 여기에 속해요.",
     "ai": "\"이 그림을 수채화 느낌으로 바꿔 줘\"처럼 시키세요. 원본과 얼마나 비슷하게 할지 정하는 값이 있으니 같이 물어보세요.",
+    "word": "Reference: 참조, 기준으로 삼는 것\nImage: 그림",
     "related": ["inpainting", "controlnet", "flux"]
   },
   {
@@ -295,6 +315,7 @@ addSection('03-05', "이미지·영상 생성", [
     "stage": "준비",
     "use": "Hugging Face나 Civitai에서 화풍 파일을 내려받아 기존 모델에 덧입힐 때 만나요. 큰 모델은 그대로 두고 작은 파일만 더해요.",
     "ai": "모델과 짝이 맞는 LoRA만 쓸 수 있어요. 내려받기 전에 어떤 모델용인지, 라이선스가 뭔지 확인하세요.",
+    "word": "Low: 낮은\nRank: 순위, 행렬의 복잡한 정도\nAdaptation: 적응\nLoRA: 작게 덧붙여 모델을 맞추는 방법",
     "related": ["fine-tuning", "distillation", "parameter"]
   },
   {
@@ -309,6 +330,7 @@ addSection('03-05', "이미지·영상 생성", [
     "stage": "준비",
     "use": "Turbo, Lightning, LCM처럼 빠르다는 이름이 붙은 모델이 만들어진 방식이에요. 작고 빠른 모델을 고를 때 만나요.",
     "ai": "직접 할 일은 거의 없어요. 빠른 모델은 권장 설정이 따로 있으니 \"이 모델의 권장 스텝과 가이던스를 알려 줘\"라고 물어보세요.",
+    "word": "Distillation: 증류, 진하게 걸러 내기",
     "related": ["inference-steps", "gan", "guidance-scale"]
   },
   {
@@ -323,6 +345,7 @@ addSection('03-05', "이미지·영상 생성", [
     "stage": "실행·확인",
     "use": "이미지 생성 코드의 guidance_scale 인자나 도구의 cfg 칸으로 만나요. 그림이 프롬프트와 다르게 나올 때 조절해요.",
     "ai": "너무 높이면 그림이 부자연스러워져요. \"가이던스를 조금씩 올리며 비교해 줘\"라고 시키고 눈으로 직접 골라 보세요.",
+    "word": "Classifier: 분류기\nFree: ~가 없는\nGuidance: 안내, 이끌기\nScale: 정도, 크기",
     "related": ["negative-prompt", "distillation", "model-card"]
   },
   {
@@ -337,6 +360,7 @@ addSection('03-05', "이미지·영상 생성", [
     "stage": "만들기",
     "use": "이미지 생성 도구의 '넣지 말 것' 칸에 원하지 않는 요소를 적을 때 써요. 이상한 손이나 흐림을 줄이고 싶을 때 써요.",
     "ai": "모델에 따라 이 칸이 아예 없거나 효과가 없을 수 있어요. 안 먹히면 \"이 모델이 네거티브 프롬프트를 지원하는지 알려 줘\"라고 물어보세요.",
+    "word": "Negative: 부정의, 원하지 않는\nPrompt: 지시문",
     "related": ["guidance-scale", "prompt-slots"]
   },
   {
@@ -380,6 +404,7 @@ addSection('03-05', "이미지·영상 생성", [
     "stage": "준비",
     "use": "GitHub의 LICENSE 파일이나 모델 페이지 배지에서 확인해요. 회사 서비스에 가져다 써도 되는지 따질 때 중요해요.",
     "ai": "AI가 라이선스를 잘못 요약하기도 해요. 상업적으로 쓸 때는 LICENSE 원문을 직접 한 번 읽어 보세요.",
+    "word": "Permissive: 관대한, 허용하는\nLicense: 사용 허락",
     "related": ["license", "non-commercial-license", "open-source"]
   },
   {
@@ -395,6 +420,7 @@ addSection('03-05', "이미지·영상 생성", [
     "stage": "준비",
     "use": "모델 카드의 라이선스 항목에 cc-by-nc 같은 이름으로 보여요. 돈을 버는 용도로는 쓸 수 없다는 뜻이에요.",
     "ai": "개인 연습은 괜찮아도 회사 제품이나 판매용에는 쓰면 안 돼요. 모델을 고를 때 \"상업적으로 써도 되는지\"를 꼭 확인하세요.",
+    "word": "Non: ~이 아닌\nCommercial: 상업적인\nLicense: 사용 허락",
     "related": ["license", "permissive-license", "open-weight"]
   },
   {
@@ -438,6 +464,7 @@ addSection('03-05', "이미지·영상 생성", [
     "stage": "준비",
     "use": "코랩이나 내 컴퓨터에서 pip install diffusers로 설치한 뒤 이미지 생성 모델을 이름으로 불러올 때 써요.",
     "ai": "\"diffusers로 이 모델을 불러와 그림을 만들어 줘\"라고 시키면 돼요. GPU 메모리가 모자라 오류가 나기 쉬우니 메시지를 그대로 보여 주세요.",
+    "code": "# 확산 모델을 불러와 그림 한 장 만들기\nfrom diffusers import DiffusionPipeline\npipe = DiffusionPipeline.from_pretrained(\"your-model\")",
     "related": ["hugging-face", "pipeline", "comfyui", "pytorch"]
   },
   {
@@ -466,6 +493,7 @@ addSection('03-05', "이미지·영상 생성", [
     "stage": "만들기",
     "use": "이미지 생성 모델에 윤곽선이나 자세 같은 구조를 지정하고 싶을 때 붙이는 보조 모델이에요. ComfyUI에서 노드로 만나요.",
     "ai": "기본 모델과 짝이 맞는 ControlNet을 써야 해요. \"이 모델에 맞는 ControlNet을 알려 줘\"라고 확인하세요.",
+    "word": "Control: 제어\nNet: 신경망\nControlNet: 구조를 지정해 그림을 제어하는 신경망",
     "related": ["openpose", "image-to-image", "comfyui"]
   },
   {
@@ -494,6 +522,7 @@ addSection('03-05', "이미지·영상 생성", [
     "stage": "만들기",
     "use": "문장이나 첫 이미지로 짧은 영상을 얻는 서비스를 쓸 때 만나요. 한 번에 몇 초만 나와서 이어 붙이는 일이 많아요.",
     "ai": "긴 영상은 장면별로 나눠서 만들어요. \"장면마다 프롬프트를 나눠 써 줘\"라고 시키고, 이어 붙였을 때 인물이 같은지 확인하세요.",
+    "word": "Text: 글, 문장\nVideo: 영상\nImage: 그림, 이미지\nText-to-Video: 문장을 영상으로 바꾸는 방식",
     "related": ["camera-shot", "prompt-rewriter", "dit", "image-to-image"]
   },
   {
@@ -508,6 +537,7 @@ addSection('03-05', "이미지·영상 생성", [
     "stage": "만들기",
     "use": "짧게 쓴 말을 모델이 잘 알아듣는 형식으로 바꿔 주는 앞 단계예요. 모델이 정해진 형식만 받을 때 필요해요.",
     "ai": "\"이 짧은 문장을 모델이 받는 형식으로 풀어 써 줘\"라고 시킬 수 있어요. 바뀐 문장이 내 뜻과 같은지 확인하세요.",
+    "word": "Prompt: 요청 문장, 입력 지시\nRewrite: 다시 쓰다\nPrompt Rewriter: 입력 문장을 다시 써 주는 도구",
     "related": ["prompt-slots", "json", "agent", "skill"]
   },
   {
@@ -522,6 +552,8 @@ addSection('03-05', "이미지·영상 생성", [
     "stage": "만들기",
     "use": "문자열을 숫자로 바꿔 캐시 키를 만들거나 배치 생성에 쓸 때 만나요. 같은 입력이면 늘 같은 값이 나와야 해요.",
     "ai": "파이썬 기본 hash()는 실행할 때마다 값이 달라져요. 같은 값이 필요하면 \"hashlib으로 바꿔 줘\"라고 시키세요.",
+    "word": "Hash: 잘게 다지다, 뒤섞어 만든 요약값\nFunction: 함수, 기능\nHash Function: 입력을 정해진 길이 값으로 바꾸는 함수",
+    "code": "# 같은 문자열을 해시값(숫자)으로 바꾸기\nprint(hash(\"hello\"))",
     "related": ["seed", "reproducibility", "password-hash"]
   },
   {
@@ -536,6 +568,8 @@ addSection('03-05', "이미지·영상 생성", [
     "stage": "만들기",
     "use": "파이썬 코드에서 외부 API에 요청을 보낼 때 pip install requests로 설치해서 써요. requests.get()이 가장 흔해요.",
     "ai": "\"requests로 이 API를 호출하는 코드를 짜 줘\"라고 시키세요. 오류 응답을 확인하는 부분과 타임아웃이 빠졌는지 꼭 보세요.",
+    "word": "Request: 요청하다, 요청\nrequests: 요청들, 웹에 요청을 보내는 도구",
+    "code": "# 웹 주소로 GET 요청 보내고 JSON 받기\nimport requests\nres = requests.get(\"https://example.com/api\")\nres.raise_for_status()",
     "related": ["http", "api", "timeout", "python"]
   },
   {
@@ -551,6 +585,8 @@ addSection('03-05', "이미지·영상 생성", [
     "stage": "오류 해결",
     "use": "API를 호출했는데 서버가 응답하지 않아 프로그램이 멈춘 것 같을 때 만나요. 기다릴 시간 한도를 정하는 값이에요.",
     "ai": "AI가 짠 요청 코드에 타임아웃이 빠진 경우가 많아요. \"모든 요청에 타임아웃을 넣어 줘\"라고 시키세요.",
+    "word": "Time: 시간\nOut: 밖으로 나가다\nTimeout: 정한 시간이 지나 끝나는 것",
+    "code": "# 5초 안에 응답 없으면 오류 내기\nimport requests\nrequests.get(\"https://example.com\", timeout=5)",
     "related": ["requests-library", "latency", "rate-limit"]
   },
   {
@@ -565,6 +601,8 @@ addSection('03-05', "이미지·영상 생성", [
     "stage": "오류 해결",
     "use": "한글이나 공백이 든 글자를 주소에 붙였더니 요청이 실패할 때 만나요. 주소에 못 쓰는 글자를 안전한 글자로 바꾸는 일이에요.",
     "ai": "주소를 문자열로 직접 이어 붙이게 두지 마세요. \"검색어는 URL 인코딩해서 요청해 줘\"라고 시키면 안전해요.",
+    "word": "URL: 인터넷 주소\nEncoding: 부호로 바꾸다, 변환\nURL Encoding: 주소에 못 쓰는 글자를 안전한 형태로 바꾸는 것",
+    "code": "# 공백·한글을 주소용 글자로 바꾸기\nfrom urllib.parse import quote\nprint(quote(\"안녕 world\"))",
     "related": ["url", "requests-library", "utf-8"]
   }
 ]);

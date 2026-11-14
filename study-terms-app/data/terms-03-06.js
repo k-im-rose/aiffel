@@ -12,6 +12,7 @@ addSection('03-06', "멀티모달과 음성 AI", [
     "stage": "만들기",
     "use": "AI 서비스에 사진이나 음성도 넣고 싶을 때 이 말을 만나요. 글만 받는 AI와 구분해서 쓰는 말이에요.",
     "ai": "\"사진을 보고 설명해 줘\"처럼 시킬 수 있어요. 사진이나 음성에는 개인정보가 들어 있을 수 있으니, 올리기 전에 무엇이 담겼는지 꼭 확인하세요.",
+    "word": "Multi: 여럿의\nModal: 방식, 형식\nMultimodal: 여러 형식을 함께 다루는\nMultimodal AI: 글·그림·소리를 함께 다루는 AI",
     "related": ["modality", "native-multimodal", "vision-language-model", "omni-model"]
   },
   {
@@ -26,6 +27,7 @@ addSection('03-06', "멀티모달과 음성 AI", [
     "stage": "만들기",
     "use": "AI 모델 소개에서 '글, 이미지, 음성을 받아요'처럼 받을 수 있는 정보의 종류를 볼 때 만나요.",
     "ai": "직접 다룰 일은 거의 없어요. 모델을 고를 때 \"이 모델이 이미지와 음성도 받을 수 있는지 알려 줘\"라고 물어보면 돼요.",
+    "word": "Modality: 방식, 형식\nModality(AI): 글·이미지·소리처럼 정보가 담긴 형식",
     "related": ["multimodal-ai", "prosody"]
   },
   {
@@ -40,6 +42,7 @@ addSection('03-06', "멀티모달과 음성 AI", [
     "stage": "만들기",
     "use": "음성으로 대화하는 앱을 만들 때, 모델 소개에서 '네이티브'라는 말이 붙은 걸 보게 돼요.",
     "ai": "직접 다룰 일은 거의 없어요. 음성 대화 기능을 시킬 때 \"한 모델이 소리를 바로 받는 방식이야, 여러 모델을 잇는 방식이야?\"라고 물어보세요.",
+    "word": "Native: 타고난, 원래부터의\nMultimodal: 여러 형식을 함께 다루는\nNative Multimodal: 처음부터 여러 형식을 한 모델로 다루게 만든 구조",
     "related": ["multimodal-ai", "gpt-4o", "gemini", "omni-model", "pipeline"]
   },
   {
@@ -54,6 +57,7 @@ addSection('03-06', "멀티모달과 음성 AI", [
     "stage": "만들기",
     "use": "사진과 글을 연결해서 배우는 모델이 어떻게 만들어졌는지 설명하는 글에서 만나요.",
     "ai": "직접 다룰 일은 거의 없어요. 이 방식으로 만든 모델을 쓴다면 \"분류하고 싶은 이름을 문장으로 적어서 이미지를 분류해 줘\"라고 시키세요.",
+    "word": "Contrastive: 대조적인, 비교해 다른 점을 보는\nLearning: 학습\nContrastive Learning: 맞는 짝은 가깝게, 틀린 짝은 멀게 배우는 방식",
     "related": ["clip", "embedding-space", "cross-modal-alignment"]
   },
   {
@@ -68,6 +72,7 @@ addSection('03-06', "멀티모달과 음성 AI", [
     "stage": "만들기",
     "use": "사진과 글을 같이 넣고 비슷한 것을 찾는 검색 기능을 만들 때 이 말을 만나요.",
     "ai": "가깝다고 해서 항상 정답은 아니에요. 검색 결과를 몇 개 직접 열어서 맞는지 꼭 확인하세요.",
+    "word": "Embedding: 끼워 넣기\nSpace: 공간\nEmbedding Space: 숫자 목록이 놓이는 좌표 공간",
     "related": ["embedding", "latent-space", "contrastive-learning", "representation", "cross-modal-retrieval"]
   },
   {
@@ -82,6 +87,7 @@ addSection('03-06', "멀티모달과 음성 AI", [
     "stage": "만들기",
     "use": "AI 논문이나 모델 설명에서 '표현을 학습한다'는 말이 나올 때 만나요.",
     "ai": "직접 다룰 일은 거의 없어요. 이 말이 나오면 \"여기서 표현이 임베딩이랑 같은 뜻이야?\"라고 물어보면 쉽게 풀어 줘요.",
+    "word": "Representation: 표현, 나타낸 것",
     "related": ["embedding", "embedding-space", "vector"]
   },
   {
@@ -96,6 +102,7 @@ addSection('03-06', "멀티모달과 음성 AI", [
     "stage": "만들기",
     "use": "사진과 글을 함께 다루는 모델 설명에서 '정렬'이라는 말이 나올 때 만나요.",
     "ai": "'정렬'은 뜻이 여러 가지라 헷갈리기 쉬워요. 뜻이 애매하면 \"여기서 정렬은 어떤 뜻이야?\"라고 꼭 물어보세요.",
+    "word": "Cross: 가로지르는\nModal: 형식의\nAlignment: 줄 맞춤, 정렬\nCross-modal Alignment: 다른 형식의 정보를 같은 공간에서 비교되게 맞추는 것",
     "related": ["embedding-space", "contrastive-learning", "temporal-alignment", "alignment"]
   },
   {
@@ -110,6 +117,7 @@ addSection('03-06', "멀티모달과 음성 AI", [
     "stage": "만들기",
     "use": "사진을 올리면 비슷한 상황의 글이나 녹음을 찾아 주는 검색 기능을 만들 때 쓰는 말이에요.",
     "ai": "\"사진으로 비슷한 자료를 찾는 검색을 만들어 줘\"라고 시킬 수 있어요. 찾아 준 결과가 정말 비슷한지는 직접 몇 개 열어서 확인하세요.",
+    "word": "Cross: 가로지르는\nModal: 형식의\nRetrieval: 되찾아 오기, 검색\nCross-modal Retrieval: 한 형식으로 물어 다른 형식 자료를 찾는 검색",
     "related": ["embedding-space", "multimodal-ai", "clip"]
   },
   {
@@ -152,6 +160,7 @@ addSection('03-06', "멀티모달과 음성 AI", [
     "stage": "만들기",
     "use": "회의 녹음을 글로 바꿔 회의록을 만들고 싶을 때 가장 먼저 쓰는 기술이에요.",
     "ai": "글로 바꾸면 말투와 침묵 같은 단서가 사라져요. 감정이나 분위기가 중요한 일이라면 글만 믿지 말고 원본 녹음도 확인하세요.",
+    "word": "Speech: 말, 음성\nText: 글\nSpeech-to-Text: 말을 글로 바꾸는 기술\nASR: Automatic Speech Recognition, 자동 음성 인식",
     "related": ["tts", "whisper", "cer-wer", "prosody", "speaker-diarization"]
   },
   {
@@ -166,6 +175,7 @@ addSection('03-06', "멀티모달과 음성 AI", [
     "stage": "만들기",
     "use": "안내 문구를 목소리로 읽어 주는 기능을 만들 때 쓰는 기술이에요.",
     "ai": "모델을 고르기 전에 \"이 모델이 한국어를 지원해?\"부터 확인하세요. 만든 음성은 직접 들어 보고 어색한 곳이 없는지 확인하는 게 좋아요.",
+    "word": "Text: 글\nSpeech: 말, 음성\nText-to-Speech: 글을 말소리로 바꾸는 기술",
     "related": ["stt", "supertonic", "voice-cloning", "expression-tag"]
   },
   {
@@ -180,6 +190,7 @@ addSection('03-06', "멀티모달과 음성 AI", [
     "stage": "실행·확인",
     "use": "상담 녹음을 분석하면서 말 속도나 침묵 길이 같은 소리의 특징을 볼 때 만나요.",
     "ai": "소리로 감정을 짐작하는 건 틀릴 수 있어요. AI가 \"화가 난 것 같다\"고 해도 그대로 믿지 말고 사람이 한 번 들어 보세요.",
+    "word": "Acoustic: 소리의\nCue: 단서\nProsody: 말의 억양·리듬\nAcoustic Cues: 말투·억양처럼 소리에만 담긴 단서",
     "related": ["modality", "stt", "native-multimodal"]
   },
   {
@@ -194,6 +205,7 @@ addSection('03-06', "멀티모달과 음성 AI", [
     "stage": "만들기",
     "use": "음성 인식이 어떻게 발전했는지 배울 때, 소리와 글자를 짝짓는 어려움을 설명하는 출발점이에요.",
     "ai": "직접 다룰 일은 거의 없어요. 요즘 음성 인식 도구가 알아서 처리해 줘서, 원리가 궁금할 때만 \"쉽게 설명해 줘\"라고 물어보세요.",
+    "word": "Temporal: 시간의\nAlignment: 줄 맞춤, 정렬\nTemporal Alignment: 소리의 어느 구간이 어느 글자인지 맞추는 일",
     "related": ["ctc", "dtw", "hmm", "cross-modal-alignment"]
   },
   {
@@ -208,6 +220,7 @@ addSection('03-06', "멀티모달과 음성 AI", [
     "stage": "만들기",
     "use": "옛날 음성 인식의 역사를 읽거나, 길이가 다른 두 신호를 비교하는 코드를 볼 때 만나요.",
     "ai": "직접 다룰 일은 거의 없어요. 코드에 이 말이 보이면 \"이 부분이 뭘 하는 거야?\"라고 물어서 이해하고 넘어가세요.",
+    "word": "Dynamic: 변하는\nTime: 시간\nWarping: 휘어 늘이기\nDynamic Time Warping: 시간축을 늘였다 줄여 두 소리를 맞추는 방법",
     "related": ["temporal-alignment", "hmm"]
   },
   {
@@ -222,6 +235,7 @@ addSection('03-06', "멀티모달과 음성 AI", [
     "stage": "만들기",
     "use": "음성 인식이 규칙에서 확률로 바뀐 역사를 읽을 때 나오는 옛날 방식이에요.",
     "ai": "요즘 코드에서는 거의 안 보여서 직접 다룰 일은 거의 없어요. 옛 자료를 읽다가 막히면 \"이걸 비유로 설명해 줘\"라고 시키세요.",
+    "word": "Hidden: 숨겨진\nMarkov: 사람 이름(마르코프)\nModel: 모델\nHMM: 숨은 상태를 확률로 추정하는 모델",
     "related": ["temporal-alignment", "acoustic-model", "dtw"]
   },
   {
@@ -236,6 +250,7 @@ addSection('03-06', "멀티모달과 음성 AI", [
     "stage": "만들기",
     "use": "옛 음성 인식의 구조를 설명하는 글에서, 소리를 발음으로 바꾸는 부품으로 나와요.",
     "ai": "직접 다룰 일은 거의 없어요. 요즘은 하나의 모델이 이 부품들을 한꺼번에 해 줘서, 역사를 배울 때만 알아 두면 돼요.",
+    "word": "Acoustic: 소리의\nModel: 모델\nAcoustic Model: 소리를 듣고 발음 확률을 내는 부품",
     "related": ["pronunciation-dictionary", "language-model", "hmm", "deep-learning"]
   },
   {
@@ -250,6 +265,7 @@ addSection('03-06', "멀티모달과 음성 AI", [
     "stage": "만들기",
     "use": "음성 합성이나 음성 인식 도구가 발음 단위로 처리한다는 설명을 읽을 때 만나요.",
     "ai": "직접 다룰 일은 거의 없어요. 특정 단어가 이상하게 읽히면 \"이 단어의 발음을 고치는 방법 알려 줘\"라고 물어보세요.",
+    "word": "Phoneme: 음소, 말소리의 가장 작은 단위",
     "related": ["pronunciation-dictionary", "acoustic-model"]
   },
   {
@@ -264,6 +280,7 @@ addSection('03-06', "멀티모달과 음성 AI", [
     "stage": "오류 해결",
     "use": "회사 약어나 신제품 이름이 받아쓰기에서 자꾸 틀릴 때, 옛 방식에서는 이 사전이 원인이었어요.",
     "ai": "요즘 모델은 사전이 없어도 어느 정도 맞히지만 낯선 이름은 여전히 틀려요. \"이 단어들을 미리 알려 주는 설정을 넣어 줘\"라고 시키세요.",
+    "word": "Pronunciation: 발음\nDictionary: 사전\nPronunciation Dictionary: 단어를 발음 기호로 바꿔 주는 표",
     "related": ["phoneme", "acoustic-model", "ctc"]
   },
   {
@@ -278,6 +295,7 @@ addSection('03-06', "멀티모달과 음성 AI", [
     "stage": "만들기",
     "use": "음성 인식에서 비슷한 소리를 문맥으로 고르거나, LLM이 뭔지 설명할 때 나오는 말이에요.",
     "ai": "직접 다룰 일은 거의 없어요. LLM의 뿌리 같은 말이라서, 개념만 알아 두면 충분해요.",
+    "word": "Language: 언어\nModel: 모델\nLanguage Model: 다음에 올 단어를 맞히는 모델",
     "related": ["llm", "next-token", "acoustic-model"]
   },
   {
@@ -292,6 +310,8 @@ addSection('03-06', "멀티모달과 음성 AI", [
     "stage": "만들기",
     "use": "음성 인식 모델을 학습시키는 설정이나 논문에서 '손실 함수로 CTC를 쓴다'고 나올 때 만나요.",
     "ai": "직접 다룰 일은 거의 없어요. 학습 코드에 이 말이 보이면 \"왜 이 방식을 쓴 거야?\"라고 물어서 이유만 알고 넘어가세요.",
+    "word": "Connectionist: 연결주의의(신경망식의)\nTemporal: 시간의\nClassification: 분류\nCTC: 소리 길이와 글자 수가 달라도 학습시키는 방법",
+    "code": "# 음성 인식용 CTC 손실 함수 만들기\nimport torch.nn as nn\nloss_fn = nn.CTCLoss(blank=0)",
     "related": ["temporal-alignment", "stt", "pronunciation-dictionary"]
   },
   {
@@ -334,6 +354,7 @@ addSection('03-06', "멀티모달과 음성 AI", [
     "stage": "실행·확인",
     "use": "시험 점수는 좋은데 실제 현장 녹음에서는 성능이 떨어질 때 원인을 따지는 말이에요.",
     "ai": "벤치마크 점수만 믿지 마세요. \"내가 가진 실제 녹음 몇 개로 정확도를 시험해 줘\"라고 시켜서 직접 확인하는 게 좋아요.",
+    "word": "Robust: 튼튼한\nRobustness: 환경이 바뀌어도 성능이 유지되는 성질",
     "related": ["whisper", "benchmark", "generalization"]
   },
   {
@@ -348,6 +369,7 @@ addSection('03-06', "멀티모달과 음성 AI", [
     "stage": "준비",
     "use": "Whisper가 느릴 때, 같은 모델을 더 빠르게 돌리려고 설치하는 도구예요.",
     "ai": "\"faster-whisper로 바꿔서 더 빠르게 돌려 줘\"라고 시킬 수 있어요. 빨라도 결과가 똑같은지는 같은 녹음으로 한 번 비교하세요.",
+    "code": "# 음성 파일을 글로 받아쓰기\nfrom faster_whisper import WhisperModel\nmodel = WhisperModel(\"small\")\nsegments, info = model.transcribe(\"audio.wav\")",
     "related": ["whisper", "ffmpeg", "quantization", "pip"]
   },
   {
@@ -363,6 +385,7 @@ addSection('03-06', "멀티모달과 음성 AI", [
     "stage": "준비",
     "use": "음성 도구를 설치하다가 'ffmpeg를 먼저 설치하세요'라는 안내를 만나는 경우가 많아요.",
     "ai": "설치 명령은 컴퓨터마다 달라요. \"내 컴퓨터(맥/윈도우)에 맞게 ffmpeg 설치 방법을 알려 줘\"라고 운영체제를 알려 주세요.",
+    "code": "# 영상에서 소리만 mp3로 뽑기\nffmpeg -i input.mp4 -vn audio.mp3",
     "related": ["faster-whisper", "sample-rate"]
   },
   {
@@ -377,6 +400,7 @@ addSection('03-06', "멀티모달과 음성 AI", [
     "stage": "실행·확인",
     "use": "받아쓰기 모델이 얼마나 정확한지 점수로 볼 때, 광고의 정확도 숫자를 읽을 때 만나요.",
     "ai": "한국어는 글자 단위(CER)로 보는 게 공정해요. \"글자 오류율로 정확도를 계산해 줘\"라고 시키고, 정답 문장은 사람이 직접 만드세요.",
+    "word": "Character: 글자\nWord: 단어\nError Rate: 오류율, 틀린 비율\nCER / WER: 글자·단어 단위로 센 받아쓰기 오류 비율",
     "related": ["whisper", "stt", "benchmark"]
   },
   {
@@ -391,6 +415,7 @@ addSection('03-06', "멀티모달과 음성 AI", [
     "stage": "만들기",
     "use": "상담 중에 말하는 대로 화면에 글자가 바로 뜨는 기능을 만들 때 쓰는 방식이에요.",
     "ai": "녹음이 끝난 뒤 정리하는 일이라면 굳이 쓸 필요가 없어요. 정말 실시간이 필요한지부터 \"실시간이 꼭 필요한 이유가 있어?\"라고 따져 보세요.",
+    "word": "Streaming: 흘려보내기, 실시간 전송\nASR: Automatic Speech Recognition, 자동 음성 인식\nStreaming ASR: 말하는 도중에 글자가 나오는 음성 인식",
     "related": ["stt", "whisper", "latency", "qwen"]
   },
   {
@@ -433,6 +458,7 @@ addSection('03-06', "멀티모달과 음성 AI", [
     "stage": "준비",
     "use": "그래픽카드가 없는 노트북에서도 AI 모델을 돌려 보고 싶을 때 쓰는 실행 프로그램이에요.",
     "ai": "직접 다룰 일은 거의 없어요. 대신 이 프로그램을 쓰는 Ollama나 LM Studio를 쓰는 게 더 쉬워요. 모델이 크면 느려질 수 있어요.",
+    "code": "# 내려받은 GGUF 모델로 대화 시작하기\nllama-cli -m model.gguf -p \"안녕하세요\"",
     "related": ["gguf", "ollama", "lm-studio", "inference-engine"]
   },
   {
@@ -461,6 +487,7 @@ addSection('03-06', "멀티모달과 음성 AI", [
     "stage": "만들기",
     "use": "모델 소개에 '옴니'가 붙어 있으면, 글·소리·이미지를 한 모델이 직접 받는다는 뜻이에요.",
     "ai": "직접 다룰 일은 거의 없어요. 음성 기능을 만들 때 \"받아쓰기를 거치는 방식과 옴니 방식의 차이를 알려 줘\"라고 물어보세요.",
+    "word": "Omni: 모든\nModel: 모델\nOmni Model: 여러 형식의 입력을 모두 받는 모델",
     "related": ["gpt-4o", "gemma", "native-multimodal"]
   },
   {
@@ -489,6 +516,7 @@ addSection('03-06', "멀티모달과 음성 AI", [
     "stage": "만들기",
     "use": "AI 모델 구조 그림이나 논문에서, 입력을 모델 크기에 맞게 바꾸는 단계로 나와요.",
     "ai": "직접 다룰 일은 거의 없어요. 코드에서 보이면 \"이 줄이 뭘 하는 거야?\"라고 물어서 이해하고 넘어가면 돼요.",
+    "word": "Linear: 직선의, 선형의\nProjection: 투영, 옮겨 비추기\nLinear Projection: 행렬 곱 한 번으로 크기를 맞춰 바꾸는 단계",
     "related": ["representation", "gemma", "vector"]
   },
   {
@@ -503,6 +531,7 @@ addSection('03-06', "멀티모달과 음성 AI", [
     "stage": "배포·공유",
     "use": "여러 사람이 쓰는 서버에 AI 모델을 올릴 때 후보로 나오는 실행 프로그램이에요.",
     "ai": "노트북에서 잘 돌던 설정이 서버에서는 안 맞을 수 있어요. \"서버용으로 배포하는 설정을 만들어 줘\"라고 하고 실제로 돌려서 확인하세요.",
+    "code": "# SGLang 서버 띄우기\npython -m sglang.launch_server --model-path your-model",
     "related": ["vllm", "lmdeploy", "inference-engine", "continuous-batching"]
   },
   {
@@ -517,6 +546,7 @@ addSection('03-06', "멀티모달과 음성 AI", [
     "stage": "배포·공유",
     "use": "서버에 AI 모델을 올릴 때, 비슷한 도구들과 나란히 후보에 오르는 실행 프로그램이에요.",
     "ai": "같은 모델이라도 도구마다 속도가 달라요. \"이 도구들의 속도를 같은 조건으로 비교해 줘\"라고 시키고 결과는 직접 확인하세요.",
+    "code": "# LMDeploy API 서버 띄우기\nlmdeploy serve api_server your-model",
     "related": ["vllm", "sglang", "inference-engine"]
   },
   {
@@ -531,6 +561,7 @@ addSection('03-06', "멀티모달과 음성 AI", [
     "stage": "배포·공유",
     "use": "AI 서버가 왜 빠른지 설명하는 글에서, 요청이 몰려도 그래픽카드가 놀지 않게 하는 방법으로 나와요.",
     "ai": "직접 다룰 일은 거의 없어요. 서버용 엔진이 알아서 해 주는 기능이라서 있다는 것만 알아 두세요.",
+    "word": "Continuous: 끊이지 않는, 계속되는\nBatching: 묶어서 처리하기\nContinuous Batching: 요청을 계속 끼워 넣어 묶어 처리하는 방법",
     "related": ["batch", "vllm", "sglang", "kv-cache"]
   },
   {
@@ -545,6 +576,7 @@ addSection('03-06', "멀티모달과 음성 AI", [
     "stage": "실행·확인",
     "use": "AI 모델의 속도를 비교하는 글이나 표에서 숫자로 마주쳐요. 높을수록 빨리 답해요.",
     "ai": "어떤 기기에서 쟀는지에 따라 숫자가 크게 달라요. 표를 볼 때 \"이 숫자는 어떤 환경에서 잰 거야?\"라고 꼭 확인하세요.",
+    "word": "Token: 토큰\nPer: ~당\nSecond: 초\nTokens per Second: 1초에 만드는 토큰 수",
     "related": ["token", "inference-engine", "latency"]
   },
   {
@@ -573,6 +605,7 @@ addSection('03-06', "멀티모달과 음성 AI", [
     "stage": "만들기",
     "use": "짧은 목소리 샘플로 그 사람 목소리로 말하게 하는 AI 기능을 쓸 때 만나요.",
     "ai": "본인 동의 없이 남의 목소리를 만들면 문제가 돼요. 쓰기 전에 모델 라이선스와 목소리 주인의 동의가 있는지 꼭 확인하세요.",
+    "word": "Voice: 목소리\nClone: 복제하다\nVoice Cloning: 특정 사람의 목소리를 복제하는 기술",
     "related": ["tts", "fish-audio-s2", "ai-basic-act", "non-commercial-license"]
   },
   {
@@ -587,6 +620,7 @@ addSection('03-06', "멀티모달과 음성 AI", [
     "stage": "만들기",
     "use": "음성 합성 문장에 웃음이나 한숨 같은 소리를 넣고 싶을 때, 문장 속에 끼워 넣는 표시예요.",
     "ai": "모델마다 쓸 수 있는 태그가 달라요. 목록에 없는 태그는 글자 그대로 읽히니, 만든 음성을 꼭 들어 보세요.",
+    "word": "Expression: 표현\nTag: 꼬리표, 표시\nExpression Tag: 웃음·한숨 같은 표현을 넣는 표시",
     "related": ["tts", "supertonic", "fish-audio-s2"]
   },
   {
@@ -629,6 +663,7 @@ addSection('03-06', "멀티모달과 음성 AI", [
     "stage": "준비",
     "use": "GitHub 저장소 위쪽에 'archived'라고 적혀 있을 때 만나요. 더 이상 고쳐지지 않는다는 뜻이에요.",
     "ai": "AI는 이런 저장소도 아무렇지 않게 추천해요. 새로 쓰기 전에 \"이 저장소가 아직 관리되는지 확인해 줘\"라고 시키세요.",
+    "word": "End: 끝\nSupport: 지원\nArchived: 보관된\nRepo: 저장소(Repository)\nEnd of Support: 더 이상 지원하지 않는 상태",
     "related": ["open-source", "github", "commit", "supertonic"]
   },
   {
@@ -657,6 +692,8 @@ addSection('03-06', "멀티모달과 음성 AI", [
     "stage": "준비",
     "use": "녹음 파일을 받아쓰기 전에 '16kHz 모노로 바꾸세요'라는 안내를 볼 때 만나요.",
     "ai": "\"이 파일을 16kHz 모노로 변환하는 코드를 만들어 줘\"라고 시킬 수 있어요. 변환 뒤에 소리가 이상하지 않은지 한 번 들어 보세요.",
+    "word": "Sample: 표본, 일부를 뽑은 것\nRate: 비율, 속도\nSample Rate: 1초에 소리를 몇 번 재는지",
+    "code": "# 소리를 16kHz 모노로 바꾸기\nffmpeg -i in.mp3 -ar 16000 -ac 1 out.wav",
     "related": ["loudness-normalization", "silence-trimming", "noise-suppression", "ffmpeg"]
   },
   {
@@ -671,6 +708,8 @@ addSection('03-06', "멀티모달과 음성 AI", [
     "stage": "준비",
     "use": "회의실 녹음에서 멀리 앉은 사람의 목소리가 너무 작을 때 쓰는 소리 손보기 방법이에요.",
     "ai": "켰을 때와 껐을 때의 정확도를 같은 녹음으로 비교해 보세요. \"켠 것과 끈 것의 결과를 나란히 보여 줘\"라고 시키면 돼요.",
+    "word": "Loudness: 소리 크기\nNormalization: 기준에 맞춰 고르게 하기\nLoudness Normalization: 소리 크기를 고르게 맞추는 처리",
+    "code": "# 소리 크기를 고르게 맞추기\nffmpeg -i in.wav -af loudnorm out.wav",
     "related": ["sample-rate", "normalization", "noise-suppression"]
   },
   {
@@ -685,6 +724,7 @@ addSection('03-06', "멀티모달과 음성 AI", [
     "stage": "준비",
     "use": "받아쓰기 도구의 옵션에서, 말이 없는 긴 구간을 잘라 내고 싶을 때 만나요.",
     "ai": "무음 구간에서 AI가 없는 말을 지어내는 일을 줄여 줘요. 다만 너무 많이 자르면 말이 잘릴 수 있으니 결과를 꼭 확인하세요.",
+    "word": "Silence: 침묵, 무음\nTrimming: 다듬어 자르기\nVAD: Voice Activity Detection, 말소리 구간 감지\nSilence Trimming: 말 없는 구간을 잘라 내는 처리",
     "related": ["hallucination", "sample-rate", "asr-segment"]
   },
   {
@@ -699,6 +739,7 @@ addSection('03-06', "멀티모달과 음성 AI", [
     "stage": "준비",
     "use": "에어컨 소리처럼 배경 소음이 있는 녹음을 받아쓰기 전에 손볼 때 쓰는 방법이에요.",
     "ai": "과하게 걸면 목소리까지 깎여서 오히려 나빠질 수 있어요. 켠 것과 끈 것의 결과를 같은 녹음으로 비교해 보세요.",
+    "word": "Noise: 잡음\nSuppression: 억누르기\nNoise Suppression: 배경 잡음을 줄이는 처리",
     "related": ["noise-denoising", "sample-rate", "loudness-normalization"]
   },
   {
@@ -713,6 +754,8 @@ addSection('03-06', "멀티모달과 음성 AI", [
     "stage": "오류 해결",
     "use": "회사 시스템 이름이나 약어가 받아쓰기에서 자꾸 틀릴 때, 단어 목록을 미리 알려 주는 설정이에요.",
     "ai": "\"자주 틀리는 이 단어들을 미리 알려 주는 설정을 넣어 줘\"라고 시킬 수 있어요. 적용한 뒤에 같은 녹음으로 다시 확인하세요.",
+    "word": "Hot: 뜨거운, 자주 쓰이는\nWords: 단어들\nPrompt: 미리 주는 지시\nHotwords: 자주 나오는 단어를 모델에 미리 알려 주는 것",
+    "code": "# 고유명사를 알려 주고 받아쓰기\nsegments, _ = model.transcribe(\"a.wav\", hotwords=\"아그뭐 Supabase\")",
     "related": ["whisper", "stt", "prompt"]
   },
   {
@@ -727,6 +770,7 @@ addSection('03-06', "멀티모달과 음성 AI", [
     "stage": "만들기",
     "use": "회의록에 누가 말했는지 붙이고 싶을 때, 받아쓰기 다음에 붙이는 단계예요.",
     "ai": "조각이 엉뚱하게 잘리면 화자 구분도 같이 틀려요. 결과를 훑어보고, 사람이 바뀌는 곳이 맞는지 꼭 확인하세요.",
+    "word": "Speaker: 말하는 사람\nDiarization: 화자별로 나누기(영어 diary와 무관한 전문 용어)\nSpeaker Diarization: 누가 말했는지 구간을 나누는 작업",
     "related": ["asr-segment", "stt", "prosody"]
   },
   {
@@ -741,6 +785,7 @@ addSection('03-06', "멀티모달과 음성 AI", [
     "stage": "실행·확인",
     "use": "받아쓰기 결과를 코드로 받아 보면, 조각마다 시작·끝 시각과 글이 들어 있어요.",
     "ai": "\"회의록 항목마다 원본 녹음의 시각을 붙여 줘\"라고 시킬 수 있어요. 같은 녹음도 실행할 때마다 끊는 곳이 조금 달라질 수 있어요.",
+    "word": "Segment: 조각, 구간\nTimestamp: 시각 기록\nSegment (Timestamp): 시작·끝 시각이 붙은 받아쓰기 조각",
     "related": ["speaker-diarization", "whisper", "audit"]
   }
 ]);

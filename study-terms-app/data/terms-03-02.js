@@ -6,6 +6,8 @@ addSection('03-02', "트랜스포머와 언어 모델", [
     "stage": "만들기",
     "use": "이미지 인식 모델이 어떻게 생겼는지 설명하는 글에서 자주 만나요. 사진을 다루는 모델이라는 뜻으로 알아 두면 돼요.",
     "ai": "직접 구조를 짤 일은 드물어요. 이미지 분류 기능이 필요하면 \"사진을 분류하는 모델을 만들어 줘\"라고 시키고, 어떤 구조를 썼는지 한 번 물어보세요.",
+    "word": "Convolutional: 합성곱의, 겹쳐서 훑는\nNeural: 신경의\nNetwork: 망, 연결 구조\nCNN: 필터로 이미지의 무늬를 찾는 신경망",
+    "code": "# 합성곱 층 하나 만들기\nconv = nn.Conv2d(3, 16, kernel_size=3)",
     "related": [
       "neural-network",
       "skip-connection",
@@ -33,6 +35,8 @@ addSection('03-02', "트랜스포머와 언어 모델", [
     "stage": "만들기",
     "use": "신경망 코드나 구조 설명에서 층과 층 사이마다 이 이름이 보여요. 모델이 어떻게 계산하는지 읽을 때 만나요.",
     "ai": "직접 고를 일은 거의 없어요. AI가 짜 준 모델 코드에 ReLU가 있어도 보통 그대로 둬도 괜찮아요.",
+    "word": "Rectified: 바로잡은\nLinear: 직선의, 선형의\nUnit: 단위\nReLU: 음수는 0으로, 양수는 그대로 내보내는 함수",
+    "code": "# 음수를 0으로 만드는 활성화 함수\nrelu = nn.ReLU()\ny = relu(x)",
     "related": ["neural-network", "cnn"]
   },
   {
@@ -48,6 +52,8 @@ addSection('03-02', "트랜스포머와 언어 모델", [
     "stage": "만들기",
     "use": "모델이 연습문제만 달달 외운 것 같을 때 해결책으로 이 말이 나와요. 모델 코드에 한 줄로 들어가요.",
     "ai": "과적합이 걱정되면 \"드롭아웃을 넣어 줘\"라고 시킬 수 있어요. 결과를 확인할 때는 드롭아웃이 꺼진 상태인지 꼭 보세요.",
+    "word": "Drop: 떨어뜨리다\nOut: 밖으로\nDropout: 뉴런 일부를 무작위로 빼는 방법",
+    "code": "# 학습 중 뉴런 50%를 무작위로 끄기\ndrop = nn.Dropout(p=0.5)",
     "related": ["overfitting", "neural-network"]
   },
   {
@@ -63,6 +69,7 @@ addSection('03-02', "트랜스포머와 언어 모델", [
     "stage": "오류 해결",
     "use": "연습 때는 점수가 높은데 새 데이터에서는 점수가 뚝 떨어질 때 이 말을 만나요. 모델을 학습시키면 꼭 한 번 겪어요.",
     "ai": "학습 점수만 좋다고 안심하지 마세요. \"처음 보는 데이터로 다시 평가해 줘\"라고 시켜서 점수가 비슷한지 확인하세요.",
+    "word": "Over: 지나치게\nFitting: 맞추기\nOverfitting: 훈련 데이터에만 지나치게 맞춰진 상태",
     "related": ["generalization", "dropout", "training"]
   },
   {
@@ -71,6 +78,7 @@ addSection('03-02', "트랜스포머와 언어 모델", [
     "stage": "오류 해결",
     "use": "층을 깊게 쌓았는데 앞쪽 층이 거의 배우지 못할 때 원인으로 이 말이 나와요. 깊은 모델이 왜 어려운지 설명할 때도 써요.",
     "ai": "직접 다룰 일은 거의 없어요. 학습이 이상하게 안 되면 \"기울기 소실 가능성이 있는지 봐 줘\"라고 물어보세요.",
+    "word": "Vanishing: 사라지는\nGradient: 기울기\nVanishing Gradient: 학습 신호가 거의 0으로 사라지는 문제",
     "related": [
       "gradient",
       "backpropagation",
@@ -96,6 +104,8 @@ addSection('03-02', "트랜스포머와 언어 모델", [
     "stage": "만들기",
     "use": "모델 구조 그림에서 입력을 옆으로 빼서 나중에 더하는 화살표를 볼 때 만나요. 깊은 모델 구조를 읽을 때 자주 나와요.",
     "ai": "직접 연결을 짤 일은 드물어요. 모델 구조를 키울 때 \"잔차 연결이 들어 있는지 알려 줘\"라고 물어보면 돼요.",
+    "word": "Skip: 건너뛰다\nConnection: 연결\nSkip Connection: 층을 건너뛰어 값을 이어 주는 지름길",
+    "code": "# 입력을 출력에 그대로 더하기\nout = layer(x) + x",
     "related": [
       "vanishing-gradient",
       "cnn",
@@ -116,6 +126,8 @@ addSection('03-02', "트랜스포머와 언어 모델", [
     "stage": "실행·확인",
     "use": "문서 검색에서 질문과 가장 비슷한 글을 찾을 때 쓰는 점수예요. 설정 화면에서 거리 방식을 고를 때도 이 말이 보여요.",
     "ai": "검색 결과가 이상하면 점수 방식이 모델과 맞는지 확인하세요. \"이 임베딩에 맞는 유사도 방식이 뭐야?\"라고 물어보면 좋아요.",
+    "word": "Cosine: 코사인, 각도를 나타내는 수학 함수\nSimilarity: 유사도, 비슷한 정도\nCosine Similarity: 두 벡터의 방향이 얼마나 같은지 재는 값",
+    "code": "# 두 벡터의 코사인 유사도 계산\nsim = F.cosine_similarity(a, b, dim=0)",
     "related": [
       "embedding",
       "vector"
@@ -142,6 +154,8 @@ addSection('03-02', "트랜스포머와 언어 모델", [
     "stage": "만들기",
     "use": "예전 번역기나 음성 모델 설명에서 트랜스포머 이전 방식으로 나와요. 왜 요즘 모델이 바뀌었는지 이해할 때 필요해요.",
     "ai": "요즘 새로 만들 때는 거의 쓰지 않아요. AI가 RNN을 제안하면 \"요즘 방식으로는 뭐가 좋아?\"라고 되물어보세요.",
+    "word": "Recurrent: 되풀이되는, 순환하는\nNeural: 신경의\nNetwork: 망\nRNN: 앞의 기억을 넘기며 순서대로 읽는 신경망",
+    "code": "# 순환 신경망 층 만들기\nrnn = nn.RNN(input_size=10, hidden_size=20)",
     "related": ["lstm", "vanishing-gradient", "encoder-decoder", "transformer"]
   },
   {
@@ -157,6 +171,8 @@ addSection('03-02', "트랜스포머와 언어 모델", [
     "stage": "만들기",
     "use": "오래된 글 모델이나 시간에 따라 변하는 숫자 예측 코드에서 만나요. 기억력이 약한 RNN을 고친 방식이에요.",
     "ai": "직접 다룰 일은 거의 없어요. 옛날 코드에 LSTM이 보이면 \"이 부분이 하는 일을 쉽게 설명해 줘\"라고 시키세요.",
+    "word": "Long: 긴\nShort-Term: 단기\nMemory: 기억\nLSTM: 짧은 기억과 긴 기억을 함께 다루는 RNN",
+    "code": "# LSTM 층 만들기\nlstm = nn.LSTM(input_size=10, hidden_size=20)",
     "related": ["rnn", "skip-connection", "transformer"]
   },
   {
@@ -169,6 +185,7 @@ addSection('03-02', "트랜스포머와 언어 모델", [
     "stage": "만들기",
     "use": "번역·요약 모델 그림에서 왼쪽 읽는 부분과 오른쪽 쓰는 부분으로 나뉜 구조를 볼 때 만나요.",
     "ai": "직접 설계할 일은 드물어요. 모델을 고를 때 \"이 모델이 인코더-디코더 구조인지 알려 줘\"라고 물어보면 돼요.",
+    "word": "Encoder: 부호화하는 쪽, 압축하는 쪽\nDecoder: 풀어내는 쪽\nEncoder-Decoder: 입력을 압축한 뒤 출력으로 풀어내는 구조",
     "related": [
       "rnn",
       "attention",
@@ -199,6 +216,7 @@ addSection('03-02', "트랜스포머와 언어 모델", [
     "stage": "만들기",
     "use": "LLM이 긴 글에서 어떤 단어를 중요하게 보는지 설명할 때 이 말을 만나요. 모델 구조 글에서 계속 나와요.",
     "ai": "직접 다룰 일은 거의 없어요. 긴 글을 넣었는데 앞뒤 내용을 놓치면 중요한 내용을 짧게 정리해서 다시 주세요.",
+    "word": "Attention: 주의, 집중",
     "related": ["query-key-value", "transformer", "multi-head-attention", "encoder-decoder"]
   },
   {
@@ -207,6 +225,7 @@ addSection('03-02', "트랜스포머와 언어 모델", [
     "stage": "만들기",
     "use": "요즘 AI 모델이 어떤 구조인지 알아볼 때 거의 항상 나오는 이름이에요. 모델 소개 글의 구조 항목에서 만나요.",
     "ai": "직접 구현할 일은 거의 없어요. 모델 구조가 궁금하면 \"이 모델의 트랜스포머 구조를 쉽게 설명해 줘\"라고 시키세요.",
+    "word": "Transformer: 변환기, 바꿔 주는 것",
     "related": [
       "attention",
       "multi-head-attention",
@@ -235,6 +254,7 @@ addSection('03-02', "트랜스포머와 언어 모델", [
     "stage": "만들기",
     "use": "어텐션 코드에서 q, k, v라는 변수 이름으로 보여요. 모델 파일 이름에 q_proj 같은 말이 보일 때도 나와요.",
     "ai": "직접 다룰 일은 거의 없어요. 코드에 q, k, v가 나오면 \"각각 무슨 역할인지 주석으로 달아 줘\"라고 시키세요.",
+    "word": "Query: 질문, 물어보다\nKey: 열쇠, 단서\nValue: 값, 내용",
     "related": ["attention", "softmax", "vector"]
   },
   {
@@ -250,6 +270,8 @@ addSection('03-02', "트랜스포머와 언어 모델", [
     "stage": "만들기",
     "use": "모델 설정 파일에서 num_attention_heads 같은 값으로 만나요. 모델 크기를 비교할 때도 이 숫자가 보여요.",
     "ai": "직접 바꿀 일은 거의 없어요. 설정 값은 모델과 짝이 맞아야 하니 함부로 고치지 말고 AI에게 먼저 물어보세요.",
+    "word": "Multi: 여러 개의\nHead: 머리, 여기서는 독립된 어텐션 한 벌\nAttention: 주의, 집중\nMulti-Head Attention: 여러 관점으로 동시에 보는 어텐션",
+    "code": "# 멀티헤드 어텐션 층 만들기\nattn = nn.MultiheadAttention(512, 8)",
     "related": ["attention", "transformer", "causal-mask", "kv-cache"]
   },
   {
@@ -258,6 +280,8 @@ addSection('03-02', "트랜스포머와 언어 모델", [
     "stage": "만들기",
     "use": "글을 이어 쓰는 모델이 정답의 뒷부분을 미리 보지 못하게 가리는 장치예요. 생성 모델 코드에서 삼각형 모양 마스크로 보여요.",
     "ai": "직접 다룰 일은 거의 없어요. 학습 코드를 AI에게 맡겼다면 \"미래 토큰을 못 보게 가려져 있는지 확인해 줘\"라고 시키세요.",
+    "word": "Causal: 원인과 결과의, 인과의\nMask: 가리개, 가면\nCausal Mask: 미래를 보지 못하게 가리는 장치",
+    "code": "# 미래 위치를 가리는 마스크\nmask = torch.tril(torch.ones(4, 4))",
     "related": [
       "multi-head-attention",
       "next-token",
@@ -286,6 +310,7 @@ addSection('03-02', "트랜스포머와 언어 모델", [
     "stage": "실행·확인",
     "use": "긴 대화를 모델에 넣었더니 GPU 메모리가 모자랄 때 원인으로 나와요. 모델이 답을 빠르게 이어 쓰게 해 주는 장치예요.",
     "ai": "보통 알아서 켜져 있어요. 메모리 부족 오류가 나면 입력 길이를 줄이거나 \"KV 캐시 메모리를 줄이는 방법을 알려 줘\"라고 물어보세요.",
+    "word": "Key: 열쇠, 단서\nValue: 값\nCache: 빨리 꺼내려고 모아 둔 임시 저장소\nKV Cache: 계산한 Key와 Value를 저장해 두는 곳",
     "related": ["query-key-value", "multi-head-attention", "context-window"]
   },
   {
@@ -301,6 +326,7 @@ addSection('03-02', "트랜스포머와 언어 모델", [
     "stage": "만들기",
     "use": "모델 소개 글에서 RoPE 같은 이름으로 보이고, 한 번에 읽을 수 있는 글 길이와 연결돼요.",
     "ai": "직접 다룰 일은 거의 없어요. 긴 글을 다루려면 \"이 모델이 지원하는 최대 길이를 알려 줘\"라고 확인하세요.",
+    "word": "Positional: 위치의\nEncoding: 부호화, 정보로 바꿔 넣기\nPositional Encoding: 토큰의 위치를 숫자로 넣어 주는 방법",
     "related": ["transformer", "attention", "context-window"]
   },
   {
@@ -317,6 +343,8 @@ addSection('03-02', "트랜스포머와 언어 모델", [
     "stage": "준비",
     "use": "모델을 불러올 때 함께 불러오는 도구예요. 같은 문장도 모델마다 토큰 수가 달라서 비용을 계산할 때도 만나요.",
     "ai": "모델과 짝이 맞는 토크나이저를 써야 해요. 이름이 다르면 결과가 이상해지니, 코드에서 둘의 이름이 같은지 확인하세요.",
+    "word": "Token: 조각, 표\n-izer: ~하는 도구\nTokenizer: 글을 토큰으로 쪼개는 도구",
+    "code": "# 문장을 토큰 번호로 바꾸기\nids = tokenizer.encode(\"안녕하세요\")",
     "related": ["token", "context-window"]
   },
   {
@@ -332,6 +360,7 @@ addSection('03-02', "트랜스포머와 언어 모델", [
     "stage": "준비",
     "use": "문장 분류나 검색용 모델을 찾다 보면 이름에 BERT가 들어간 모델이 자주 나와요. 글을 읽고 이해하는 쪽에 강한 모델이에요.",
     "ai": "글을 새로 쓰게 하려면 맞지 않아요. 분류·검색이 목적일 때만 \"BERT 계열 모델로 해 줘\"라고 시키세요.",
+    "word": "Bidirectional: 양방향의\nEncoder: 부호화기, 압축하는 쪽\nRepresentations: 표현\nBERT: 앞뒤를 모두 보고 문장을 이해하는 모델",
     "related": ["gpt", "encoder-decoder", "pretraining"]
   },
   {
@@ -347,6 +376,7 @@ addSection('03-02', "트랜스포머와 언어 모델", [
     "stage": "준비",
     "use": "ChatGPT나 API 모델 이름(gpt-4o 등)에서 매일 만나요. 앞 글을 보고 다음 글자를 이어 쓰는 모델이라는 뜻이에요.",
     "ai": "모델 이름이 자주 바뀌니 코드에 적힌 이름이 지금도 있는지 공식 문서에서 확인하세요. AI가 옛 이름을 쓰기도 해요.",
+    "word": "Generative: 생성하는\nPre-trained: 미리 학습된\nTransformer: 변환기\nGPT: 미리 학습해 글을 만들어 내는 트랜스포머",
     "related": ["next-token", "bert", "llm", "scaling-law"]
   },
   {
@@ -362,6 +392,7 @@ addSection('03-02', "트랜스포머와 언어 모델", [
     "stage": "준비",
     "use": "모델이 클수록 왜 똑똑해지는지 설명하는 글에서 나와요. 모델을 고를 때 크기를 비교하는 근거로 쓰여요.",
     "ai": "직접 다룰 일은 거의 없어요. 큰 모델이 항상 정답은 아니니 \"작은 모델로도 충분한지 비교해 줘\"라고 시켜 보세요.",
+    "word": "Scaling: 규모를 키움\nLaw: 법칙\nScaling Law: 키울수록 성능이 일정하게 좋아진다는 법칙",
     "related": ["gpt", "llm", "loss", "parameter"]
   },
   {
@@ -377,6 +408,7 @@ addSection('03-02', "트랜스포머와 언어 모델", [
     "stage": "만들기",
     "use": "프롬프트에 예시 몇 개를 붙여 줬더니 모델이 형식을 따라 할 때 일어나는 일이에요. 따로 학습시키지 않아도 돼요.",
     "ai": "원하는 결과가 안 나오면 예시를 2~3개 붙여 보세요. \"이 형식과 똑같이 만들어 줘\"라고 예시를 같이 주면 잘 따라 해요.",
+    "word": "In: ~안에서\nContext: 문맥, 맥락\nLearning: 학습\nIn-context Learning: 입력 안의 예시만 보고 배우는 방식",
     "related": ["prompt", "fine-tuning", "context-window"]
   },
   {
@@ -385,6 +417,7 @@ addSection('03-02', "트랜스포머와 언어 모델", [
     "stage": "만들기",
     "use": "AI가 왜 사람이 좋아하는 답을 내는지 설명하는 글에서 기본 개념으로 나와요. 게임하는 AI에서도 만나요.",
     "ai": "직접 다룰 일은 거의 없어요. 학습 방식이 궁금하면 \"이 모델이 강화학습을 어떻게 썼는지 쉽게 설명해 줘\"라고 물어보세요.",
+    "word": "Reinforcement: 강화, 보강\nLearning: 학습\nReinforcement Learning: 보상을 받으며 행동을 배우는 학습",
     "related": [
       "rlhf",
       "supervised-learning",
@@ -409,6 +442,7 @@ addSection('03-02', "트랜스포머와 언어 모델", [
     "stage": "만들기",
     "use": "AI 안전 이야기나 모델 발표 자료에서 'AI를 사람 뜻에 맞게 만드는 일'로 소개돼요.",
     "ai": "잘 맞춘 모델도 틀리는 일이 있어요. 중요한 결과는 사람이 직접 확인하고, 위험한 작업은 AI에게 통째로 맡기지 마세요.",
+    "word": "Alignment: 정렬, 방향을 맞춤",
     "related": [
       "sft",
       "rlhf",
@@ -430,6 +464,7 @@ addSection('03-02', "트랜스포머와 언어 모델", [
     "stage": "만들기",
     "use": "내 데이터로 모델을 가르치는 파인튜닝 코드에서 만나요. 질문과 모범 답안을 짝지어 가르치는 방법이에요.",
     "ai": "모범 답안의 품질이 결과를 정해요. 데이터를 AI에게 만들게 했다면 틀린 예시가 섞이지 않았는지 꼭 훑어보세요.",
+    "word": "Supervised: 정답을 보며 배우는\nFine-Tuning: 미세 조정\nSFT: 정답 예시를 보여 주며 추가로 학습시키는 방법",
     "related": [
       "alignment",
       "fine-tuning",
@@ -457,6 +492,7 @@ addSection('03-02', "트랜스포머와 언어 모델", [
     "stage": "만들기",
     "use": "대화형 AI가 어떻게 만들어졌는지 설명하는 글에서 단골로 나와요. 사람이 고른 답을 기준으로 모델을 다듬는 방법이에요.",
     "ai": "직접 해 볼 일은 거의 없어요. 모델 카드에 이 말이 있으면 사람 선호에 맞춰 다듬어졌다는 뜻으로 읽으세요.",
+    "word": "Reinforcement: 강화, 보상으로 북돋움\nLearning: 학습\nHuman: 사람\nFeedback: 반응, 평가\nRLHF: 사람의 평가로 모델을 길들이는 강화학습",
     "related": ["reinforcement-learning", "alignment", "dpo", "sft"]
   },
   {
@@ -465,6 +501,7 @@ addSection('03-02', "트랜스포머와 언어 모델", [
     "stage": "만들기",
     "use": "오픈 모델 카드의 학습 방법 항목이나 학습 코드에서 만나요. 사람이 더 좋다고 고른 답과 덜 좋은 답의 짝으로 가르쳐요.",
     "ai": "짝으로 된 선호 데이터가 필요해요. 직접 시도할 때는 \"선호 데이터 형식을 예시로 보여 줘\"라고 먼저 물어보세요.",
+    "word": "Direct: 직접\nPreference: 선호\nOptimization: 최적화\nDPO: 선호하는 답을 직접 골라 학습시키는 방법",
     "related": [
       "rlhf",
       "alignment"
@@ -489,6 +526,7 @@ addSection('03-02', "트랜스포머와 언어 모델", [
     "stage": "만들기",
     "use": "Stable Diffusion 같은 이미지 생성 도구를 쓰다 보면 설명서에 계속 나와요. 잡음에서 그림을 조금씩 만들어 내는 방식이에요.",
     "ai": "직접 구조를 다룰 일은 드물어요. 이미지가 마음에 안 들면 프롬프트나 스텝 수를 바꿔 달라고 시키세요.",
+    "word": "Diffusion: 확산, 퍼져 나감\nModel: 모델\nDiffusion Model: 잡음을 걷어 내며 만들어 내는 모델",
     "related": [
       "transformer",
       "genai"
@@ -508,6 +546,7 @@ addSection('03-02', "트랜스포머와 언어 모델", [
     "stage": "오류 해결",
     "use": "긴 문서를 통째로 넣었는데 답이 중간 내용을 놓칠 때 원인으로 떠올려요. 검색 기반 답변에서 자주 겪어요.",
     "ai": "중요한 내용은 입력의 맨 앞이나 맨 끝에 두세요. \"중요한 문서를 앞쪽에 배치해 줘\"라고 시킬 수도 있어요.",
+    "word": "Lost: 길을 잃은\nin the middle: 한가운데에서\nLost in the Middle: 중간에 놓인 정보를 놓치는 현상",
     "related": [
       "context-window",
       "context-rot",
@@ -535,6 +574,7 @@ addSection('03-02', "트랜스포머와 언어 모델", [
     "stage": "만들기",
     "use": "모델이 글을 쓰기 시작하라는 신호로 넣는 특별한 글자예요. 토크나이저 설정을 볼 때 만나요.",
     "ai": "직접 다룰 일은 거의 없어요. 출력이 이상하게 시작되면 \"시작 토큰 설정이 맞는지 확인해 줘\"라고 물어보세요.",
+    "word": "Start: 시작\nSequence: 순서대로 이어진 것\nSOS: 문장 시작을 알리는 신호",
     "related": ["encoder-decoder", "causal-mask", "next-token", "token"]
   },
   {
@@ -550,6 +590,7 @@ addSection('03-02', "트랜스포머와 언어 모델", [
     "stage": "실행·확인",
     "use": "번역 모델의 성능을 논문이나 비교표에서 숫자로 볼 때 만나요. 정답 번역과 얼마나 겹치는지를 재는 점수예요.",
     "ai": "점수가 높아도 번역이 어색할 수 있어요. 점수만 믿지 말고 결과 문장을 직접 몇 개 읽어 보세요.",
+    "word": "Bilingual: 두 언어의\nEvaluation: 평가\nUnderstudy: 대역, 대신하는 사람\nBLEU: 번역을 사람 번역과 견주어 매기는 점수",
     "related": ["transformer", "encoder-decoder", "attention"]
   },
   {
@@ -580,6 +621,7 @@ addSection('03-02', "트랜스포머와 언어 모델", [
     "stage": "준비",
     "use": "이미지 분류 모델을 찾다 보면 모델 이름에 vit가 들어 있어요. 사진을 작은 조각으로 잘라 글처럼 읽는 모델이에요.",
     "ai": "직접 구조를 다룰 일은 거의 없어요. 모델을 고를 때 \"ViT 계열과 다른 모델의 차이를 알려 줘\"라고 물어보세요.",
+    "word": "Vision: 시각, 보는 능력\nTransformer: 변환기\nViT: 이미지를 보는 트랜스포머",
     "related": ["transformer", "cnn", "attention", "token"]
   },
   {
@@ -596,6 +638,7 @@ addSection('03-02', "트랜스포머와 언어 모델", [
     "stage": "만들기",
     "use": "이미지 생성 모델의 구조 설명이나 코드의 pipe.unet을 볼 때 만나요. 잡음을 걷어 내는 부품이에요.",
     "ai": "직접 다룰 일은 거의 없어요. 코드에 unet이 나오면 \"이 부분이 하는 일을 설명해 줘\"라고 시키세요.",
+    "word": "U: 알파벳 U, U자 모양\nNet: 망, 신경망\nU-Net: U자 모양으로 생긴 신경망",
     "related": ["diffusion-model", "cnn", "dit"]
   },
   {
@@ -612,6 +655,7 @@ addSection('03-02', "트랜스포머와 언어 모델", [
     "stage": "만들기",
     "use": "최신 이미지·영상 생성 모델 소개에서 기존 부품을 대신하는 새 부품으로 나와요. 모델 이름에 DiT가 붙어 있기도 해요.",
     "ai": "직접 다룰 일은 거의 없어요. 모델 소개에 DiT가 나오면 최신 구조라는 뜻으로 읽으면 돼요.",
+    "word": "Diffusion: 확산\nTransformer: 변환기\nDiT: 확산 모델에 트랜스포머를 쓰는 구조",
     "related": ["diffusion-model", "u-net", "vit", "scaling-law"]
   },
   {
@@ -627,6 +671,7 @@ addSection('03-02', "트랜스포머와 언어 모델", [
     "stage": "만들기",
     "use": "학습 코드에서 kl_coef, beta 같은 설정값으로 보여요. 다듬는 모델이 원래 모델에서 너무 멀어지지 않게 잡아 주는 값이에요.",
     "ai": "값을 함부로 바꾸지 마세요. 학습 결과가 이상하면 \"이 설정이 하는 일과 권장 범위를 알려 줘\"라고 물어보세요.",
+    "word": "Kullback-Leibler: 이 개념을 만든 두 사람의 이름\nDivergence: 갈라짐, 벌어진 정도\nKL Divergence: 두 분포가 얼마나 다른지 재는 값",
     "related": ["rlhf", "dpo", "alignment"]
   },
   {
@@ -642,6 +687,7 @@ addSection('03-02', "트랜스포머와 언어 모델", [
     "stage": "준비",
     "use": "단어를 숫자로 바꾸는 임베딩이 처음 어떻게 나왔는지 설명하는 글에서 시작점으로 나와요.",
     "ai": "요즘은 새로 쓸 일이 드물어요. 단어 유사도 실습이 필요하면 \"word2vec으로 비슷한 단어를 찾는 예제를 만들어 줘\"라고 시키세요.",
+    "word": "word: 단어\n2: to, ~로\nvec: vector의 줄임, 숫자 묶음\nword2vec: 단어를 숫자 벡터로 바꾸는 방법",
     "related": ["embedding", "vector", "fasttext"]
   },
   {
@@ -672,6 +718,7 @@ addSection('03-02', "트랜스포머와 언어 모델", [
     "stage": "만들기",
     "use": "문서 검색 기능을 만들 때 문장을 숫자로 바꾸려고 설치하는 파이썬 라이브러리예요. 작은 모델은 CPU로도 돌아가요.",
     "ai": "\"문장 임베딩을 만들어 검색하는 코드를 짜 줘\"라고 시키면 돼요. 처음 실행하면 모델을 내려받으니 시간이 걸려도 놀라지 마세요.",
+    "code": "# 문장을 벡터로 바꾸기\nfrom sentence_transformers import SentenceTransformer\nmodel = SentenceTransformer(\"all-MiniLM-L6-v2\")\nvec = model.encode(\"안녕\")",
     "related": ["embedding", "cosine-similarity", "word2vec"]
   },
   {
@@ -687,6 +734,8 @@ addSection('03-02', "트랜스포머와 언어 모델", [
     "stage": "만들기",
     "use": "파이토치 함수 이름이나 어텐션 구현 코드에서 만나요. 트랜스포머가 쓰는 기본 계산 방식이에요.",
     "ai": "직접 구현할 일은 거의 없어요. 코드에 이 함수가 보이면 AI가 정석대로 쓴 것이라 보통 그대로 둬도 돼요.",
+    "word": "Scaled: 크기를 조정한\nDot-Product: 점곱, 내적\nAttention: 주의, 집중\nScaled Dot-Product Attention: 내적 점수를 조정해 쓰는 어텐션",
+    "code": "# Q·K 점곱을 차원의 제곱근으로 나누기\nscores = q @ k.T / d ** 0.5",
     "related": ["query-key-value", "attention", "softmax", "causal-mask"]
   },
   {
@@ -702,6 +751,7 @@ addSection('03-02', "트랜스포머와 언어 모델", [
     "stage": "실행·확인",
     "use": "긴 글을 넣으면 메모리와 속도가 급격히 나빠지는 이유를 설명할 때 나와요. 입력이 두 배면 계산은 약 네 배예요.",
     "ai": "긴 글에서 느려지면 입력을 줄이거나 나눠서 넣으세요. \"긴 입력을 나눠서 처리하는 코드로 바꿔 줘\"라고 시킬 수 있어요.",
+    "word": "Dense: 빽빽한, 조밀한\nAttention: 주의, 집중\nDense Attention: 모든 토큰끼리 빠짐없이 비교하는 어텐션",
     "related": ["attention", "token", "context-window", "kv-cache"]
   },
   {
@@ -717,6 +767,7 @@ addSection('03-02', "트랜스포머와 언어 모델", [
     "stage": "만들기",
     "use": "신경망 구조를 설명할 때 한 층에 뉴런이 몇 개인지로 크기를 말해요. 모델 설정의 hidden size 같은 숫자와 이어져요.",
     "ai": "직접 개수를 정할 일은 드물어요. 모델을 키우거나 줄이고 싶으면 \"크기를 절반으로 줄인 설정을 만들어 줘\"라고 시키세요.",
+    "word": "Neuron: 신경 세포, 뉴런",
     "related": ["neural-network", "perceptron", "relu", "dropout"]
   },
   {
@@ -732,6 +783,7 @@ addSection('03-02', "트랜스포머와 언어 모델", [
     "stage": "실행·확인",
     "use": "큰 모델이 작은 모델에는 없던 능력을 보였다는 발표나 논문에서 만나요.",
     "ai": "작은 모델로 해 보고 안 된다고 포기하지 마세요. 큰 모델로 같은 요청을 다시 해 보고 결과를 비교하세요.",
+    "word": "Emergent: 갑자기 나타나는\nAbility: 능력\nEmergent Ability: 모델이 커지자 불쑥 생기는 능력",
     "related": ["scaling-law", "in-context-learning", "gpt"]
   },
   {
@@ -748,6 +800,7 @@ addSection('03-02', "트랜스포머와 언어 모델", [
     "stage": "준비",
     "use": "Hugging Face 모델 페이지의 설명 탭이 바로 모델 카드예요. 모델을 내려받기 전에 읽어 보는 설명서예요.",
     "ai": "모델을 고를 때 \"이 모델 카드에서 용도, 한계, 라이선스를 요약해 줘\"라고 시키세요. 라이선스는 꼭 직접 한 번 더 확인하세요.",
+    "word": "Model: 모델\nCard: 정보를 적어 둔 카드\nModel Card: 모델의 정보를 적어 둔 설명서",
     "related": ["open-weight", "local-model", "context-window"]
   },
   {
@@ -764,6 +817,7 @@ addSection('03-02', "트랜스포머와 언어 모델", [
     "stage": "만들기",
     "use": "사진이나 스크린샷을 올리고 질문하는 기능을 쓸 때 만나요. 그림과 글을 함께 이해하는 모델이에요.",
     "ai": "스크린샷을 같이 주고 \"이 화면대로 만들어 줘\"라고 시킬 수 있어요. 작은 글씨는 틀리게 읽기도 하니 중요한 숫자는 직접 확인하세요.",
+    "word": "Vision: 시각\nLanguage: 언어\nModel: 모델\nVLM: 그림과 글을 함께 다루는 모델",
     "related": ["vit", "transformer", "token"]
   },
   {
@@ -780,6 +834,7 @@ addSection('03-02', "트랜스포머와 언어 모델", [
     "stage": "준비",
     "use": "음성 인식 모델 설명이나 오디오 전처리 코드에서 만나요. 소리를 그림처럼 바꿔 놓은 것이에요.",
     "ai": "직접 그릴 일은 거의 없어요. 음성 파일을 다루는 코드를 시킬 때 \"스펙트로그램으로 바꾸는 부분을 설명해 줘\"라고 물어보세요.",
+    "word": "Spectro: 스펙트럼, 주파수별 분포\ngram: 기록, 그림\nSpectrogram: 소리를 주파수 분포 그림으로 나타낸 것",
     "related": ["transformer", "encoder-decoder", "token"]
   },
   {
@@ -796,6 +851,7 @@ addSection('03-02', "트랜스포머와 언어 모델", [
     "stage": "준비",
     "use": "공개된 AI 모델을 파이썬으로 가져다 쓰려고 맨 먼저 설치하는 라이브러리예요. 예제 코드 맨 위에 import로 자주 보여요.",
     "ai": "\"transformers로 이 모델을 불러와 돌려 줘\"라고 시키면 돼요. 버전이 안 맞아 오류가 나기 쉬우니 오류 메시지를 그대로 AI에게 보여 주세요.",
+    "code": "# 사전학습 모델 이름으로 내려받기\nfrom transformers import AutoModel\nmodel = AutoModel.from_pretrained(\"bert-base-uncased\")",
     "related": ["tokenizer", "pytorch", "open-weight"]
   },
   {
@@ -811,6 +867,7 @@ addSection('03-02', "트랜스포머와 언어 모델", [
     "stage": "실행·확인",
     "use": "프롬프트가 몇 토큰인지 미리 세어서 API 비용과 입력 한도를 확인할 때 써요.",
     "ai": "모델마다 세는 방식이 달라서 결과가 조금 다를 수 있어요. 비용이 중요하면 \"토큰 수를 세는 코드를 넣어 줘\"라고 시키세요.",
+    "code": "# 문장의 토큰 개수 세기\nimport tiktoken\nenc = tiktoken.get_encoding(\"cl100k_base\")\nprint(len(enc.encode(\"hello\")))",
     "related": ["tokenizer", "token", "context-window"]
   }
 ]);

@@ -12,6 +12,7 @@ addSection('03-07', "3D 장면 복원과 가우시안 스플래팅", [
     "stage": "만들기",
     "use": "사진 여러 장으로 3D 장면을 만들고 웹에서 돌려 보는 실습에서 써요. 작은 반투명 알갱이로 장면을 그려요.",
     "ai": "결과 파일이 매우 커질 수 있어요. 웹에 올리기 전에 \"파일 크기를 줄이는 방법도 알려 줘\"라고 물어보세요.",
+    "word": "Gaussian: 가우스 분포 모양의(종 모양의)\nSplat: 철퍼덕 튀기다, 번지게 찍다\nSplatting: 점을 번지게 찍어 그리기\n3D Gaussian Splatting: 번진 타원 알갱이로 3D 장면을 그리는 방법",
     "related": ["point-cloud", "nerf", "spherical-harmonics", "opacity", "alpha-blending", "ply"]
   },
   {
@@ -26,6 +27,7 @@ addSection('03-07', "3D 장면 복원과 가우시안 스플래팅", [
     "stage": "준비",
     "use": "3D 복원용 사진을 찍을 때 위치를 옮겨 가며 찍어야 하는 이유예요. 보는 자리가 바뀌면 물체가 달라 보여요.",
     "ai": "직접 다룰 일은 없어요. 제자리에서 돌며 찍으면 복원이 잘 안 되니, 찍는 방법만 조심하세요.",
+    "word": "Parallax: 시차, 보는 위치에 따라 달라 보이는 정도",
     "related": ["depth-estimation", "camera-pose", "sfm"]
   },
   {
@@ -40,6 +42,7 @@ addSection('03-07', "3D 장면 복원과 가우시안 스플래팅", [
     "stage": "만들기",
     "use": "사진 속 각 부분이 카메라에서 얼마나 먼지 구하는 단계예요. 3D 복원 모델이 사진마다 이 지도를 만들어요.",
     "ai": "깊이가 틀리면 복원한 점이 허공에 떠 보여요. 결과를 눈으로 돌려 보며 이상한 곳이 없는지 확인하세요.",
+    "word": "Depth: 깊이, 거리\nEstimation: 추정\nDepth Estimation: 사진 속 각 부분의 거리를 짐작하는 일",
     "related": ["parallax", "mapanything", "camera-pose", "point-cloud"]
   },
   {
@@ -54,6 +57,7 @@ addSection('03-07', "3D 장면 복원과 가우시안 스플래팅", [
     "stage": "만들기",
     "use": "사진마다 카메라가 어디서 어디를 봤는지 적은 정보예요. 여러 사진을 같은 공간에 맞출 때 필요해요.",
     "ai": "직접 만들 일은 드물어요. 결과에 카메라 위치 파일이 같이 나왔는지 확인하는 정도면 돼요.",
+    "word": "Camera: 카메라\nPose: 자세, 위치와 방향\nCamera Pose: 카메라의 위치와 바라보는 방향",
     "related": ["parallax", "sfm", "slam", "mapanything"]
   },
   {
@@ -82,6 +86,7 @@ addSection('03-07', "3D 장면 복원과 가우시안 스플래팅", [
     "stage": "실행·확인",
     "use": "3D 복원 결과를 처음 눈으로 확인할 때 보는 점들의 모음이에요. 가까이 보면 점 사이가 비어 있어요.",
     "ai": "\"결과를 점으로 먼저 저장해서 보여 줘\"라고 시켜 복원이 맞는지 가볍게 확인하세요.",
+    "word": "Point: 점\nCloud: 구름\nPoint Cloud: 점들이 구름처럼 모인 3D 표현",
     "related": ["mesh", "voxel", "gaussian-splatting", "lidar"]
   },
   {
@@ -96,6 +101,7 @@ addSection('03-07', "3D 장면 복원과 가우시안 스플래팅", [
     "stage": "만들기",
     "use": "3D 모델을 게임 화면이나 웹에 올릴 때 가장 흔히 쓰는 삼각형 표면 형식이에요.",
     "ai": "삼각형이 너무 많으면 화면이 느려져요. 필요하면 \"삼각형 수를 줄여 줘\"라고 시키세요.",
+    "word": "Mesh: 그물망\n3D Mesh: 삼각형을 이어 만든 3D 표면",
     "related": ["point-cloud", "voxel", "surface-normal", "stanford-bunny"]
   },
   {
@@ -110,6 +116,7 @@ addSection('03-07', "3D 장면 복원과 가우시안 스플래팅", [
     "stage": "만들기",
     "use": "3D 공간을 같은 크기의 작은 상자로 나눈 표현이에요. 점이 너무 많을 때 개수를 줄이는 데도 써요.",
     "ai": "상자 크기를 정하는 값이 중요해요. 너무 크면 모양이 깎이니 \"크기를 바꿔 가며 결과를 비교해 줘\"라고 하세요.",
+    "word": "Volume: 부피\nPixel: 화면의 점 한 칸\nVoxel: 부피를 가진 3D 칸",
     "related": ["point-cloud", "mesh", "pixel"]
   },
   {
@@ -124,6 +131,7 @@ addSection('03-07', "3D 장면 복원과 가우시안 스플래팅", [
     "stage": "만들기",
     "use": "스플랫 파일을 열면 f_dc 같은 칸이 보이는데, 보는 방향에 따라 색이 달라지는 값이에요.",
     "ai": "직접 다룰 일은 거의 없어요. 색이 이상해 보이면 이 칸을 읽는 방식이 틀렸는지 AI에게 확인해 달라고 하세요.",
+    "word": "Spherical: 구 모양의\nHarmonics: 조화 함수\nSpherical Harmonics: 보는 방향에 따른 색 변화를 담는 값",
     "related": ["gaussian-splatting", "ply", "opacity"]
   },
   {
@@ -138,6 +146,7 @@ addSection('03-07', "3D 장면 복원과 가우시안 스플래팅", [
     "stage": "오류 해결",
     "use": "스플랫 파일에 저장된 불투명도 값이에요. 그대로 쓰면 화면이 이상하게 나올 때 확인해 보는 값이에요.",
     "ai": "저장된 값을 바로 0~1로 읽으면 틀릴 수 있어요. \"이 값이 변환 전인지 후인지 확인해 줘\"라고 시키세요.",
+    "word": "Opacity: 불투명한 정도",
     "related": ["alpha-blending", "sigmoid", "gaussian-splatting"]
   },
   {
@@ -152,6 +161,7 @@ addSection('03-07', "3D 장면 복원과 가우시안 스플래팅", [
     "stage": "만들기",
     "use": "3D 회전을 숫자 4개로 나타낸 값이에요. 스플랫 파일의 rot 칸이 이 값이에요.",
     "ai": "직접 계산할 일은 드물어요. 축을 바꿀 때 회전값도 같이 바꿔야 하니 AI가 빼먹지 않았는지 확인하세요.",
+    "word": "Quaternion: 네 개의 수로 이루어진 것\nQuaternion(3D): 회전을 숫자 4개로 나타내는 방법",
     "related": ["gaussian-splatting", "ply"]
   },
   {
@@ -166,6 +176,8 @@ addSection('03-07', "3D 장면 복원과 가우시안 스플래팅", [
     "stage": "만들기",
     "use": "어떤 숫자든 0과 1 사이로 부드럽게 바꿔 주는 함수예요. 스플랫의 불투명도를 화면에 쓸 때 거쳐요.",
     "ai": "직접 다룰 일은 거의 없어요. 값 범위가 이상할 때 이 변환이 빠졌는지만 의심해 보세요.",
+    "word": "Sigmoid: S자 모양의\nSigmoid Function: 값을 0~1 사이로 바꾸는 S자 함수",
+    "code": "# 어떤 값이든 0~1 사이로 바꾸기\nimport math\nvalue = 1 / (1 + math.exp(-x))",
     "related": ["opacity", "softmax", "logit"]
   },
   {
@@ -180,6 +192,7 @@ addSection('03-07', "3D 장면 복원과 가우시안 스플래팅", [
     "stage": "만들기",
     "use": "스플랫 파일 헤더에 nx, ny, nz 칸으로 보이는, 표면이 향한 방향 값이에요. 실제로는 0으로 채울 때가 많아요.",
     "ai": "직접 다룰 일은 거의 없어요. 값이 모두 0이어도 오류가 아니니 걱정하지 않아도 돼요.",
+    "word": "Surface: 표면\nNormal: 수직인(직각인)\nSurface Normal: 표면에 수직인 방향",
     "related": ["mesh", "vector", "ply"]
   },
   {
@@ -194,6 +207,7 @@ addSection('03-07', "3D 장면 복원과 가우시안 스플래팅", [
     "stage": "실행·확인",
     "use": "반투명한 알갱이를 먼 것부터 차례로 겹쳐 색을 섞는 방법이에요. 스플랫이 화면에 그려질 때 쓰여요.",
     "ai": "겹치는 순서가 틀리면 색이 이상해져요. 시점을 돌렸을 때 색이 깜빡이면 정렬 문제인지 AI에게 물어보세요.",
+    "word": "Alpha: 투명도 값\nBlending: 섞기\nAlpha Blending: 반투명한 것들을 섞어 그리는 방법",
     "related": ["opacity", "rendering", "gaussian-splatting", "spark-renderer"]
   },
   {
@@ -208,6 +222,7 @@ addSection('03-07', "3D 장면 복원과 가우시안 스플래팅", [
     "stage": "실행·확인",
     "use": "3D 데이터로 화면에 보일 이미지를 계산해 그리는 일이에요. 화면이 안 나올 때 이 단계 문제인지 먼저 가려요.",
     "ai": "화면이 비면 \"데이터 문제인지 그리는 문제인지 나눠서 확인해 줘\"라고 시키세요. 콘솔 오류도 같이 붙여 넣으세요.",
+    "word": "Render: 그려 내다\nRendering: 데이터를 화면 이미지로 그려 내는 일",
     "related": ["alpha-blending", "spark-renderer", "threejs", "psnr"]
   },
   {
@@ -222,6 +237,7 @@ addSection('03-07', "3D 장면 복원과 가우시안 스플래팅", [
     "stage": "준비",
     "use": "레이저로 거리를 직접 재는 센서예요. 아이폰 Pro나 로봇에 달려 있어 사진 없이도 깊이를 얻어요.",
     "ai": "직접 다룰 일은 거의 없어요. 라이다 점에는 색이 없으니 색이 필요하면 사진과 합쳐야 한다는 것만 알아 두세요.",
+    "word": "Light: 빛\nDetection: 감지\nRanging: 거리 재기\nLiDAR: 빛으로 거리를 재는 센서",
     "related": ["point-cloud", "slam"]
   },
   {
@@ -236,6 +252,7 @@ addSection('03-07', "3D 장면 복원과 가우시안 스플래팅", [
     "stage": "만들기",
     "use": "3D 복원 도구가 사진마다 먼저 찾는, 여러 사진에서 알아보기 쉬운 지점이에요. 모서리나 무늬가 그래요.",
     "ai": "무늬 없는 벽이나 반짝이는 표면은 찾기 어려워요. 복원이 안 되면 사진 내용이 단조로운지 확인하세요.",
+    "word": "Feature: 특징\nPoint: 점\nFeature Point: 알아보기 쉬운 특징 지점",
     "related": ["sfm", "mvs", "camera-pose"]
   },
   {
@@ -250,6 +267,7 @@ addSection('03-07', "3D 장면 복원과 가우시안 스플래팅", [
     "stage": "만들기",
     "use": "사진 폴더에서 카메라 위치와 드문드문한 점을 구하는 3D 복원의 첫 단계예요.",
     "ai": "사진이 너무 적거나 흐리면 실패해요. 실패하면 오류 메시지를 붙여 넣고 \"사진 문제인지 설정 문제인지\" 물어보세요.",
+    "word": "Structure: 구조\nfrom: ~로부터\nMotion: 움직임\nSfM: 움직임에서 구조를 찾는 방법",
     "related": ["mvs", "feature-point", "camera-pose", "mapanything"]
   },
   {
@@ -264,6 +282,7 @@ addSection('03-07', "3D 장면 복원과 가우시안 스플래팅", [
     "stage": "만들기",
     "use": "카메라 위치를 구한 뒤 이어서 돌려 촘촘한 점이나 표면을 만드는 3D 복원의 다음 단계예요.",
     "ai": "앞 단계 결과가 틀리면 이 단계도 틀려요. 앞 단계 결과를 먼저 확인한 뒤에 돌리라고 시키세요.",
+    "word": "Multi: 여럿의\nView: 시점, 보는 위치\nStereo: 입체의\nMVS: 여러 시점 사진으로 촘촘한 3D를 구하는 방법",
     "related": ["sfm", "depth-estimation", "point-cloud"]
   },
   {
@@ -278,6 +297,7 @@ addSection('03-07', "3D 장면 복원과 가우시안 스플래팅", [
     "stage": "만들기",
     "use": "로봇청소기나 드론처럼 움직이면서 지도를 만들 때 쓰는 방식이에요. 촬영이 끝나길 기다리지 않아요.",
     "ai": "직접 다룰 일은 드물어요. 사진을 다 찍은 뒤 처리하는 방식과 다르다는 것만 구분해 두세요.",
+    "word": "Simultaneous: 동시에 일어나는\nLocalization: 위치 찾기\nMapping: 지도 만들기\nSLAM: 움직이며 내 위치와 지도를 함께 만드는 방식",
     "related": ["lidar", "camera-pose", "sfm"]
   },
   {
@@ -292,6 +312,7 @@ addSection('03-07', "3D 장면 복원과 가우시안 스플래팅", [
     "stage": "만들기",
     "use": "가우시안 스플래팅 이전에 많이 쓰던 3D 복원 방법이에요. 논문이나 자료에서 비교 대상으로 자주 나와요.",
     "ai": "직접 쓸 일은 거의 없어요. 비교 글을 읽을 때 이름만 알아보면 돼요.",
+    "word": "Neural: 신경망의\nRadiance: 빛의 방출, 광채\nField: 장, 공간 전체\nNeRF: 신경망으로 장면의 빛을 배우는 방법",
     "related": ["gaussian-splatting", "novel-view-synthesis", "neural-network"]
   },
   {
@@ -306,6 +327,7 @@ addSection('03-07', "3D 장면 복원과 가우시안 스플래팅", [
     "stage": "실행·확인",
     "use": "찍지 않은 각도에서 본 화면을 만들어 보는 일이에요. 3D 복원 결과를 평가할 때 만나요.",
     "ai": "마우스로 시점을 돌려 보며 이상한 곳이 없는지 직접 확인하세요. 찍지 않은 면은 지어낸 모양일 수 있어요.",
+    "word": "Novel: 새로운\nView: 시점\nSynthesis: 합성\nNovel View Synthesis: 없던 새 시점의 화면을 만들어 내는 일",
     "related": ["nerf", "gaussian-splatting", "held-out-view"]
   },
   {
@@ -320,6 +342,7 @@ addSection('03-07', "3D 장면 복원과 가우시안 스플래팅", [
     "stage": "실행·확인",
     "use": "복원한 화면을 원본 사진과 비교할 때 나오는 dB 숫자예요. 높을수록 원본과 비슷해요.",
     "ai": "숫자가 높아도 사람 눈에 좋아 보인다는 뜻은 아니에요. 결과 이미지도 꼭 같이 보세요.",
+    "word": "Peak: 최고점\nSignal: 신호\nNoise: 잡음\nRatio: 비율\nPSNR: 원본과 얼마나 비슷한지 보는 화질 지표",
     "related": ["mse", "ssim", "lpips", "pixel", "held-out-view"]
   },
   {
@@ -334,6 +357,7 @@ addSection('03-07', "3D 장면 복원과 가우시안 스플래팅", [
     "stage": "실행·확인",
     "use": "복원한 화면과 원본이 무늬와 형태까지 비슷한지 보는 점수예요. 0~1이고 1에 가까울수록 좋아요.",
     "ai": "혼자 보지 말고 다른 지표와 함께 보세요. \"세 가지 화질 점수를 한 표로 정리해 줘\"라고 시킬 수 있어요.",
+    "word": "Structural: 구조의\nSimilarity: 비슷함\nSSIM: 무늬와 형태의 비슷함을 보는 화질 지표",
     "related": ["psnr", "lpips"]
   },
   {
@@ -348,6 +372,7 @@ addSection('03-07', "3D 장면 복원과 가우시안 스플래팅", [
     "stage": "실행·확인",
     "use": "사람이 느끼는 차이에 가깝게 화질을 재는 점수예요. PSNR과 달리 낮을수록 좋아요.",
     "ai": "낮을수록 좋다는 점을 AI가 헷갈릴 때가 있어요. 결과를 해석할 때 방향이 맞는지 확인하세요.",
+    "word": "Learned: 학습된\nPerceptual: 지각의, 눈에 느껴지는\nSimilarity: 비슷함\nLPIPS: 사람 눈에 느껴지는 차이를 재는 화질 지표",
     "related": ["psnr", "ssim", "neural-network"]
   },
   {
@@ -362,6 +387,7 @@ addSection('03-07', "3D 장면 복원과 가우시안 스플래팅", [
     "stage": "실행·확인",
     "use": "복원에 쓰지 않고 따로 남겨 둔 사진이에요. 3D 복원 결과를 채점할 때만 써요.",
     "ai": "학습에 쓴 사진으로 평가하면 점수가 부풀려져요. \"평가용 사진은 학습에서 빼 줘\"라고 분명히 시키세요.",
+    "word": "Held out: 따로 빼 둔\nView: 시점, 사진\nHeld-out View: 평가용으로 따로 남겨 둔 사진",
     "related": ["psnr", "novel-view-synthesis", "generalization", "ground-truth"]
   },
   {
@@ -376,6 +402,7 @@ addSection('03-07', "3D 장면 복원과 가우시안 스플래팅", [
     "stage": "실행·확인",
     "use": "3D 점이나 스플랫 결과를 저장하고 주고받을 때 가장 흔한 파일 형식이에요.",
     "ai": "헤더에 어떤 칸이 있는지 열어서 확인하세요. 칸 순서가 다르면 AI가 짠 읽기 코드가 틀릴 수 있어요.",
+    "word": "Polygon: 다각형\nFile Format: 파일 형식\nPLY: 3D 점과 면을 저장하는 파일 형식",
     "related": ["sog", "splat-formats", "splat-transform", "binary-file", "spherical-harmonics"]
   },
   {
@@ -419,6 +446,7 @@ addSection('03-07', "3D 장면 복원과 가우시안 스플래팅", [
     "stage": "배포·공유",
     "use": "스플랫 파일을 웹용 형식으로 바꾸거나 불필요한 점을 걸러 낼 때 터미널에서 실행하는 도구예요.",
     "ai": "\"버전을 고정해서 실행해 줘\"라고 시키세요. 버전이 바뀌면 나중에 같은 결과가 안 나올 수 있어요.",
+    "code": "# 스플랫 파일을 .sog 형식으로 바꾸기\nnpx @playcanvas/splat-transform input.ply output.sog",
     "related": ["npx", "nodejs", "sog", "ply", "version-pinning"]
   },
   {
@@ -433,6 +461,7 @@ addSection('03-07', "3D 장면 복원과 가우시안 스플래팅", [
     "stage": "만들기",
     "use": "웹 브라우저에서 3D 장면과 카메라를 다루는 자바스크립트 도구예요. 3D 뷰어를 HTML 하나로 만들 때 써요.",
     "ai": "버전마다 코드 모양이 달라요. 오래된 예제를 가져오면 안 될 수 있으니 \"지금 쓰는 버전 기준으로 써 줘\"라고 하세요.",
+    "code": "// three.js 불러와서 장면 만들기\nimport * as THREE from \"three\";\nconst scene = new THREE.Scene();",
     "related": ["spark-renderer", "orbit-controls", "import-map", "library"]
   },
   {
@@ -447,6 +476,7 @@ addSection('03-07', "3D 장면 복원과 가우시안 스플래팅", [
     "stage": "만들기",
     "use": "three.js 장면에 가우시안 스플랫을 띄우려고 함께 쓰는 도구예요. 이게 장면에 없으면 화면에 안 그려져요.",
     "ai": "스플랫이 안 보이면 장면에 Spark를 넣었는지부터 AI에게 확인해 달라고 하세요.",
+    "code": "// Spark 렌더러를 장면에 넣기\nimport { SparkRenderer } from \"@sparkjsdev/spark\";\nscene.add(new SparkRenderer({ renderer }));",
     "related": ["threejs", "sog", "rendering", "alpha-blending"]
   },
   {
@@ -461,6 +491,8 @@ addSection('03-07', "3D 장면 복원과 가우시안 스플래팅", [
     "stage": "만들기",
     "use": "3D 뷰어에서 마우스로 돌리고 확대하게 해 주는 부품이에요. 뷰어를 만들 때 코드에 붙여요.",
     "ai": "\"마우스로 돌려 볼 수 있게 컨트롤을 추가해 줘\"라고 시키세요. 화면이 안 갱신되면 매 프레임 갱신 코드가 빠졌는지 보세요.",
+    "word": "Orbit: 궤도, 둘레를 도는 길\nControls: 조작 장치\nOrbitControls: 물체 둘레를 돌며 보게 해 주는 조작",
+    "code": "// 마우스로 장면 돌려 보기\nimport { OrbitControls } from \"three/addons/controls/OrbitControls.js\";\nconst controls = new OrbitControls(camera, renderer.domElement);",
     "related": ["threejs", "spark-renderer"]
   },
   {
@@ -475,6 +507,8 @@ addSection('03-07', "3D 장면 복원과 가우시안 스플래팅", [
     "stage": "만들기",
     "use": "HTML 하나로 외부 라이브러리를 불러올 때, 'three' 같은 이름과 실제 주소를 이어 주는 설정이에요.",
     "ai": "주소에 버전이 빠져 있으면 나중에 깨질 수 있어요. \"버전을 고정한 주소로 써 줘\"라고 시키세요.",
+    "word": "Import: 가져오다\nMap: 대응표, 지도\nImport Map: 모듈 이름을 실제 주소에 연결하는 표",
+    "code": "<!-- 'three'라는 이름을 실제 주소에 연결하기 -->\n<script type=\"importmap\">\n{ \"imports\": { \"three\": \"https://cdn.example.com/three.js\" } }\n</script>",
     "related": ["cdn", "threejs", "build", "url"]
   },
   {
@@ -489,6 +523,8 @@ addSection('03-07', "3D 장면 복원과 가우시안 스플래팅", [
     "stage": "배포·공유",
     "use": "설치 없이 주소만 적어서 라이브러리를 불러올 때 그 주소가 가리키는 곳이에요. 전 세계 서버에서 빠르게 보내 줘요.",
     "ai": "주소의 버전이 맞는지, 믿을 수 있는 곳인지 확인하세요. 오래된 주소를 가져오는 일이 있어요.",
+    "word": "Content: 내용물\nDelivery: 배달\nNetwork: 망\nCDN: 파일을 가까운 서버에서 보내 주는 배달망",
+    "code": "<!-- CDN에서 라이브러리 불러오기 -->\n<script src=\"https://cdn.example.com/lib.js\"></script>",
     "related": ["import-map", "url", "version-pinning"]
   },
   {
@@ -517,6 +553,7 @@ addSection('03-07', "3D 장면 복원과 가우시안 스플래팅", [
     "stage": "준비",
     "use": "영상으로 3D 복원을 하려고 영상에서 일정 간격으로 사진을 뽑는 일이에요.",
     "ai": "흔들려 번진 사진이 섞이면 복원이 어려워요. 뽑은 사진을 훑어보고 흐린 것은 빼라고 하세요.",
+    "code": "# 영상에서 1초에 1장씩 사진 뽑기\nffmpeg -i video.mp4 -vf fps=1 frames/%04d.jpg",
     "related": ["mapanything", "ffmpeg", "preprocessing"]
   },
   {
@@ -531,6 +568,7 @@ addSection('03-07', "3D 장면 복원과 가우시안 스플래팅", [
     "stage": "오류 해결",
     "use": "3D 결과에 허공에 떠 있는 점이 보일 때, 그런 엉뚱한 점을 이상치라고 불러요.",
     "ai": "\"좌표 범위 밖 점을 걸러내 줘\"라고 시키세요. 너무 많이 걸러 정상 점까지 사라지지 않았는지 확인하세요.",
+    "word": "Outlier: 무리에서 멀리 벗어난 것, 이상치",
     "related": ["point-cloud", "preprocessing"]
   },
   {
@@ -545,6 +583,7 @@ addSection('03-07', "3D 장면 복원과 가우시안 스플래팅", [
     "stage": "오류 해결",
     "use": "점이 너무 많아 브라우저가 버벅일 때 일부만 골라 개수를 줄이는 일이에요.",
     "ai": "너무 줄이면 빈틈이 생겨요. 줄인 뒤 \"원래 결과와 나란히 보여 줘\"라고 해서 비교하세요.",
+    "word": "Down: 아래로, 줄여\nSampling: 표본 추출\nDownsampling: 데이터 개수를 줄이는 일",
     "related": ["point-cloud", "gaussian-splatting", "rendering"]
   },
   {
@@ -559,6 +598,7 @@ addSection('03-07', "3D 장면 복원과 가우시안 스플래팅", [
     "stage": "오류 해결",
     "use": "복원한 장면이 뷰어에서 거꾸로 뒤집혀 보일 때 의심하는 것이에요. 위쪽을 어느 축으로 하는지가 도구마다 달라요.",
     "ai": "\"y축 방향이 뒤집힌 것 같은데 변환해 줘\"라고 구체적으로 시키세요. 한 축씩 바꿔 가며 확인하는 편이 빨라요.",
+    "word": "Coordinate: 좌표\nConvention: 약속, 관례\nCoordinate Convention: 좌표축 방향에 대한 약속",
     "related": ["normalized-coordinates", "point-cloud"]
   },
   {
@@ -573,6 +613,7 @@ addSection('03-07', "3D 장면 복원과 가우시안 스플래팅", [
     "stage": "배포·공유",
     "use": "GitHub는 100MB를 넘는 파일을 올리면 막아요. 큰 3D 파일을 올릴 때 크기 단위를 확인해야 해요.",
     "ai": "푸시 전에 \"100MB 넘는 파일이 있는지 확인해 줘\"라고 시키세요. 한번 커밋된 큰 파일은 되돌리기 번거로워요.",
+    "word": "Mebibyte: 1024×1024 바이트\nMegabyte: 1,000,000 바이트",
     "related": ["github", "bit", "sog"]
   },
   {

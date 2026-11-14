@@ -214,6 +214,8 @@ body.no-card .card { display: none; } /* 홈: 카드 자리는 배경만 */
 .note-ko strong { display: block; font-size: 20px; font-weight: 700; }
 .note-ko em { display: block; margin-top: 2px; font-style: normal; font-size: 17px; font-weight: 500; }
 .note-ko em[hidden] { display: none; }
+.note-ko small { display: block; margin-top: 6px; white-space: pre-line; line-height: 1.5; font-size: 14px; font-weight: 500; opacity: .8; }
+.note-ko small[hidden] { display: none; }
 
 .flow { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 24px; }
 .flow-box { padding: 8px 12px; border: 1.5px solid var(--ink); font-size: 14px; font-weight: 500; }
@@ -227,6 +229,9 @@ body.no-card .card { display: none; } /* 홈: 카드 자리는 배경만 */
 /* 정의 아래 작은 글씨: 쉬운 비유와 실제 장면 */
 .def-sub { display: flex; gap: 10px; margin: 10px 0 0; font-size: 15px; line-height: 1.6; color: var(--gray); }
 .def-k { flex: none; min-width: 70px; font-size: 13px; font-weight: 700; color: var(--ink); line-height: 24px; }
+.use-line { margin: 0; }
+.use-line + .use-line, .def-v .code + .use-line { margin-top: 8px; }
+.def-v .code { margin: 8px 0 0; padding: 8px 12px; background: var(--ghost); border-radius: 8px; font-family: var(--mono); font-size: 13px; line-height: 1.6; color: var(--ink); white-space: pre-wrap; overflow-wrap: break-word; }
 .def-v { min-width: 0; }
 
 .line-btn {
@@ -326,4 +331,5 @@ body.loading .detail { visibility: hidden; }
 .tip[hidden] { display: none; }
 
 /* 이 용어를 주로 만나는 개발 단계: 문장 앞 작은 검은 칩 */
+.ai-chip { display: inline-block; margin-right: 6px; padding: 0 6px; border: 1.5px solid var(--ink); color: var(--ink); font-size: 12px; font-weight: 700; line-height: 19px; vertical-align: 1px; white-space: nowrap; }
 .stage-chip { display: inline-block; margin-right: 6px; padding: 0 7px; background: var(--ink); color: var(--white); font-size: 12px; font-weight: 700; line-height: 22px; vertical-align: 1px; white-space: nowrap; }
