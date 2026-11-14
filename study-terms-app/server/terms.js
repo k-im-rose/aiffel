@@ -39,6 +39,8 @@ function buildCatalog() {
         related: (t.related || []).filter((r) => byId[r]),
         is_cmd: !!t.cmd,
         usage: t.use || '',
+        stage: t.stage || '',
+        ai: t.ai || '',
       });
     }
   }

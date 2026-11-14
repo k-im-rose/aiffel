@@ -22,7 +22,9 @@ create table if not exists public.terms (
   ex         text not null default '',
   related    text[] not null default '{}',
   is_cmd     boolean not null default false, -- 터미널에 직접 치는 명령어면 true
-  usage      text not null default ''        -- 실제로 언제 쓰냐면
+  usage      text not null default '',       -- 언제 쓰냐면
+  stage      text not null default '',       -- 개발 단계: 준비·만들기·실행·확인·오류 해결·배포·공유
+  ai         text not null default ''        -- AI를 쓰면
 );
 
 -- 내 기록 (사람마다 따로)
@@ -62,3 +64,6 @@ end $$;
 
 -- 터미널 표시·쓰임 칸을 더할 때 (이미 만든 DB에 한 번만 실행)
 -- alter table public.terms add column if not exists is_cmd boolean not null default false, add column if not exists usage text not null default '';
+
+-- 개발 단계·AI를 쓰면 칸을 더할 때 (이미 만든 DB에 한 번만 실행)
+-- alter table public.terms add column if not exists stage text not null default '', add column if not exists ai text not null default '';

@@ -324,3 +324,8 @@ body.loading .detail { visibility: hidden; }
   }
 }
 .tip[hidden] { display: none; }
+
+/* 개발 흐름 단계: 이 용어가 나오는 단계만 검은 칩, 나머지는 회색 글자 */
+.stage-flow { display: flex; flex-wrap: wrap; align-items: center; gap: 2px 6px; margin: 0 0 4px; padding: 0; list-style: none; }
+.stage-flow li { font-size: 12px; line-height: 24px; color: var(--gray); }
+.stage-flow li.on { padding: 0 8px; background: var(--ink); color: var(--white); font-weight: 700; }

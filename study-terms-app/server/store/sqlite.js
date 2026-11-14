@@ -25,7 +25,9 @@ function open() {
       ex         TEXT NOT NULL DEFAULT '',
       related    TEXT NOT NULL DEFAULT '[]',
       is_cmd     INTEGER NOT NULL DEFAULT 0,
-      usage      TEXT NOT NULL DEFAULT ''
+      usage      TEXT NOT NULL DEFAULT '',
+      stage      TEXT NOT NULL DEFAULT '',
+      ai         TEXT NOT NULL DEFAULT ''
     );
     CREATE TABLE IF NOT EXISTS notes (
       owner_id   TEXT NOT NULL,          -- 'device:<기기 ID>' (로그인 전) 또는 'user:<계정 ID>' (구글 로그인)
@@ -39,6 +41,8 @@ function open() {
   // 터미널 표시·쓰임 칸이 없던 DB에 칸을 더한다
   const termCols = db.prepare('PRAGMA table_info(terms)').all().map((c) => c.name);
   if (!termCols.includes('is_cmd')) db.exec('ALTER TABLE terms ADD COLUMN is_cmd INTEGER NOT NULL DEFAULT 0');
+  if (!termCols.includes('ai')) db.exec("ALTER TABLE terms ADD COLUMN ai TEXT NOT NULL DEFAULT ''");
+  if (!termCols.includes('stage')) db.exec("ALTER TABLE terms ADD COLUMN stage TEXT NOT NULL DEFAULT ''");
   if (!termCols.includes('usage')) db.exec("ALTER TABLE terms ADD COLUMN usage TEXT NOT NULL DEFAULT ''");
   // 로그인 추가 전에 만든 DB: device_id 칸을 owner_id로 바꾸고 'device:'를 붙인다
   if (db.prepare('PRAGMA table_info(notes)').all().some((c) => c.name === 'device_id')) {
@@ -55,17 +59,17 @@ function createStore() {
     async syncCatalog({ sections, terms }) {
       const upSec = db.prepare('INSERT INTO sections (id, title) VALUES (?, ?) ON CONFLICT(id) DO UPDATE SET title = excluded.title');
       const upTerm = db.prepare(`
-        INSERT INTO terms (id, section_id, position, term, ko, full_name, src, level, def, easy, ex, related, is_cmd, usage)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        INSERT INTO terms (id, section_id, position, term, ko, full_name, src, level, def, easy, ex, related, is_cmd, usage, stage, ai)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         ON CONFLICT(id) DO UPDATE SET section_id = excluded.section_id, position = excluded.position, term = excluded.term,
           ko = excluded.ko, full_name = excluded.full_name, src = excluded.src, level = excluded.level, def = excluded.def,
           easy = excluded.easy, ex = excluded.ex, related = excluded.related,
-          is_cmd = excluded.is_cmd, usage = excluded.usage`);
+          is_cmd = excluded.is_cmd, usage = excluded.usage, stage = excluded.stage, ai = excluded.ai`);
       db.exec('BEGIN');
       try {
         for (const s of sections) upSec.run(s.id, s.title);
         for (const t of terms) {
-          upTerm.run(t.id, t.section_id, t.position, t.term, t.ko, t.full_name, t.src, t.level, t.def, t.easy, t.ex, JSON.stringify(t.related), t.is_cmd ? 1 : 0, t.usage);
+          upTerm.run(t.id, t.section_id, t.position, t.term, t.ko, t.full_name, t.src, t.level, t.def, t.easy, t.ex, JSON.stringify(t.related), t.is_cmd ? 1 : 0, t.usage, t.stage, t.ai);
         }
         db.exec('COMMIT');
       } catch (e) {
