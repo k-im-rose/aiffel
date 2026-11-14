@@ -41,6 +41,8 @@ function buildCatalog() {
         usage: t.use || '',
         stage: t.stage || '',
         ai: t.ai || '',
+        code: t.code || '',
+        word: t.word || '',
       });
     }
   }

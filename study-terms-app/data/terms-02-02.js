@@ -6,6 +6,8 @@ addSection('02-02', "HTML·CSS·JavaScript", [
     "stage": "만들기",
     "use": "HTML 파일을 열면 \"<h1>\"이나 \"<button>\"처럼 꺾쇠로 둘러싼 글을 볼 수 있어요.",
     "ai": "직접 외울 필요는 없어요. 화면 모양을 바꾸고 싶을 때 \"제목은 h1로 하고 색은 CSS로 바꿔 줘\"처럼 역할을 나눠서 시키세요.",
+    "word": "Tag: 이름표, 꼬리표",
+    "code": "<!-- 제목과 버튼 태그 -->\n<h1>안녕하세요</h1>\n<button>눌러 보기</button>",
     "related": [
       "web-layers",
       "dom",
@@ -39,6 +41,8 @@ addSection('02-02', "HTML·CSS·JavaScript", [
     "stage": "만들기",
     "use": "화면의 카드나 버튼이 답답하거나 너무 떨어져 보일 때 여백을 어디서 고칠지 따질 때 써요.",
     "ai": "\"카드 안쪽 여백만 늘려 줘\"처럼 안쪽인지 바깥쪽인지 말하세요. 막연히 \"여백 늘려 줘\"라고 하면 엉뚱한 곳이 바뀔 수 있어요.",
+    "word": "Box: 상자\nModel: 모형\nBox Model: 요소를 상자 모형으로 보는 방식",
+    "code": "/* 안쪽 여백과 바깥 여백 주기 */\n.card { padding: 16px; margin: 8px; }",
     "related": [
       "padding",
       "margin",
@@ -59,6 +63,8 @@ addSection('02-02', "HTML·CSS·JavaScript", [
     "stage": "만들기",
     "use": "버튼 글자가 테두리에 붙어서 답답해 보일 때 고치는 안쪽 여백이에요.",
     "ai": "\"버튼 안쪽 여백을 늘려 줘\"처럼 말하세요. 고친 뒤 화면에서 다른 곳도 달라지지 않았는지 훑어보세요.",
+    "word": "Padding: 속에 덧댄 것, 푹신한 안감",
+    "code": "/* 버튼 안쪽 여백 주기 */\nbutton { padding: 8px 16px; }",
     "related": [
       "box-model",
       "margin"
@@ -78,6 +84,8 @@ addSection('02-02', "HTML·CSS·JavaScript", [
     "stage": "만들기",
     "use": "카드끼리 너무 붙어 보일 때 고치는 바깥쪽 간격이에요.",
     "ai": "\"카드 사이 간격을 넓혀 줘\"라고 시키세요. 안쪽 여백(padding)과 헷갈려 하면 어느 쪽인지 다시 말해 주세요.",
+    "word": "Margin: 가장자리 여백",
+    "code": "/* 카드 바깥 여백 주기 */\n.card { margin: 16px; }",
     "related": [
       "box-model",
       "padding"
@@ -97,6 +105,8 @@ addSection('02-02', "HTML·CSS·JavaScript", [
     "stage": "만들기",
     "use": "버튼이나 카드를 가로로 나란히 놓고 간격을 맞추고 싶을 때 쓰는 배치 방법이에요.",
     "ai": "\"버튼을 가로로 나란히 놓고 간격을 같게 해 줘\"라고 말하면 돼요. 화면 폭을 줄여서 줄바꿈이 어색하지 않은지 확인하세요.",
+    "word": "Display: 보여 주다, 배치 방식\nFlex: 유연하게 늘고 줄다\ndisplay: flex: 유연하게 늘고 줄며 나란히 놓는 배치",
+    "code": "/* 자식 요소를 가로로 나란히 놓기 */\n.row { display: flex; gap: 8px; }",
     "related": [
       "box-model",
       "responsive",
@@ -117,6 +127,8 @@ addSection('02-02', "HTML·CSS·JavaScript", [
     "stage": "실행·확인",
     "use": "내 앱을 휴대폰 화면으로 열어 보면 글자가 삐져나오거나 버튼이 작은 경우에 이 말을 만나요.",
     "ai": "\"모바일 폭에서도 깨지지 않게 해 줘\"라고 시키세요. 브라우저 폭을 줄이거나 실제 폰으로 직접 열어서 확인하세요.",
+    "word": "Responsive: 반응하는, 상황에 맞게 응답하는",
+    "code": "<!-- 화면 폭에 맞춰 보이게 하기 -->\n<meta name=\"viewport\" content=\"width=device-width\">",
     "related": [
       "flexbox",
       "box-model",
@@ -137,6 +149,8 @@ addSection('02-02', "HTML·CSS·JavaScript", [
     "stage": "만들기",
     "use": "\"버튼을 누르면 글자가 바뀌게 해 줘\" 같은 기능을 만들 때, 자바스크립트가 바꾸는 화면 요소의 구조예요.",
     "ai": "직접 다룰 일은 거의 없어요. 화면이 안 바뀌면 \"이 버튼을 눌렀을 때 어떤 요소를 바꾸는지 설명해 줘\"라고 물어보세요.",
+    "word": "Document: 문서\nObject: 객체, 만지고 다룰 수 있는 물건\nModel: 모형\nDOM: 문서를 객체로 본 모형",
+    "code": "// 화면의 제목 글자 바꾸기\ndocument.querySelector(\"h1\").textContent = \"안녕\";",
     "related": [
       "html-tag",
       "event-listener",
@@ -161,6 +175,8 @@ addSection('02-02', "HTML·CSS·JavaScript", [
     "stage": "만들기",
     "use": "\"버튼을 누르면 이 일이 일어난다\"를 만들 때 쓰는 코드 덩어리예요.",
     "ai": "버튼이 반응하지 않으면 \"이 버튼에 클릭 동작이 연결됐는지 확인해 줘\"라고 시키세요. 같은 동작이 두 번 붙는 실수도 많아요.",
+    "word": "Event: 사건, 일어난 일\nListener: 듣는 사람\nEvent Listener: 일이 일어나길 귀 기울여 듣는 코드",
+    "code": "// 버튼 클릭을 기다렸다가 실행\nbtn.addEventListener(\"click\", () => alert(\"안녕\"));",
     "related": [
       "dom",
       "html-tag",
@@ -185,6 +201,7 @@ addSection('02-02', "HTML·CSS·JavaScript", [
     "stage": "만들기",
     "use": "페이지가 깜빡이지 않고 뒤에서 서버와 데이터를 주고받는 모습을 말할 때 만나요.",
     "ai": "요즘은 이 이름보다 fetch를 많이 써요. 직접 다룰 일은 거의 없고, 화면이 안 바뀌면 오류 메시지를 AI에게 보여 주세요.",
+    "word": "Asynchronous: 순서를 기다리지 않는, 비동기\nJavaScript: 웹 동작 언어\nXML: 데이터를 적는 마크업 언어\nAJAX: 새로 고침 없이 서버와 데이터를 주고받는 기법",
     "related": [
       "async",
       "api",
@@ -201,6 +218,8 @@ addSection('02-02', "HTML·CSS·JavaScript", [
     "stage": "오류 해결",
     "use": "서버 응답을 기다리는 동안에도 화면이 멈추지 않게 하는 방식이에요. 코드에 \"await\"가 보이면 이거예요.",
     "ai": "결과가 오기 전에 값을 쓰면 \"undefined\" 같은 오류가 나요. 그럴 때 \"기다린 뒤에 쓰도록 순서를 고쳐 줘\"라고 하세요.",
+    "word": "A: ~이 아닌\nSynchronous: 시간을 맞춰 함께 진행되는\nAsynchronous: 서로 기다리지 않고 따로 진행되는",
+    "code": "// 기다리며 데이터를 받는 함수\nasync function load() {\n  const res = await fetch(\"https://example.com/api\");\n}",
     "related": [
       "event-loop",
       "single-thread",
@@ -221,6 +240,7 @@ addSection('02-02', "HTML·CSS·JavaScript", [
     "stage": "오류 해결",
     "use": "JavaScript가 한 번에 한 가지 일만 한다는 설명에서 만나요. 계산이 너무 길면 화면이 멈춘 것처럼 보여요.",
     "ai": "화면이 멈추면 \"오래 걸리는 계산 때문에 느린지 찾아 줘\"라고 시키세요. 직접 다룰 일은 많지 않아요.",
+    "word": "Single: 하나의\nThread: 실, 작업의 한 갈래\nSingle Thread: 작업 갈래가 하나뿐인 구조",
     "related": [
       "async",
       "event-loop",
@@ -253,6 +273,7 @@ addSection('02-02', "HTML·CSS·JavaScript", [
     "stage": "오류 해결",
     "use": "끝난 일의 결과를 차례로 꺼내 처리하는 JavaScript 안쪽의 구조예요. 실행 순서가 이상할 때 이름을 만나요.",
     "ai": "직접 다룰 일은 거의 없어요. 실행 순서가 뒤죽박죽이면 \"왜 이 순서로 실행되는지 설명해 줘\"라고 AI에게 물어보세요.",
+    "word": "Event: 사건, 일어난 일\nLoop: 고리, 계속 도는 반복\nEvent Loop: 끝난 일을 계속 돌며 확인해 처리하는 구조",
     "related": [
       "async",
       "single-thread",
@@ -265,6 +286,7 @@ addSection('02-02', "HTML·CSS·JavaScript", [
     "stage": "실행·확인",
     "use": "컴퓨터에서 프로그램 하나가 실행되고 있는 상태를 말해요. 작업 관리자에서 목록으로 볼 수 있어요.",
     "ai": "서버가 안 꺼져서 \"이미 사용 중인 포트\" 오류가 나면 남은 프로세스일 수 있어요. AI에게 어떤 프로세스인지 확인해 달라고 하세요.",
+    "word": "Process: 과정, 처리하다",
     "related": [
       "single-thread",
       "async"
@@ -292,6 +314,8 @@ addSection('02-02', "HTML·CSS·JavaScript", [
     "stage": "만들기",
     "use": "게임 점수나 \"진행 중/끝남\"처럼, 앱이 지금 어떤 상황인지 기억하는 값이에요.",
     "ai": "\"이 앱에 필요한 상태를 먼저 정리해 줘\"라고 시키세요. 화면이 엉뚱하게 바뀌면 상태가 꼬인 경우가 많아요.",
+    "word": "State: 상태, 지금의 모습",
+    "code": "// 점수 상태 값을 만들어 두기\nconst [score, setScore] = useState(0);",
     "related": [
       "web-layers",
       "dom",
@@ -312,6 +336,8 @@ addSection('02-02', "HTML·CSS·JavaScript", [
     "stage": "오류 해결",
     "use": "화면이 이상할 때 브라우저에서 빨간 오류 글자를 확인하는 곳이에요.",
     "ai": "오류가 있으면 빨간 글을 그대로 복사해 AI에게 붙여 넣고 \"원인과 고치는 법을 알려 줘\"라고 하세요.",
+    "word": "Dev: 개발(Development), 개발하는 사람\nTools: 도구\nConsole: 상황을 보고 조작하는 계기판\nDevTools Console: 개발자가 상황을 확인하는 계기판",
+    "code": "// 콘솔에 값 출력해서 확인하기\nconsole.log(\"점수:\", score);",
     "related": [
       "web-layers",
       "dom"
@@ -375,6 +401,7 @@ addSection('02-02', "HTML·CSS·JavaScript", [
     "stage": "오류 해결",
     "use": "\"같은 칸을 두 번 누르면 어떻게 되지?\"처럼 드물지만 생길 수 있는 경우를 말해요.",
     "ai": "AI는 흔한 경우만 만들기 쉬워요. \"이 기능에서 생길 수 있는 예외 상황을 찾아서 처리해 줘\"라고 시켜 보세요.",
+    "word": "Edge: 가장자리, 끝\nCase: 경우\nEdge Case: 가장자리에 놓인 드문 경우",
     "related": [
       "prd",
       "vibe-coding"
@@ -394,6 +421,8 @@ addSection('02-02', "HTML·CSS·JavaScript", [
     "stage": "준비",
     "use": "링크를 눌러 다른 글로 건너뛰는 웹의 기본 아이디어를 설명할 때 만나는 말이에요.",
     "ai": "직접 다룰 일은 없어요. 웹이 왜 HTML이라는 이름인지 궁금할 때 나오는 배경 지식이라고만 알아 두세요.",
+    "word": "Hyper: ~을 넘어선\nText: 글\nHypertext: 글을 넘어 링크로 건너뛰는 글",
+    "code": "<!-- 다른 문서로 건너뛰는 링크 -->\n<a href=\"https://example.com\">이동</a>",
     "related": [
       "web-layers",
       "html-tag",
@@ -414,6 +443,7 @@ addSection('02-02', "HTML·CSS·JavaScript", [
     "stage": "오류 해결",
     "use": "CSS를 고쳤는데 화면에 반영이 안 될 때, 어떤 규칙이 이기는지 따지는 방식으로 만나요.",
     "ai": "색이 안 바뀌면 \"다른 규칙이 덮어쓰는지 찾아 줘\"라고 시키세요. 같은 요소에 규칙이 여러 개 있는지 확인하세요.",
+    "word": "Cascading: 폭포처럼 위에서 아래로 흐르는\nStyle: 꾸밈새, 모양\nSheet: 종이 한 장\nCSS: 꾸밈 규칙이 차례로 흘러 적용되는 스타일 문서",
     "related": [
       "web-layers",
       "box-model",
@@ -434,6 +464,7 @@ addSection('02-02', "HTML·CSS·JavaScript", [
     "stage": "만들기",
     "use": "코드를 모양, 구조, 동작으로 나눠서 정리하는 원칙이에요. \"역할을 나눠서 짜요\"라는 설명에서 만나요.",
     "ai": "\"CSS만 고치고 HTML은 건드리지 마\"처럼 범위를 정해 주세요. 한 파일에 다 섞어 쓰면 나중에 고치기 어려워요.",
+    "word": "Separation: 분리\nConcerns: 관심사, 신경 써야 할 일\nSeparation of Concerns: 신경 쓸 일을 나눠서 다루는 원칙",
     "related": [
       "web-layers",
       "front-back",
@@ -454,6 +485,7 @@ addSection('02-02', "HTML·CSS·JavaScript", [
     "stage": "오류 해결",
     "use": "프로그램 하나 안에서 일을 나눠서 하는 일꾼이에요. 앱이 멈추거나 느려질 때 이름을 만나요.",
     "ai": "직접 다룰 일은 거의 없어요. 앱이 멈추면 \"스레드 문제인지 확인해 줘\"보다 오류 메시지를 그대로 보여 주는 게 좋아요.",
+    "word": "Thread: 실, 작업의 한 갈래",
     "related": [
       "process",
       "single-thread",
@@ -475,6 +507,7 @@ addSection('02-02', "HTML·CSS·JavaScript", [
     "stage": "실행·확인",
     "use": "컴퓨터에서 실제로 계산을 하는 일손이에요. 코어가 많으면 여러 일을 동시에 처리해요.",
     "ai": "직접 다룰 일은 거의 없어요. 앱이 너무 느릴 때 \"내 컴퓨터의 코어 수에 맞게 속도를 개선해 줘\"라고 물어볼 수는 있어요.",
+    "word": "Central: 중심의\nProcessing: 처리\nUnit: 장치\nCore: 알맹이, 핵심\nCPU Core: 중심 처리 장치 안의 계산 알맹이",
     "related": [
       "thread",
       "time-sharing",
@@ -496,6 +529,7 @@ addSection('02-02', "HTML·CSS·JavaScript", [
     "stage": "실행·확인",
     "use": "컴퓨터가 여러 프로그램을 번갈아 빠르게 처리해서 동시에 도는 것처럼 보이게 하는 방식이에요.",
     "ai": "직접 다룰 일은 없어요. 컴퓨터가 느려지면 어떤 프로그램이 자원을 많이 쓰는지 AI에게 확인해 달라고 하세요.",
+    "word": "Time: 시간\nSharing: 나눠 쓰다\nTime-sharing: 시간을 쪼개 나눠 쓰는 방식",
     "related": [
       "cpu-core",
       "thread",
@@ -507,6 +541,7 @@ addSection('02-02', "HTML·CSS·JavaScript", [
     "term": "fetch",
     "ko": "페치",
     "full": "",
+    "word": "fetch: 가져오다, 가서 가지고 오다",
     "src": "02-02",
     "level": "실전",
     "def": "JavaScript에서 서버에 데이터를 요청하는 함수. 응답을 기다리며 멈추지 않고 걸어 두는 비동기 방식으로 동작한다.",
@@ -516,6 +551,7 @@ addSection('02-02', "HTML·CSS·JavaScript", [
     "stage": "만들기",
     "use": "화면에서 서버에 데이터를 요청해서 받아올 때 쓰는 JavaScript 명령이에요. 랭킹이나 목록을 불러올 때 써요.",
     "ai": "요청이 실패하면 아무 반응이 없기 쉬워요. \"실패했을 때 오류 메시지를 화면에 보여 줘\"라고 같이 시키세요.",
+    "code": "// 서버에서 상품 목록 받아 오기\nconst res = await fetch(\"https://example.com/api/products\");\nconst products = await res.json();",
     "related": [
       "async",
       "ajax",
@@ -537,6 +573,8 @@ addSection('02-02', "HTML·CSS·JavaScript", [
     "stage": "준비",
     "use": "옛날 자료나 오래된 코드에서 만나는 이름이에요. 요즘은 대부분 fetch로 대신해요.",
     "ai": "직접 쓸 일은 거의 없어요. 오래된 코드에서 보이면 \"fetch로 바꿔 줘\"라고 시켜도 돼요. 바꾼 뒤 동작은 꼭 확인하세요.",
+    "word": "XML: 데이터를 적는 마크업 언어\nHttp: 웹 통신 규칙\nRequest: 요청\nXMLHttpRequest: 웹 통신으로 서버에 요청을 보내는 옛 브라우저 기능",
+    "code": "// 옛 방식으로 서버에 요청 보내기\nconst xhr = new XMLHttpRequest();\nxhr.open(\"GET\", \"https://example.com/api\");",
     "related": [
       "ajax",
       "fetch",
@@ -548,6 +586,7 @@ addSection('02-02', "HTML·CSS·JavaScript", [
     "term": "Nondeterminism",
     "ko": "비결정성",
     "full": "",
+    "word": "Non: ~이 아닌\nDeterminism: 결정론, 결과가 정해져 있다는 개념\nNondeterminism: 결과가 하나로 정해져 있지 않다는 개념",
     "src": "02-02",
     "level": "입문",
     "def": "같은 입력을 줘도 실행할 때마다 결과가 달라질 수 있는 성질. 생성형 AI의 답이 대표적이다.",
@@ -577,6 +616,7 @@ addSection('02-02', "HTML·CSS·JavaScript", [
     "stage": "실행·확인",
     "use": "배포한 앱이 내 컴퓨터 말고도 잘 열리는지 확인할 때, 로그인 기록 없이 열어 보려고 써요.",
     "ai": "배포 후에는 시크릿 창에서 주소를 열어 보세요. 내 컴퓨터에만 있는 설정 때문에 되는 착각을 막아 줘요.",
+    "word": "Incognito: 신분을 감춘, 정체를 숨긴",
     "related": [
       "cookie",
       "deploy",

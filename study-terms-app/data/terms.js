@@ -13,6 +13,7 @@ const TERMS = [
     stage: "만들기",
     use: "AI에게 글이나 코드 초안을 맡길 때 만나는 말이에요. 같은 요청도 매번 결과가 조금씩 달라요.",
     ai: "결과가 그럴듯해도 틀릴 수 있으니 실행하고 직접 확인하세요. \"이 답이 맞는지 확인할 방법도 알려 줘\"라고 덧붙이면 좋아요.",
+    word: "Generative: 새로 만들어 내는\nAI: 인공지능(Artificial Intelligence)\nGenAI: 새 결과물을 만들어 내는 AI",
     related: ['hallucination', 'prompt', 'agent'],
   },
   {
@@ -24,6 +25,7 @@ const TERMS = [
     stage: "오류 해결",
     use: "AI가 알려 준 함수나 패키지가 \"없다\"는 오류가 나면 이 말을 떠올려요. 없는 걸 있는 것처럼 말한 거예요.",
     ai: "처음 보는 이름이 나오면 실제로 있는지 공식 문서에서 확인하세요. \"이 함수가 진짜 있는지 근거를 같이 말해 줘\"라고 시키면 도움이 돼요.",
+    word: "Hallucination: 환각, 없는 것이 보이는 현상",
     related: ['genai', 'vibe-coding'],
   },
   {
@@ -35,6 +37,7 @@ const TERMS = [
     stage: "만들기",
     use: "코드를 직접 치지 않고 \"이런 앱 만들어 줘\"라고 말로 시켜서 앱을 만들 때 쓰는 말이에요.",
     ai: "요청을 한 번에 크게 하지 말고 작게 나눠 시키세요. 한 단계마다 직접 눌러 보고 다음 지시를 하면 실수를 일찍 잡아요.",
+    word: "Vibe: 분위기, 느낌\nCoding: 코드를 짜는 일\nVibe coding: 느낌을 말로 전하고 AI가 코드를 짜는 방식",
     related: ['prompt', 'harness', 'commit'],
   },
   {
@@ -46,6 +49,7 @@ const TERMS = [
     stage: "만들기",
     use: "AI에게 일을 시키려고 입력하는 글을 말해요. AI를 쓰는 모든 순간에 만들게 돼요.",
     ai: "\"무엇을, 어떻게, 하지 말 것\"을 같이 적으세요. 결과가 엉뚱하면 \"조건이 부족했나?\" 하고 먼저 요청을 고쳐 보세요.",
+    word: "Prompt: 재촉하다, 행동을 불러일으키는 말",
     related: ['vibe-coding', 'genai'],
   },
   {
@@ -57,6 +61,7 @@ const TERMS = [
     stage: "만들기",
     use: "\"이 버그 고쳐 줘\"처럼 큰 일을 통째로 맡기면, AI가 스스로 여러 단계를 해내는 방식이에요.",
     ai: "파일을 고치고 명령을 실행하니 허용 요청은 무엇을 하는지 읽고 누르세요. \"바꾸기 전에 계획부터 보여 줘\"라고 시켜도 좋아요.",
+    word: "Agent: 대리인, 대신 일해 주는 사람",
     related: ['harness', 'agent-loop', 'tool-use'],
   },
   {
@@ -68,6 +73,7 @@ const TERMS = [
     stage: "준비",
     use: "AI 도구가 파일을 읽거나 명령을 실행하기 전에 \"허용할까요?\"라고 물을 때 이 말이 나와요.",
     ai: "직접 만들 일은 거의 없어요. 다만 허용 창이 뜨면 AI가 무엇을 하려는지 읽고 누르세요.",
+    word: "Harness: 말에 씌워 힘을 쓰게 하는 마구, 힘을 이용하다",
     related: ['agent', 'tool-use'],
   },
   {
@@ -79,6 +85,7 @@ const TERMS = [
     stage: "오류 해결",
     use: "AI가 코드를 고치고, 실행하고, 실패하면 다시 고치기를 반복하는 모습을 볼 때 쓰는 말이에요.",
     ai: "끝없이 반복하지 않게 \"세 번 시도해도 안 되면 멈추고 알려 줘\"라고 미리 말해 두세요.",
+    word: "Agent: 대리인, 대신 일하는 존재\nLoop: 고리, 반복\nAgent loop: 에이전트가 목표까지 되풀이하는 일의 흐름",
     related: ['agent', 'tool-use'],
   },
   {
@@ -90,6 +97,7 @@ const TERMS = [
     stage: "만들기",
     use: "AI가 \"파일을 읽고 있어요\"처럼 검색이나 실행 같은 일을 직접 하는 모습을 볼 때 쓰는 말이에요.",
     ai: "어떤 도구를 불렀는지 화면에 나오니 가끔 훑어보세요. 엉뚱한 파일을 건드리면 바로 멈추고 이유를 물어보세요.",
+    word: "Tool: 도구\nUse: 사용\nTool use: 모델이 도구를 꺼내 쓰는 것",
     related: ['mcp', 'harness'],
   },
   {
@@ -101,6 +109,7 @@ const TERMS = [
     stage: "준비",
     use: "AI에게 내 DB나 외부 서비스를 직접 다루게 하고 싶을 때 연결하는 방식으로 만나요.",
     ai: "연결하면 AI가 실제 데이터를 바꿀 수 있어요. 처음에는 읽기만 되도록 권한을 좁게 주세요. 출처가 불분명한 연결은 피하세요.",
+    word: "Model: 모델\nContext: 맥락, 문맥\nProtocol: 규약, 약속\nMCP: 모델에게 도구와 자료를 이어 주는 약속",
     related: ['tool-use', 'skill'],
   },
   {
@@ -112,6 +121,7 @@ const TERMS = [
     stage: "준비",
     use: "같은 요청을 매번 길게 쓰기 귀찮을 때, 작업 방법을 한 번 적어 두고 꺼내 쓰는 방식으로 만나요.",
     ai: "반복하는 작업이 생기면 \"이 절차를 스킬로 만들어 줘\"라고 시켜 보세요. 내용에 비밀값이 섞이지 않았는지는 확인하세요.",
+    word: "Skill: 기술, 능숙한 솜씨",
     related: ['mcp', 'harness'],
   },
   {
@@ -123,6 +133,7 @@ const TERMS = [
     stage: "만들기",
     use: "화면의 버튼 색이나 모양, 동작을 고치려는데 어디를 손대야 할지 모를 때 이 구분을 써요.",
     ai: "\"HTML은 그대로 두고 CSS만 고쳐 줘\"처럼 어느 겹을 고칠지 말해 주면, 부탁하지 않은 곳까지 바뀌는 일이 줄어요.",
+    code: "<!-- 구조(HTML)에 표현·동작 파일 연결 -->\n<link rel=\"stylesheet\" href=\"styles.css\">\n<script src=\"app.js\"></script>",
     related: ['front-back'],
   },
   {
@@ -134,6 +145,7 @@ const TERMS = [
     stage: "만들기",
     use: "로그인이나 저장 기능을 만들 때 \"이건 프론트 일이냐 백엔드 일이냐\"를 나눠서 말하게 돼요.",
     ai: "비밀 키나 권한 확인은 백엔드에서 해야 해요. 화면 코드에 넣었다면 빼 달라고 하세요. 요청할 때도 \"서버 쪽에 만들어 줘\"처럼 말하세요.",
+    word: "Front: 앞\nBack: 뒤\nEnd: 끝\nFrontend / Backend: 사용자 앞쪽 끝 / 화면 뒤쪽 끝",
     related: ['api', 'database', 'web-layers'],
   },
   {
@@ -145,6 +157,7 @@ const TERMS = [
     stage: "만들기",
     use: "화면이 서버에 \"할 일 저장해 줘\"라고 부탁하고 답을 받을 때 쓰는 약속을 말해요.",
     ai: "\"어떤 주소로 무엇을 보내고 뭐가 돌아오는지 표로 정리해 줘\"라고 시키세요. 화면과 서버가 서로 다르게 알고 있으면 오류가 나요.",
+    word: "Application: 응용 프로그램\nProgramming: 프로그램을 짜는 일\nInterface: 접점\nAPI: 프로그램끼리 맞닿아 대화하는 약속",
     related: ['front-back', 'database'],
   },
   {
@@ -156,6 +169,7 @@ const TERMS = [
     stage: "만들기",
     use: "새로고침해도 내용이 남아야 하는 앱을 만들 때 필요한 저장소예요.",
     ai: "\"어떤 표를 만들지 먼저 설명해 줘\"라고 시키고 확인하세요. 한 번 만든 구조는 나중에 고치기 번거로워요. 지우기 전에는 백업이 있는지 확인하세요.",
+    word: "Data: 자료\nBase: 바탕, 기지\nDatabase: 자료를 모아 두는 기지",
     related: ['api', 'auth'],
   },
   {
@@ -167,6 +181,8 @@ const TERMS = [
     stage: "만들기",
     use: "로그인 기능을 만들거나 \"남의 글은 볼 수 없게\" 막으려 할 때 만나는 말이에요.",
     ai: "로그인만 만들고 권한 확인을 빼먹기 쉬워요. \"다른 사람 계정으로 남의 데이터가 보이는지 확인해 줘\"라고 시켜 보세요.",
+    word: "Authentication: 인증, 본인임을 확인하는 것\nAuthorization: 인가, 권한을 허락하는 것\nAuth: 위 두 단어를 줄여 부르는 말",
+    code: "# 토큰을 헤더에 실어 요청 보내기\ncurl -H \"Authorization: Bearer your-token\" https://example.com/api/me",
     related: ['database', 'env'],
   },
   {
@@ -191,6 +207,8 @@ const TERMS = [
     "stage": "준비",
     "use": "비밀번호나 API 키를 코드에 직접 쓰지 않고 따로 적어 둘 때 쓰는 파일이에요.",
     "ai": ".env 내용을 AI에게 붙여 넣거나 GitHub에 올리지 마세요. 올리는 일을 막는 설정이 있는지 꼭 확인하세요.",
+    "word": "Environment: 환경, 실행되는 주변 상황\nVariables: 변수, 값을 담아 두는 이름\n.env: 환경변수를 적어 두는 파일",
+    "code": "# .env 파일 안에 적는 모양\nAPI_KEY=your-api-key\nPORT=3000",
     "related": [
       "commit",
       "deploy",
@@ -206,6 +224,8 @@ const TERMS = [
     stage: "배포·공유",
     use: "화면이 잘 뜨는 순간에 \"여기까지 저장\"하고 이름을 붙이는 작업이에요. 되돌리고 싶을 때 이 기록으로 돌아가요.",
     ai: "\"지금 상태를 커밋해 줘\"라고 시킬 수 있어요. 큰 수정을 맡기기 전에 먼저 커밋해 두면 망가져도 안심이에요.",
+    word: "Commit: 맡기다, 확정하다",
+    code: "# 변경 사항에 이름 붙여 기록하기\ngit commit -m \"로그인 화면 추가\"",
     related: ['env', 'deploy'],
   },
   {
@@ -217,6 +237,7 @@ const TERMS = [
     stage: "배포·공유",
     use: "내 컴퓨터에서만 되던 앱을 친구가 링크로 열어 보게 만들 때 이 말을 써요.",
     ai: "올린 뒤에는 시크릿 창에서 직접 열어 보세요. 비밀 키가 코드에 섞여 올라가지 않았는지도 AI에게 점검시키세요.",
+    word: "Deploy: 배치하다, 필요한 곳에 펼쳐 놓다",
     related: ['commit', 'env'],
   },
   {
@@ -228,6 +249,7 @@ const TERMS = [
     stage: "준비",
     use: "앱을 만들기 전에 \"무엇을 누구를 위해 만들지\" 한 장으로 정리한 글을 말해요.",
     ai: "\"이 아이디어로 기획서 한 장 써 줘\"라고 시켜 보세요. 빠진 규칙이 없는지는 직접 읽어 보고 고치세요.",
+    word: "Product: 제품\nRequirements: 요구 사항\nDocument: 문서\nPRD: 만들 제품의 요구 사항을 적은 문서",
     related: ['mvp', 'vibe-coding'],
   },
   {
@@ -239,6 +261,7 @@ const TERMS = [
     stage: "만들기",
     use: "처음부터 다 만들지 않고, 핵심 기능 하나만 끝까지 되는 작은 버전을 먼저 만들 때 쓰는 말이에요.",
     ai: "AI는 기능을 자꾸 늘리려 해요. \"핵심 기능 하나만 만들고 다른 건 하지 마\"라고 범위를 분명히 정해 주세요.",
+    word: "Minimum: 최소의\nViable: 살아남을 수 있는, 작동 가능한\nProduct: 제품\nMVP: 핵심만 갖춘 가장 작은 제품",
     related: ['prd'],
   },
 ];

@@ -1,4 +1,4 @@
-// 용어 id별로 full(풀네임)·cmd(터미널 명령어)·stage(개발 단계)·use(언제 쓰냐면)·ai(AI를 쓰면)를 넣거나 바꾼다. 다른 칸은 건드리지 않는다.
+// 용어 id별로 full(풀네임)·word(영어 단어 뜻)·cmd(터미널 명령어)·stage(개발 단계)·use(언제 쓰냐면)·code(코드 모양)·ai(AI를 쓰면)를 넣거나 바꾼다. 다른 칸은 건드리지 않는다.
 // 사용: node set-fields.js <data 폴더> <patch.json>
 //   patch.json 예: { "npm": { "full": "Node Package Manager", "cmd": true, "use": "..." } }
 //   full을 ""로 주면 비운다. cmd는 true일 때만 적고 false면 지운다.
@@ -38,7 +38,7 @@ for (const f of fs.readdirSync(dir).filter((f) => /^terms(-\d\d-\d\d)?\.js$/.tes
     const indent = (/\n([ \t]+)["']?(?:term|def)["']?\s*:/.exec(obj) || [, '    '])[1];
 
     // 기존 cmd·use 줄은 지우고 related 앞에 새로 넣는다 (풀네임은 제자리에서 바꾼다)
-    for (const k of ['cmd', 'stage', 'use', 'ai']) if (k in p) obj = obj.replace(keyRe(k), '');
+    for (const k of ['word', 'cmd', 'stage', 'use', 'code', 'ai']) if (k in p) obj = obj.replace(keyRe(k), '');
     if ('full' in p) {
       const fm = new RegExp(`(["']?full["']?\\s*:\\s*)(["'])((?:\\\\.|(?!\\2).)*)\\2`).exec(obj);
       if (fm) obj = obj.replace(fm[0], `${fm[1]}${fm[2]}${p.full.replace(new RegExp(fm[2], 'g'), '\\' + fm[2])}${fm[2]}`);
@@ -46,7 +46,7 @@ for (const f of fs.readdirSync(dir).filter((f) => /^terms(-\d\d-\d\d)?\.js$/.tes
     }
     const add = [];
     if (p.cmd) add.push(`${indent}${key('cmd')}: true,`);
-    for (const k of ['stage', 'use', 'ai']) if (p[k]) add.push(`${indent}${key(k)}: ${JSON.stringify(p[k])},`);
+    for (const k of ['word', 'stage', 'use', 'code', 'ai']) if (p[k]) add.push(`${indent}${key(k)}: ${JSON.stringify(p[k])},`);
     if (add.length) {
       const rm = new RegExp(`\\n[ \\t]*["']?related["']?\\s*:`).exec(obj);
       if (rm) obj = obj.slice(0, rm.index) + '\n' + add.join('\n') + obj.slice(rm.index);

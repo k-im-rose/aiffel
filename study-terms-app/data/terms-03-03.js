@@ -13,6 +13,8 @@ addSection('03-03', "로컬 LLM과 실행 위치", [
     "stage": "실행·확인",
     "use": "AI 모델에게 질문을 보내고 답을 받는 순간이 전부 추론이에요. 챗봇을 쓸 때마다 뒤에서 추론이 일어나요.",
     "ai": "직접 다룰 일은 거의 없어요. 답이 너무 느리거나 메모리가 모자라다는 오류가 나면 \"추론 속도가 느린 원인을 알려 줘\"라고 물어보세요.",
+    "word": "Inference: 추론, 근거로 결론을 이끌어 냄",
+    "code": "# 학습 없이 답만 계산하기\nwith torch.no_grad():\n    out = model(x)",
     "related": ["training", "quantization", "inference-engine", "llm"]
   },
   {
@@ -28,6 +30,7 @@ addSection('03-03', "로컬 LLM과 실행 위치", [
     "stage": "준비",
     "use": "내 컴퓨터 메모리에 큰 모델이 안 들어갈 때, 크기를 줄인 버전을 고르는 장면에서 만나요.",
     "ai": "모델을 고를 때 \"내 컴퓨터 메모리에 맞는 양자화 버전을 추천해 줘\"라고 시키세요. 줄인 모델은 답의 품질이 조금 떨어질 수 있으니 직접 몇 번 써 보고 확인하세요.",
+    "word": "Quantization: 양자화, 연속된 값을 정해진 단계로 나눔",
     "related": ["fp16", "gguf", "awq", "q4-k-m", "parameter"]
   },
   {
@@ -43,6 +46,8 @@ addSection('03-03', "로컬 LLM과 실행 위치", [
     "stage": "준비",
     "use": "모델 설명 페이지에서 원본 크기를 확인하거나, 줄이기 전 모델과 비교할 때 이 말을 만나요.",
     "ai": "직접 다룰 일은 거의 없어요. 모델 용량이 궁금하면 \"FP16 기준으로 크기가 얼마야?\"라고 물어보세요.",
+    "word": "Floating: 떠다니는\nPoint: 소수점\nFP16: 소수점 위치가 움직이는 16비트 숫자",
+    "code": "# 16비트 소수로 텐서 만들기\nx = torch.tensor([1.5], dtype=torch.float16)",
     "related": ["quantization", "dtype", "bit"]
   },
   {
@@ -57,6 +62,7 @@ addSection('03-03', "로컬 LLM과 실행 위치", [
     "stage": "준비",
     "use": "'4비트 모델', '16비트 모델'처럼 모델 이름이나 설명에 붙어 있어서 크기를 가늠할 때 만나요.",
     "ai": "직접 다룰 일은 거의 없어요. 비트 숫자가 작을수록 파일이 작아지는 대신 품질이 조금 떨어질 수 있다는 것만 기억하세요.",
+    "word": "Binary: 둘로 이루어진, 2진의\nDigit: 숫자 한 자리\nBit: 0 또는 1 하나를 담는 가장 작은 단위",
     "related": ["fp16", "quantization", "memory"]
   },
   {
@@ -72,6 +78,8 @@ addSection('03-03', "로컬 LLM과 실행 위치", [
     "stage": "만들기",
     "use": "모델 서버를 띄울 때 숫자를 얼마나 꼼꼼히 계산할지 정하는 설정칸으로 만나요.",
     "ai": "AI가 정해 준 설정을 그대로 쓰는 경우가 많아요. 오류가 나면 오류 메시지를 붙여 넣고 \"내 GPU에 맞는 설정으로 바꿔 줘\"라고 요청하세요.",
+    "word": "Data: 데이터\nType: 종류, 형식\ndtype: 데이터의 숫자 형식",
+    "code": "# 숫자 형식 지정하고 확인하기\nx = torch.zeros(3, dtype=torch.float32)\nprint(x.dtype)",
     "related": ["fp16", "quantization", "vllm"]
   },
   {
@@ -86,6 +94,7 @@ addSection('03-03', "로컬 LLM과 실행 위치", [
     "stage": "만들기",
     "use": "모델을 학습시키다 메모리가 모자랄 때, 그 이유를 찾는 설명에서 이 말이 나와요.",
     "ai": "직접 다룰 일은 거의 없어요. 학습 중 메모리 부족 오류가 나면 \"메모리를 줄이는 방법을 알려 줘\"라고 물어보세요.",
+    "word": "Activation: 활성화, 작동시킴",
     "related": ["inference", "backpropagation", "neural-network"]
   },
   {
@@ -100,6 +109,8 @@ addSection('03-03', "로컬 LLM과 실행 위치", [
     "stage": "실행·확인",
     "use": "같은 질문에 항상 같은 답이 나오게 하고 싶을 때, 예를 들어 결과를 비교하는 테스트에서 써요.",
     "ai": "결과를 비교하는 테스트라면 \"같은 질문엔 항상 같은 답이 나오게 설정해 줘\"라고 시키세요. 설정을 빠뜨리면 답이 매번 달라서 비교가 흔들려요.",
+    "word": "Greedy: 욕심 많은, 당장 가장 좋은 것만 고르는\nDecoding: 해독, 글자로 풀어냄\nGreedy Decoding: 매번 점수 1등 후보만 고르는 방식",
+    "code": "# 점수가 가장 높은 후보 고르기\nnext_id = torch.argmax(logits, dim=-1)",
     "related": ["sampling", "softmax", "next-token"]
   },
   {
@@ -114,6 +125,8 @@ addSection('03-03', "로컬 LLM과 실행 위치", [
     "stage": "실행·확인",
     "use": "같은 질문을 해도 답이 매번 조금씩 다르게 나오는 이유를 알고 싶을 때 만나요.",
     "ai": "테스트 결과가 들쭉날쭉하면 \"답이 매번 같게 나오도록 바꿔 줘\"라고 시키세요. 창의적인 글처럼 다양한 답이 필요하면 그대로 두세요.",
+    "word": "Sampling: 표본 추출, 뽑기",
+    "code": "# 확률대로 다음 토큰 하나 뽑기\nnext_id = torch.multinomial(probs, 1)",
     "related": ["greedy-decoding", "softmax", "nondeterminism"]
   },
   {
@@ -129,6 +142,7 @@ addSection('03-03', "로컬 LLM과 실행 위치", [
     "stage": "준비",
     "use": "로컬에서 돌릴 모델을 내려받을 때 파일 이름이 .gguf로 끝나는 것을 보게 돼요.",
     "ai": "모델을 받을 때 \"이 모델의 gguf 파일을 내려받는 방법을 알려 줘\"라고 시키세요. 출처가 불분명한 파일은 함부로 받지 말고 올린 곳을 먼저 확인하세요.",
+    "word": "Generated: 생성된\nUnified: 통합된\nFormat: 형식\nGGUF: 모델을 파일 하나에 담는 형식",
     "related": ["quantization", "q4-k-m", "metadata", "ollama"]
   },
   {
@@ -157,6 +171,7 @@ addSection('03-03', "로컬 LLM과 실행 위치", [
     "stage": "준비",
     "use": "GPU로 모델을 돌릴 때 모델 이름 끝에 AWQ가 붙은 줄인 버전을 보게 돼요.",
     "ai": "직접 다룰 일은 거의 없어요. \"작은 GPU에 들어가는 AWQ 모델을 골라 줘\"라고 시키고, 이름이 진짜 있는 모델인지 한 번 확인하세요.",
+    "word": "Activation-aware: 활성값을 고려하는\nWeight: 가중치\nQuantization: 양자화\nAWQ: 중요한 가중치를 덜 깎는 양자화 방식",
     "related": ["quantization", "activation", "vllm"]
   },
   {
@@ -171,6 +186,7 @@ addSection('03-03', "로컬 LLM과 실행 위치", [
     "stage": "준비",
     "use": "파일이나 모델을 열었을 때 본문이 아니라 크기, 만든 날짜, 설정 같은 설명 정보를 가리킬 때 써요.",
     "ai": "직접 다룰 일은 거의 없어요. 파일 정보가 궁금하면 \"이 파일의 메타데이터를 보여 줘\"라고 요청하세요.",
+    "word": "Meta: ~에 대한, 한 단계 위의\nData: 데이터\nMetadata: 데이터를 설명하는 데이터",
     "related": ["gguf", "json"]
   },
   {
@@ -186,6 +202,7 @@ addSection('03-03', "로컬 LLM과 실행 위치", [
     "stage": "준비",
     "use": "모델 이름의 7B, 0.8B를 보고 내 컴퓨터에서 돌아갈지 먼저 가늠할 때 만나요.",
     "ai": "모델을 고르기 전에 \"7B 모델이 내 컴퓨터 메모리에서 돌아갈까?\"라고 물어보세요. AI의 계산도 대략적인 값이라 실제로 돌려서 확인하세요.",
+    "word": "Billion: 10억\nParameters: 매개변수, 모델이 배운 숫자\nB: Billion의 첫 글자, 10억 개 단위",
     "related": ["parameter", "quantization", "memory"]
   },
   {
@@ -201,6 +218,7 @@ addSection('03-03', "로컬 LLM과 실행 위치", [
     "stage": "오류 해결",
     "use": "코랩에서 'CUDA out of memory' 오류가 나서 메모리가 모자란 원인을 찾을 때 만나요.",
     "ai": "오류가 나면 메시지를 그대로 붙여 넣고 \"VRAM이 모자란 건지 알려 줘\"라고 물어보세요. 더 작은 모델로 바꾸는 방법도 같이 물어보면 좋아요.",
+    "word": "Video: 영상, 화면\nRAM: 작업용 임시 메모리\nVRAM: 그래픽카드에 달린 전용 메모리",
     "related": ["gpu", "unified-memory", "memory"]
   },
   {
@@ -216,6 +234,7 @@ addSection('03-03', "로컬 LLM과 실행 위치", [
     "stage": "실행·확인",
     "use": "맥에서 로컬 모델을 돌리다 느려질 때, 메모리를 다른 앱과 나눠 쓴다는 이야기로 나와요.",
     "ai": "직접 다룰 일은 거의 없어요. 모델이 느려지면 다른 앱을 닫고, AI에게 \"내 맥 메모리에 맞는 모델 크기를 알려 줘\"라고 물어보세요.",
+    "word": "Unified: 통합된\nMemory: 기억 장치\nUnified Memory: CPU와 GPU가 함께 쓰는 하나의 메모리",
     "related": ["vram", "memory", "swap"]
   },
   {
@@ -230,6 +249,7 @@ addSection('03-03', "로컬 LLM과 실행 위치", [
     "stage": "오류 해결",
     "use": "모델을 돌리다 갑자기 컴퓨터가 느려졌을 때 메모리가 모자란 신호로 보게 돼요.",
     "ai": "느려지면 \"메모리 압력과 스왑 사용량 확인하는 방법을 알려 줘\"라고 물어보세요. 스왑이 많이 늘었다면 더 작은 모델로 바꾸세요.",
+    "word": "Swap: 바꾸다, 교환하다",
     "related": ["memory", "unified-memory", "operating-system"]
   },
   {
@@ -245,6 +265,7 @@ addSection('03-03', "로컬 LLM과 실행 위치", [
     "stage": "오류 해결",
     "use": "모델이 그래픽카드 메모리에 다 안 들어가서 일부가 CPU로 넘어가 느려졌을 때 만나요.",
     "ai": "모델이 이유 없이 느리다면 \"일부가 CPU로 넘어갔는지 확인해 줘\"라고 시키세요. 실행은 되어도 느리니 작은 모델로 바꾸는 편이 나아요.",
+    "word": "Off: ~에서 벗어나\nLoad: 짐, 부담\nOffloading: 부담을 덜어 다른 장치로 넘기는 것",
     "related": ["vram", "memory", "inference-engine"]
   },
   {
@@ -259,6 +280,7 @@ addSection('03-03', "로컬 LLM과 실행 위치", [
     "stage": "준비",
     "use": "프로그램을 설치할 때 macOS용인지 Windows용인지 고르는 장면에서 만나요.",
     "ai": "명령어가 OS마다 달라서, 요청할 때 \"나는 맥이에요\"처럼 내 OS를 먼저 알려 주세요. 안 알려 주면 다른 OS용 명령어를 줄 수 있어요.",
+    "word": "Operating: 운영하는\nSystem: 체계, 시스템\nOperating System: 컴퓨터를 운영하는 기본 소프트웨어",
     "related": ["kernel", "memory", "process"]
   },
   {
@@ -275,6 +297,7 @@ addSection('03-03', "로컬 LLM과 실행 위치", [
     "stage": "준비",
     "use": "내 컴퓨터에서 AI 모델을 직접 돌려 보고 싶을 때 가장 먼저 설치하는 프로그램이에요.",
     "ai": "\"Ollama로 모델을 받아서 실행하는 방법을 단계별로 알려 줘\"라고 시키세요. 모델마다 크기가 크니 받기 전에 내 컴퓨터 용량과 메모리를 확인하세요.",
+    "code": "# 모델 받아서 대화 시작\nollama pull llama3.2\nollama run llama3.2",
     "related": ["local-model", "model-tag", "vllm", "gguf"]
   },
   {
@@ -290,6 +313,8 @@ addSection('03-03', "로컬 LLM과 실행 위치", [
     "stage": "준비",
     "use": "모델을 받을 때 이름 뒤에 :0.8b처럼 붙는 크기나 버전 표시를 고르는 장면에서 만나요.",
     "ai": "태그를 빼고 받으면 생각보다 큰 모델이 받아질 수 있어요. \"크기가 작은 태그로 받는 명령어를 알려 줘\"라고 시키세요.",
+    "word": "Model: 모델\nTag: 꼬리표\nModel Tag: 모델의 크기·버전을 나타내는 꼬리표",
+    "code": "# 이름:태그로 모델 크기 고르기\nollama run llama3.2:1b",
     "related": ["ollama", "billion-params"]
   },
   {
@@ -333,6 +358,7 @@ addSection('03-03', "로컬 LLM과 실행 위치", [
     "stage": "준비",
     "use": "모델 이름에 Instruct가 붙은 것과 안 붙은 것 중 무엇을 받을지 고민할 때 만나요.",
     "ai": "챗봇이나 앱에 붙일 모델이라면 \"Instruct 버전으로 골라 줘\"라고 시키세요. 안 붙은 기본 모델은 질문에 답하지 않고 글만 이어 쓸 수 있어요.",
+    "word": "Instruct: 지시하다\nModel: 모델\nInstruct Model: 지시를 따르도록 다듬은 모델",
     "related": ["sft", "pretraining", "llama"]
   },
   {
@@ -348,6 +374,7 @@ addSection('03-03', "로컬 LLM과 실행 위치", [
     "stage": "배포·공유",
     "use": "여러 사람이 쓰는 AI 서버를 GPU로 띄울 때 쓰는 프로그램 이름으로 만나요.",
     "ai": "\"코랩에서 vLLM 서버를 띄우는 코드를 짜 줘\"라고 시키세요. 서버가 켜졌다는 로그가 뜰 때까지 기다린 뒤에 호출해 보세요.",
+    "code": "# 모델을 API 서버로 띄우기\nvllm serve Qwen/Qwen2.5-0.5B-Instruct",
     "related": ["inference-engine", "ollama", "openai-compatible-api", "gpu"]
   },
   {
@@ -363,6 +390,7 @@ addSection('03-03', "로컬 LLM과 실행 위치", [
     "stage": "준비",
     "use": "같은 모델 파일을 어떤 프로그램으로 돌릴지 고를 때 이 말을 만나요.",
     "ai": "\"혼자 쓸 때와 여럿이 쓸 때 어떤 실행 엔진이 맞아?\"라고 물어보세요. 엔진마다 지원하는 기능이 달라서 AI의 추천을 한 번 확인하세요.",
+    "word": "Inference: 추론\nEngine: 엔진, 움직이는 동력 장치\nInference Engine: 모델을 돌려 답을 계산하는 프로그램",
     "related": ["ollama", "vllm", "inference", "llm"]
   },
   {
@@ -378,6 +406,7 @@ addSection('03-03', "로컬 LLM과 실행 위치", [
     "stage": "준비",
     "use": "코랩에서 GPU를 쓰려고 런타임 유형을 바꾸는 장면에서 이 말을 만나요.",
     "ai": "GPU를 안 켜면 아주 느리게 돌아요. 코드를 돌리기 전에 \"GPU가 잡혀 있는지 확인하는 코드를 넣어 줘\"라고 시키세요.",
+    "word": "Hardware: 하드웨어, 기계 장치\nAccelerator: 가속기, 빠르게 해 주는 것\nHardware Accelerator: 계산을 빠르게 해 주는 장치",
     "related": ["gpu", "tpu", "runtime", "colab"]
   },
   {
@@ -393,6 +422,7 @@ addSection('03-03', "로컬 LLM과 실행 위치", [
     "stage": "실행·확인",
     "use": "코랩에서 코드가 갑자기 안 돌거나 설치한 것이 사라졌을 때 만나요.",
     "ai": "설치한 것이 사라졌다면 연결이 끊긴 거예요. \"런타임이 끊겨도 처음부터 다시 돌릴 수 있게 설치 코드를 맨 위에 넣어 줘\"라고 시키세요.",
+    "word": "Run: 실행하다\nTime: 시간, 때\nRuntime: 프로그램이 실행되는 동안, 또는 그 환경",
     "related": ["colab", "hardware-accelerator", "notebook-cell", "virtual-machine"]
   },
   {
@@ -408,6 +438,7 @@ addSection('03-03', "로컬 LLM과 실행 위치", [
     "stage": "실행·확인",
     "use": "코랩이나 주피터에서 코드를 한 칸씩 실행하며 결과를 바로 볼 때 쓰는 말이에요.",
     "ai": "칸을 위에서부터 차례로 실행하지 않으면 오류가 나기 쉬워요. \"셀 실행 순서에 맞게 코드를 나눠 줘\"라고 시키세요.",
+    "word": "Notebook: 공책\nCell: 칸, 세포\nNotebook / Cell: 공책 한 권과 그 안의 칸 하나",
     "related": ["colab", "runtime", "python"]
   },
   {
@@ -422,6 +453,8 @@ addSection('03-03', "로컬 LLM과 실행 위치", [
     "stage": "만들기",
     "use": "OpenAI용으로 짠 코드를 그대로 두고 주소만 바꿔서 다른 서버에 연결할 때 이 말을 만나요.",
     "ai": "\"기존 OpenAI 코드를 로컬 서버로 연결되게 바꿔 줘\"라고 시키세요. 서버마다 지원하는 기능이 조금 달라서 실제로 한 번 호출해 확인하세요.",
+    "word": "Compatible: 호환되는, 함께 쓸 수 있는\nAPI: 프로그램끼리 요청을 주고받는 약속\nOpenAI-compatible API: OpenAI와 같은 방식으로 쓰는 API",
+    "code": "# OpenAI 방식 클라이언트 만들기\nfrom openai import OpenAI\nclient = OpenAI(api_key=\"your-api-key\")",
     "related": ["base-url", "chat-messages", "vllm", "api"]
   },
   {
@@ -436,6 +469,8 @@ addSection('03-03', "로컬 LLM과 실행 위치", [
     "stage": "만들기",
     "use": "같은 코드로 로컬 서버와 클라우드 서버를 오가고 싶을 때, 요청 보낼 주소를 바꾸는 설정으로 만나요.",
     "ai": "연결이 안 되면 주소와 포트부터 확인하세요. \"주소를 설정 파일에서 바꿀 수 있게 해 줘\"라고 시키면 코드를 고치지 않아도 돼요.",
+    "word": "Base: 기본, 바탕\nURL: 인터넷 주소\nbase_url: 요청을 보낼 기본 주소",
+    "code": "# 요청 보낼 서버 주소 바꾸기\nclient = OpenAI(base_url=\"http://localhost:11434/v1\",\n                api_key=\"your-api-key\")",
     "related": ["openai-compatible-api", "endpoint", "llm-provider"]
   },
   {
@@ -450,6 +485,8 @@ addSection('03-03', "로컬 LLM과 실행 위치", [
     "stage": "만들기",
     "use": "AI에게 대화를 보낼 때 누가 한 말인지 표시해서 목록으로 묶어 보내는 형식이에요.",
     "ai": "이전 대화를 기억하게 하려면 지난 메시지를 목록에 계속 쌓아서 보내야 해요. \"대화 기록을 이어서 보내는 코드를 짜 줘\"라고 시키세요.",
+    "word": "Message: 메시지, 전하는 말\nRole: 역할\nContent: 내용",
+    "code": "# 대화 내용을 목록으로 보내기\nmessages = [\n    {\"role\": \"user\", \"content\": \"안녕\"}\n]",
     "related": ["openai-compatible-api", "json", "single-multi-turn"]
   },
   {
@@ -464,6 +501,8 @@ addSection('03-03', "로컬 LLM과 실행 위치", [
     "stage": "오류 해결",
     "use": "AI의 답이 문장 중간에 뚝 끊겼을 때, 왜 멈췄는지 알려 주는 값으로 만나요.",
     "ai": "답이 잘리면 응답에서 이 값을 확인하세요. length라고 나오면 \"출력 길이 한도를 늘려 줘\"라고 시키면 돼요.",
+    "word": "Finish: 끝내다\nReason: 이유\nfinish_reason: 답을 멈춘 이유",
+    "code": "# 모델이 멈춘 이유 확인하기\nprint(res.choices[0].finish_reason)",
     "related": ["max-tokens", "chat-messages"]
   },
   {
@@ -478,6 +517,8 @@ addSection('03-03', "로컬 LLM과 실행 위치", [
     "stage": "만들기",
     "use": "AI 답이 중간에 끊기거나 요금이 걱정될 때 답의 길이 상한을 정하는 설정으로 만나요.",
     "ai": "답이 잘리면 값을 늘리고, 요금이 걱정되면 줄이세요. AI가 코드에 넣어 둔 값이 너무 작지 않은지 한 번 확인하세요.",
+    "word": "max: 최대, 가장 큰\ntokens: 토큰, 글자 조각 단위\nmax_tokens: 답에 쓸 수 있는 토큰의 최대 개수",
+    "code": "# 답을 최대 1024토큰까지만 받도록 설정\ndata = {\"model\": \"your-model\", \"max_tokens\": 1024}",
     "related": ["finish-reason", "token", "max-model-len"]
   },
   {
@@ -492,6 +533,8 @@ addSection('03-03', "로컬 LLM과 실행 위치", [
     "stage": "오류 해결",
     "use": "모델 서버가 메모리 부족으로 안 켜지거나, 입력이 너무 길다고 거부될 때 이 설정을 만나요.",
     "ai": "서버가 안 켜지면 오류 메시지를 붙여 넣고 \"이 길이 설정을 줄여 줘\"라고 시키세요. 줄이면 긴 문서는 못 받으니 필요한 길이는 확인하세요.",
+    "word": "Max: 최대\nModel: 모델\nLength: 길이\n--max-model-len: 모델이 다룰 최대 토큰 길이",
+    "code": "# vLLM 서버의 최대 문맥 길이를 8192로 제한\nvllm serve your-model --max-model-len 8192",
     "related": ["context-window", "kv-cache", "vllm"]
   },
   {
@@ -506,6 +549,7 @@ addSection('03-03', "로컬 LLM과 실행 위치", [
     "stage": "실행·확인",
     "use": "서버를 켰더니 로그에 0.0.0.0:8010 같은 주소가 보여서 무슨 뜻인지 궁금할 때 만나요.",
     "ai": "접속할 때는 보통 localhost를 쓰면 돼요. 서버를 인터넷에 열어 둘 생각이 아니면 \"내 컴퓨터에서만 접속되게 설정해 줘\"라고 시키세요.",
+    "code": "# 모든 주소에서 접속 가능하게 서버 켜기\nuvicorn main:app --host 0.0.0.0 --port 8000",
     "related": ["localhost", "port", "ip-address"]
   },
   {
@@ -521,6 +565,7 @@ addSection('03-03', "로컬 LLM과 실행 위치", [
     "stage": "실행·확인",
     "use": "서버 응답이 한 줄로 길게 나와서 읽기 어려울 때, 보기 좋게 정리하려고 쓰는 도구예요.",
     "ai": "\"curl 결과를 jq로 정리해서 답 내용만 보여 줘\"라고 시키세요. 맥에는 기본으로 없어서 설치가 필요할 수 있어요.",
+    "code": "# JSON 파일에서 name 값만 뽑기\ncat data.json | jq '.name'",
     "related": ["json", "curl", "cli"]
   },
   {
@@ -549,6 +594,7 @@ addSection('03-03', "로컬 LLM과 실행 위치", [
     "stage": "만들기",
     "use": "내 앱에 AI를 붙일 때 어느 회사나 서버에 요청을 보낼지 고르는 장면에서 만나요.",
     "ai": "\"설정 값만 바꾸면 다른 제공자로 갈아탈 수 있게 짜 줘\"라고 시키세요. 제공자마다 모델 이름과 요금이 다르니 바꿀 때 확인하세요.",
+    "word": "Large Language Model: 대규모 언어 모델\nProvider: 제공자, 공급하는 쪽\nLLM Provider: 모델을 쓸 수 있게 해 주는 곳",
     "related": ["cloud-api", "openai-compatible-api", "self-hosting"]
   },
   {
@@ -563,6 +609,7 @@ addSection('03-03', "로컬 LLM과 실행 위치", [
     "stage": "만들기",
     "use": "API 키를 발급받아 호출만으로 바로 AI 기능을 앱에 붙일 때 쓰는 방식이에요.",
     "ai": "질문 내용이 외부 서버로 나가고 쓴 만큼 요금이 나와요. API 키는 코드에 직접 적지 말고 따로 보관하라고 \"키는 환경 변수로 읽게 해 줘\"라고 시키세요.",
+    "word": "Public: 공개된, 누구나 쓸 수 있는\nCloud: 구름, 인터넷에 있는 서버\nAPI: 프로그램끼리 요청을 주고받는 창구",
     "related": ["llm-provider", "managed-deployment", "self-hosting", "token-pricing"]
   },
   {
@@ -577,6 +624,7 @@ addSection('03-03', "로컬 LLM과 실행 위치", [
     "stage": "배포·공유",
     "use": "회사 보안 규정 때문에 공개 API는 못 쓰는데 서버를 직접 운영하기도 부담스러울 때 검토해요.",
     "ai": "입문 단계에서 직접 다룰 일은 거의 없어요. 회사 프로젝트라면 \"우리 조건에 맞는 방식이 뭔지 비교해 줘\"라고 물어보되, 최종 결정은 보안 담당자와 확인하세요.",
+    "word": "Managed: 관리되는\nPrivate: 사적인, 전용의\nDeployment: 배포, 서비스를 내놓는 일",
     "related": ["cloud-api", "self-hosting", "region"]
   },
   {
@@ -591,6 +639,7 @@ addSection('03-03', "로컬 LLM과 실행 위치", [
     "stage": "배포·공유",
     "use": "민감한 데이터를 밖으로 보내면 안 될 때, 모델을 내가 관리하는 서버에서 직접 돌리는 방식이에요.",
     "ai": "설치부터 업데이트, 장애 대응까지 직접 해야 해요. \"직접 운영할 때 챙길 일 목록을 알려 줘\"라고 먼저 물어보고 정하세요.",
+    "word": "Self: 스스로\nHosting: 서버를 차려 운영하기\nSelf-hosting: 직접 서버를 운영하는 것",
     "related": ["local-model", "security-patch", "sovereignty", "cloud-api"]
   },
   {
@@ -605,6 +654,7 @@ addSection('03-03', "로컬 LLM과 실행 위치", [
     "stage": "배포·공유",
     "use": "클라우드 서비스를 고를 때 서울, 도쿄 같은 서버 위치를 선택하는 화면에서 만나요.",
     "ai": "개인정보가 들어 있다면 데이터가 어느 나라에서 처리되는지 중요해요. AI가 고른 리전을 그대로 쓰지 말고 직접 확인하세요.",
+    "word": "Region: 지역, 구역",
     "related": ["cloud", "managed-deployment", "data-retention"]
   },
   {
@@ -619,6 +669,7 @@ addSection('03-03', "로컬 LLM과 실행 위치", [
     "stage": "배포·공유",
     "use": "AI 서비스 약관에서 보낸 내용이 서버에 얼마나 오래 남는지 확인할 때 만나요.",
     "ai": "'학습에 안 쓴다'와 '저장하지 않는다'는 다른 말이에요. 고객 데이터를 보내기 전에 \"보관 기간과 삭제 방법을 약관에서 찾아 줘\"라고 시키고 직접도 확인하세요.",
+    "word": "Data: 자료\nRetention: 보유, 계속 갖고 있기\nData Retention: 자료를 얼마나 남겨 두는지",
     "related": ["log", "region", "subprocessor", "pii"]
   },
   {
@@ -633,6 +684,7 @@ addSection('03-03', "로컬 LLM과 실행 위치", [
     "stage": "배포·공유",
     "use": "회사 보안 검토에서 AI 서비스가 내 데이터를 어떤 외부 업체에 또 맡기는지 확인할 때 만나요.",
     "ai": "입문 단계에서 직접 다룰 일은 거의 없어요. 회사에서 쓸 때만 제공사 문서의 목록을 확인하세요.",
+    "word": "Sub: 아래의, 하위\nProcessor: 처리하는 쪽\nSubprocessor: 처리를 대신 맡는 하위 업체",
     "related": ["data-retention", "region", "pii"]
   },
   {
@@ -647,6 +699,7 @@ addSection('03-03', "로컬 LLM과 실행 위치", [
     "stage": "오류 해결",
     "use": "서버가 안 켜지거나 오류가 날 때, 무슨 일이 있었는지 가장 먼저 읽어 보는 기록이에요.",
     "ai": "오류가 나면 로그를 그대로 붙여 넣고 원인을 물어보세요. 단, 로그에 개인정보나 API 키가 찍혀 있지 않은지 붙여 넣기 전에 확인하세요.",
+    "word": "Log: 기록, 항해 일지",
     "related": ["data-retention", "audit", "devtools-console"]
   },
   {
@@ -661,6 +714,7 @@ addSection('03-03', "로컬 LLM과 실행 위치", [
     "stage": "배포·공유",
     "use": "AI를 도입할 때 제공사가 서비스를 바꾸거나 끝내도 우리가 대응할 수 있는지 따지는 회의에서 나와요.",
     "ai": "입문 단계에서 직접 다룰 일은 거의 없어요. 서비스를 만든다면 \"제공사를 바꿔도 되게 짜 줘\"라고 시켜 두면 도움이 돼요.",
+    "word": "Sovereignty: 주권, 스스로 결정하는 권한",
     "related": ["self-hosting", "deprecation", "version-pinning", "audit"]
   },
   {
@@ -676,6 +730,7 @@ addSection('03-03', "로컬 LLM과 실행 위치", [
     "stage": "배포·공유",
     "use": "보안 점검에서 어떤 모델이 언제 어떤 답을 했는지 기록으로 설명해야 할 때 필요해요.",
     "ai": "나중에 설명할 일이 생기니 \"모델 이름과 버전, 호출 시각을 기록으로 남겨 줘\"라고 시키세요. 개인정보는 기록에 남기지 않게 주의하세요.",
+    "word": "Audit: 감사, 꼼꼼히 따져 검사하기",
     "related": ["log", "sovereignty", "version-pinning"]
   },
   {
@@ -690,6 +745,7 @@ addSection('03-03', "로컬 LLM과 실행 위치", [
     "stage": "배포·공유",
     "use": "쓰던 AI 모델이 곧 지원 종료된다는 공지를 이메일이나 공식 문서에서 받았을 때 만나요.",
     "ai": "종료일 전에 \"새 모델로 바꾸는 방법과 확인할 것을 알려 줘\"라고 시키세요. 바꾼 뒤에는 답이 예전처럼 나오는지 꼭 확인하세요.",
+    "word": "Deprecation: 사용 중단 예고, 더는 권장하지 않음",
     "related": ["version-pinning", "regression-test", "sovereignty"]
   },
   {
@@ -704,6 +760,8 @@ addSection('03-03', "로컬 LLM과 실행 위치", [
     "stage": "배포·공유",
     "use": "어느 날 갑자기 앱이 다르게 동작하는 사고를 막으려고, 쓰는 모델이나 라이브러리 버전을 정해 두는 거예요.",
     "ai": "AI가 짠 코드에 버전이 적혀 있는지 확인하세요. \"모델과 라이브러리 버전을 고정해 줘\"라고 시키면 돼요. 고정해도 영원히 쓸 수 있는 건 아니에요.",
+    "word": "Version: 버전\nPinning: 핀으로 꽂아 고정하기\nVersion Pinning: 버전을 고정해 두는 것",
+    "code": "# 패키지 버전을 2.31.0으로 고정해 설치\npip install requests==2.31.0",
     "related": ["deprecation", "regression-test", "dependency"]
   },
   {
@@ -718,6 +776,7 @@ addSection('03-03', "로컬 LLM과 실행 위치", [
     "stage": "실행·확인",
     "use": "뭔가를 바꾼 뒤 예전에 잘 되던 것이 여전히 되는지 다시 확인할 때 쓰는 말이에요.",
     "ai": "AI가 코드를 고친 뒤에는 \"기존 기능이 안 깨졌는지 테스트를 돌려 줘\"라고 시키세요. 부탁하지 않은 곳까지 바뀌는 일이 있어서 꼭 필요해요.",
+    "word": "Regression: 되돌아감, 퇴보\nTest: 시험\nRegression Test: 예전 기능이 망가지지 않았는지 보는 시험",
     "related": ["version-pinning", "deprecation", "benchmark"]
   },
   {
@@ -732,6 +791,7 @@ addSection('03-03', "로컬 LLM과 실행 위치", [
     "stage": "오류 해결",
     "use": "쓰던 도구에서 보안 구멍이 발견되어 고친 업데이트가 나왔다는 공지를 볼 때 만나요.",
     "ai": "서버를 직접 운영한다면 업데이트 공지를 챙겨 바로 적용하세요. \"쓰는 도구의 알려진 보안 문제를 점검해 줘\"라고 시킬 수도 있어요.",
+    "word": "Security: 보안\nPatch: 헝겊 조각, 구멍을 덧대 고치기\nSecurity Patch: 보안 구멍을 메우는 수정",
     "related": ["vulnerability", "self-hosting", "operating-system"]
   },
   {
@@ -747,6 +807,7 @@ addSection('03-03', "로컬 LLM과 실행 위치", [
     "stage": "준비",
     "use": "모델이나 프로그램을 내려받아 서비스에 넣기 전에, 써도 되는 조건을 확인할 때 만나요.",
     "ai": "AI가 추천한 모델을 쓰기 전에 모델 소개 페이지의 License 항목을 직접 확인하세요. 상업적으로 써도 되는지는 AI의 말만 믿으면 위험해요.",
+    "word": "License: 허가, 사용 허락",
     "related": ["open-weight", "open-source", "model-card"]
   },
   {
@@ -761,6 +822,7 @@ addSection('03-03', "로컬 LLM과 실행 위치", [
     "stage": "배포·공유",
     "use": "API 가격표에서 보내는 글자와 받는 글자의 요금이 따로 적혀 있는 것을 볼 때 만나요.",
     "ai": "앱을 만들기 전에 \"하루 100번 쓰면 한 달 요금이 얼마나 나올까?\"라고 물어보세요. 계산은 대략적이니 실제 청구서를 가끔 확인하세요.",
+    "word": "Input: 입력\nOutput: 출력\nPricing: 가격 책정",
     "related": ["token", "cloud-api", "tco"]
   },
   {
@@ -775,6 +837,7 @@ addSection('03-03', "로컬 LLM과 실행 위치", [
     "stage": "배포·공유",
     "use": "로컬 모델과 API 중 무엇이 더 싼지 따질 때, 요금표 말고 장비값과 전기, 관리 시간까지 더하는 계산이에요.",
     "ai": "입문 단계에서 직접 다룰 일은 거의 없어요. 비교가 필요하면 \"장비값, 전기, 관리 시간까지 넣어서 비교해 줘\"라고 시키세요.",
+    "word": "Total: 전체의\nCost: 비용\nOwnership: 소유\nTCO: 가지고 쓰는 데 드는 전체 비용",
     "related": ["break-even", "utilization", "token-pricing"]
   },
   {
@@ -789,6 +852,7 @@ addSection('03-03', "로컬 LLM과 실행 위치", [
     "stage": "배포·공유",
     "use": "'하루 몇 건 넘게 쓰면 직접 운영하는 게 더 싸다' 같은 기준선을 계산할 때 써요.",
     "ai": "AI가 계산해 준 숫자는 가정에 따라 크게 달라져요. \"어떤 가정으로 계산했는지 같이 알려 줘\"라고 시키고 내 사용량으로 다시 넣어 보세요.",
+    "word": "Break: 깨다, 넘다\nEven: 평평한, 같은\nBreak-even: 손해도 이익도 없는 균형점",
     "related": ["tco", "utilization", "token-pricing"]
   },
   {
@@ -803,6 +867,7 @@ addSection('03-03', "로컬 LLM과 실행 위치", [
     "stage": "배포·공유",
     "use": "GPU 서버를 사야 할지 고민할 때, 하루 중 실제로 일하는 시간이 얼마나 되는지 따지는 말이에요.",
     "ai": "입문 단계에서 직접 다룰 일은 거의 없어요. 가끔만 쓸 거라면 \"사는 것과 빌려 쓰는 것 중 어느 쪽이 나아?\"라고 물어보세요.",
+    "word": "Utilization: 활용, 이용하는 정도",
     "related": ["tco", "break-even", "concurrency"]
   },
   {
@@ -818,6 +883,7 @@ addSection('03-03', "로컬 LLM과 실행 위치", [
     "stage": "오류 해결",
     "use": "앱에서 답이 너무 느리다는 불만이 나왔을 때, 어디서 시간이 걸리는지 따지는 기준이에요.",
     "ai": "\"어느 단계에서 시간이 걸리는지 시간을 재서 보여 줘\"라고 시키세요. 모델 불러오기, 네트워크, 답 길이 중 어디가 문제인지 나눠 볼 수 있어요.",
+    "word": "Latency: 지연, 반응이 늦는 시간",
     "related": ["concurrency", "bandwidth", "inference"]
   },
   {
@@ -832,6 +898,7 @@ addSection('03-03', "로컬 LLM과 실행 위치", [
     "stage": "배포·공유",
     "use": "여러 사용자가 동시에 접속하는 서비스를 만들 때, 서버가 몇 명까지 한꺼번에 받는지 따지는 말이에요.",
     "ai": "혼자 테스트할 때는 잘 돼도 여럿이 쓰면 느려질 수 있어요. \"동시에 10건 요청을 보내서 확인해 줘\"라고 시켜 보세요.",
+    "word": "Concurrency: 동시성, 동시에 일어남",
     "related": ["latency", "utilization", "vllm"]
   },
   {
@@ -846,6 +913,7 @@ addSection('03-03', "로컬 LLM과 실행 위치", [
     "stage": "만들기",
     "use": "긴 문서를 AI에 넣으려는데 너무 길다고 거부될 때, 짧은 조각으로 나누는 작업이에요.",
     "ai": "조각 사이에서 문맥이 끊길 수 있어요. \"문단 단위로 조금씩 겹치게 나눠 줘\"라고 시키고, 나눈 결과를 몇 군데 직접 읽어 보세요.",
+    "word": "Chunk: 덩어리\nChunking: 긴 글을 덩어리로 나누기",
     "related": ["context-window", "lost-in-the-middle", "embedding"]
   },
   {
@@ -861,6 +929,7 @@ addSection('03-03', "로컬 LLM과 실행 위치", [
     "stage": "실행·확인",
     "use": "AI가 만든 코드나 글을 그대로 배포하지 않고, 사람이 읽고 고친 뒤에 쓰는 단계예요.",
     "ai": "AI는 그럴듯하게 틀리기도 해서 꼭 직접 읽어 봐야 해요. \"확실하지 않은 부분을 표시해 줘\"라고 시키면 검토할 곳을 찾기 쉬워요.",
+    "word": "Human: 사람\nReview: 검토\nHuman Review: 사람이 확인하는 단계",
     "related": ["hallucination", "tco", "regression-test"]
   },
   {
@@ -876,6 +945,7 @@ addSection('03-03', "로컬 LLM과 실행 위치", [
     "stage": "준비",
     "use": "외부 AI에 데이터를 보내기 전에 이름, 연락처를 지우거나 형식을 정리하는 단계예요.",
     "ai": "\"AI에 보내기 전에 개인정보를 지우는 코드를 짜 줘\"라고 시키세요. 정말 다 지워졌는지는 결과를 직접 몇 개 열어서 확인하세요.",
+    "word": "Pre: 미리\nProcess: 처리\nPreprocessing: 본 작업 전에 미리 하는 정리",
     "related": ["de-identification", "pii", "data-minimization"]
   },
   {
@@ -890,6 +960,7 @@ addSection('03-03', "로컬 LLM과 실행 위치", [
     "stage": "준비",
     "use": "고객 상담 기록처럼 개인정보가 든 문서를 AI에 넣기 전에 누군지 알아볼 수 없게 가리는 작업이에요.",
     "ai": "이름만 지워도 나이, 직장, 지역을 합치면 누군지 알 수 있어요. 가린 결과를 \"이 정보만으로 누군지 알아낼 수 있는지 점검해 줘\"라고 한 번 더 확인하세요.",
+    "word": "De: 없애다\nIdentification: 신원 확인\nDe-identification: 누구인지 알 수 없게 만들기",
     "related": ["pii", "preprocessing", "data-minimization"]
   },
   {

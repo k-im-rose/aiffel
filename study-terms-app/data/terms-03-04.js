@@ -12,6 +12,7 @@ addSection('03-04', "문서 인식과 객체 탐지", [
     "stage": "만들기",
     "use": "스캔한 영수증이나 계약서 사진에서 글자를 뽑아 저장하고 싶을 때 만나는 말이에요.",
     "ai": "숫자를 잘못 읽는 일이 있어요. 금액처럼 중요한 값은 원본 이미지와 꼭 대조하세요.",
+    "word": "Optical: 광학의, 눈으로 보는\nCharacter: 글자\nRecognition: 인식, 알아봄\nOCR: 이미지 속 글자를 읽어 문자로 바꾸는 기술",
     "related": ["text-layer", "text-detection-recognition", "layout-analysis", "paddleocr"]
   },
   {
@@ -26,6 +27,7 @@ addSection('03-04', "문서 인식과 객체 탐지", [
     "stage": "준비",
     "use": "PDF에서 글자를 복사해 보려는데 안 될 때 만나요. 글자가 그림으로만 들어 있으면 복사가 안 돼요.",
     "ai": "\"이 PDF에 텍스트가 들어 있는지 먼저 확인해 줘\"라고 시키세요. 없으면 글자를 읽어 내는 별도 작업이 필요해요.",
+    "word": "Text: 글\nLayer: 층\nText Layer: 글자가 들어 있는 층",
     "related": ["ocr", "plaintext"]
   },
   {
@@ -40,6 +42,7 @@ addSection('03-04', "문서 인식과 객체 탐지", [
     "stage": "오류 해결",
     "use": "사진 속 글자 읽기 결과가 이상할 때, 못 찾은 건지 잘못 읽은 건지 나눠 볼 때 이 두 말을 써요.",
     "ai": "\"글자 영역을 찾은 결과와 읽은 결과를 따로 보여 줘\"라고 시키면 어디서 틀렸는지 찾기 쉬워요.",
+    "word": "Detection: 탐지, 찾아냄\nRecognition: 인식, 알아봄",
     "related": ["ocr", "layout-analysis", "error-propagation"]
   },
   {
@@ -54,6 +57,7 @@ addSection('03-04', "문서 인식과 객체 탐지", [
     "stage": "오류 해결",
     "use": "표가 있는 문서를 읽었는데 글자는 맞고 금액이 엉뚱한 칸에 붙어 있을 때 의심하는 단계예요.",
     "ai": "표 문서는 글자보다 짝이 틀리기 쉬워요. 읽은 결과가 몇 행 몇 열인지까지 원본과 맞춰 보세요.",
+    "word": "Layout: 배치\nAnalysis: 분석\nLayout Analysis: 글이 놓인 배치를 파악하는 일",
     "related": ["ocr", "parsing", "document-ai"]
   },
   {
@@ -68,6 +72,8 @@ addSection('03-04', "문서 인식과 객체 탐지", [
     "stage": "만들기",
     "use": "파일이나 서버 응답을 프로그램이 쓸 값으로 바꿀 때 일어나요. 'Unexpected token' 오류로 자주 만나요.",
     "ai": "파싱 오류가 나면 오류 메시지와 원본 데이터를 함께 붙여 넣고 \"어디 형식이 깨졌는지 알려 줘\"라고 하세요.",
+    "word": "Parsing: 문장을 성분별로 나누어 분석하기",
+    "code": "// 문자열을 객체로 바꿔서 읽기(파싱)\nconst obj = JSON.parse('{\"price\": 1200}');",
     "related": ["layout-analysis", "json", "csv"]
   },
   {
@@ -97,6 +103,7 @@ addSection('03-04', "문서 인식과 객체 탐지", [
     "stage": "만들기",
     "use": "처리를 여러 단계로 나눠 차례로 이어 붙인 흐름을 말해요. 데이터 처리나 OCR 코드를 짤 때 만나요.",
     "ai": "\"단계마다 중간 결과를 파일로 남겨 줘\"라고 시키세요. 어디서 틀어졌는지 찾기 쉬워져요.",
+    "word": "Pipeline: 파이프, 이어진 관",
     "related": ["error-propagation", "ocr", "preprocessing"]
   },
   {
@@ -111,6 +118,7 @@ addSection('03-04', "문서 인식과 객체 탐지", [
     "stage": "오류 해결",
     "use": "마지막 결과가 틀려서 마지막 단계만 고쳤는데도 그대로일 때, 앞 단계 오류가 넘어온 건 아닌지 볼 때 쓰는 말이에요.",
     "ai": "최종 결과만 고치려 들기 쉬워요. \"각 단계 결과를 차례로 보여 줘\"라고 해서 처음 틀린 곳부터 찾으세요.",
+    "word": "Error: 오류\nPropagation: 퍼져 나감\nError Propagation: 오류가 뒤로 퍼지는 것",
     "related": ["pipeline", "raw-output", "ocr"]
   },
   {
@@ -125,6 +133,7 @@ addSection('03-04', "문서 인식과 객체 탐지", [
     "stage": "만들기",
     "use": "모델이 낸 결과를 형식에 맞게 다듬거나 점수가 낮은 것을 걸러 내는 마무리 작업이에요.",
     "ai": "자동으로 고친 값이 원본과 맞는지는 직접 확인하세요. 고치다가 오히려 틀리게 만드는 일이 있어요.",
+    "word": "Post: 뒤의, 이후의\nProcessing: 처리\nPost-processing: 결과가 나온 뒤 하는 다듬기",
     "related": ["preprocessing", "document-ai", "confidence-threshold"]
   },
   {
@@ -139,6 +148,7 @@ addSection('03-04', "문서 인식과 객체 탐지", [
     "stage": "실행·확인",
     "use": "모델을 돌린 결과를 하나도 고치지 않고 그대로 저장해 둔 파일이에요. 나중에 원래 무엇이 나왔는지 볼 때 필요해요.",
     "ai": "\"고치기 전 원본 결과도 raw 폴더에 따로 저장해 줘\"라고 시키세요. 덮어쓰면 되돌릴 수 없어요.",
+    "word": "Raw: 날것의, 가공하지 않은\nOutput: 출력\nRaw Output: 손대지 않은 출력 그대로",
     "related": ["error-propagation", "json", "manifest"]
   },
   {
@@ -167,6 +177,7 @@ addSection('03-04', "문서 인식과 객체 탐지", [
     "stage": "만들기",
     "use": "사진 속 물건이 어디에 몇 개 있는지 찾는 작업이에요. 결과로 이름, 위치, 점수가 나와요.",
     "ai": "\"결과를 이미지 위에 박스로 그려서 저장해 줘\"라고 시키면 맞는지 눈으로 바로 확인할 수 있어요.",
+    "word": "Object: 물체\nDetection: 탐지, 찾아냄",
     "related": ["bounding-box", "confidence-score", "yolo", "image-segmentation", "classification"]
   },
   {
@@ -182,6 +193,7 @@ addSection('03-04', "문서 인식과 객체 탐지", [
     "stage": "실행·확인",
     "use": "찾은 물체를 둘러싼 네모 상자예요. 결과를 이미지 위에 그려 볼 때 만나요.",
     "ai": "좌표 표현 방식이 여러 가지라 박스가 엉뚱한 곳에 그려지기도 해요. 어떤 형식의 좌표인지 AI에게 꼭 확인하세요.",
+    "word": "Bounding: 경계를 짓는\nBox: 상자\nBounding Box: 대상을 둘러싼 사각형",
     "related": ["object-detection", "normalized-coordinates", "iou", "mask"]
   },
   {
@@ -196,6 +208,7 @@ addSection('03-04', "문서 인식과 객체 탐지", [
     "stage": "오류 해결",
     "use": "모델이 준 좌표를 이미지에 그렸더니 박스가 한 점에 몰려 있을 때 의심하는 값이에요.",
     "ai": "0~1 값이면 이미지 가로·세로 크기를 곱해야 해요. \"이 좌표가 픽셀인지 비율인지 확인하고 그려 줘\"라고 시키세요.",
+    "word": "Normalized: 기준에 맞춰 통일한\nCoordinates: 좌표",
     "related": ["bounding-box", "pixel"]
   },
   {
@@ -210,6 +223,7 @@ addSection('03-04', "문서 인식과 객체 탐지", [
     "stage": "실행·확인",
     "use": "탐지 결과마다 붙어 나오는 점수예요. 어느 결과부터 확인할지 정할 때 봐요.",
     "ai": "점수 0.9를 90% 맞는다는 뜻으로 믿으면 안 돼요. 점수 순으로 정렬해서 사람이 확인하세요.",
+    "word": "Confidence: 확신, 자신감\nScore: 점수",
     "related": ["confidence-threshold", "calibration", "object-detection"]
   },
   {
@@ -224,6 +238,7 @@ addSection('03-04', "문서 인식과 객체 탐지", [
     "stage": "실행·확인",
     "use": "점수가 몇 점 넘는 결과만 남길지 정하는 기준선이에요. 예측을 돌릴 때 값을 정해요.",
     "ai": "\"기준을 0.25에서 0.5로 바꾸면 결과가 어떻게 달라지는지 보여 줘\"라고 시켜 직접 비교해 보세요.",
+    "word": "Confidence: 확신, 자신감\nThreshold: 문턱, 경계선\nConfidence Threshold: 확신 점수의 합격선",
     "related": ["confidence-score", "false-positive-negative", "precision-recall"]
   },
   {
@@ -238,6 +253,7 @@ addSection('03-04', "문서 인식과 객체 탐지", [
     "stage": "실행·확인",
     "use": "점수가 0.9인데 실제로는 60%만 맞을 때, 점수를 실제 정답률에 맞추는 일을 말해요.",
     "ai": "직접 다룰 일은 드물어요. 다만 모델 점수를 그대로 믿고 자동 처리하지 말고 샘플로 실제 정답률을 확인하세요.",
+    "word": "Calibration: 눈금 보정, 측정값을 실제에 맞추기",
     "related": ["confidence-score", "ground-truth"]
   },
   {
@@ -252,6 +268,7 @@ addSection('03-04', "문서 인식과 객체 탐지", [
     "stage": "만들기",
     "use": "사진이나 영상에서 물체를 빠르게 찾는 실습에서 가장 먼저 만나는 모델이에요.",
     "ai": "버전이 여러 가지라 이름만 말하면 헷갈려요. \"어떤 YOLO 버전을 쓰는지 알려 주고 시작해 줘\"라고 하세요.",
+    "word": "You Only Look Once: 단 한 번만 본다\nYOLO: 한 번 훑고 물체를 다 찾는 모델",
     "related": ["object-detection", "ultralytics", "forward-pass", "darknet"]
   },
   {
@@ -294,6 +311,7 @@ addSection('03-04', "문서 인식과 객체 탐지", [
     "stage": "실행·확인",
     "use": "모델에 이미지를 넣고 결과를 받는 한 번의 계산이에요. 학습 코드에서 model(x)를 부르는 줄이 이에 해당해요.",
     "ai": "직접 다룰 일은 거의 없어요. 학습 코드를 읽을 때 순전파 다음에 오차를 계산하는 흐름만 알아 두세요.",
+    "word": "Forward: 앞으로\nPass: 지나가기\nForward Pass: 입력이 앞으로 쭉 통과하는 계산",
     "related": ["backpropagation", "neural-network", "inference"]
   },
   {
@@ -308,6 +326,7 @@ addSection('03-04', "문서 인식과 객체 탐지", [
     "stage": "만들기",
     "use": "균열 면적처럼 박스보다 정확한 경계가 필요할 때 쓰는 작업이에요. 픽셀 하나하나를 구분해요.",
     "ai": "\"결과 마스크를 원본 위에 겹쳐서 보여 줘\"라고 시키세요. 경계가 어긋나면 면적 계산도 틀려요.",
+    "word": "Image: 이미지\nSegmentation: 조각으로 나눔, 분할",
     "related": ["mask", "object-detection", "pixel", "label-annotation"]
   },
   {
@@ -322,6 +341,7 @@ addSection('03-04', "문서 인식과 객체 탐지", [
     "stage": "실행·확인",
     "use": "분할 결과로 나오는 흑백 그림이에요. 흰 부분이 찾은 대상이고, 원본 위에 겹쳐 보며 확인해요.",
     "ai": "마스크가 맞아 보여도 면적 숫자는 한 번 더 확인하세요. 픽셀 개수를 실제 크기로 바꿀 때 실수하기 쉬워요.",
+    "word": "Mask: 가면, 가리개",
     "related": ["image-segmentation", "bounding-box", "pixel"]
   },
   {
@@ -337,6 +357,7 @@ addSection('03-04', "문서 인식과 객체 탐지", [
     "stage": "준비",
     "use": "이미지 크기를 1920x1080처럼 말할 때 쓰는 단위예요. 이미지를 이루는 가장 작은 점이에요.",
     "ai": "픽셀을 mm나 cm로 바꾸려면 기준 길이가 필요해요. 기준 없이 바꾼 숫자는 믿지 말고 \"어떤 기준으로 계산했어?\"라고 물으세요.",
+    "word": "Picture: 그림\nElement: 요소\nPixel: 그림을 이루는 가장 작은 점",
     "related": ["mask", "dpi", "normalized-coordinates"]
   },
   {
@@ -351,6 +372,7 @@ addSection('03-04', "문서 인식과 객체 탐지", [
     "stage": "준비",
     "use": "스캔 문서를 글자 읽기에 넣기 전에 확인하는 해상도 숫자예요. 낮으면 작은 글자가 뭉개져요.",
     "ai": "스캔 설정은 AI가 대신 못 해요. 글자 읽기 결과가 이상하면 \"이미지 DPI가 몇인지 먼저 알려 줘\"라고 시키세요.",
+    "word": "Dots: 점\nPer: ~당, ~마다\nInch: 인치(약 2.54cm)\nDPI: 1인치에 들어간 점의 개수",
     "related": ["pixel", "ocr", "preprocessing"]
   },
   {
@@ -365,6 +387,7 @@ addSection('03-04', "문서 인식과 객체 탐지", [
     "stage": "준비",
     "use": "모델을 직접 학습시키려고 사진마다 정답 박스를 그려 넣는 일을 말해요.",
     "ai": "기준이 사람마다 다르면 모델도 헷갈려요. 무엇을 대상으로 볼지 먼저 정해서 AI에게 알려 주세요.",
+    "word": "Label: 이름표\nAnnotation: 주석, 덧붙인 설명",
     "related": ["ground-truth", "image-segmentation", "supervised-learning"]
   },
   {
@@ -379,6 +402,7 @@ addSection('03-04', "문서 인식과 객체 탐지", [
     "stage": "준비",
     "use": "모델 성능을 채점할 때 비교하는 사람이 확인한 정답 파일이에요. 평가를 시작하기 전에 필요해요.",
     "ai": "AI가 만든 정답을 정답으로 쓰면 안 돼요. 정답 데이터는 사람이 직접 확인한 것으로 준비하세요.",
+    "word": "Ground: 땅, 바탕\nTruth: 진실\nGround Truth: 기준이 되는 진짜 정답",
     "related": ["label-annotation", "confusion-matrix", "iou"]
   },
   {
@@ -393,6 +417,7 @@ addSection('03-04', "문서 인식과 객체 탐지", [
     "stage": "실행·확인",
     "use": "모델이 틀린 유형을 나눠 부르는 말이에요. 없는데 있다고 한 건 오탐, 있는데 놓친 건 미탐이에요.",
     "ai": "어느 쪽 실수가 더 위험한지는 사람이 정해야 해요. \"오탐과 미탐 개수를 따로 세어 줘\"라고 시키세요.",
+    "word": "False: 거짓의\nPositive: 맞다고 판정함\nNegative: 아니라고 판정함",
     "related": ["confusion-matrix", "precision-recall", "confidence-threshold"]
   },
   {
@@ -407,6 +432,7 @@ addSection('03-04', "문서 인식과 객체 탐지", [
     "stage": "실행·확인",
     "use": "모델 평가를 돌리면 나오는 네 칸짜리 표예요. 맞게 찾은 것과 틀리게 찾은 것을 나눠 보여 줘요.",
     "ai": "\"혼동 행렬을 그림으로 저장해 줘\"라고 시키면 돼요. 숫자 네 칸이 이후 점수의 바탕이니 값부터 확인하세요.",
+    "word": "Confusion: 혼동, 헷갈림\nMatrix: 행렬, 칸으로 된 표",
     "related": ["false-positive-negative", "precision-recall", "ground-truth"]
   },
   {
@@ -421,6 +447,7 @@ addSection('03-04', "문서 인식과 객체 탐지", [
     "stage": "실행·확인",
     "use": "평가 리포트에 항상 붙어 나오는 두 숫자예요. 정밀도는 찾은 것 중 정답 비율이고, 재현율은 정답 중 찾은 비율이에요.",
     "ai": "둘 중 하나만 높은 건 좋은 모델이 아니에요. \"두 값을 같이 보여 주고 어느 쪽이 낮은지 설명해 줘\"라고 하세요.",
+    "word": "Precision: 정밀도, 정확함\nRecall: 다시 불러옴, 기억해 냄",
     "related": ["confusion-matrix", "pr-curve", "confidence-threshold"]
   },
   {
@@ -435,6 +462,7 @@ addSection('03-04', "문서 인식과 객체 탐지", [
     "stage": "실행·확인",
     "use": "YOLO 학습이 끝나면 결과 폴더에 PR_curve.png로 생기는 그래프예요. 기준을 바꿀 때 두 점수가 어떻게 변하는지 보여 줘요.",
     "ai": "직접 그릴 일은 거의 없어요. 생성된 그림에서 곡선이 오른쪽 위에 가까울수록 좋다는 것만 기억하세요.",
+    "word": "Precision-Recall: 정밀도와 재현율\nCurve: 곡선",
     "related": ["precision-recall", "map", "confidence-threshold"]
   },
   {
@@ -449,6 +477,7 @@ addSection('03-04', "문서 인식과 객체 탐지", [
     "stage": "실행·확인",
     "use": "예측 박스와 정답 박스가 얼마나 겹치는지 재는 값이에요. 보통 0.5 이상이면 맞게 찾았다고 세요.",
     "ai": "기준값을 바꾸면 점수가 크게 달라져요. 평가 결과를 볼 때 IoU 기준이 얼마인지 꼭 같이 확인하세요.",
+    "word": "Intersection: 교차, 겹침\nUnion: 합침\nOver: ~ 나누기(분수의 위·아래)\nIoU: 겹친 넓이를 합친 넓이로 나눈 값",
     "related": ["bounding-box", "map", "ground-truth"]
   },
   {
@@ -463,6 +492,7 @@ addSection('03-04', "문서 인식과 객체 탐지", [
     "stage": "실행·확인",
     "use": "YOLO 학습 로그에 mAP50처럼 찍히는 점수예요. 탐지 모델 두 개를 숫자 하나로 비교할 때 써요.",
     "ai": "mAP가 높아도 내 업무에 맞는지는 별개예요. 숫자만 믿지 말고 실제 사진 몇 장으로 결과를 눈으로 확인하세요.",
+    "word": "Mean: 평균\nAverage: 평균\nPrecision: 정밀도\nmAP: 정밀도를 평균 낸 점수",
     "related": ["pr-curve", "iou", "benchmark"]
   },
   {
@@ -477,6 +507,7 @@ addSection('03-04', "문서 인식과 객체 탐지", [
     "stage": "준비",
     "use": "사람, 자동차 같은 일상 물체 80종에 정답이 달린 공개 사진 모음이에요. 미리 학습된 YOLO가 이 데이터로 배워요.",
     "ai": "내가 찾으려는 물건이 80종에 없으면 못 찾아요. \"이 모델이 찾을 수 있는 종류 목록을 알려 줘\"라고 먼저 물어보세요.",
+    "word": "Common: 흔한\nObjects: 물체\nContext: 맥락, 주변 상황",
     "related": ["mnist", "imagenet", "yolo", "map"]
   },
   {
@@ -491,6 +522,8 @@ addSection('03-04', "문서 인식과 객체 탐지", [
     "stage": "만들기",
     "use": "이미지를 읽고 자르고 박스를 그리는 파이썬 도구예요. 탐지 결과를 원본 위에 그릴 때 써요.",
     "ai": "이미지를 읽으면 색 순서가 우리가 아는 것과 달라 색이 이상해 보일 수 있어요. 색이 이상하면 그 점을 AI에게 알려 주세요.",
+    "word": "Open Source: 소스를 공개한\nComputer Vision: 컴퓨터가 보는 능력\nLibrary: 도구 모음",
+    "code": "# OpenCV로 이미지 파일 읽기\nimport cv2\nimg = cv2.imread(\"photo.png\")",
     "related": ["object-detection", "python", "numpy"]
   },
   {
@@ -506,6 +539,8 @@ addSection('03-04', "문서 인식과 객체 탐지", [
     "stage": "실행·확인",
     "use": "결과를 엑셀로 열어 보려고 저장할 때 쓰는 단순한 표 파일이에요. 칸은 쉼표로 나뉘어요.",
     "ai": "값 안에 쉼표가 있으면 칸이 밀려요. \"쉼표가 들어간 값도 안 깨지게 저장해 줘\"라고 시키세요.",
+    "word": "Comma: 쉼표\nSeparated: 나뉜\nValues: 값\nCSV: 쉼표로 칸을 나눈 값의 파일",
+    "code": "# CSV 파일을 표로 읽어 오기\nimport pandas as pd\ndf = pd.read_csv(\"data.csv\")",
     "related": ["json", "markdown", "parsing"]
   },
   {
@@ -521,6 +556,7 @@ addSection('03-04', "문서 인식과 객체 탐지", [
     "stage": "실행·확인",
     "use": "글자 읽기 입력이나 결과 이미지를 저장할 때 고르는 이미지 파일 형식이에요. 화질이 깎이지 않아요.",
     "ai": "글자나 숫자가 있는 이미지는 \"PNG로 저장해 줘\"라고 하세요. 다른 형식은 가장자리가 뭉개질 수 있어요.",
+    "word": "Portable: 어디서나 옮겨 쓸 수 있는\nNetwork: 통신망\nGraphics: 그래픽, 그림\nPNG: 화질 손실 없는 그림 파일 형식",
     "related": ["pixel", "dpi", "binary-file"]
   },
   {
@@ -550,6 +586,7 @@ addSection('03-04', "문서 인식과 객체 탐지", [
     "stage": "배포·공유",
     "use": "내 컴퓨터에서는 되는데 다른 곳에서는 결과가 다를 때 재현성이 없다고 말해요.",
     "ai": "버전과 설정을 기록해 두지 않으면 AI도 같은 환경을 못 만들어요. \"쓴 패키지 버전을 파일로 남겨 줘\"라고 하세요.",
+    "word": "Reproducibility: 재현성, 다시 만들어 낼 수 있음",
     "related": ["manifest", "version-pinning", "raw-output"]
   },
   {
@@ -579,6 +616,7 @@ addSection('03-04', "문서 인식과 객체 탐지", [
     "stage": "준비",
     "use": "데이터셋이나 이미지를 내려받아 쓰기 전에 확인하는 사용 조건 표시예요. 출처 표시나 상업 이용 가능 여부가 적혀 있어요.",
     "ai": "AI가 라이선스를 잘못 말할 수 있어요. 데이터를 받은 사이트의 라이선스 문구를 직접 읽고 확인하세요.",
+    "word": "Creative: 창작의\nCommons: 모두의 공유 자원",
     "related": ["license", "open-source"]
   }
 ]);
