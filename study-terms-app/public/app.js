@@ -577,6 +577,12 @@ document.querySelector('.def-body').addEventListener('mouseover', e => {
   const card = a.closest('.card').getBoundingClientRect();
   const line = a.getClientRects()[0];
   tip.style.maxWidth = `${Math.min(280, card.width - 16)}px`;
+  tip.style.width = '';
+  // 줄바꿈 뒤 오른쪽에 남는 빈칸을 없앤다: 가장 긴 줄 폭에 맞춰 상자를 줄여 좌우 여백을 같게
+  const range = document.createRange();
+  range.selectNodeContents(tip);
+  const textW = Math.max(...[...range.getClientRects()].map(r => r.width));
+  tip.style.width = `${Math.ceil(textW) + 20}px`; // 20 = 좌우 padding 10px씩
   const w = tip.offsetWidth;
   tip.style.left = `${Math.max(card.left + 8, Math.min(line.left, card.right - 8 - w))}px`;
   tip.style.top = `${line.bottom + 6}px`;
