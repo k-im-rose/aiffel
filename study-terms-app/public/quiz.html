@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>퀴즈 · 아, 그게 뭐더라?</title>
+<meta name="application-name" content="아그뭐">
+<meta name="description" content="설명을 보고 어떤 용어인지 맞히는 복습 퀴즈">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<link rel="icon" href="favicon.svg?v=2" type="image/svg+xml">
+<link rel="icon" href="favicon-32.png?v=2" type="image/png" sizes="32x32">
+<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2">
+<link rel="stylesheet" href="styles.css?v=52">
+</head>
+<body>
+<div class="qz">
+  <nav class="qz-top">
+    <a class="qz-back" href="./">← 용어 목록</a>
+    <span class="tag tag-black">QUIZ</span>
+  </nav>
+
+  <!-- 불러오는 중 · 실패 -->
+  <section id="qz-loading" class="qz-card qz-msg" role="status"></section>
+
+  <!-- 1. 교안 고르기 -->
+  <section id="qz-start" hidden>
+    <h1 class="qz-title"><span>어떤 교안을 풀어 볼까요?</span></h1>
+    <p class="qz-lead">설명을 보고 어떤 용어인지 고르는 퀴즈예요. 고른 교안에 나온 용어가 모두 한 번씩 나오고, 10문제마다 쉬어 가요.<br>앞 교안에서 처음 나온 용어라도 이 교안에 다시 나왔다면 함께 나와요.</p>
+    <ul id="qz-sections" class="qz-sections"></ul>
+  </section>
+
+  <!-- 2. 문제 -->
+  <section id="qz-play" hidden>
+    <h1 class="qz-title"><span>이 설명, 어떤 용어일까요?</span></h1>
+    <p class="qz-meta" id="qz-meta"></p>
+    <div class="qz-bar" aria-hidden="true"><div id="qz-bar"></div></div>
+
+    <article class="qz-card">
+      <span class="tag tag-black">DEFINITION</span>
+      <p class="qz-q" id="qz-q"></p>
+
+      <div class="qz-hint" id="qz-hint">
+        <button type="button" class="qz-hint-btn" id="qz-hint-btn" aria-expanded="false" aria-controls="qz-hint-body">힌트 보기</button>
+        <div class="qz-hint-body" id="qz-hint-body" hidden><b>쉽게 말하면 (힌트)</b><p id="qz-hint-text"></p></div>
+      </div>
+
+      <div class="qz-opts" id="qz-opts" role="group" aria-label="보기"></div>
+
+      <section class="qz-exp" id="qz-exp" hidden aria-live="polite">
+        <p class="qz-verdict" id="qz-verdict"></p>
+
+        <div class="qz-box">
+          <h3 id="qz-easy-title"></h3>
+          <p id="qz-easy"></p>
+        </div>
+
+        <div class="qz-box diff" id="qz-diff" hidden>
+          <h3 id="qz-diff-title"></h3>
+          <p id="qz-diff-body"></p>
+        </div>
+
+        <div class="qz-box mine">
+          <h3>내 설명</h3>
+          <p id="qz-mine"></p>
+        </div>
+
+        <div class="qz-box" id="qz-rel-box">
+          <h3>함께 알아 두면 좋은 용어</h3>
+          <ul class="qz-rel" id="qz-rel"></ul>
+        </div>
+
+        <div class="qz-actions">
+          <a class="qz-btn" id="qz-card-link" href="./" target="_blank" rel="noopener">용어 카드 열기 ↗</a>
+          <button type="button" class="qz-btn main" id="qz-next">다음 문제 →</button>
+        </div>
+      </section>
+    </article>
+    <p class="qz-foot"><button type="button" class="text-btn" id="qz-quit">그만하고 교안 고르기</button></p>
+  </section>
+
+  <!-- 3. 쉬어 가기 · 끝 -->
+  <section id="qz-break" hidden>
+    <h1 class="qz-title"><span id="qz-break-title"></span></h1>
+    <article class="qz-card">
+      <p class="qz-score" id="qz-break-score"></p>
+      <div class="qz-box" id="qz-break-missed-box">
+        <h3>틀린 용어 · 카드에서 다시 읽어 보세요</h3>
+        <ul class="qz-rel" id="qz-break-missed"></ul>
+      </div>
+      <div class="qz-actions" id="qz-break-actions"></div>
+      <p class="qz-left" id="qz-break-left"></p>
+    </article>
+  </section>
+</div>
+<script src="quiz-core.js?v=2"></script>
+<script src="quiz.js?v=3"></script>
+</body>
+</html>
