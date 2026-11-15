@@ -49,6 +49,11 @@ a, button, input, textarea { touch-action: manipulation; }
 .mast-sub { display: contents; }
 .mast-row .title { grid-column: 1; grid-row: 1; }
 .mast-row .lead { grid-column: 1; grid-row: 2; }
+/* PC: STUDY TERM NOTES의 검정 상자가 빠져 제목 위가 비어 보여서, 제목만 8px 올리고 안내는 제자리(상태 설명 상자도 그대로) */
+@media (min-width: 821px) {
+  .mast-row .title { margin-top: -8px; }
+  .mast-row .lead { margin-top: 22px; }
+}
 .site-foot { margin: 48px 0 0; font-size: 12px; }
 .site-foot a { color: var(--gray); text-underline-offset: 3px; }
 body.view-card .site-foot { display: none; }
