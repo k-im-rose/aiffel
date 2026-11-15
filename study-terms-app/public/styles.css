@@ -249,6 +249,7 @@ body.no-card .card { display: none; } /* 홈: 카드 자리는 배경만 */
 .use-line + .use-line, .def-v .code + .use-line { margin-top: 8px; }
 .def-v .code { margin: 8px 0 0; padding: 8px 12px; background: var(--ghost); border-radius: 10px; font-family: var(--mono); font-size: 13px; line-height: 1.6; color: var(--ink); white-space: pre-wrap; overflow-wrap: break-word; }
 .def-v { min-width: 0; }
+#c-easy .def-v { white-space: pre-line; } /* 쉽게 말하면: 풀이 다음 줄에 "비유하면:" 한 줄 */
 
 .line-btn {
   min-height: 40px; padding: 0 14px; border: 1px solid var(--line); border-radius: 999px;

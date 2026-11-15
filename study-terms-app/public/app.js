@@ -390,7 +390,6 @@ const AIS = {
 const ASK_TEXT = {
   deep: w => `${w}에 대해 더 깊이 알려주세요.`,
   diff: w => `${w}, 비슷한 용어와 차이가 뭔가요?`,
-  where: w => `${w}, 실제로 어디서 쓰이나요?`,
   own: () => '',
 };
 let askKind = 'deep';
