@@ -472,7 +472,10 @@ function updateMemo() {
   const m = $('mine');
   $('count').textContent = `${m.value.length.toLocaleString()} / ${MAX_NOTE.toLocaleString()}자`;
   m.style.height = '';
-  if (isPhone()) m.style.height = m.scrollHeight + 'px';
+  if (!isPhone()) return;
+  // 카드가 아직 화면에 안 나왔으면 높이가 0으로 재진다 → 나온 다음 프레임에 다시 잰다 (안 그러면 긴 메모가 4줄로 잘림)
+  if (!m.scrollHeight) { requestAnimationFrame(() => { if (m.scrollHeight) updateMemo(); }); return; }
+  m.style.height = m.scrollHeight + 'px';
 }
 window.addEventListener('resize', updateMemo);
 
