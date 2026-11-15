@@ -49,10 +49,10 @@ a, button, input, textarea { touch-action: manipulation; }
 .mast-sub { display: contents; }
 .mast-row .title { grid-column: 1; grid-row: 1; }
 .mast-row .lead { grid-column: 1; grid-row: 2; }
-/* PC: STUDY TERM NOTES의 검정 상자가 빠져 제목 위가 비어 보여서, 제목만 8px 올리고 안내는 제자리(상태 설명 상자도 그대로) */
+/* PC: STUDY TERM NOTES의 검정 상자가 빠져 제목 위가 비어 보여서, 제목만 13px 올리고 안내는 제자리(상태 설명 상자도 그대로) */
 @media (min-width: 821px) {
-  .mast-row .title { margin-top: -8px; }
-  .mast-row .lead { margin-top: 22px; }
+  .mast-row .title { margin-top: -13px; }
+  .mast-row .lead { margin-top: 27px; }
 }
 .site-foot { margin: 48px 0 0; font-size: 12px; }
 .site-foot a { color: var(--gray); text-underline-offset: 3px; }
@@ -72,7 +72,7 @@ body.view-card .site-foot { display: none; }
 .lg-o { stroke: var(--paper); stroke-width: 8.4; }
 .lg-i { stroke: var(--ink); stroke-width: 4.4; stroke-linecap: round; }
 /* 로고: 글자 앞. 크기는 글자 크기를 따라가고, 대문자 높이의 가운데에 맞춘다 */
-.brand-logo { flex: none; width: 1.35em; height: 1.35em; margin: -0.2em 0.3em -0.2em -0.15em; }
+.brand-logo { flex: none; width: 1.35em; height: 1.35em; margin: -0.2em 0.3em -0.2em 0; } /* 왼쪽 끝을 제목·안내와 맞춘다 */
 .title {
   margin: 0; font-weight: 700; color: var(--deep);
   font-size: var(--title-size); line-height: 1.08; letter-spacing: -0.02em;
