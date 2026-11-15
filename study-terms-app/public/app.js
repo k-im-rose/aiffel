@@ -553,6 +553,11 @@ $('logout').addEventListener('click', async () => {
   location.replace(location.pathname + '?logout=1');
 });
 
+// 용어 id인지 확인한다. byId는 보통 객체라 'toString' 같은 이름도 걸리므로 자기 키만 본다
+function isTermId(id) {
+  return typeof id === 'string' && Object.hasOwn(byId, id);
+}
+
 function select(id, openCard) {
   current = id;
   document.body.classList.remove('no-card');
@@ -883,10 +888,11 @@ async function boot() {
   document.body.classList.remove('loading');
   renderAccount(me, notice);
   if (!store.ui.open) { open[SECTIONS[0].id] = true; store.ui.open = open; }
-  current = byId[store.ui.last] ? store.ui.last : TERMS[0].id;
+  // 저장된 마지막 용어가 없으면(undefined) byId['undefined']가 실제 용어 'undefined'를 찾아 버리므로, 진짜 용어 id인지 확인한다
+  current = isTermId(store.ui.last) ? store.ui.last : TERMS[0].id;
   // 주소에 #용어id가 있으면 그 카드로 연다 (휴대폰에서는 뒤로 가기로 목록에 돌아오게 기록을 한 칸 둔다)
   const startId = decodeURIComponent(location.hash.slice(1));
-  if (byId[startId]) {
+  if (isTermId(startId)) {
     current = startId;
     if (filter !== 'all' && String(note(startId).status) !== filter) { filter = 'all'; store.ui.filter = filter; } // 목록에서도 보이게
     if (isPhone()) {
