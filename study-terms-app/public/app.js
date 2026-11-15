@@ -340,7 +340,7 @@ function renderCard() {
   const t = byId[current];
   const n = note(t.id);
   $('c-no').textContent = `WORD ${t.no}`;
-  $('c-src').textContent = `출처 ${t.src}`;
+  $('c-src').textContent = `출처 ${t.src.split(' · ')[0]}`; // 처음 나온 자료 하나만 (데이터에는 나온 자료가 모두 남아 있다)
   $('c-level').textContent = t.level || '';
   $('c-level').hidden = !t.level;
   $('c-term').textContent = t.term;
