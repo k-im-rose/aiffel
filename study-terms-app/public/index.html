@@ -11,7 +11,7 @@
 <link rel="icon" href="favicon.svg?v=2" type="image/svg+xml">
 <link rel="icon" href="favicon-32.png?v=2" type="image/png" sizes="32x32">
 <link rel="apple-touch-icon" href="apple-touch-icon.png?v=2">
-<link rel="stylesheet" href="styles.css?v=47">
+<link rel="stylesheet" href="styles.css?v=48">
 </head>
 <body>
 <div class="app">
@@ -98,6 +98,29 @@
           </div>
         </section>
 
+        <section class="section ask">
+          <div class="section-head">
+            <span class="tag tag-black">ASK AI</span>
+            <label class="sr-only" for="ask-ai">물어볼 AI</label>
+            <select id="ask-ai" class="ask-ai">
+              <option value="chatgpt">ChatGPT</option>
+              <option value="claude">Claude</option>
+              <option value="gemini">Gemini</option>
+              <option value="perplexity">Perplexity</option>
+            </select>
+          </div>
+          <div class="ask-chips" role="group" aria-label="질문 고르기">
+            <button type="button" class="ask-chip" data-kind="deep">더 깊이 알려주세요</button>
+            <button type="button" class="ask-chip" data-kind="diff">비슷한 용어와 차이</button>
+            <button type="button" class="ask-chip" data-kind="where">실제로 어디서 쓰나요</button>
+            <button type="button" class="ask-chip" data-kind="own">직접 쓰기</button>
+          </div>
+          <label class="sr-only" for="ask-q">AI에게 물어볼 질문</label>
+          <input id="ask-q" class="ask-q" type="text" maxlength="500" autocomplete="off" placeholder="궁금한 점을 적어 주세요.">
+          <button type="button" id="ask-go" class="ask-go"><span id="ask-go-label">ChatGPT에서 물어보기</span> ↗</button>
+          <p id="ask-hint" class="ask-hint" role="status">새 탭에서 질문이 써진 채로 열려요.</p>
+        </section>
+
         <section class="section">
           <div class="section-head">
             <span class="tag tag-black">MY NOTE</span>
@@ -119,6 +142,6 @@
   </div>
   <p class="site-foot"><a href="privacy.html">개인정보처리방침</a></p>
 </div>
-<script src="app.js?v=38"></script>
+<script src="app.js?v=40"></script>
 </body>
 </html>

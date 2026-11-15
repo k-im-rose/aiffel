@@ -370,11 +370,85 @@ function renderCard() {
 
   if (document.activeElement !== $('mine')) $('mine').value = n.mine;
   updateMemo();
+  renderAsk(t);
   document.querySelectorAll('.st').forEach(b => b.setAttribute('aria-pressed', String(Number(b.dataset.status) === n.status)));
   const rel = t.related.filter(id => byId[id] && id !== t.id);
   $('c-rel').innerHTML = rel.map(id => `<button type="button" data-id="${id}">${esc(byId[id].ko)}</button>`).join('');
   $('c-related').hidden = !rel.length;
 }
+
+// ---- AI에게 물어보기 ----
+// 사이트 안에서 AI를 부르지 않고(서버 비용·키 없음), 각자 쓰는 AI를 질문이 써진 채 새 탭으로 연다.
+// 답은 앱으로 돌아오지 않으므로, 끝에 '아그뭐 메모' 요약을 붙여 달라고 해서 MY NOTE에 붙여 넣기 쉽게 한다
+const AI_KEY = 'agmwo-ai';
+const AIS = {
+  chatgpt: { name: 'ChatGPT', url: q => `https://chatgpt.com/?q=${encodeURIComponent(q)}` },
+  claude: { name: 'Claude', url: q => `https://claude.ai/new?q=${encodeURIComponent(q)}` },
+  gemini: { name: 'Gemini', url: () => 'https://gemini.google.com/app', copy: true }, // 주소로 질문을 넘길 수 없어 복사해 둔다
+  perplexity: { name: 'Perplexity', url: q => `https://www.perplexity.ai/search?q=${encodeURIComponent(q)}` },
+};
+const ASK_TEXT = {
+  deep: w => `${w}에 대해 더 깊이 알려주세요.`,
+  diff: w => `${w}, 비슷한 용어와 차이가 뭔가요?`,
+  where: w => `${w}, 실제로 어디서 쓰이나요?`,
+  own: () => '',
+};
+let askKind = 'deep';
+const askWord = t => (t.ko && t.ko !== t.term ? `${t.term}(${t.ko})` : t.term);
+
+function renderAsk(t) {
+  document.querySelectorAll('.ask-chip').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.kind === askKind)));
+  if (askKind !== 'own' || document.activeElement !== $('ask-q')) $('ask-q').value = ASK_TEXT[askKind](askWord(t));
+}
+
+// 고른 AI 이름 길이에 맞춰 버튼 가로를 줄이고 늘린다 (기본 선택 상자는 가장 긴 이름에 맞춰져 있다)
+function fitAskSelect() {
+  const sel = $('ask-ai');
+  const ctx = (fitAskSelect.c ||= document.createElement('canvas').getContext('2d'));
+  const cs = getComputedStyle(sel);
+  ctx.font = `${cs.fontWeight} ${cs.fontSize} ${cs.fontFamily}`;
+  const text = sel.options[sel.selectedIndex].text;
+  sel.style.width = `${Math.ceil(ctx.measureText(text).width + text.length * 1.1 + 36)}px`; // 글자 간격 0.1em + 좌우 여백·화살표
+}
+
+function updateAskAI() {
+  const ai = AIS[$('ask-ai').value];
+  $('ask-go-label').textContent = ai.copy ? `질문 복사하고 ${ai.name} 열기` : `${ai.name}에서 물어보기`;
+  $('ask-hint').textContent = ai.copy ? `질문을 복사해 두고 ${ai.name}를 열어요. 붙여 넣기만 하면 돼요.` : '새 탭에서 질문이 써진 채로 열려요.';
+  fitAskSelect();
+}
+
+function askPrompt(t, q) {
+  const n = note(t.id);
+  const lines = [q, '', "[참고] 용어장 '아, 그게 뭐더라?'에서 공부하던 용어예요.", `- 용어: ${askWord(t)}`, `- 뜻: ${t.def}`];
+  if (n.mine.trim()) lines.push(`- 내가 쓴 설명: ${n.mine.trim().slice(0, 300)}`);
+  lines.push('', "AI 개발 입문자 눈높이로 답해 주세요. 답 맨 끝에는 '아그뭐 메모:'로 시작해서 질문과 핵심 답을 3줄 이내로 요약해 주세요.");
+  return lines.join('\n');
+}
+
+const savedAI = readJSON(AI_KEY);
+if (AIS[savedAI]) $('ask-ai').value = savedAI;
+$('ask-ai').addEventListener('change', () => { writeJSON(AI_KEY, $('ask-ai').value); updateAskAI(); });
+document.querySelector('.ask-chips').addEventListener('click', e => {
+  const b = e.target.closest('.ask-chip');
+  if (!b) return;
+  askKind = b.dataset.kind;
+  renderAsk(byId[current]);
+  updateAskAI(); // '질문을 적어 주세요' 같은 안내를 원래대로
+  if (askKind === 'own') $('ask-q').focus();
+});
+$('ask-q').addEventListener('keydown', e => { if (e.key === 'Enter' && !e.isComposing) { e.preventDefault(); $('ask-go').click(); } });
+$('ask-go').addEventListener('click', () => {
+  const q = $('ask-q').value.trim();
+  if (!q) { $('ask-hint').textContent = '질문을 적어 주세요.'; $('ask-q').focus(); return; }
+  const ai = AIS[$('ask-ai').value];
+  const prompt = askPrompt(byId[current], q);
+  if (ai.copy) navigator.clipboard?.writeText(prompt).catch(() => {
+    if (AIS[$('ask-ai').value].copy) $('ask-hint').textContent = '복사하지 못했어요. 질문 칸의 글을 직접 복사해 주세요.';
+  });
+  window.open(ai.url(prompt), '_blank', 'noopener');
+});
+updateAskAI();
 
 // 내 설명: 글자 수를 보여 주고, 휴대폰에서는 글자만큼 칸을 늘려 칸 안 스크롤이 없게 한다
 const MAX_NOTE = 5000;
@@ -545,7 +619,7 @@ $('q').addEventListener('keydown', e => {
 });
 
 document.addEventListener('keydown', e => {
-  const typing = ['INPUT', 'TEXTAREA'].includes(document.activeElement.tagName);
+  const typing = ['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement.tagName);
   if (e.key === '/' && !typing) {
     e.preventDefault();
     document.body.classList.remove('view-card');
