@@ -443,11 +443,28 @@ $('ask-go').addEventListener('click', () => {
   if (!q) { $('ask-hint').textContent = '질문을 적어 주세요.'; $('ask-q').focus(); return; }
   const ai = AIS[$('ask-ai').value];
   const prompt = askPrompt(byId[current], q);
-  if (ai.copy) navigator.clipboard?.writeText(prompt).catch(() => {
-    if (AIS[$('ask-ai').value].copy) $('ask-hint').textContent = '복사하지 못했어요. 질문 칸의 글을 직접 복사해 주세요.';
-  });
+  if (ai.copy && !copyNow(prompt)) {
+    // 바로 복사가 안 되는 브라우저: 복사가 끝난 뒤에 연다 (먼저 열면 이 탭이 포커스를 잃어 복사가 거절된다)
+    navigator.clipboard?.writeText(prompt)
+      .then(() => window.open(ai.url(prompt), '_blank', 'noopener'))
+      .catch(() => { $('ask-hint').textContent = '복사하지 못했어요. 질문 칸의 글을 직접 복사해 주세요.'; });
+    return;
+  }
   window.open(ai.url(prompt), '_blank', 'noopener');
 });
+
+// 누른 그 순간에 바로 복사한다. navigator.clipboard는 기다리는 사이 새 탭이 열려 포커스를 잃으면 거절된다
+function copyNow(text) {
+  const ta = Object.assign(document.createElement('textarea'), { value: text, readOnly: true });
+  ta.style.cssText = 'position:fixed;top:0;left:0;opacity:0;font-size:16px'; // 16px: 아이폰이 확대하지 않게
+  document.body.append(ta);
+  ta.select();
+  ta.setSelectionRange(0, text.length); // 아이폰 사파리
+  let ok = false;
+  try { ok = document.execCommand('copy'); } catch (e) { /* 아래에서 다른 방법으로 */ }
+  ta.remove();
+  return ok;
+}
 updateAskAI();
 
 // 내 설명: 글자 수를 보여 주고, 휴대폰에서는 글자만큼 칸을 늘려 칸 안 스크롤이 없게 한다
@@ -673,20 +690,34 @@ document.querySelector('.def-body').addEventListener('mouseover', e => {
 document.querySelector('.def-body').addEventListener('mouseout', e => { if (e.target.closest('.tlink')) hideTip(); });
 window.addEventListener('scroll', hideTip, { passive: true });
 
-// 설명 속 용어 링크: 그 카드로 간다. PC에서도 방문 기록을 남겨 뒤로 가기로 원래 카드에 돌아오게 한다
+// 다른 용어로 넘어가기 (설명 속 용어 링크 · 연결할 용어)
+// PC: 새 탭에 그 카드(#id)를 연다. 지금 카드는 그대로 남는다
+// 휴대폰: 새 탭은 불편해서 지금 탭에서 열고, 방문 기록을 한 칸 남겨 휴대폰 뒤로 가기로 원래 카드에 돌아오게 한다
+function goTerm(id) {
+  if (!byId[id]) return;
+  if (!isPhone()) {
+    window.open(`${location.pathname}${location.search}#${encodeURIComponent(id)}`, '_blank', 'noopener');
+    return;
+  }
+  if (filter !== 'all' && String(note(id).status) !== filter) { // 목록에서도 보이게
+    filter = 'all';
+    store.ui.filter = filter;
+  }
+  select(id, true);
+}
+
 document.querySelector('.def-body').addEventListener('click', e => {
   hideTip();
-  // 용어 링크는 target="_blank"라서 브라우저가 새 탭에 그 카드(#id)를 연다. 지금 카드는 그대로 남는다
+  const a = e.target.closest('.tlink');
+  // PC는 링크의 target="_blank"대로 브라우저가 새 탭을 연다 (가운데 클릭·주소 복사도 그대로 된다)
+  if (!a || !isPhone()) return;
+  e.preventDefault();
+  goTerm(a.dataset.id);
 });
 
 $('c-rel').addEventListener('click', e => {
   const b = e.target.closest('button');
-  if (!b) return;
-  if (filter !== 'all' && String(note(b.dataset.id).status) !== filter) {
-    filter = 'all';
-    store.ui.filter = filter;
-  }
-  select(b.dataset.id, true);
+  if (b) goTerm(b.dataset.id);
 });
 
 $('mine').addEventListener('input', () => {
