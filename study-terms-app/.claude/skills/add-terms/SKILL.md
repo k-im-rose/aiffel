@@ -71,7 +71,9 @@ node $SK/check.js . NN-NN    # 총 개수, 중복 id, 끊긴 related, 섹션 WOR
 - 끊긴 related가 있으면 고친다.
 - 총 개수(N)로 갱신: `test/api.test.js`(제목과 `terms.length`), `AGENTS.md` 개요의 개수·자료 범위, `README.md`의 `마치기 3 / N`과 `용어 N개:` 줄, `PRD.md` 개수 이력(`→ NN-NN 추가로 N개.`).
 - `README.md` "수정 기록" 맨 위에 `### YYYY-MM-DD · NN-NN 용어 K개 추가 (N개)` 항목: 새 섹션과 WORD 범위, 대표 용어, 출처를 덧붙인 기존 용어 수.
-- `npm test` 통과를 확인한다.
+- `npm test` 통과를 확인한다. 여기에 퀴즈 시험(`test/quiz.test.js`)도 들어 있다. 퀴즈는 용어 원본으로 자동으로 만들어지므로 따로 문제를 쓸 필요는 없다.
+  - **퀴즈: 정답 이름이 샌다**고 실패하면 그 용어의 `def`나 `easy` 앞 두 문장에 이름이 가려지지 않은 채 남은 것이다. 뜻을 바꾸지 말고 문장을 다듬어 이름을 빼거나, 이름의 이유는 `easy`의 뒤쪽 문장으로 옮긴다.
+  - 새 교안 퀴즈 문제 수 확인: `node -e "const Q=require('./public/quiz-core');const {terms}=require('./server/terms').buildCatalog();console.log(Q.termsForSection(terms,'NN-NN').length)"`
 
 ## 6. 커밋 → PR → merge
 
@@ -86,8 +88,9 @@ main에 merge하면 Render가 자동 배포한다 (GitHub의 Render 앱 연결, 
 curl -s https://aiffel-study-terms.onrender.com/api/terms | python3 -I -c "import sys,json; print(len(json.load(sys.stdin)['terms']))"
 ```
 - 백그라운드로 20초 간격, 최대 10분 확인해서 N이 나오면 끝이다.
+- 개수가 맞으면 퀴즈 페이지도 확인한다: `curl -s -o /dev/null -w '%{http_code}' https://aiffel-study-terms.onrender.com/quiz.html` → 200. 퀴즈 주소는 `https://aiffel-study-terms.onrender.com/quiz.html?s=NN-NN`.
 - 10분이 지나도 옛 개수면 Render 자동 배포가 다시 끊긴 것이다. Render 대시보드 Events에서 새 배포가 시작됐는지 보고, 사용자에게 알린다 (GitHub 설정 → Applications에 Render 앱이 있는지가 첫 확인 지점).
 
 ## 마무리 보고
 
-옮긴 PDF 위치, 새 섹션 이름과 WORD 범위, 대표 용어, 출처를 붙인 기존 용어 수, 시험 결과, PR 링크, 사이트 반영 여부를 짧게 알린다.
+옮긴 PDF 위치, 새 섹션 이름과 WORD 범위, 대표 용어, 출처를 붙인 기존 용어 수, 시험 결과, PR 링크, 사이트 반영 여부, 오늘 교안 퀴즈 주소와 문제 수를 짧게 알린다.
