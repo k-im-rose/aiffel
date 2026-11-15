@@ -277,6 +277,30 @@ body.loading .detail { visibility: hidden; }
 }
 .memo::placeholder { color: #4A4A4A; }
 
+/* AI에게 물어보기: 고른 AI로 질문이 써진 채 새 탭을 연다 */
+.ask-ai {
+  height: 22px; padding: 0 22px 0 10px; border: 1.5px solid var(--ink); border-radius: 999px;
+  background: transparent url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='5'%3E%3Cpath d='M0 0l4 5 4-5z' fill='%233A3A3C'/%3E%3C/svg%3E") no-repeat right 8px center;
+  appearance: none; -webkit-appearance: none; color: var(--ink); font: inherit;
+  font-size: 11px; font-weight: 600; letter-spacing: 0.1em; line-height: 1; cursor: pointer;
+}
+.ask-chips { display: flex; flex-wrap: wrap; gap: 6px; margin: 10px 0; }
+.ask-chip {
+  min-height: 36px; padding: 0 14px; border: 1px solid var(--line); border-radius: 999px;
+  background: var(--white); font-size: 14px; color: var(--ink);
+}
+.ask-chip:hover { background: var(--yellow-soft); }
+.ask-chip[aria-pressed="true"] { background: var(--yellow); border-color: var(--yellow); font-weight: 600; }
+.ask-q {
+  display: block; width: 100%; min-height: 44px; padding: 0 14px; border: 1px solid var(--line); border-radius: 12px;
+  background: var(--white); font-size: 15px; color: var(--deep);
+}
+.ask-go {
+  display: block; width: 100%; min-height: 48px; margin-top: 8px; border: none; border-radius: var(--r);
+  background: var(--ink); color: var(--white); font-size: 15px; font-weight: 600;
+}
+.ask-hint { margin: 6px 0 0; font-size: 12px; color: var(--gray); }
+
 .status { display: flex; gap: 8px; margin-top: 12px; }
 .st {
   flex: 1; min-height: 48px; padding: 0 8px; border: 1px solid var(--line); border-radius: var(--r);
