@@ -57,8 +57,8 @@ a, button, input, textarea { touch-action: manipulation; }
 .site-foot { margin: 48px 0 0; font-size: 12px; }
 .site-foot a { color: var(--gray); text-underline-offset: 3px; }
 body.view-card .site-foot { display: none; }
-/* 맨 위 줄: 왼쪽 라벨, 오른쪽 로그인 */
-.topbar { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; margin-bottom: 16px; }
+/* 맨 위 줄: 왼쪽 라벨, 오른쪽 로그인. 오른쪽 끝은 상태 설명 상자·카드 오른쪽 끝(1060px)에 맞춘다 */
+.topbar { max-width: 1060px; display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; margin-bottom: 16px; }
 .account { display: flex; align-items: center; gap: 14px; font-size: 13px; color: var(--gray); }
 .account-msg { margin: 0; }
 .account-msg strong { color: var(--ink); font-weight: 600; }
