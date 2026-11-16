@@ -607,7 +607,7 @@ addSection('03-02', "트랜스포머와 언어 모델", [
     "stage": "준비",
     "use": "이미지 모델의 학습 데이터나 성능 비교표에서 기본으로 나와요. 사물 사진을 모아 놓은 아주 큰 사진 모음이에요.",
     "ai": "직접 내려받을 일은 거의 없어요. 모델 설명에 '이미지넷으로 학습'이라고 적혀 있으면 일반적인 사물 사진에 익숙하다는 뜻이에요.",
-    "related": ["cnn", "skip-connection", "mnist"]
+    "related": ["cnn", "pretraining", "skip-connection", "mnist"]
   },
   {
     "id": "vit",

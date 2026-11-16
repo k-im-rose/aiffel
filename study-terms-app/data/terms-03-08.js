@@ -68,7 +68,7 @@ addSection('03-08', "표 예측과 과학·로봇 AI", [
     "ko": "탭아이씨엘",
     "full": "Tabular In-Context Learning",
     "level": "실전",
-    "def": "표 데이터를 위한 기반 모델. 여러 표로 사전학습해 두고, 예시 행과 정답을 맥락으로 받아 새 행을 예측한다. 실습에서는 Colab CPU 런타임에서 패키지를 설치하고 처음 실행할 때 가중치를 내려받는 것만으로 쓸 수 있었다. 값이 패키지 버전에 따라 조금씩 달라질 수 있다.",
+    "def": "표 데이터를 위한 기반 모델. 여러 표로 사전학습을 해 두고, 예시 행과 정답을 맥락으로 받아 새 행을 예측한다. 실습에서는 Colab CPU 런타임에서 패키지를 설치하고 처음 실행할 때 가중치를 내려받는 것만으로 쓸 수 있었다. 값이 패키지 버전에 따라 조금씩 달라질 수 있다.",
     "easy": "표 예측용으로 미리 학습된 모델로, 정답이 붙은 예시 행을 보여 주면 새 행의 답을 내놓아요. 따로 오래 학습시키지 않고 예시를 '맥락'으로만 참고해요. 실습에서는 무료 Colab의 CPU만으로도 돌아갔어요. 이름은 표(Tab)와 맥락 안에서 배우기(ICL)를 합친 말이에요.",
     "ex": "같은 시험 자료 171행으로 랜덤 포레스트·그래디언트 부스팅과 비교했고, 200행 훈련에서는 세 모델 AUC가 0.01 안팎으로 모였어요(03-08).",
     "stage": "만들기",
@@ -76,7 +76,7 @@ addSection('03-08', "표 예측과 과학·로봇 AI", [
     "ai": "결과가 실습 숫자와 조금 다르면 패키지 버전 차이일 수 있어요. 버전을 함께 기록해 두세요.",
     "word": "Tab: Tabular(표)의 줄임\nICL: In-Context Learning, 맥락 안에서 배우기\nTabICL: 표를 맥락으로 받아 예측하는 모델",
     "code": "# TabICL 설치 후 예시 행으로 예측하기\n!pip install tabicl\nfrom tabicl import TabICLClassifier\nmodel = TabICLClassifier().fit(X_train, y_train)",
-    "related": ["tabular-foundation-model", "in-context-learning", "random-forest", "roc-auc"]
+    "related": ["tabular-foundation-model", "pretraining", "in-context-learning", "random-forest", "roc-auc"]
   },
   {
     "id": "tabpfn",
@@ -84,14 +84,14 @@ addSection('03-08', "표 예측과 과학·로봇 AI", [
     "ko": "탭피에프엔",
     "full": "Tabular Prior-data Fitted Network",
     "level": "심화",
-    "def": "표 데이터용 기반 모델 가운데 하나. 가중치에 코드와 별도의 이용 조건이 붙어 있어, 설치한 파이썬 패키지 버전만 볼 것이 아니라 실제로 선택하고 내려받은 체크포인트(가중치 파일)의 조건을 확인해야 하는 예로 소개된다.",
+    "def": "표 데이터를 위한 기반 모델 가운데 하나. 가중치에 코드와 별도의 이용 조건이 붙어 있어, 설치한 파이썬 패키지 버전만 볼 것이 아니라 실제로 선택하고 내려받은 체크포인트(가중치 파일)의 조건을 확인해야 하는 예로 소개된다.",
     "easy": "표 예측을 위한 미리 학습된 모델 중 하나예요. 실행 코드와 학습 결과 파일(가중치)이 따로 배포되고, 가중치 쪽에 따로 이용 조건이 붙어 있어요. 그래서 코드 라이선스만 보고 '자유롭게 써도 되겠지' 하고 넘기면 안 돼요. 실제로 내려받은 가중치 파일의 조건을 꼭 확인해야 해요.",
     "ex": "업무 도입을 검토할 때 패키지 버전이 아니라 내려받은 체크포인트의 조건을 읽어야 하는 예로 나왔어요(03-08).",
     "stage": "준비",
     "use": "표 기반 모델을 회사 업무에 쓸 수 있는지 이용 조건을 따질 때 만나요.",
     "ai": "\"이 모델 가중치의 라이선스를 모델 카드에서 찾아 줘\"처럼 코드와 가중치 조건을 나눠서 물어보세요.",
     "word": "Tab: Tabular(표)의 줄임\nPFN: Prior-data Fitted Network, 미리 만든 자료에 맞춰 학습한 신경망\nTabPFN: 표 예측용으로 미리 학습한 신경망",
-    "related": ["tabular-foundation-model", "weights-license", "model-card", "license"]
+    "related": ["tabular-foundation-model", "pretraining", "tabular-data", "weights-license", "model-card", "license"]
   },
   {
     "id": "baseline",

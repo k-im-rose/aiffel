@@ -376,7 +376,7 @@ addSection('03-05', "이미지·영상 생성", [
     "stage": "준비",
     "use": "Hugging Face에서 FLUX 모델을 내려받아 이미지를 만들 때 이름으로 만나요. 모델마다 라이선스가 달라요.",
     "ai": "버전마다 상업 이용 가능 여부가 달라요. 회사 일에 쓰려면 AI 말만 믿지 말고 모델 카드의 라이선스를 직접 확인하세요.",
-    "related": ["permissive-license", "non-commercial-license", "comfyui", "sdxl-turbo"]
+    "related": ["permissive-license", "non-commercial-license", "comfyui", "sdxl-turbo", "quantization"]
   },
   {
     "id": "sdxl-turbo",
