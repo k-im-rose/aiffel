@@ -571,8 +571,7 @@ function select(id, openCard) {
   renderCard();
   renderList();
   if (openCard) openCardView(id);
-  // PC: 방문 기록은 쌓지 않고 주소만 그 용어로 바꾼다 (주소를 복사해 공유할 수 있게)
-  else if (!isPhone()) history.replaceState(null, '', '#' + id);
+  else if (!isPhone()) rememberCardPC(id);
   if (openCard && !isPhone()) scrollToCard();
 }
 
@@ -586,8 +585,14 @@ function scrollToCard() {
 function isPhone() { return window.matchMedia('(max-width: 820px)').matches; }
 // 뒤로 가기 때 사파리가 스크롤 위치를 늦게(애니메이션으로) 되돌리면 그동안 누른 것이 무시된다. 스크롤은 직접 맞춘다
 if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+// PC: 다른 용어로 넘어갈 때마다 방문 기록을 한 칸 남긴다 (검색으로 다른 용어를 열어도 뒤로 가기로 보던 카드에 돌아오게)
+// 같은 용어를 다시 누르면 기록을 쌓지 않는다. 주소(#id)는 복사해 공유할 수 있다
+function rememberCardPC(id) {
+  if (history.state && history.state.card === id) return;
+  history.pushState({ card: id }, '', '#' + id); // 홈(기록 없음)에서 연 경우도 뒤로 가기로 홈에 돌아온다
+}
 function openCardView(id) {
-  if (!isPhone()) { history.replaceState(null, '', '#' + id); return; }
+  if (!isPhone()) { rememberCardPC(id); return; }
   document.body.classList.add('view-card');
   window.scrollTo(0, 0);
   if (!(history.state && history.state.card === id)) history.pushState({ card: id }, '', '#' + id);
@@ -601,12 +606,22 @@ window.addEventListener('popstate', e => {
   const id = e.state && e.state.card;
   if (id && byId[id]) {
     current = id;
+    if (filter !== 'all' && String(note(id).status) !== filter) { filter = 'all'; store.ui.filter = filter; } // 목록에서도 보이게
+    store.ui.last = id;
+    persist();
+    document.body.classList.remove('no-card');
     renderCard();
     renderList();
-    document.body.classList.add('view-card');
-    window.scrollTo(0, 0);
-  } else {
+    if (isPhone()) {
+      document.body.classList.add('view-card');
+      window.scrollTo(0, 0);
+    } else {
+      scrollToCard();
+    }
+  } else if (isPhone()) {
     showListView();
+  } else {
+    document.body.classList.add('no-card'); // PC: 홈으로 돌아온 기록이면 카드 자리를 비운다
   }
 });
 
@@ -901,6 +916,8 @@ async function boot() {
       document.body.classList.add('view-card');
     }
   }
+  // PC: 처음 보는 카드도 방문 기록에 표시해 둔다 (다른 용어로 넘어간 뒤 뒤로 가기로 여기에 돌아오게)
+  if (!isPhone()) history.replaceState({ card: current }, '', location.href);
   document.body.classList.remove('no-card');
   fixNoteWidth();
   renderCard();
