@@ -228,6 +228,7 @@ addSection('03-04', "문서 인식과 객체 탐지", [
   },
   {
     "id": "confidence-threshold",
+    "src": "03-04 · 03-08",
     "term": "Confidence Threshold",
     "ko": "신뢰도 임계값",
     "full": "",
@@ -407,6 +408,7 @@ addSection('03-04', "문서 인식과 객체 탐지", [
   },
   {
     "id": "false-positive-negative",
+    "src": "03-04 · 03-08",
     "term": "False Positive / False Negative",
     "ko": "오탐 / 미탐",
     "full": "",
@@ -528,7 +530,7 @@ addSection('03-04', "문서 인식과 객체 탐지", [
   },
   {
     "id": "csv",
-    "src": "03-04 · 03-05",
+    "src": "03-04 · 03-05 · 03-08",
     "term": "CSV",
     "ko": "쉼표로 구분한 표 파일",
     "full": "Comma-Separated Values",
@@ -605,7 +607,7 @@ addSection('03-04', "문서 인식과 객체 탐지", [
   },
   {
     "id": "creative-commons",
-    "src": "03-04 · 03-05 · 03-06 · 03-07",
+    "src": "03-04 · 03-05 · 03-06 · 03-07 · 03-08",
     "term": "Creative Commons / Public Domain",
     "ko": "CC 라이선스 / 퍼블릭 도메인",
     "full": "",

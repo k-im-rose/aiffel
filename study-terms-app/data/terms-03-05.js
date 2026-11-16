@@ -79,6 +79,7 @@ addSection('03-05', "이미지·영상 생성", [
   },
   {
     "id": "noise-denoising",
+    "src": "03-05 · 03-08",
     "term": "Noise / Denoising",
     "ko": "노이즈 / 잡음 제거",
     "full": "",
@@ -393,7 +394,7 @@ addSection('03-05', "이미지·영상 생성", [
   },
   {
     "id": "permissive-license",
-    "src": "03-05 · 03-06",
+    "src": "03-05 · 03-06 · 03-08",
     "term": "Apache 2.0 / MIT",
     "ko": "허용형 오픈소스 라이선스",
     "full": "",
@@ -409,7 +410,7 @@ addSection('03-05', "이미지·영상 생성", [
   },
   {
     "id": "non-commercial-license",
-    "src": "03-05 · 03-06",
+    "src": "03-05 · 03-06 · 03-08",
     "term": "Non-commercial License",
     "ko": "비상업 라이선스",
     "full": "",
@@ -425,7 +426,7 @@ addSection('03-05', "이미지·영상 생성", [
   },
   {
     "id": "hugging-face",
-    "src": "03-05 · 03-06",
+    "src": "03-05 · 03-06 · 03-08",
     "term": "Hugging Face",
     "ko": "허깅페이스",
     "full": "",
