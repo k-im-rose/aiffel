@@ -202,6 +202,11 @@ npm start
 
 작업 순서대로 정리했다. 자세한 내용은 [커밋 기록](https://github.com/k-im-rose/aiffel/commits/main/study-terms-app)에 있다.
 
+### 2026-11-16 · 검색으로 넘어간 뒤 뒤로 가기, ROC AUC 설명 보완
+
+- **PC 뒤로 가기:** 카드를 보다가 검색·목록으로 다른 용어를 열면 방문 기록을 한 칸 남겨서, 브라우저 뒤로 가기로 보던 카드에 돌아오게 함 (같은 용어를 다시 누르면 기록을 쌓지 않음)
+- **ROC AUC:** ROC(곡선 이름)와 AUC(곡선 아래 넓이)가 합쳐서 숫자 하나를 가리킨다는 점과 ROC 곡선이 무엇인지 뜻·쉽게 말하면에 적고, 한글 이름을 'ROC 곡선 아래 넓이'로 바꿈
+
 ### 2026-11-16 · 03-08 용어 39개 추가 (668개)
 
 - 새 섹션 '03-08 표 예측과 과학·로봇 AI'(WORD 630~668): 표 데이터·랜덤 포레스트·그래디언트 부스팅·표 기반 모델·TabICL·TabPFN·기준선·훈련/시험 자료 나누기·정확도·ROC AUC·양성/음성·클래스 불균형·데이터 누수·scikit-learn·유방암 분류 예제 데이터·시계열 예측, 아미노산 서열·단백질 구조 예측·ColabFold·AlphaFold2·PDB 구조 파일·pLDDT·RMSD·단백질 설계·RFdiffusion·ProteinMPNN, 수치예보·GraphCast·재분석 자료(ERA5)·예측 이어 붙이기, VLA·SmolVLA·LeRobot·시범 데이터·월드 모델·DIAMOND·T4 GPU, 가중치 이용 조건·Cellpose.
