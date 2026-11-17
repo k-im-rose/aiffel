@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>그내종 · 스타일 가이드</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/style.css">
+<style>
+  /* 견본 화면에서만 쓰는 규칙 */
+  .swatches { display: flex; flex-wrap: wrap; gap: var(--space-4); margin: var(--space-4) 0; }
+  .swatch { width: 140px; }
+  .swatch .chip { height: 56px; border: var(--rule-thin); }
+  .scale p { margin: var(--space-2) 0; }
+</style>
+</head>
+<body>
+<!--
+  디자인 시스템 견본. 실제 화면과 같은 클래스(web/style.css)를 쓰고, 내용은 모두 예시 문장이다 (데이터 연동 없음).
+  레퍼런스를 적용한 뒤 이 화면 하나로 색·글자·간격·컴포넌트를 한 번에 확인한다.
+-->
+<div class="wrap">
+  <header>
+    <div class="brand">
+      <div><a class="brand-name" href="/">그내종<span class="dot">.</span></a><div class="brand-sub">그래서 내 종목은?</div></div>
+      <div class="brand-intro">투자자의 일일 경제 브리핑,<br>시장을 읽고 내 투자로 연결하는 기록.</div>
+    </div>
+    <nav class="site-nav"><a href="#" aria-current="page">메인</a><a href="#">내 투자 프로필</a><a href="#">지난 브리핑</a><a href="#">내 기록</a><a href="#">계정 설정</a></nav>
+    <p class="notice">안내문 (notice): 가상 데모입니다.</p>
+  </header>
+
+  <main class="measure">
+    <section class="lede"><h1>스타일 가이드</h1><p class="meta">모든 화면이 쓰는 토큰과 컴포넌트의 견본입니다. 내용은 예시입니다.</p></section>
+
+    <section class="section">
+      <div class="eyebrow">색</div>
+      <h2>세 가지 색과 무채색</h2>
+      <div class="swatches">
+        <div class="swatch"><div class="chip" style="background:var(--color-bg)"></div><div class="meta">배경 #FFFFFF</div></div>
+        <div class="swatch"><div class="chip" style="background:var(--color-ink)"></div><div class="meta">글자 #222222</div></div>
+        <div class="swatch"><div class="chip" style="background:var(--color-accent)"></div><div class="meta">포인트 #B8755B</div></div>
+        <div class="swatch"><div class="chip" style="background:var(--color-ink-2)"></div><div class="meta">보조 글자</div></div>
+        <div class="swatch"><div class="chip" style="background:var(--color-ink-3)"></div><div class="meta">상태 표시</div></div>
+        <div class="swatch"><div class="chip" style="background:var(--color-rule)"></div><div class="meta">구분선</div></div>
+      </div>
+    </section>
+
+    <section class="section scale">
+      <div class="eyebrow">글자</div>
+      <h2>크기와 역할</h2>
+      <p style="font-size:var(--fs-display)">화면 제목 — 오늘의 시장을 읽고</p>
+      <p style="font-size:var(--fs-h2)">섹션 제목 — 주요 경제·산업 뉴스</p>
+      <p style="font-size:var(--fs-h3)">이야기 제목 — 코픽스 2년 8개월 만에 최고</p>
+      <p style="font-size:var(--fs-lead)">강조 문단 — 퀴즈 문제, 개념 용어</p>
+      <p>본문 — 기사 본문은 한 줄 길이를 제한하고 줄간격을 넉넉히 두어 위에서 아래로 편하게 읽히게 합니다. 숫자 <span class="num">3.62%</span>는 고정폭 숫자로 맞춥니다.</p>
+      <p class="meta">보조 — 매일경제 · 2026-11-17 06:10</p>
+      <p class="status">상태 — 동작 상태: 로컬에서 실제 동작</p>
+      <p><span class="big-num num motion-number">12</span> 큰 숫자 (짧은 모션은 숫자·그래프에만)</p>
+    </section>
+
+    <section class="section">
+      <div class="eyebrow">메인</div>
+      <h2>최신 보고서와 목록</h2>
+      <div class="latest">
+        <div class="when">2026년 11월 17일 화요일 발행</div>
+        <h3>11월 17일 아침 브리핑: 예시 제목</h3>
+        <ol><li>첫 번째 핵심 뉴스 제목</li><li>두 번째 핵심 뉴스 제목</li></ol>
+        <p class="meta">핵심 뉴스 7건 · 관련 종목 예시 · 오디오 7분 56초</p>
+        <a class="go" href="#">보고서 읽기</a>
+      </div>
+      <div class="list-row"><div class="date">11월 17일 화요일</div><div class="body"><a href="#">날짜별 보고서 목록 한 줄</a></div><div class="side num">7분 56초</div></div>
+      <dl class="kv"><dt>보유 종목</dt><dd>예시 A, 예시 B</dd><dt>관심 산업</dt><dd>자동차, 바이오</dd></dl>
+    </section>
+
+    <section class="section">
+      <div class="eyebrow">보고서</div>
+      <h2>이야기 한 편</h2>
+      <article class="entry story">
+        <div class="tag">1 · 거시경제</div>
+        <h3>이야기 제목</h3>
+        <h4>확인된 사실</h4>
+        <ul><li>기사 본문에서 확인한 사실 문장입니다.<span class="fact-basis">기자 본문에서 확인</span></li></ul>
+        <h4>확인 불가</h4>
+        <ul><li>출처 본문에서 확인되지 않은 내용입니다.</li></ul>
+        <h4>AI 해석 (사실이 아닌 추론)</h4>
+        <p>해석 문단입니다.</p>
+        <details><summary>출처 2건</summary><ul><li><a href="#">매일경제 · 기사 제목</a></li></ul></details>
+      </article>
+      <div class="stock-block"><h3>종목 이름</h3><div class="item"><div class="meta">1. 관련 이야기</div><p class="stance">아직 판단하기 어려움</p><p>이유 문단.</p><p>판단하려면 확인할 것 — 다음 실적의 수치</p></div></div>
+      <blockquote>정의 첫 문장 인용 (blockquote)</blockquote>
+      <div class="quiz-q">퀴즈 문제</div>
+      <label class="choice"><input type="radio" name="q">1. 보기</label><label class="choice"><input type="radio" name="q">2. 보기</label>
+    </section>
+
+    <section class="section">
+      <div class="eyebrow">기록·입력</div>
+      <h2>메모·점검·양식</h2>
+      <div class="item"><label class="check-line"><input type="checkbox"><span class="text">점검 항목<span class="mark">중요</span></span></label><div class="meta">직접 작성 · 2026-11-17</div><div class="actions"><button class="text" type="button">수정</button><button class="text" type="button">삭제</button></div></div>
+      <div class="item done"><label class="check-line"><input type="checkbox" checked><span class="text">완료한 항목</span></label></div>
+      <label class="field"><span>입력칸</span><input placeholder="밑줄 하나"></label>
+      <label class="field"><span>여러 줄</span><textarea rows="3"></textarea></label>
+      <div class="form-actions"><button type="button">기본 버튼</button><button type="button" disabled>비활성</button></div>
+      <p class="notice notice-record"><strong>개발·평가 기록입니다.</strong> 기록 안내문 (notice-record)</p>
+    </section>
+  </main>
+  <footer class="site-foot">꼬리말</footer>
+</div>
+</body>
+</html>

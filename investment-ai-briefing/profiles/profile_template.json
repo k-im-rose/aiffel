@@ -1,0 +1,28 @@
+{
+  "user_id": "me",
+  "language": "ko",
+  "macro_topics": ["미국 기준금리", "원달러 환율", "미국 관세·무역 정책"],
+  "briefing_mix": {"macro": 0.5, "stocks": 0.5},
+  "stocks": [
+    {
+      "ticker": "000000",
+      "market": "KOSDAQ",
+      "name": "종목명",
+      "aliases": ["영문명이나 줄임말"],
+      "status": "held",
+      "sector": "업종",
+      "thesis": "이 종목을 보는 이유를 한두 문장으로 (예: AI 서버 증설로 후공정 장비 수요가 늘면 수혜)",
+      "keywords": ["모멘텀 키워드", "관련 산업·정책"]
+    },
+    {
+      "ticker": "000000",
+      "market": "KRX",
+      "name": "관심 종목명",
+      "aliases": [],
+      "status": "watchlist",
+      "sector": "업종",
+      "thesis": "아직 사지 않았지만 지켜보는 이유",
+      "keywords": []
+    }
+  ]
+}

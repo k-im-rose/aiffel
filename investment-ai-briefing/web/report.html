@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>그내종 · 일일 보고서</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<div class="wrap">
+<header id="site-header"></header>
+
+<main class="measure">
+  <!-- 보고서 머리: 날짜·제목·생성 정보 -->
+  <section class="report-head">
+    <div class="when" id="r-when"></div>
+    <h1 id="r-title">보고서를 불러오는 중입니다.</h1>
+    <p class="meta" id="r-meta"></p>
+    <p class="notice notice-record" id="r-record" hidden></p>
+    <p class="meta" id="r-revision" hidden></p>
+    <p class="meta"><a href="/">메인으로</a> · <label class="inline">다른 보고서 <select id="run-select"></select></label></p>
+  </section>
+
+  <!-- 1. 오늘의 브리핑 -->
+  <section class="section" id="s-briefing">
+    <div class="eyebrow">01</div>
+    <h2>오늘의 브리핑</h2>
+    <p class="status">동작 상태: 로컬에서 실제 동작</p>
+    <div class="player"><audio id="player" controls preload="metadata"></audio></div>
+    <div class="controls">
+      <label>배속
+        <select id="rate">
+          <option value="0.8">0.8배</option><option value="1" selected>1배</option>
+          <option value="1.25">1.25배</option><option value="1.5">1.5배</option><option value="2">2배</option>
+        </select>
+      </label>
+      <span>전체 <span id="b-duration" class="num"></span></span>
+    </div>
+    <h4>이 보고서의 출처 대조 결과</h4>
+    <p id="b-checks"></p>
+    <p class="meta" id="b-scope"></p>
+  </section>
+
+  <!-- 2. 주요 경제·산업 뉴스 -->
+  <section class="section" id="s-stories">
+    <div class="eyebrow">02</div>
+    <h2>주요 경제·산업 뉴스</h2>
+    <p class="status">동작 상태: 로컬에서 실제 동작 · '확인된 사실'은 출처 기사 본문에서 확인한 내용, 'AI 해석'은 추론입니다.</p>
+    <div id="stories"></div>
+  </section>
+
+  <!-- 3. 내 종목에 미치는 영향과 확인할 사항 -->
+  <section class="section" id="s-holdings">
+    <div class="eyebrow">03</div>
+    <h2>그래서 내 종목은?</h2>
+    <p class="status">동작 상태: 로컬에서 실제 동작 · 모두 AI 해석입니다. 수혜·피해를 단정하지 않고, 판단에 필요한 확인 항목을 함께 적습니다.</p>
+    <div id="holdings"></div>
+  </section>
+
+  <!-- 4. 방송에 담지 못한 뉴스 -->
+  <section class="section" id="s-not-aired">
+    <div class="eyebrow">04</div>
+    <h2>방송에 담지 못한 뉴스</h2>
+    <p class="status">동작 상태: 로컬에서 실제 동작 · 제외된 뉴스 전체가 아니라 다시 볼 만한 것만 갈래별로 보여 줍니다.</p>
+    <div id="not-aired"></div>
+  </section>
+
+  <!-- 5. 오늘의 경제 개념 -->
+  <section class="section" id="s-concept">
+    <div class="eyebrow">05</div>
+    <h2>오늘의 경제 개념</h2>
+    <p class="status">동작 상태: 로컬에서 실제 동작 · 하루 0~1개, 한국은행 『경제금융용어 800선』 수록 용어만</p>
+    <div id="concept"></div>
+  </section>
+
+  <!-- 6. 오늘의 퀴즈 -->
+  <section class="section" id="s-quiz">
+    <div class="eyebrow">06</div>
+    <h2>오늘의 퀴즈</h2>
+    <p class="status">동작 상태: 로컬에서 실제 동작 · 하루 1문항, 답 기록은 저장하지 않음</p>
+    <div id="quiz"></div>
+  </section>
+
+  <!-- 7. 오늘의 메모 -->
+  <section class="section" id="s-memo">
+    <div class="eyebrow">07</div>
+    <h2>오늘의 메모</h2>
+    <p class="status">동작 상태: 로컬에서 실제 동작 · 날짜별 보관, 브리핑을 새로 만들어도 유지</p>
+    <form id="memo-form">
+      <textarea id="memo-text" rows="5" placeholder="오늘 새로 알게 된 점, 관심이 생긴 산업·기업, 달라진 생각, 더 조사할 것"></textarea>
+      <div class="form-actions"><button type="submit">메모 저장</button></div>
+    </form>
+    <div id="memo-list"></div>
+    <p class="meta"><a href="/mypage#memos">모든 날짜의 메모 보기</a></p>
+  </section>
+
+  <!-- 8. 다음에 점검할 것 -->
+  <section class="section" id="s-checks">
+    <div class="eyebrow">08</div>
+    <h2>다음에 점검할 것</h2>
+    <h4>내 점검 목록</h4>
+    <p class="status">동작 상태: 로컬에서 실제 동작 · 완료하지 않은 항목은 날짜가 바뀌어도 계속 남음</p>
+    <form id="check-form" class="form-actions">
+      <input id="check-text" class="grow" placeholder="예: 관심 기업의 다음 실적 발표 확인">
+      <button type="submit">추가</button>
+    </form>
+    <div id="check-list"></div>
+    <details><summary>완료한 항목</summary><div id="check-done"></div></details>
+
+    <h4>AI 추천 점검 항목</h4>
+    <p class="status">동작 상태: 로컬에서 실제 동작 · 오늘 뉴스와 투자 이유에서 나온 추천입니다. '내 목록에 추가'를 누를 때만 내 목록에 들어갑니다.</p>
+    <div id="ai-checks"></div>
+  </section>
+</main>
+
+<footer class="site-foot" id="site-footer"></footer>
+</div>
+<script src="/common.js"></script>
+<script src="/report.js"></script>
+</body>
+</html>

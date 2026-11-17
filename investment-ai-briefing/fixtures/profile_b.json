@@ -1,0 +1,19 @@
+{
+  "user_id": "demo-b",
+  "language": "ko",
+  "macro_topics": ["금리", "환율", "미국 관세·무역 정책"],
+  "interest_industries": ["2차전지", "자동차", "바이오"],
+  "briefing_mix": {"macro": 0.3, "industry": 0.3, "stocks": 0.4},
+  "_note": "개인화 검증용 가상 프로필. 실제 보유 내역이 아니다.",
+  "stocks": [
+    {"ticker": "005380", "market": "KRX", "name": "현대차", "aliases": [], "status": "held",
+     "sector": "완성차", "thesis": "미국 관세 정책과 전기차·하이브리드 판매 비중 변화가 수익성을 좌우한다고 본다.",
+     "keywords": ["자동차 관세", "전기차", "자율주행"]},
+    {"ticker": "247540", "market": "KOSDAQ", "name": "에코프로비엠", "aliases": [], "status": "held",
+     "sector": "2차전지 양극재", "thesis": "전기차 수요 회복과 ESS 배터리 수요 증가로 양극재 출하가 늘 것으로 기대한다.",
+     "keywords": ["양극재", "ESS", "전기차 배터리"]},
+    {"ticker": "196170", "market": "KOSDAQ", "name": "알테오젠", "aliases": [], "status": "watchlist",
+     "sector": "바이오 플랫폼", "thesis": "피하주사 제형 변경 플랫폼의 기술이전 계약 확대를 지켜본다.",
+     "keywords": ["기술이전", "피하주사", "바이오 라이선스"]}
+  ]
+}

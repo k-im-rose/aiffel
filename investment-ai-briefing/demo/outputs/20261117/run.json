@@ -1,0 +1,184 @@
+{
+ "started_at": "2026-11-17T17:10:31+09:00",
+ "generated_at": "2026-11-17T17:10:31+09:00",
+ "cutoff_at": "2026-11-17T07:35:00+09:00",
+ "mode": "test",
+ "profile": "demo/profile_demo.json",
+ "version": "v2",
+ "time_check": {
+  "future": 188,
+  "future_examples": [
+   "2026-11-17T15:59:00+09:00 AI 안경 금지령 내린 SK…KAI는 탐지시스템 도입 검토",
+   "2026-11-17T15:47:00+09:00 [마감시황] 코스피 2.59% 하락해 5000선 붕괴…반도체 이어 금융·",
+   "2026-11-17T15:43:00+09:00 '5천피' 결국 무너졌다…외인 '팔자'에 시총 상위주 '와르르'",
+   "2026-11-17T15:35:00+09:00 美서 번 돈으로 버텼다…현대차 해외법인 5곳 수익 감소",
+   "2026-11-17T14:48:00+09:00 붉은빛 문 너머 펼쳐진 낯선 세계…마카오 최신상 5성급 호텔 가 보니"
+  ],
+  "ok": 336,
+  "old": 37,
+  "raw_files": [
+   "search_demo_20261117_1710.json",
+   "news_20261117_1206.json",
+   "foreign_20261117_1615.json"
+  ],
+  "candidates": 336,
+  "latest_published": "2026-11-17T07:32:14+09:00",
+  "future_in_candidates": 0
+ },
+ "selection": {
+  "model": "haiku",
+  "seconds": 118.4,
+  "calls": 14,
+  "cost_usd": 0.0797,
+  "counts": {
+   "direct": 5,
+   "industry_policy": 9,
+   "theme": 14,
+   "macro": 25,
+   "uncertain": 15,
+   "irrelevant": 268,
+   "missing": 0
+  }
+ },
+ "disclosures": "조회 불가 (DART_API_KEY 없음)",
+ "evidence_recovery": {
+  "targets": 3,
+  "original_ok": 3,
+  "recovered": 3,
+  "status": {
+   "기술주 주춤에 유가 상승까지...비트코인 7.1만 달러로 뚝[글로벌 머니플로우]": "ok",
+   "[밤 사이 해외뉴스] 美 물가 다시 들썩…연준 12월 '빅스텝' 하나": "ok",
+   "엔비디아 급락이 美국채시장까지 흔들었다…금리 5% 복귀": "ok"
+  },
+  "call": {
+   "seconds": 8.5,
+   "cost_usd": 0.00139076
+  }
+ },
+ "foreign_reserve_used": 0,
+ "high_importance": {
+  "total": 5,
+  "used": 5,
+  "dropped": []
+ },
+ "edit": {
+  "model": "claude-sonnet-5-5 (Claude Code CLI)",
+  "seconds": 47.4,
+  "input_tokens": 38582,
+  "output_tokens": 8132,
+  "cost_usd": 0.1716761,
+  "report": {
+   "candidates_ranked": 26,
+   "stories": 6,
+   "articles_used": 22,
+   "high_importance_total": 5,
+   "high_importance_used": 5,
+   "seconds_by_section": {
+    "macro": 265,
+    "stocks": 210,
+    "industry": 120
+   },
+   "total_target_seconds": 595,
+   "merged_stories": [
+    "美 금리 5% 복귀·달러 강세, 연준 12월 인상 경계",
+    "삼성SDI 美 ESS 대형 수주, 에코프로비엠 ESS 논리와 4분기 실적 눈높이",
+    "전기차 국내생산 세제 검토와 美 자동차 관세·중국차 구도",
+    "유가 85달러로 하락, 국내 정유 최고가제 갈등",
+    "알테오젠 월 1회 비만치료제 후보 동물실험 결과",
+    "19일 미·중·러 정상회담 예고"
+   ],
+   "evidence_of_used": {
+    "original": 3,
+    "full": 12,
+    "bundle": 3,
+    "title_only": 4
+   },
+   "article_in_multiple_stories": [],
+   "foreign": {
+    "candidates": 4,
+    "used": 3,
+    "stories_foreign_only": [],
+    "stories_mixed": [
+     "美 금리 5% 복귀·달러 강세, 연준 12월 인상 경계",
+     "유가 85달러로 하락, 국내 정유 최고가제 갈등"
+    ],
+    "excluded_as_duplicate": 0
+   },
+   "unaccounted": []
+  }
+ },
+ "translate": {
+  "model": "claude-haiku-5-5 (Claude Code CLI)",
+  "seconds": 4.5,
+  "n": 3,
+  "input_tokens": 1866,
+  "output_tokens": 365,
+  "cost_usd": 0.00040711
+ },
+ "exploration": {
+  "internal_total": 27,
+  "rule_passed": 0,
+  "shown": 0
+ },
+ "corroborate": {
+  "stories_checked": 6,
+  "articles": 22,
+  "original_ok": 21,
+  "call": {
+   "model": "claude-sonnet-5-5 (Claude Code CLI)",
+   "seconds": 29.3,
+   "input_tokens": 43398,
+   "output_tokens": 4089,
+   "cost_usd": 0.2096459
+  }
+ },
+ "script": {
+  "model": "claude-sonnet-5-5 (Claude Code CLI)",
+  "seconds": 50.18,
+  "input_tokens": 14854,
+  "output_tokens": 8062,
+  "cost_usd": 0.1372669,
+  "validation": {
+   "n_lines": 44,
+   "chars": 3449,
+   "est_seconds": 507,
+   "articles_used": 22,
+   "invalid_source_ids": [],
+   "fact_lines_without_source": [],
+   "numbers_without_source": [
+    [
+     10,
+     "관심 종목 쪽으로 보면, 달러 강세는 현대차의 수출 수익성에는 우호적일 수 있습니다. 반면 고금리는 에코프로비엠 같은 성장주의 밸류에이션에 부담이 된다는 해석이 가능합니다. 앞으로는 워시 의장 발언 후속 내용과 12월 FOMC 인상 전망 변화를 보시면 됩니다."
+    ],
+    [
+     33,
+     "ESS 수요 확대는 업황에는 긍정 신호지만, 에코프로비엠의 단기 실적 눈높이는 낮아진 상태입니다. ESS용 양극재 출하와 4분기 실적 발표를 확인할 필요가 있습니다."
+    ]
+   ],
+   "recommendation_phrases": [],
+   "hedge_phrases": [],
+   "ends_correctly": true
+  }
+ },
+ "fact_check": {
+  "final": {
+   "claims_checked": 25,
+   "supported": 25,
+   "critical_issues": 0,
+   "minor_issues": 0
+  },
+  "rounds": 1,
+  "seconds": 28.2
+ },
+ "audio": {
+  "path": "demo/outputs/20261117/briefing.mp3",
+  "bytes": 2976048,
+  "approx_seconds": 496,
+  "voices": {
+   "A": "ko-KR-SunHiNeural",
+   "B": "ko-KR-InJoonNeural"
+  },
+  "n_clips": 44
+ },
+ "finished_at": "2026-11-17T17:15:54+09:00"
+}

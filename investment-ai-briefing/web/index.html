@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>그내종</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<div class="wrap">
+<header id="site-header"></header>
+
+<main>
+  <!-- ② 메인 소개 -->
+  <section class="lede">
+    <h1>오늘의 시장을 읽고, 내 투자를 점검하다.</h1>
+    <p class="date" id="today"></p>
+  </section>
+
+  <!-- ③ 가장 최근 발행된 보고서 -->
+  <section class="latest" id="latest" aria-labelledby="latest-title">
+    <div class="when" id="latest-when"></div>
+    <h3 id="latest-title">보고서를 불러오는 중입니다.</h3>
+    <ol id="latest-headlines"></ol>
+    <p id="latest-summary" class="meta"></p>
+    <a class="go" id="latest-go" hidden>보고서 읽기</a>
+  </section>
+
+  <!-- ④ 내 투자 프로필 요약 -->
+  <section class="section" id="profile-summary">
+    <div class="eyebrow">내 투자 프로필</div>
+    <h2>무엇을, 왜 보고 있는지</h2>
+    <dl class="kv" id="profile-kv"></dl>
+    <p><a href="/mypage#profile">종목 추가 · 프로필 편집</a></p>
+  </section>
+
+  <!-- ⑤ 지난 브리핑 -->
+  <section class="section" id="archive">
+    <div class="eyebrow">지난 브리핑</div>
+    <h2>날짜별 보고서</h2>
+    <p class="status">날짜마다 최종 승인판 하나만, 최신순으로 보여 줍니다.</p>
+    <div id="archive-list"></div>
+  </section>
+
+  <!-- ⑥ 아직 점검하지 않은 항목 -->
+  <section class="section" id="open-checks">
+    <div class="eyebrow">아직 점검하지 않은 항목</div>
+    <p><span class="big-num num" id="open-count">-</span> <span id="open-count-label">개 남아 있습니다.</span></p>
+    <div id="open-list"></div>
+    <p><a href="/mypage#checks">전체 점검 목록으로</a></p>
+  </section>
+</main>
+
+<footer class="site-foot" id="site-footer"></footer>
+</div>
+<script src="/common.js"></script>
+<script src="/main.js"></script>
+</body>
+</html>

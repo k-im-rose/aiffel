@@ -1,0 +1,8 @@
+{
+ "_note": "가상 데모용 기업 기본 사실표. 상장 시장·종목코드는 공개 정보이며 확인일을 함께 적는다.",
+ "companies": [
+  {"name": "현대차", "aliases": ["현대자동차"], "listed": true, "market": "KOSPI", "ticker": "005380", "facts": ["완성차 기업"], "sources": ["KRX 상장 종목 정보 (확인 필요 시 OpenDART)"], "checked_at": "2026-11-17"},
+  {"name": "에코프로비엠", "aliases": [], "listed": true, "market": "KOSDAQ", "ticker": "247540", "facts": ["2차전지 양극재 기업"], "sources": ["KRX 상장 종목 정보 (확인 필요 시 OpenDART)"], "checked_at": "2026-11-17"},
+  {"name": "알테오젠", "aliases": [], "listed": true, "market": "KOSDAQ", "ticker": "196170", "facts": ["바이오 플랫폼 기업"], "sources": ["KRX 상장 종목 정보 (확인 필요 시 OpenDART)"], "checked_at": "2026-11-17"}
+ ]
+}

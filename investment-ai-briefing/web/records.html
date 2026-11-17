@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>그내종 · 개발·평가 기록</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<div class="wrap">
+<header id="site-header"></header>
+
+<main class="measure">
+  <section class="lede">
+    <h1>개발·평가 기록</h1>
+    <p>날짜별 최종 승인판이 아닌 실행 결과입니다. 테스트 실행, 오류를 고치기 전의 판, 재검증 전 판을 지우지 않고 여기에 보존합니다.
+       일반 브리핑 목록에는 날짜마다 승인판 하나만 나옵니다.</p>
+    <p class="status">동작 상태: 로컬에서 실제 동작 · 승인은 <code>python -m app.release approve</code>로 하고, 매일 정규 실행은 승인 관문을 통과할 때만 자동 승인됩니다.</p>
+  </section>
+  <section class="section">
+    <div id="record-list"></div>
+  </section>
+</main>
+
+<footer class="site-foot" id="site-footer"></footer>
+</div>
+<script src="/common.js"></script>
+<script src="/records.js"></script>
+</body>
+</html>

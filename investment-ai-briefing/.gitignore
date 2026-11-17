@@ -1,0 +1,38 @@
+.venv/
+__pycache__/
+.env
+.DS_Store
+.claude/
+
+# ── 비공개 (실제 투자 정보·원본) ─────────────────────────────
+# 실제 투자 프로필과 사용자 데이터 (메모·점검 목록)
+profiles/my_profile.json
+userdata/
+# 한국은행 800선 PDF(All Rights Reserved), 용어 색인, 실제 종목 사실표, 비공개 읽기 사전
+private/
+# 수집 원본 (기사 제목·요약)
+data/raw/
+# 실제 프로필 브리핑 결과 전체
+/outputs/
+# 1차 평가 원본 (30건 라벨·실행 결과·실패 사례) — 수정하지 않고 비공개 보관
+evaluation/
+app/build_eval_set.py
+# 실제 종목이 들어간 작업 문서 (공개용 요약은 README와 docs/public/에 새로 씀)
+PROJECT_NOTES.md
+docs/decisions.md
+docs/evaluation.md
+docs/evaluation_plan.md
+docs/foreign_sources.md
+docs/podcast_v2.md
+docs/roadmap_v2.md
+docs/service_readiness.md
+
+# ── 공개 데모 (가상 프로필) ───────────────────────────────
+# 사용자 데이터와 수집·판정 원본, MP3(edge-tts 비공식 음성은 재배포하지 않음)는 올리지 않는다.
+# 공개: briefing.json, script.json, 리포트(md)
+demo/userdata/
+demo/outputs/*/candidates*.json
+demo/outputs/*/exploration_all.json
+demo/outputs/*/script_draft.json
+demo/outputs/*/factcheck.json
+demo/outputs/*/*.mp3

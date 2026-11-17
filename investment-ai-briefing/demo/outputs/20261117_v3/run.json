@@ -1,0 +1,214 @@
+{
+  "started_at": "2026-11-17T17:37:50+09:00",
+  "generated_at": "2026-11-17T17:37:50+09:00",
+  "cutoff_at": "2026-11-17T07:35:00+09:00",
+  "mode": "test",
+  "profile": "demo/profile_demo.json",
+  "version": "v2",
+  "time_check": {
+    "future": 188,
+    "future_examples": [
+      "2026-11-17T15:59:00+09:00 AI 안경 금지령 내린 SK…KAI는 탐지시스템 도입 검토",
+      "2026-11-17T15:47:00+09:00 [마감시황] 코스피 2.59% 하락해 5000선 붕괴…반도체 이어 금융·",
+      "2026-11-17T15:43:00+09:00 '5천피' 결국 무너졌다…외인 '팔자'에 시총 상위주 '와르르'",
+      "2026-11-17T15:35:00+09:00 美서 번 돈으로 버텼다…현대차 해외법인 5곳 수익 감소",
+      "2026-11-17T14:48:00+09:00 붉은빛 문 너머 펼쳐진 낯선 세계…마카오 최신상 5성급 호텔 가 보니"
+    ],
+    "ok": 336,
+    "old": 37,
+    "raw_files": [
+      "search_demo_20261117_1710.json",
+      "news_20261117_1206.json",
+      "foreign_20261117_1615.json"
+    ],
+    "candidates": 336,
+    "latest_published": "2026-11-17T07:32:14+09:00",
+    "future_in_candidates": 0
+  },
+  "selection": {
+    "reused_from": "demo/outputs/20261117",
+    "newly_judged": 0
+  },
+  "disclosures": "조회 불가 (DART_API_KEY 없음)",
+  "evidence_recovery": {
+    "targets": 3,
+    "original_ok": 3,
+    "recovered": 3,
+    "status": {
+      "기술주 주춤에 유가 상승까지...비트코인 7.1만 달러로 뚝[글로벌 머니플로우]": "ok",
+      "[밤 사이 해외뉴스] 美 물가 다시 들썩…연준 12월 '빅스텝' 하나": "partial",
+      "엔비디아 급락이 美국채시장까지 흔들었다…금리 5% 복귀": "partial"
+    },
+    "call": {
+      "seconds": 13.6,
+      "cost_usd": 0.00341286
+    }
+  },
+  "foreign_reserve_used": 0,
+  "high_importance": {
+    "total": 5,
+    "used": 5,
+    "dropped": []
+  },
+  "edit": {
+    "model": "claude-sonnet-5-5 (Claude Code CLI)",
+    "seconds": 37.2,
+    "input_tokens": 14928,
+    "output_tokens": 5835,
+    "cost_usd": 0.1104959,
+    "report": {
+      "candidates_ranked": 26,
+      "stories": 7,
+      "articles_used": 20,
+      "high_importance_total": 5,
+      "high_importance_used": 5,
+      "seconds_by_section": {
+        "macro": 330,
+        "stocks": 210,
+        "industry": 90
+      },
+      "total_target_seconds": 630,
+      "merged_stories": [
+        "美 국채금리 5% 상회·달러 강세, 연준 12월 인상 가능성",
+        "삼성SDI 美 ESS 수조원 수주, 에코프로비엠 4분기 눈높이는 급락",
+        "전기차 국내생산 세제 이달 말 윤곽…美 관세·중국차 경쟁 구도",
+        "유가 85달러대로 하락…정유사 최고가제 손실보전 갈등",
+        "19일 선전 미·중·러 첫 3자 정상회담",
+        "코픽스 2년 8개월 만에 최고…변동형 주담대 금리 고정형 앞질러"
+      ],
+      "evidence_of_used": {
+        "original": 3,
+        "full": 11,
+        "bundle": 3,
+        "title_only": 3
+      },
+      "article_in_multiple_stories": [],
+      "foreign": {
+        "candidates": 4,
+        "used": 2,
+        "stories_foreign_only": [],
+        "stories_mixed": [
+          "美 국채금리 5% 상회·달러 강세, 연준 12월 인상 가능성",
+          "유가 85달러대로 하락…정유사 최고가제 손실보전 갈등"
+        ],
+        "excluded_as_duplicate": 0
+      },
+      "unaccounted": []
+    }
+  },
+  "translate": {
+    "model": "claude-haiku-5-5 (Claude Code CLI)",
+    "seconds": 3.2,
+    "n": 2,
+    "input_tokens": 1769,
+    "output_tokens": 231,
+    "cost_usd": 0.00032071
+  },
+  "exploration": {
+    "internal_total": 28,
+    "rule_passed": 1,
+    "shown": 0,
+    "call": {
+      "seconds": 3.7,
+      "cost_usd": 0.0081446
+    }
+  },
+  "corroborate": {
+    "stories_checked": 6,
+    "articles": 19,
+    "original_ok": 18,
+    "call": {
+      "model": "claude-sonnet-5-5 (Claude Code CLI)",
+      "seconds": 74.2,
+      "input_tokens": 70310,
+      "output_tokens": 10131,
+      "cost_usd": 0.37771390000000005
+    }
+  },
+  "script": {
+    "model": "claude-sonnet-5-5 (Claude Code CLI)",
+    "seconds": 49.65,
+    "input_tokens": 18428,
+    "output_tokens": 7730,
+    "cost_usd": 0.1482429,
+    "validation": {
+      "n_lines": 43,
+      "chars": 3291,
+      "est_seconds": 484,
+      "articles_used": 17,
+      "invalid_source_ids": [],
+      "fact_lines_without_source": [],
+      "numbers_without_source": [
+        [
+          9,
+          "현대차는 미국 판매에서 할부·금융 비중이 어느 정도인지, 에코프로비엠은 금리에 민감한 업황인지 확인해 볼 만합니다. 앞으로는 오늘 엔비디아 실적과 12월 FOMC에서 인상 폭이 어떻게 논의되는지가 관전 포인트입니다."
+        ]
+      ],
+      "recommendation_phrases": [],
+      "hedge_phrases": [
+        [
+          41,
+          "종목에서는 삼성SDI의 ESS 수주가 업황 신호지만 에코프로비엠과의 연결은 확인이 필요하고, 알테오젠은 동물실험 단계의 새 후보라는 점을 기억하면 됩니다."
+        ]
+      ],
+      "ends_correctly": true
+    }
+  },
+  "fact_check": {
+    "final": {
+      "claims_checked": 23,
+      "supported": 23,
+      "critical_issues": 0,
+      "minor_issues": 0,
+      "alignment_issues": 0,
+      "evidence": {
+        "original": 14,
+        "partial": 2,
+        "summary_only": 0,
+        "no_source": 0
+      },
+      "official_check": "not_done",
+      "scope": "출처 기사 대조 결과다. 독립적인 사실 검증이 아니며, 기업 공시·공식 통계와는 대조하지 않았다. '중대 오류 0건'은 출처와 어긋난 주장을 찾지 못했다는 뜻이다.",
+      "removed_unverifiable": 0
+    },
+    "rounds": 3,
+    "seconds": 104.3
+  },
+  "audio": {
+    "path": "demo/outputs/20261117_v3/briefing.mp3",
+    "bytes": 2853936,
+    "approx_seconds": 476,
+    "voices": {
+      "A": "ko-KR-SunHiNeural",
+      "B": "ko-KR-InJoonNeural"
+    },
+    "n_clips": 43
+  },
+  "finished_at": "2026-11-17T17:42:58+09:00",
+  "revision": {
+    "from": "20261117_v2",
+    "at": "2026-11-17T23:12:49+09:00",
+    "change": "대본 9번째 대사(해석) 오타 수정: '어느지' → '어느 정도인지'. 사실 주장·출처는 바꾸지 않았으므로 사실 검증·원문 대조는 다시 돌리지 않았다. MP3만 다시 합성했다. 또한 원문 대조 결과가 이야기 번호 착오로 한 칸씩 밀려 붙어 있던 것(5·6번 이야기)을 출처 기사 기준으로 다시 붙이고 웹 데이터를 다시 만들었다. 대본·음성의 사실 대사는 각자 붙은 출처로 검증되어 이 착오의 영향을 받지 않았다.",
+    "unchanged_files": [
+      "script_draft.json (검증 전 초안 기록)",
+      "factcheck.json",
+      "factcheck.md",
+      "plan.json",
+      "corroboration.md"
+    ],
+    "corroboration_remap": {
+      "matched_by_priority": 4,
+      "rematched_by_sources": [
+        {
+          "reported": 5,
+          "actual": 6
+        },
+        {
+          "reported": 6,
+          "actual": 7
+        }
+      ],
+      "unmatched": []
+    }
+  }
+}

@@ -1,0 +1,9 @@
+anthropic>=2.9
+feedparser>=6.0
+edge-tts>=7.3
+requests>=2.32
+python-dotenv>=1.0
+openpyxl>=3.1
+boto3>=1.35
+pillow>=10
+trafilatura>=1.12
