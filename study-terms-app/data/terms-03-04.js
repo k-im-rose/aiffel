@@ -2,6 +2,7 @@
 addSection('03-04', "문서 인식과 객체 탐지", [
   {
     "id": "ocr",
+    "src": "03-04 · 03-09",
     "term": "OCR",
     "ko": "광학 문자 인식",
     "full": "Optical Character Recognition",
@@ -78,6 +79,7 @@ addSection('03-04', "문서 인식과 객체 탐지", [
   },
   {
     "id": "document-ai",
+    "src": "03-04 · 03-09",
     "term": "Document AI",
     "ko": "문서 AI",
     "full": "",
@@ -92,7 +94,7 @@ addSection('03-04', "문서 인식과 객체 탐지", [
   },
   {
     "id": "pipeline",
-    "src": "03-04 · 03-05 · 03-06",
+    "src": "03-04 · 03-05 · 03-06 · 03-09",
     "term": "Pipeline",
     "ko": "파이프라인 (단계별 처리 흐름)",
     "full": "",
@@ -167,6 +169,7 @@ addSection('03-04', "문서 인식과 객체 탐지", [
   },
   {
     "id": "object-detection",
+    "src": "03-04 · 03-09",
     "term": "Object Detection",
     "ko": "객체 탐지",
     "full": "",
@@ -213,6 +216,7 @@ addSection('03-04', "문서 인식과 객체 탐지", [
   },
   {
     "id": "confidence-score",
+    "src": "03-04 · 03-09",
     "term": "Confidence Score",
     "ko": "확신도 점수 (confidence)",
     "full": "",
@@ -228,7 +232,7 @@ addSection('03-04', "문서 인식과 객체 탐지", [
   },
   {
     "id": "confidence-threshold",
-    "src": "03-04 · 03-08",
+    "src": "03-04 · 03-08 · 03-09",
     "term": "Confidence Threshold",
     "ko": "신뢰도 임계값",
     "full": "",
@@ -317,6 +321,7 @@ addSection('03-04', "문서 인식과 객체 탐지", [
   },
   {
     "id": "image-segmentation",
+    "src": "03-04 · 03-09",
     "term": "Image Segmentation",
     "ko": "이미지 분할",
     "full": "",
@@ -393,6 +398,7 @@ addSection('03-04', "문서 인식과 객체 탐지", [
   },
   {
     "id": "ground-truth",
+    "src": "03-04 · 03-09",
     "term": "Ground Truth",
     "ko": "정답 자료",
     "full": "",
@@ -593,6 +599,7 @@ addSection('03-04', "문서 인식과 객체 탐지", [
   },
   {
     "id": "agpl",
+    "src": "03-04 · 03-09",
     "term": "AGPL-3.0",
     "ko": "AGPL 라이선스",
     "full": "GNU Affero General Public License v3.0",
@@ -607,7 +614,7 @@ addSection('03-04', "문서 인식과 객체 탐지", [
   },
   {
     "id": "creative-commons",
-    "src": "03-04 · 03-05 · 03-06 · 03-07 · 03-08",
+    "src": "03-04 · 03-05 · 03-06 · 03-07 · 03-08 · 03-09",
     "term": "Creative Commons / Public Domain",
     "ko": "CC 라이선스 / 퍼블릭 도메인",
     "full": "",
