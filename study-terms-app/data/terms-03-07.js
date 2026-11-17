@@ -32,6 +32,7 @@ addSection('03-07', "3D 장면 복원과 가우시안 스플래팅", [
   },
   {
     "id": "depth-estimation",
+    "src": "03-07 · 03-09",
     "term": "Depth Estimation",
     "ko": "깊이 추정",
     "full": "",
@@ -166,6 +167,7 @@ addSection('03-07', "3D 장면 복원과 가우시안 스플래팅", [
   },
   {
     "id": "sigmoid",
+    "src": "03-07 · 03-09",
     "term": "Sigmoid",
     "ko": "시그모이드 함수",
     "full": "",

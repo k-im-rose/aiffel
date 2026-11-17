@@ -47,6 +47,7 @@ addSection('03-06', "멀티모달과 음성 AI", [
   },
   {
     "id": "contrastive-learning",
+    "src": "03-06 · 03-09",
     "term": "Contrastive Learning",
     "ko": "대조 학습",
     "full": "",
@@ -62,6 +63,7 @@ addSection('03-06', "멀티모달과 음성 AI", [
   },
   {
     "id": "embedding-space",
+    "src": "03-06 · 03-09",
     "term": "Embedding Space",
     "ko": "임베딩 공간 (공유 의미 공간)",
     "full": "",
@@ -107,6 +109,7 @@ addSection('03-06', "멀티모달과 음성 AI", [
   },
   {
     "id": "cross-modal-retrieval",
+    "src": "03-06 · 03-09",
     "term": "Cross-modal Retrieval",
     "ko": "교차 검색 (멀티모달 검색)",
     "full": "",
@@ -150,6 +153,7 @@ addSection('03-06', "멀티모달과 음성 AI", [
   },
   {
     "id": "stt",
+    "src": "03-06 · 03-09",
     "term": "STT (ASR)",
     "ko": "음성 인식 (받아쓰기)",
     "full": "Speech-to-Text / Automatic Speech Recognition",

@@ -95,6 +95,7 @@ addSection('03-08', "표 예측과 과학·로봇 AI", [
   },
   {
     "id": "baseline",
+    "src": "03-08 · 03-09",
     "term": "Baseline",
     "ko": "기준선",
     "full": "",
@@ -126,6 +127,7 @@ addSection('03-08', "표 예측과 과학·로봇 AI", [
   },
   {
     "id": "accuracy",
+    "src": "03-08 · 03-09",
     "term": "Accuracy",
     "ko": "정확도",
     "full": "",
@@ -565,6 +567,7 @@ addSection('03-08', "표 예측과 과학·로봇 AI", [
   },
   {
     "id": "weights-license",
+    "src": "03-08 · 03-09",
     "term": "Weights License",
     "ko": "가중치 이용 조건",
     "full": "",
