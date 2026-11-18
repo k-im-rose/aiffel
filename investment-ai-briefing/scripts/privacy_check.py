@@ -58,6 +58,9 @@ def main() -> int:
     hits = []
     files = files_to_publish()
     for f in files:
+        # 가상 프로필 데모 음성은 같은 폴더의 대본(script.md, 위에서 내용 검사)을 읽은 것이라 공개한다 (비상업 시연용)
+        if f.suffix.lower() == ".mp3" and "demo/outputs/" in f.as_posix() and (f.parent / "script.md").exists():
+            continue
         if f.suffix.lower() in BINARY:
             hits.append((f, "바이너리 파일 (내용 검사 불가, 공개 여부를 직접 판단)")) if f.suffix.lower() in {".mp3", ".pdf", ".numbers", ".xlsx"} else None
             continue
