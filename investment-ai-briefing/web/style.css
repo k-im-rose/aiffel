@@ -942,3 +942,6 @@ button.mini:hover { color: var(--color-accent); border-color: var(--color-accent
   .report .summary-box ul { columns: 1; }
   .report a, .report .meta, .report li { overflow-wrap: anywhere; }
 }
+
+.latest-audio { display: block; width: 100%; max-width: var(--measure); margin: 0 0 var(--space-5); }
+.latest-audio[hidden] { display: none; }

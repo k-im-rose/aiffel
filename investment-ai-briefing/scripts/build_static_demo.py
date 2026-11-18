@@ -4,7 +4,7 @@ GitHub Pages 같은 무료 정적 호스팅에 올릴 수 있는 읽기 위주�
 - 가상 프로필 데모 서버(--data demo)를 잠깐 띄워 화면이 부르는 JSON을 저장한다 (메모·점검 목록은 비워 둔다. 개인 기록은 담지 않는다).
 - web/의 화면 파일을 복사하고 경로를 상대 경로로 바꾼다 (어느 하위 주소에 올려도 동작). 첫 화면(index.html)은 로그인 화면이고 메인은 home.html이다.
 - static-shim.js가 /api 요청을 저장된 JSON으로 대신 답하고, 프로필·메모·점검 목록의 수정은 방문자 브라우저(localStorage)에만 저장한다.
-- 음성(MP3)은 site/media/<실행 id>/briefing.mp3로 복사한다(작성자가 개인 시연용으로 공개하기로 결정. edge-tts는 비공식 서비스라 재배포 조건은 확인하지 못했다). 이 폴더는 코드 저장소에는 올리지 않고(.gitignore) 배포 저장소에만 둔다.
+- 음성(MP3)은 site/media/<실행 id>/briefing.mp3로 복사한다(비상업 시연용 공개). 같은 파일이 demo/outputs/에도 있어 이 폴더는 코드 저장소에 올리지 않고(.gitignore) 배포 저장소에만 둔다.
 """
 from __future__ import annotations
 
@@ -91,7 +91,7 @@ SHIM = r"""// 정적 데모용: /api 요청을 저장된 JSON으로 답하고, �
   document.addEventListener("DOMContentLoaded", () => {
     const b = document.createElement("div");
     b.setAttribute("style", "background:var(--tint-accent,#F8F1EE);color:var(--color-ink-2,#555);font-size:12px;line-height:1.6;padding:8px 16px;text-align:center");
-    b.textContent = "정적 데모 · 가상 투자자 프로필 + 2026-11-17 실제 수집 뉴스 · 수정한 내용은 이 브라우저에만 저장됩니다 · 음성은 비공식 서비스(edge-tts)로 만든 개인 시연용 파일입니다 · 매수·매도를 권유하지 않습니다";
+    b.textContent = "정적 데모 · 가상 투자자 프로필 + 2026-11-17 실제 수집 뉴스 · 수정한 내용은 이 브라우저에만 저장됩니다 · 음성은 edge-tts로 만든 비상업 시연용 파일입니다 · 매수·매도를 권유하지 않습니다";
     document.body.prepend(b);
   });
 })();
@@ -147,6 +147,7 @@ def main() -> None:
         for a, b in SUBS:
             t = t.replace(a, b)
         t = re.sub(r'src="/(\w+)\.js"', r'src="\1.js"', t)
+        t = t.replace("`/media/${", "`media/${")
         if f.suffix == ".html":
             t = t.replace('<script src="common.js">', '<script src="static-shim.js"></script>\n<script src="common.js">', 1)
         if f.name == "report.js":  # 음성은 media/ 아래 상대 경로로

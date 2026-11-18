@@ -62,7 +62,7 @@ cd ~/에이펠/investment-ai-briefing
 ## 8. 주의 사항
 - **화면 구조·데이터 연동 유지:** HTML의 `id`, JS, API 경로(`/api/...`), `briefing.json` 모양을 바꾸지 않는다. 디자인은 `style.css`와 클래스 규칙으로만 바꾼다.
 - **동작 상태 표시 유지:** 각 섹션의 "동작 상태" 문구와 "AI 해석(사실이 아닌 추론)", "확인 불가", "개발·평가 기록" 표시는 지우지 않는다.
-- **비공개 데이터:** `profiles/my_profile.json`, `userdata/`, `private/`, `outputs/`, `evaluation/`, `data/raw/`, `.env`, MP3는 커밋하지 않는다 (`.gitignore`). 디자인 작업은 `--data demo`로만 한다.
+- **비공개 데이터:** `profiles/my_profile.json`, `userdata/`, `private/`, `outputs/`, `evaluation/`, `data/raw/`, `.env`는 커밋하지 않는다(MP3는 `demo/outputs/`의 가상 프로필 데모 음성만 공개하고, 실제 프로필 음성은 `outputs/`라 제외된다) (`.gitignore`). 디자인 작업은 `--data demo`로만 한다.
 - **보존 기록:** `demo/outputs/20261117/`, `demo/outputs/20261117_v2/`, `docs/failure_cases_demo.md`, 평가 결과는 수정·삭제하지 않는다.
 - **커밋 전 검사:**
   ```bash

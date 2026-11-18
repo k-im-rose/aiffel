@@ -27,6 +27,7 @@
     ].filter(Boolean).join(" · ");
     const go = $("#latest-go");
     go.href = reportUrl(latest.id);
+    { const au = $("#latest-audio"); au.src = `/media/${encodeURIComponent(latest.id)}/briefing.mp3`; au.hidden = false; }  // 메인에서 바로 듣기
     go.hidden = false;
   } else {
     $("#latest-title").textContent = "아직 발행된 보고서가 없습니다.";

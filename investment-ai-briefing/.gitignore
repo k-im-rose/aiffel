@@ -28,13 +28,12 @@ docs/roadmap_v2.md
 docs/service_readiness.md
 
 # ── 공개 데모 (가상 프로필) ───────────────────────────────
-# 사용자 데이터와 수집·판정 원본, MP3(edge-tts 비공식 음성은 재배포하지 않음)는 올리지 않는다.
-# 공개: briefing.json, script.json, 리포트(md)
+# 사용자 데이터와 수집·판정 원본은 올리지 않는다.
+# 공개: briefing.json, script.json, 리포트(md), 데모 음성(MP3, 비상업 시연용. 가상 프로필 데모에만 해당)
 demo/userdata/
 demo/outputs/*/candidates*.json
 demo/outputs/*/exploration_all.json
 demo/outputs/*/script_draft.json
 demo/outputs/*/factcheck.json
-demo/outputs/*/*.mp3
 /data/symbols/
 /site/media/
