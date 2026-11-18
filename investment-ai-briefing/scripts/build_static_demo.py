@@ -1,0 +1,165 @@
+"""정적 데모 사이트 만들기: python scripts/build_static_demo.py  →  site/
+
+GitHub Pages 같은 무료 정적 호스팅에 올릴 수 있는 읽기 위주의 데모를 만든다. AI 호출도 비용도 없다.
+- 가상 프로필 데모 서버(--data demo)를 잠깐 띄워 화면이 부르는 JSON을 저장한다 (메모·점검 목록은 비워 둔다. 개인 기록은 담지 않는다).
+- web/의 화면 파일을 복사하고 경로를 상대 경로로 바꾼다 (어느 하위 주소에 올려도 동작). 첫 화면(index.html)은 로그인 화면이고 메인은 home.html이다.
+- static-shim.js가 /api 요청을 저장된 JSON으로 대신 답하고, 프로필·메모·점검 목록의 수정은 방문자 브라우저(localStorage)에만 저장한다.
+- 음성(MP3)은 재배포 조건이 확인되지 않아 올리지 않는다.
+"""
+from __future__ import annotations
+
+import json
+import re
+import shutil
+import subprocess
+import sys
+import time
+import urllib.request
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parent.parent
+OUT = ROOT / "site"
+PORT = 8791
+
+SHIM = r"""// 정적 데모용: /api 요청을 저장된 JSON으로 답하고, 수정은 이 브라우저(localStorage)에만 저장한다. 서버로 아무것도 보내지 않는다.
+(function () {
+  const BASE = new URL(".", document.currentScript.src).href;
+  const real = window.fetch.bind(window);
+  const K = "gnj_static_demo_";
+  const get = (k, d) => { try { const v = localStorage.getItem(K + k); return v ? JSON.parse(v) : d; } catch { return d; } };
+  const set = (k, v) => { try { localStorage.setItem(K + k, JSON.stringify(v)); } catch {} };
+  const out = (d, status = 200) => new Response(JSON.stringify(d), { status, headers: { "Content-Type": "application/json" } });
+  const data = (name) => real(BASE + "data/" + name).then((r) => { if (!r.ok) throw new Error(r.status); return r.json(); });
+  const kstNow = () => new Date(Date.now() + 9 * 3600e3).toISOString();
+  const stamp = () => kstNow().slice(0, 19) + "+09:00";
+  const id = () => Array.from(crypto.getRandomValues(new Uint8Array(6)), (b) => b.toString(16).padStart(2, "0")).join("");
+
+  window.fetch = async (input, opt = {}) => {
+    const url = typeof input === "string" ? input : input.url;
+    if (!url.startsWith("/api/")) return real(input, opt);
+    const u = new URL(url, "http://x"), p = u.pathname, m = (opt.method || "GET").toUpperCase();
+    let body = {}; try { body = opt.body ? JSON.parse(opt.body) : {}; } catch {}
+    try {
+      if (p === "/api/meta") { const d = await data("meta.json"); return out({ ...d, today: kstNow().slice(0, 10) }); }
+      if (p === "/api/briefings" && m === "GET") return out(await data("briefings.json"));
+      if (p === "/api/records") return out(await data("records.json"));
+      let mm;
+      if ((mm = p.match(/^\/api\/briefings\/([^/]+)$/))) {
+        try { return out(await data("briefing_" + decodeURIComponent(mm[1]) + ".json")); } catch { return out({ error: "브리핑 없음" }, 404); }
+      }
+      if (p === "/api/symbols") return out({ available: false, meta: {}, results: [] });
+      if (p === "/api/profile") {
+        if (m === "PUT") { const cur = get("profile", null) || await data("profile.json"); const saved = { ...cur, ...body, updated_at: stamp() }; set("profile", saved); return out(saved); }
+        return out(get("profile", null) || await data("profile.json"));
+      }
+      if (p === "/api/memos") {
+        const all = get("memos", []);
+        if (m === "POST") { const it = { id: id(), date: String(body.date || "").slice(0, 10), text: String(body.text || ""), created_at: stamp(), updated_at: stamp() }; all.push(it); set("memos", all); return out(it, 201); }
+        const date = u.searchParams.get("date");
+        return out(all.filter((x) => !date || x.date === date).sort((a, b) => b.updated_at.localeCompare(a.updated_at)));
+      }
+      if ((mm = p.match(/^\/api\/memos\/([^/]+)$/))) {
+        const all = get("memos", []), it = all.find((x) => x.id === mm[1]);
+        if (!it) return out({ error: "없음" }, 404);
+        if (m === "DELETE") { set("memos", all.filter((x) => x !== it)); return out({ deleted: it.id }); }
+        if (body.text != null) it.text = String(body.text);
+        it.updated_at = stamp(); set("memos", all); return out(it);
+      }
+      if (p === "/api/checks") {
+        const all = get("checks", []);
+        if (m === "POST") {
+          const ref = body.origin === "ai" ? body.ai_ref : null;
+          if (ref && all.some((c) => c.ai_ref && c.ai_ref.id === ref.id)) return out({ error: "이미 목록에 있습니다" }, 409);
+          const it = { id: id(), text: String(body.text || "").slice(0, 500), origin: body.origin === "ai" ? "ai" : "user", done: false, created_at: stamp(), updated_at: stamp(), done_at: null, briefing_date: body.briefing_date || null };
+          if (ref) it.ai_ref = ref;
+          all.push(it); set("checks", all); return out(it, 201);
+        }
+        return out(all);
+      }
+      if ((mm = p.match(/^\/api\/checks\/([^/]+)$/))) {
+        const all = get("checks", []), it = all.find((x) => x.id === mm[1]);
+        if (!it) return out({ error: "없음" }, 404);
+        if (m === "DELETE") { set("checks", all.filter((x) => x !== it)); return out({ deleted: it.id }); }
+        if (body.text) it.text = String(body.text);
+        if ("done" in body) { it.done = !!body.done; it.done_at = it.done ? stamp() : null; }
+        it.updated_at = stamp(); set("checks", all); return out(it);
+      }
+    } catch (e) { return out({ error: String(e.message || e) }, 500); }
+    return out({ error: "정적 데모에서 지원하지 않는 요청" }, 404);
+  };
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const b = document.createElement("div");
+    b.setAttribute("style", "background:var(--tint-accent,#F8F1EE);color:var(--color-ink-2,#555);font-size:12px;line-height:1.6;padding:8px 16px;text-align:center");
+    b.textContent = "정적 데모 · 가상 투자자 프로필 + 2026-11-17 실제 수집 뉴스 · 수정한 내용은 이 브라우저에만 저장됩니다 · 음성(MP3)은 재배포 조건 미확인으로 제외 · 매수·매도를 권유하지 않습니다";
+    document.body.prepend(b);
+  });
+})();
+"""
+
+SUBS = [  # (찾을 글자, 바꿀 글자): 절대 경로를 상대 경로로
+    ('href="/style.css"', 'href="style.css"'),
+    ('href="/mypage#', 'href="mypage.html#'), ('href="/records"', 'href="records.html"'), ('href="/login"', 'href="index.html"'),
+    ('href="/onboarding"', 'href="onboarding.html"'), ('href="/"', 'href="home.html"'),
+    ('"/mypage#profile"', '"mypage.html#profile"'), ('"/archive"', '"archive.html"'),
+    ('href: "/records"', 'href: "records.html"'), ('href: "/"', 'href: "home.html"'),
+    ('location.replace("/onboarding")', 'location.replace("onboarding.html")'), ('location.replace("/")', 'location.replace("home.html")'),
+    ('location.assign("/")', 'location.assign("home.html")'),
+    ('`/report/${encodeURIComponent(id)}`', '`report.html?id=${encodeURIComponent(id)}`'),
+    ('RUN_ID = decodeURIComponent(location.pathname.split("/").pop());', 'RUN_ID = new URLSearchParams(location.search).get("id");'),
+]
+
+
+def fetch(path: str):
+    with urllib.request.urlopen(f"http://127.0.0.1:{PORT}{path}", timeout=30) as r:
+        return json.loads(r.read())
+
+
+def main() -> None:
+    if OUT.exists():
+        shutil.rmtree(OUT)
+    (OUT / "data").mkdir(parents=True)
+
+    srv = subprocess.Popen([sys.executable, "-m", "app.web_server", "--data", "demo", "--port", str(PORT)], cwd=ROOT,
+                           stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+    try:
+        for _ in range(40):
+            try:
+                fetch("/api/meta"); break
+            except Exception:
+                time.sleep(0.25)
+        meta = fetch("/api/meta")
+        assert meta["mode"] == "demo", "데모 서버가 아닙니다. 실제 데이터는 내보내지 않습니다."
+        runs, records = fetch("/api/briefings"), fetch("/api/records")
+        files = {"meta.json": {"service": meta["service"], "tagline": meta["tagline"], "mode": "demo"},
+                 "briefings.json": runs, "records.json": records, "profile.json": fetch("/api/profile")}
+        for r in runs + records:
+            files[f"briefing_{r['id']}.json"] = fetch(f"/api/briefings/{r['id']}")
+    finally:
+        srv.terminate()
+    for name, d in files.items():
+        (OUT / "data" / name).write_text(json.dumps(d, ensure_ascii=False), encoding="utf-8")
+
+    for f in sorted((ROOT / "web").iterdir()):
+        if f.suffix not in (".html", ".js", ".css") or f.name == "styleguide.html":
+            continue
+        t = f.read_text(encoding="utf-8")
+        for a, b in SUBS:
+            t = t.replace(a, b)
+        t = re.sub(r'src="/(\w+)\.js"', r'src="\1.js"', t)
+        if f.suffix == ".html":
+            t = t.replace('<script src="common.js">', '<script src="static-shim.js"></script>\n<script src="common.js">', 1)
+        if f.name == "report.js":  # 음성 파일은 올리지 않는다
+            t = re.sub(r'\$\("#player"\)\.src = `[^`]*`;',
+                       '$(".player").replaceChildren(el("p", "음성 파일(MP3)은 재배포 조건이 확인되지 않아 공개하지 않았습니다. 대본은 저장소의 script.md에서 읽을 수 있습니다.", { class: "meta" }));', t)
+        # 첫 접속(index.html)은 로그인 화면, 메인 화면은 home.html
+        name = {"index.html": "home.html", "login.html": "index.html"}.get(f.name, f.name)
+        (OUT / name).write_text(t, encoding="utf-8")
+    (OUT / "static-shim.js").write_text(SHIM, encoding="utf-8")
+    (OUT / ".nojekyll").write_text("", encoding="utf-8")
+    left = [str(p.name) for p in OUT.glob("*.html") if re.search(r'(?:src|href)="/[a-z]', p.read_text(encoding="utf-8"))]
+    print("완료:", OUT, "| 이야기 데이터", len(runs) + len(records), "건 | 절대 경로가 남은 파일:", left or "없음")
+
+
+if __name__ == "__main__":
+    main()

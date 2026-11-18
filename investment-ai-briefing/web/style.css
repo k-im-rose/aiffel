@@ -932,3 +932,13 @@ button.mini:hover { color: var(--color-accent); border-color: var(--color-accent
 .demo-go { display: inline-block; background: var(--color-accent); color: var(--color-bg); border: 2px solid var(--color-accent); border-radius: 999px; padding: 8px 28px; font-size: var(--fs-ui); text-decoration: none; }
 .demo-go:hover { background: var(--color-ink); border-color: var(--color-ink); color: var(--color-bg); }
 .demo-go[hidden] { display: none; }
+.demo-lines { margin: var(--space-3) 0 0; font-size: var(--fs-ui); line-height: 1.8; color: var(--color-ink-2); }
+.demo-lines[hidden] { display: none; }
+
+/* 좁은 화면(아이폰 폭): 핵심 요약 상자와 긴 출처 링크가 가로로 넘치지 않게 */
+@media (max-width: 640px) {
+  .summary-box { grid-template-columns: 1fr; }
+  .summary-box > * { min-width: 0; }
+  .report .summary-box ul { columns: 1; }
+  .report a, .report .meta, .report li { overflow-wrap: anywhere; }
+}

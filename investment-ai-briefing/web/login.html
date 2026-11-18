@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>그내종 · 로그인 (시안)</title>
+<title>그내종 · 로그인</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;600&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
@@ -15,24 +15,15 @@
 
 <!--
   화면 시안만 있다. 인증을 구현하지 않았으므로 입력칸과 버튼을 모두 비활성화했고, 이 화면은 어떤 값도 서버로 보내지 않는다.
-  설계: docs/auth_design.md
+  '데모 체험하기'는 가상 투자자 프로필 데모로 들어가는 링크일 뿐 로그인이 아니다. 설계: docs/auth_design.md
 -->
 <main class="measure">
   <section class="lede">
     <h1>로그인</h1>
     <p class="notice notice-strong">
-      <strong>화면 시안입니다. 로그인은 아직 동작하지 않습니다.</strong><br>
-      지금 그내종은 이 컴퓨터에서만 쓰는 단일 사용자 버전이라 계정·비밀번호·사용자별 데이터 분리가 없습니다.
-      입력칸은 비활성화되어 있고, 이 화면은 어떤 값도 보내지 않습니다.
+      <strong>정식 로그인 서비스는 준비 중입니다.</strong><br>
+      아래 입력칸과 로그인 버튼은 아직 동작하지 않고, 어떤 값도 보내지 않습니다. 지금은 <strong>데모 체험하기</strong>로 둘러볼 수 있습니다.
     </p>
-    <p class="status">동작 상태: 화면만 · 인증과 다중 사용자는 후속 개발</p>
-  </section>
-
-  <section class="section section-tight" id="demo-entry" aria-label="데모 체험">
-    <h4>데모 체험하기</h4>
-    <p>회원가입이나 로그인 없이 가상 투자자 프로필로 만든 공개 데모를 볼 수 있습니다. 이 화면의 로그인은 시안이라 아무것도 인증하지 않습니다.</p>
-    <div class="form-actions"><a class="demo-go" id="demo-go" href="/" hidden>데모 체험하기</a></div>
-    <p class="status" id="demo-note"></p>
   </section>
 
   <section class="section section-tight" aria-label="로그인 시안">
@@ -41,15 +32,12 @@
       <label class="field"><span>비밀번호</span><input type="password" disabled></label>
       <div class="form-actions"><button type="button" disabled>로그인</button></div>
     </form>
-    <h4>다른 방법으로 계속하기</h4>
-    <div class="form-actions">
-      <button type="button" disabled>Apple로 계속하기</button>
-      <button type="button" disabled>Google로 계속하기</button>
-      <button type="button" disabled>카카오로 계속하기</button>
-    </div>
-    <h4>처음이신가요?</h4>
-    <p>회원가입 → <a href="/onboarding">최초 투자 프로필 설정</a> → 메인 화면 순서로 이어집니다. 지금은 가입 없이 프로필 설정 화면만 열어 볼 수 있습니다.</p>
-    <p class="meta"><a href="/">메인으로 돌아가기</a></p>
+  </section>
+
+  <section class="section section-tight" id="demo-entry" aria-label="데모 체험">
+    <div class="form-actions"><a class="demo-go" id="demo-go" href="/" hidden>데모 체험하기</a></div>
+    <p class="demo-lines" id="demo-lines" hidden>회원가입 없이 그내종을 체험해 보세요.<br>가상 투자자 프로필과 실제 뉴스를 기반으로 생성된 브리핑을 제공합니다.</p>
+    <p class="status" id="demo-note"></p>
   </section>
 </main>
 
@@ -62,8 +50,7 @@
   renderChrome("account").then((meta) => {
     const go = $("#demo-go"), note = $("#demo-note");
     if (meta.mode === "demo") {
-      go.hidden = false;
-      note.textContent = "이 서버는 가상 프로필 데모 모드입니다. 보이는 투자 프로필은 모두 가상이고, 뉴스는 실제 수집한 기사입니다.";
+      go.hidden = false; $("#demo-lines").hidden = false;
     } else {
       note.textContent = "이 서버는 실제 데이터 모드라서 데모 체험 버튼을 열지 않았습니다. 데모는 --data demo로 실행한 서버에서 볼 수 있습니다.";
     }

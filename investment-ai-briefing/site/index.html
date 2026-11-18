@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>그내종 · 로그인</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;600&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="wrap">
+<header id="site-header"></header>
+
+<!--
+  화면 시안만 있다. 인증을 구현하지 않았으므로 입력칸과 버튼을 모두 비활성화했고, 이 화면은 어떤 값도 서버로 보내지 않는다.
+  '데모 체험하기'는 가상 투자자 프로필 데모로 들어가는 링크일 뿐 로그인이 아니다. 설계: docs/auth_design.md
+-->
+<main class="measure">
+  <section class="lede">
+    <h1>로그인</h1>
+    <p class="notice notice-strong">
+      <strong>정식 로그인 서비스는 준비 중입니다.</strong><br>
+      아래 입력칸과 로그인 버튼은 아직 동작하지 않고, 어떤 값도 보내지 않습니다. 지금은 <strong>데모 체험하기</strong>로 둘러볼 수 있습니다.
+    </p>
+  </section>
+
+  <section class="section section-tight" aria-label="로그인 시안">
+    <form onsubmit="return false" aria-disabled="true">
+      <label class="field"><span>이메일</span><input type="email" disabled placeholder="name@example.com"></label>
+      <label class="field"><span>비밀번호</span><input type="password" disabled></label>
+      <div class="form-actions"><button type="button" disabled>로그인</button></div>
+    </form>
+  </section>
+
+  <section class="section section-tight" id="demo-entry" aria-label="데모 체험">
+    <div class="form-actions"><a class="demo-go" id="demo-go" href="home.html" hidden>데모 체험하기</a></div>
+    <p class="demo-lines" id="demo-lines" hidden>회원가입 없이 그내종을 체험해 보세요.<br>가상 투자자 프로필과 실제 뉴스를 기반으로 생성된 브리핑을 제공합니다.</p>
+    <p class="status" id="demo-note"></p>
+  </section>
+</main>
+
+<footer class="site-foot" id="site-footer"></footer>
+</div>
+<script src="static-shim.js"></script>
+<script src="common.js"></script>
+<script>
+  // 데모 체험은 서버가 가상 프로필(--data demo)로 열려 있을 때만 켠다. 실제 데이터 서버에서는 이 경로를 열지 않아
+  // 데모 버튼으로 실제 개인 데이터에 들어가는 일이 없다.
+  renderChrome("account").then((meta) => {
+    const go = $("#demo-go"), note = $("#demo-note");
+    if (meta.mode === "demo") {
+      go.hidden = false; $("#demo-lines").hidden = false;
+    } else {
+      note.textContent = "이 서버는 실제 데이터 모드라서 데모 체험 버튼을 열지 않았습니다. 데모는 --data demo로 실행한 서버에서 볼 수 있습니다.";
+    }
+  });
+</script>
+</body>
+</html>
