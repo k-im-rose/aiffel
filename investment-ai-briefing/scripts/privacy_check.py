@@ -61,6 +61,9 @@ def main() -> int:
         # 가상 프로필 데모 음성은 같은 폴더의 대본(script.md, 위에서 내용 검사)을 읽은 것이라 공개한다 (비상업 시연용)
         if f.suffix.lower() == ".mp3" and "demo/outputs/" in f.as_posix() and (f.parent / "script.md").exists():
             continue
+        # 가상 프로필 데모 보고서를 PDF로 저장한 예시. 텍스트를 뽑아 같은 검사를 마쳤다(2026-11-18, 해당 없음)
+        if f.suffix.lower() == ".pdf" and f.as_posix().endswith("docs/samples/daily-report-2026-11-17.pdf"):
+            continue
         if f.suffix.lower() in BINARY:
             hits.append((f, "바이너리 파일 (내용 검사 불가, 공개 여부를 직접 판단)")) if f.suffix.lower() in {".mp3", ".pdf", ".numbers", ".xlsx"} else None
             continue
