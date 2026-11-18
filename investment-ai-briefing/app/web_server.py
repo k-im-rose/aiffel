@@ -42,9 +42,9 @@ KST = timezone(timedelta(hours=9))
 RUN_ID = re.compile(r"^\d{8}(_[a-z0-9]+)?$")
 ITEM_ID = re.compile(r"^[a-z0-9\-]{6,40}$")
 HTML, JS, CSS = "text/html; charset=utf-8", "text/javascript; charset=utf-8", "text/css; charset=utf-8"
-STATIC = {"/": ("web/index.html", HTML), "/mypage": ("web/mypage.html", HTML), "/onboarding": ("web/onboarding.html", HTML),
+STATIC = {"/": ("web/index.html", HTML), "/mypage": ("web/mypage.html", HTML), "/archive": ("web/archive.html", HTML), "/onboarding": ("web/onboarding.html", HTML),
           "/login": ("web/login.html", HTML), "/records": ("web/records.html", HTML), "/styleguide": ("web/styleguide.html", HTML), "/style.css": ("web/style.css", CSS),
-          **{f"/{n}.js": (f"web/{n}.js", JS) for n in ("common", "main", "report", "mypage", "profile", "onboarding", "records")}}
+          **{f"/{n}.js": (f"web/{n}.js", JS) for n in ("common", "main", "report", "mypage", "profile", "onboarding", "records", "archive")}}
 MAX_BODY = 200_000
 
 MODES = {
@@ -87,6 +87,8 @@ def clean_profile(p: dict, old: dict) -> dict:
             continue
         stocks.append({"name": name, "ticker": str(s.get("ticker", "")).strip()[:20],
                        "market": str(s.get("market", "")).strip()[:20],
+                       "country": str(s.get("country", "")).strip().upper()[:2],  # 상장 시장의 국가 (KR, US). 본사 소재지가 아니다
+                       "focus": s.get("focus") is True,  # 집중 분석. 보유·관심 구분과 별개이며 기본은 해제
                        "status": "held" if s.get("status") == "held" else "watchlist",
                        "sector": str(s.get("sector", "")).strip()[:100],
                        "thesis": str(s.get("thesis", "")).strip()[:1000],
@@ -207,6 +209,11 @@ class Handler(BaseHTTPRequestHandler):
             return self.send_file(ROOT / f, ctype)
         if (m := re.fullmatch(r"/report/([^/]+)", p)) and RUN_ID.match(m.group(1)):
             return self.send_file(ROOT / "web/report.html", HTML)
+        if p == "/api/symbols":  # 로컬 종목 목록 검색. 외부 호출 없음. 목록이 없으면 available=false (직접 입력은 그대로 가능)
+            from app import symbols
+            d = symbols.load()
+            return self.send_json({"available": bool(d["records"]), "meta": d["meta"],
+                                   "results": symbols.search((q.get("q") or [""])[0][:60], 12, d)})
         if p == "/api/meta":
             return self.send_json({"service": "그내종", "tagline": "그래서 내 종목은?", "mode": a.mode,
                                    "today": datetime.now(KST).strftime("%Y-%m-%d")})

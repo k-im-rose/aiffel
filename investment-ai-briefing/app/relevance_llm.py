@@ -8,7 +8,7 @@ from __future__ import annotations
 import json
 from concurrent.futures import ThreadPoolExecutor
 
-from app import llm
+from app import focus, llm
 
 SYSTEM = """당신은 개인 투자자의 뉴스 선별 보조입니다. 투자자가 등록한 종목과 투자 이유, 관심 산업, 거시경제 관심사를 기준으로
 기사가 이 투자자에게 의미 있는지 판정합니다. 매수·매도 권유나 주가 예측은 하지 않습니다.
@@ -78,7 +78,8 @@ DEFAULT_THEME_EXAMPLES = "관심 테마 뉴스와 그 테마로 묶여 거론되
 def system_for(profile: dict) -> str:
     """판정 지시문. theme 예시는 프로필(prompt_theme_examples)에서 가져온다 — 실제 종목명을 코드에 두지 않기 위해.
     비공개 실제 프로필에는 1차 평가 때와 똑같은 예시 문구가 들어 있어 평가 조건이 바뀌지 않는다."""
-    return SYSTEM.replace("{theme_examples}", profile.get("prompt_theme_examples") or DEFAULT_THEME_EXAMPLES)
+    system = SYSTEM.replace("{theme_examples}", profile.get("prompt_theme_examples") or DEFAULT_THEME_EXAMPLES)
+    return system + (focus.SELECT_RULE if focus.names(profile) else "")
 
 
 RELEVANT_TYPES = {"direct", "industry_policy", "theme", "macro"}
@@ -94,7 +95,10 @@ def profile_text(profile: dict) -> str:
             f"투자 이유: {s.get('thesis', '-')} | 관심 키워드: {', '.join(s.get('keywords', []))}"
             + (f" | 확인된 관계: {s['known_relations']}" if s.get("known_relations") else "")
             + (f" | 확인하고 싶은 위험: {', '.join(s['risks'])}" if s.get("risks") else "")  # 웹 프로필 칸 (없으면 이전과 같은 문장)
-            + (f" | AI에게 특히 확인받고 싶은 것: {s['ask_ai']}" if s.get("ask_ai") else ""))
+            + (f" | AI에게 특히 확인받고 싶은 것: {s['ask_ai']}" if s.get("ask_ai") else "")
+            + (f" | {focus.FOCUS_MARK}" if s.get("focus") is True else ""))
+    if focus.profile_line(profile):  # 집중 분석 종목이 없으면 이 줄도 없다 (기존 문장 그대로)
+        lines.append(focus.profile_line(profile))
     return "\n".join(lines)
 
 

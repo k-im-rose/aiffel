@@ -9,8 +9,9 @@ from __future__ import annotations
 
 import re
 
-from app import llm
+from app import focus as focus_mod, indicators, llm
 
+INDICATOR_BONUS = 1.0  # 주요 거시지표 발표 결과 기사 (app/indicators.py가 표시)
 IMP = {"high": 3, "medium": 2, "low": 1}
 TYPE_BONUS = {"direct": 1.5, "industry_policy": 1.0, "macro": 1.0, "theme": 0.3, "uncertain": 0.0}
 BUNDLE_RE = re.compile(r"^\[(밤 사이 해외뉴스|오늘의 증권가 콜|마켓라이브|개장시황|마감시황)")
@@ -30,11 +31,13 @@ def evidence(a: dict) -> str:
 EVIDENCE_SCORE = {"original": 1.0, "full": 1.0, "bundle": 0.0, "title_only": -0.5}
 
 
-def personal_score(a: dict, cutoff=None) -> float:
+def personal_score(a: dict, cutoff=None, focus: set[str] | None = None) -> float:
     """개인화·시의성 가산: 보유·관심 종목과 연결 +0.5, 마감 전 24시간 안 발행 +0.3.
     국내·해외 순서가 아니라 이 값으로 동점을 가른다."""
     from datetime import datetime, timedelta
     s = 0.5 if a.get("related_stocks") else 0.0
+    if focus and focus & set(a.get("related_stocks") or []):  # 집중 분석 종목과 실제로 연결된 기사만 작은 가점 (없으면 0)
+        s += focus_mod.FOCUS_BONUS
     if cutoff and a.get("published_at"):
         if datetime.fromisoformat(a["published_at"]) >= cutoff - timedelta(hours=24):
             s += 0.3
@@ -42,7 +45,7 @@ def personal_score(a: dict, cutoff=None) -> float:
 
 
 def pre_rank(cands: list[dict], judged: list[dict], limit: int = 40, reserve_foreign: int = 15,
-             cutoff=None) -> list[dict]:
+             cutoff=None, focus: set[str] | None = None) -> list[dict]:
     """규칙 점수 = 중요도 + 유형 가산 + 근거 수준 + 개인화·시의성. AI가 넣지 말라고 한 기사·중복은 제외.
     해외 원문 자리(reserve_foreign)는 안전장치로 유지한다: 개인화 점수를 넣은 뒤에도 해외가 밀리는지 run.json에 기록해 본다."""
     by = {a["id"]: a for a in cands}
@@ -54,8 +57,10 @@ def pre_rank(cands: list[dict], judged: list[dict], limit: int = 40, reserve_for
             continue
         a = {**by[j["article_id"]], **{k: v for k, v in j.items() if k != "article_id"}}
         a["evidence"] = evidence(a)
-        a["personal"] = personal_score(a, cutoff)
+        a["personal"] = personal_score(a, cutoff, focus)
         a["score"] = IMP[j["importance"]] + TYPE_BONUS[j["relevance_type"]] + EVIDENCE_SCORE[a["evidence"]] + a["personal"]
+        if (a.get("indicator") or {}).get("status") == "released":
+            a["score"] += INDICATOR_BONUS
         rows.append(a)
     rows.sort(key=lambda a: (-a["score"], -a["personal"], a.get("published_at") and -datetime_ts(a["published_at"]) or 0))
     top = rows[:limit]
@@ -107,14 +112,20 @@ SYSTEM = """당신은 개인 투자자를 위한 아침 오디오 브리핑의 �
 1. 중요한 것부터: 보유·관심 종목의 실적·공시·계약, 투자 논리에 영향을 주는 산업·정책 변화, 시장 전체를 움직이는 거시 변화(금리·환율·물가·주요 정책) 순으로 봅니다.
 2. 같은 사건이나 서로 연결된 뉴스(예: 美 수출통제 기사 두 건, 메모리 수요 → 장비 투자)는 하나의 이야기로 묶습니다. 같은 내용을 두 번 소개하지 않습니다.
 3. 근거가 충분한 기사를 우선합니다. evidence가 bundle(여러 소식 묶음)이거나 title_only인 기사는, 핵심 사실을 요약에서 확인할 수 없으면 빼거나 다른 이야기의 보조 근거로만 씁니다.
-4. 시간 배분: 전체 최대 15분. 중요한 이야기 1~3개에 시간을 더 쓰고(2~3분), 나머지는 30초~1분. 정보가 적은 날은 짧게 끝냅니다. 억지로 채우지 않습니다.
+4. 시간 배분: 전체 기본 목표는 12~13분(720~780초), 허용 범위는 10~15분(600~900초)입니다. 중요한 이야기 2~4개에 시간을 더 쓰고(2~3분), 나머지는 45초~1분 30초.
+   늘어난 시간은 새 기사를 억지로 넣거나 같은 내용을 되풀이하는 데 쓰지 않고, 투자 판단에 필요한 근거(기사에 있는 배경·수치·비교 기준)와 확인할 사항을 더 자세히 설명하는 데 씁니다.
+   근거 있는 기사가 부족한 날은 10분 아래로 끝나도 됩니다. 억지로 채우지 않습니다. 합계가 780초를 크게 넘지 않게 조절합니다.
 5. 분야 균형: 거시경제, 산업, 보유·관심 종목, 공시(수주 공시 기사 포함)를 가능한 한 각각 다룹니다. 해당 분야에 근거 있는 기사가 없으면 비워 둡니다.
 6. 종목 직접 뉴스와 산업·정책 뉴스가 모두 있으면 종목 뉴스를 산업 흐름 안에서 연결해 설명할 수 있게 묶습니다.
 7. key_facts에는 요약·제목에 실제로 있는 사실만 근거 기사 id와 함께 적습니다. 해석은 interpretation에 따로 적습니다.
 8. 후보 중 방송하지 않는 기사는 모두 excluded에 이유와 함께 적습니다.
 9. 국내 기사와 해외 원문(lang: en)이 같은 사건을 다루면 한 이야기로 묶습니다. 같은 사건을 두 번 소개하지 않습니다.
    해외 원문이 1차 보도이거나 더 구체적이면 그것을 핵심 근거로 씁니다. 국내에서 보도되지 않은 해외 소식도 중요하면 편성합니다.
-10. 해외 기사가 늘어도 전체 15분을 넘기지 않습니다. 중요도가 낮은 해외 소식은 과감히 뺍니다."""
+10. 해외 기사가 늘어도 전체 15분을 넘기지 않습니다. 중요도가 낮은 해외 소식은 과감히 뺍니다.
+11. 주요 거시경제 지표(미국: CPI·PCE·고용보고서·FOMC 금리 결정·GDP·소매판매 / 한국: CPI·한국은행 기준금리 결정·GDP·수출입 동향·고용동향·산업생산)의
+    '발표 결과 기사 후보' 표시가 붙은 기사는 거시경제 이야기에서 우선 편성하고 상위 순서에 둡니다. 단, 요약·원문 사실에 실제 발표 수치나 결정이 있을 때만 '발표됨'으로 다룹니다.
+    '발표 예정·전망' 표시 기사는 결과로 말하지 않으며, 일정 안내가 필요하면 follow_up에만 적습니다. key_facts에는 기사에 있는 수치와 이전 수치·예상치 비교만 쓰고, 기사에 없는 수치를 만들지 않습니다.
+    interpretation에는 그 지표가 금리·환율·업황에 줄 수 있는 영향을 일반 원리 수준으로 짧게 적고, 보유·관심 종목과 연결할 근거가 기사에 없으면 related_holdings를 비웁니다."""
 
 SCHEMA = {
     "type": "object",
@@ -156,7 +167,7 @@ SCHEMA = {
 def candidate_text(a: dict) -> str:
     lang = " | 해외 원문(영어)" if a.get("lang") == "en" else ""
     orig = f"\n  원문에서 확인한 사실: {' / '.join(a['original_facts'])}" if a.get("original_facts") else ""
-    return (f"- id: {a['id']} | {a['source']} | {(a.get('published_at') or '')[:16]} | evidence: {a['evidence']}{lang}{orig}\n"
+    return (f"- id: {a['id']} | {a['source']} | {(a.get('published_at') or '')[:16]} | evidence: {a['evidence']}{lang}{indicators.tag(a)}{orig}\n"
             f"  제목: {a['title']}\n  요약: {a.get('summary') or '(없음)'}\n"
             f"  AI 판정: {a['relevance_type']} / 중요도 {a['importance']} ({a.get('importance_reason', '')}) / "
             f"관련 종목: {', '.join(a.get('related_stocks', [])) or '-'}\n"
@@ -167,7 +178,8 @@ def plan(ranked: list[dict], profile_text: str, date_label: str, *, model: str =
     prompt = (f"# 방송 날짜\n{date_label}\n\n# 투자자 프로필\n{profile_text}\n\n"
               f"# 후보 기사 {len(ranked)}건 (규칙 점수 순)\n" + "\n".join(candidate_text(a) for a in ranked)
               + "\n\n오늘 방송할 이야기를 편성하세요.")
-    r = llm.call(prompt, system=SYSTEM, schema=SCHEMA, model=model, effort="medium")
+    system = SYSTEM + (focus_mod.EDIT_RULE if focus_mod.has_focus_text(profile_text) else "")
+    r = llm.call(prompt, system=system, schema=SCHEMA, model=model, effort="medium")
     return r.data, {"model": r.model, "seconds": round(r.seconds, 1), "input_tokens": r.input_tokens,
                     "output_tokens": r.output_tokens, "cost_usd": r.cost_usd}
 

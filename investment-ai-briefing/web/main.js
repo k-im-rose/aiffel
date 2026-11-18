@@ -12,7 +12,12 @@
   const latest = runs[0];
   if (latest) {
     $("#latest-when").textContent = `${longDate(latest.date)} 발행`;
-    $("#latest-title").textContent = latest.title;
+    { // 제목을 "날짜 브리핑"과 핵심 뉴스 제목 두 줄로 나눠 보인다 (글자 내용은 그대로)
+      const t = $("#latest-title"), i = latest.title.indexOf(": ");
+      if (i > 0) { const d = document.createElement("span"); d.className = "t-day"; d.textContent = latest.title.slice(0, i);
+        const h = document.createElement("span"); h.className = "t-head"; h.textContent = latest.title.slice(i + 2); t.replaceChildren(d, h); }
+      else t.textContent = latest.title;
+    }
     const ol = $("#latest-headlines");
     latest.headlines.forEach((h) => ol.append(el("li", h)));
     $("#latest-summary").textContent = [

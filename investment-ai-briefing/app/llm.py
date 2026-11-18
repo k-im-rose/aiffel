@@ -38,12 +38,14 @@ PRICES = {"claude-haiku-5-5": (0.10, 0.50), "claude-sonnet-5-5": (2.00, 10.00)}
 def pick_backend(requested: str | None = None) -> str:
     if requested and requested != "auto":
         return requested
-    if os.environ.get("ANTHROPIC_API_KEY"):
+    # 비용 원칙: 종량제 API는 자동으로 고르지 않는다. API 키가 있어도 ALLOW_PAID_API=1을 직접 켜야만 쓴다.
+    # (키가 환경에 남아 있다는 이유만으로 사용자가 모르는 사이 요금이 나가는 일을 막는다)
+    if os.environ.get("ANTHROPIC_API_KEY") and os.environ.get("ALLOW_PAID_API") == "1":
         return "api"
     if shutil.which("claude"):
         return "cli"
     raise RuntimeError(
-        "LLM을 부를 방법이 없습니다. .env에 ANTHROPIC_API_KEY를 넣거나 Claude Code CLI를 설치하세요. "
+        "LLM을 부를 방법이 없습니다. Claude Code CLI를 설치하고 로그인하세요 (종량제 API는 ALLOW_PAID_API=1일 때만 자동 선택됩니다). "
         "키 없이 결과만 보려면 --mode sample 로 저장된 결과를 재생하세요.")
 
 

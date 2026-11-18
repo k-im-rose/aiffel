@@ -17,7 +17,7 @@ import re
 from datetime import datetime
 from pathlib import Path
 
-from app import glossary, links, llm
+from app import focus, glossary, links, llm
 
 ROOT = Path(__file__).resolve().parent.parent
 SEC = {"macro": "거시경제", "industry": "산업", "stocks": "보유·관심 종목", "disclosures": "공시"}
@@ -193,12 +193,14 @@ def export(out: Path, *, profile_path: Path, userdata: Path | None = None, model
             + "출처: " + "; ".join(f"{i} {cands[i]['title']} ({(cands[i].get('published_at') or '')[:10]})" for i in s["article_ids"] if i in cands))
     prof_lines = [f"- {x['name']} ({'보유' if x.get('status') == 'held' else '관심'}): 투자 이유 = {x.get('thesis', '')}"
                   + (f" / 확인하고 싶은 위험 = {', '.join(x['risks'])}" if x.get("risks") else "")
-                  + (f" / AI에게 특히 확인받고 싶은 것 = {x['ask_ai']}" if x.get("ask_ai") else "") for x in profile.get("stocks", [])]
+                  + (f" / AI에게 특히 확인받고 싶은 것 = {x['ask_ai']}" if x.get("ask_ai") else "")
+                  + focus.tag(x) for x in profile.get("stocks", [])]
     prompt = ("# 투자 프로필\n" + "\n".join(prof_lines) + "\n\n# 오늘의 편성표 (사실 검증 완료)\n" + "\n\n".join(stories_in)
               + "\n\n# 800선 후보 용어 (한국은행 정의 원문)\n"
               + ("\n".join(f"- {t['term']} (책 {t['book_page']}쪽): {t['definition'][:700]}" for t in terms) or "(없음)")
               + "\n\n# 이미 사용자 목록에 있는 항목\n" + ("\n".join(f"- {c['text']}" for c in user_checks) or "(없음)"))
-    r = llm.call(prompt, system=SYSTEM, schema=SCHEMA, model=model, effort="medium")
+    system = SYSTEM + (focus.EXPORT_RULE if focus.names(profile) else "")
+    r = llm.call(prompt, system=system, schema=SCHEMA, model=model, effort="medium")
     extra = r.data
 
     # 검증: 개념은 800선 후보 안에서만, 출처 id는 실재, 추천은 사용자 목록과 중복 제거, 날짜는 출처에 있는 것만

@@ -1,0 +1,217 @@
+{
+ "started_at": "2026-11-18T15:29:13+09:00",
+ "generated_at": "2026-11-18T15:29:13+09:00",
+ "cutoff_at": "2026-11-17T07:35:00+09:00",
+ "mode": "test",
+ "profile": "demo/profile_demo.json",
+ "version": "v2",
+ "time_check": {
+  "future": 188,
+  "future_examples": [
+   "2026-11-17T15:59:00+09:00 AI 안경 금지령 내린 SK…KAI는 탐지시스템 도입 검토",
+   "2026-11-17T15:47:00+09:00 [마감시황] 코스피 2.59% 하락해 5000선 붕괴…반도체 이어 금융·",
+   "2026-11-17T15:43:00+09:00 '5천피' 결국 무너졌다…외인 '팔자'에 시총 상위주 '와르르'",
+   "2026-11-17T15:35:00+09:00 美서 번 돈으로 버텼다…현대차 해외법인 5곳 수익 감소",
+   "2026-11-17T14:48:00+09:00 붉은빛 문 너머 펼쳐진 낯선 세계…마카오 최신상 5성급 호텔 가 보니"
+  ],
+  "ok": 336,
+  "old": 37,
+  "raw_files": [
+   "search_demo_20261117_1710.json",
+   "news_20261117_1206.json",
+   "foreign_20261117_1615.json"
+  ],
+  "candidates": 336,
+  "latest_published": "2026-11-17T07:32:14+09:00",
+  "future_in_candidates": 0
+ },
+ "selection": {
+  "reused_from": "demo/outputs/20261117",
+  "newly_judged": 0
+ },
+ "disclosures": "조회 불가 (DART_API_KEY 없음)",
+ "evidence_recovery": {
+  "targets": 3,
+  "original_ok": 3,
+  "recovered": 3,
+  "status": {
+   "기술주 주춤에 유가 상승까지...비트코인 7.1만 달러로 뚝[글로벌 머니플로우]": "ok",
+   "[밤 사이 해외뉴스] 美 물가 다시 들썩…연준 12월 '빅스텝' 하나": "partial",
+   "엔비디아 급락이 美국채시장까지 흔들었다…금리 5% 복귀": "partial"
+  },
+  "call": {
+   "seconds": 9.3,
+   "cost_usd": 0.00266796
+  }
+ },
+ "indicators": {
+  "released_keys": [
+   "us_cpi"
+  ],
+  "upcoming_keys": [
+   "us_fomc"
+  ],
+  "not_found": [
+   "미국 PCE 물가",
+   "미국 고용보고서",
+   "미국 GDP",
+   "미국 소매판매",
+   "한국 소비자물가(CPI)",
+   "한국은행 기준금리 결정",
+   "한국 GDP",
+   "한국 수출입 동향",
+   "한국 고용동향",
+   "한국 산업생산"
+  ],
+  "forced_into_candidates": []
+ },
+ "foreign_reserve_used": 0,
+ "high_importance": {
+  "total": 5,
+  "used": 5,
+  "dropped": []
+ },
+ "edit": {
+  "model": "claude-sonnet-5-5 (Claude Code CLI)",
+  "seconds": 50.4,
+  "input_tokens": 15385,
+  "output_tokens": 7260,
+  "cost_usd": 0.12423000000000001,
+  "report": {
+   "candidates_ranked": 26,
+   "stories": 8,
+   "articles_used": 21,
+   "high_importance_total": 5,
+   "high_importance_used": 5,
+   "seconds_by_section": {
+    "macro": 420,
+    "industry": 280,
+    "stocks": 80
+   },
+   "total_target_seconds": 780,
+   "merged_stories": [
+    "美 10월 물가 예상 웃돌아…12월 빅스텝 우려, 10년물 5% 재돌파·달러 강세",
+    "중국 BYD 저가 공세에 韓 전기차 생산세제 검토…美 관세 환경과 현대차",
+    "삼성SDI 美 ESS 수조 원 수주…에코프로비엠 4분기 눈높이는 크게 하락",
+    "알테오젠, 월 1회 비만약 후보 ALT-M5 동물실험 결과 공개",
+    "유가 85달러대로 하락…정유업계는 최고가제 손실보전 갈등",
+    "코픽스 2년 8개월 만에 최고…변동형·고정형 주담대 금리 역전",
+    "19일 선전서 미·중·러 첫 3자 정상회담…무역·관세 의제 주목",
+    "중국 10월 지표 부진, 일본 3분기 역성장…에너지 비용과 외부수요 부담"
+   ],
+   "evidence_of_used": {
+    "original": 3,
+    "full": 13,
+    "bundle": 3,
+    "title_only": 2
+   },
+   "article_in_multiple_stories": [
+    "s-874b994012"
+   ],
+   "foreign": {
+    "candidates": 4,
+    "used": 3,
+    "stories_foreign_only": [
+     "중국 10월 지표 부진, 일본 3분기 역성장…에너지 비용과 외부수요 부담"
+    ],
+    "stories_mixed": [
+     "유가 85달러대로 하락…정유업계는 최고가제 손실보전 갈등"
+    ],
+    "excluded_as_duplicate": 1
+   },
+   "unaccounted": []
+  }
+ },
+ "translate": {
+  "model": "claude-haiku-5-5 (Claude Code CLI)",
+  "seconds": 4.6,
+  "n": 3,
+  "input_tokens": 1925,
+  "output_tokens": 412,
+  "cost_usd": 0.00044241
+ },
+ "exploration": {
+  "internal_total": 27,
+  "rule_passed": 0,
+  "shown": 0
+ },
+ "corroborate": {
+  "stories_checked": 8,
+  "articles": 21,
+  "original_ok": 20,
+  "call": {
+   "model": "claude-sonnet-5-5 (Claude Code CLI)",
+   "seconds": 74.3,
+   "input_tokens": 69888,
+   "output_tokens": 10762,
+   "cost_usd": 0.3823359
+  },
+  "mapping": {
+   "matched": 8,
+   "renumbered": [],
+   "unmatched": []
+  }
+ },
+ "script": {
+  "model": "claude-sonnet-5-5 (Claude Code CLI)",
+  "seconds": 63.14,
+  "input_tokens": 22358,
+  "output_tokens": 10365,
+  "cost_usd": 0.1775443,
+  "validation": {
+   "n_lines": 63,
+   "chars": 5840,
+   "est_seconds": 859,
+   "articles_used": 19,
+   "invalid_source_ids": [],
+   "fact_lines_without_source": [],
+   "numbers_without_source": [
+    [
+     15,
+     "12월 FOMC 전에 나올 추가 물가 지표와 연준 인사 발언, 10년물 5%가 안착하는지, 달러 인덱스 흐름이 핵심입니다."
+    ],
+    [
+     51,
+     "미국 ESS 수요 확대는 배터리 소재 수요에 우호적인 신호입니다. 하지만 삼성SDI 수주와 에코프로비엠의 거래 관계는 기사에서 확인되지 않습니다. 수요 기대가 실적으로 이어지기까지 시차도 있어서, 에코프로비엠의 ESS용 양극재 출하 실적과 4분기 실적 발표, 리튬 가격, 중국 저가 경쟁을 확인해야 합니다."
+    ]
+   ],
+   "recommendation_phrases": [],
+   "hedge_phrases": [],
+   "ends_correctly": true
+  }
+ },
+ "fact_check": {
+  "final": {
+   "claims_checked": 32,
+   "supported": 32,
+   "critical_issues": 0,
+   "minor_issues": 0,
+   "alignment_issues": 0,
+   "removed_unverifiable": 0,
+   "shortened_unverifiable": 2,
+   "evidence": {
+    "original": 23,
+    "partial": 3,
+    "summary_only": 0,
+    "no_source": 0
+   },
+   "official_check": "not_done",
+   "scope": "출처 기사 대조 결과다. 독립적인 사실 검증이 아니며, 기업 공시·공식 통계와는 대조하지 않았다. '중대 오류 0건'은 출처와 어긋난 주장을 찾지 못했다는 뜻이다."
+  },
+  "rounds": 2,
+  "seconds": 111.2
+ },
+ "audio": {
+  "path": "demo/outputs/20261117_v4/briefing.mp3",
+  "bytes": 5031936,
+  "approx_seconds": 839,
+  "measured_seconds": 838.7,
+  "bitrate_estimate_seconds": 839,
+  "voices": {
+   "A": "ko-KR-SunHiNeural",
+   "B": "ko-KR-InJoonNeural"
+  },
+  "n_clips": 63
+ },
+ "finished_at": "2026-11-18T15:34:59+09:00"
+}

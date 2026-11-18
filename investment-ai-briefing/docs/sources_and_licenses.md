@@ -34,7 +34,7 @@
 - API 키는 `.env`, 예시는 `.env.example`.
 
 ## 해외 소스 (2026-11-17 추가)
-자세한 조사: [foreign_sources.md](foreign_sources.md)
+자세한 조사: 비공개 문서 foreign_sources.md
 - **CNBC RSS:** 사이트 약관상 개인·비상업 이용. 제목, 한 문장 요약, 시각, URL만 저장한다.
 - **Spaceflight News API:** 무료, 키 없음. 기사 권리는 원 매체에 있고, 원 매체명은 보존한다.
 - **연결하지 않은 소스:**

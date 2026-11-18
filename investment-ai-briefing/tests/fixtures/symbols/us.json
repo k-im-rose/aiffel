@@ -1,0 +1,7 @@
+[{"name":"Apple Inc.","code":"AAPL","market":"NASDAQ","country":"US"},
+ {"name":"Tesla, Inc.","code":"TSLA","market":"NASDAQ","country":"US"},
+ {"name":"NVIDIA CORP","code":"NVDA","market":"NASDAQ","country":"US"},
+ {"name":"Alphabet Inc.","code":"GOOGL","market":"NASDAQ","country":"US"},
+ {"name":"Korea Electric Power Corp","code":"KEP","market":"NYSE","country":"US"},
+ {"name":"Example Corp","code":"EXA","market":"NASDAQ","country":"US"},
+ {"name":"Example Corp","code":"EXB","market":"NYSE","country":"US"}]

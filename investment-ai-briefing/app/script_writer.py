@@ -11,7 +11,7 @@ from __future__ import annotations
 
 import re
 
-from app import llm
+from app import focus, llm
 
 HOSTS = {"A": "진행자 A (설명)", "B": "진행자 B (질문)"}
 CHARS_PER_SECOND = 6.8  # 실측: v1 Sonnet 대본 3,287자 → 481초 (edge-tts, 속도 +8%)
@@ -28,9 +28,21 @@ SYSTEM = """당신은 개인 투자자를 위한 아침 오디오 브리핑 대�
    무슨 일이 있었나(사실) → 왜 이런 일이 생겼나(기사에 있는 배경) → 경제·산업에 어떤 영향이 있을 수 있나(해석)
    → 보유·관심 종목과 어떤 관계인가 → 앞으로 무엇을 보면 되나.
    서로 관련된 이야기는 "앞에서 본 ~와 이어지는데"처럼 연결합니다.
-3. 비중: 각 이야기의 target_seconds에 맞춰 분량을 조절합니다 (1초 ≈ 7자). 중요한 이야기는 길게, 나머지는 짧게.
+3. 비중과 분량: 각 이야기의 target_seconds에 맞춰 분량을 조절합니다 (1초 ≈ 6.8자). 중요한 이야기는 길게, 나머지는 짧게.
+   전체 분량은 프롬프트의 '전체 목표 분량'을 따릅니다. 늘어난 분량은 같은 말을 되풀이하거나 수식어로 채우지 않고, 아래를 더 자세히 설명하는 데 씁니다.
+   - 판단 근거: 기사에 있는 배경, 비교 기준(전월·전년·예상치), 누가 그렇게 분석했는지
+   - 확인할 사항: 종목 영향을 가늠하려면 무엇을 봐야 하는지 (사업 비중, 고객·공급 관계, 다음 발표 일정과 지표)
+   - 이야기 사이의 연결: 거시 → 산업 → 종목으로 이어지는 흐름
+   근거가 부족한 이야기는 짧게 두고, 분량을 맞추려고 근거 없는 내용을 넣지 않습니다.
 4. 마무리 정리: 거시경제, 산업, 종목, 공시에서 다룬 핵심을 분야별로 한두 문장씩 빠짐없이 짚습니다. 기사를 다시 나열하지 않습니다.
 5. 마지막 문장은 정확히 "오늘의 소식은 여기까지입니다." 로 끝냅니다. 다른 인사는 붙이지 않습니다.
+
+주요 거시경제 지표 발표 (편성표에 '지표:' 표시가 있는 이야기)
+- 미국(CPI, PCE 물가, 고용보고서, FOMC 금리 결정, GDP, 소매판매)과 한국(CPI, 한국은행 기준금리 결정, GDP, 수출입 동향, 고용동향, 산업생산)이 발표되면 해당 이야기를 거시경제 앞쪽에서 중요하게 다룹니다.
+- 말하는 순서: 무엇이 발표됐나(기사에 있는 수치, 단위, 기준) → 이전 수치나 예상치와 비교(기사에 있을 때만) → 이 지표가 금리·환율·물가·경기에 어떤 의미인지 한두 문장(해석 말투)
+  → 보유·관심 종목과의 관련성(기사나 기업 기본 사실에 근거가 있을 때만, 없으면 연결하지 않고 '직접 연결할 근거는 확인되지 않았습니다'로 짧게 처리) → 다음에 볼 발표.
+- 발표되지 않았거나 기사에 수치가 없는 지표는 결과를 말하지 않습니다. 예상치·전망치를 실제 결과처럼 말하지 않고, 기사에 없는 이전 수치나 기준 연도를 만들지 않습니다.
+- 공식 수치가 기사에 없고 언론사가 추정한 값이면 "WSJ는 ~로 추정했습니다"처럼 추정임을 밝힙니다.
 
 사실과 해석
 - 사실은 편성표 key_facts와 기사 요약에 있는 것만 말하고, 누가 발표·보도했는지(기업 공시, 정부 발표, 증권사 의견, 언론 보도)를 밝힙니다.
@@ -93,7 +105,10 @@ def facts_text(company_facts: dict) -> str:
 def plan_text(plan: dict, articles: dict[str, dict]) -> str:
     out = []
     for s in sorted(plan["stories"], key=lambda s: s["priority"]):
-        out.append(f"## [{s['priority']}] {s['headline']} | 분야 {s['section']} | 목표 {s['target_seconds']}초 | "
+        ind = sorted({(articles[i]["indicator"]["name"], articles[i]["indicator"]["status"]) for i in s["article_ids"]
+                      if i in articles and articles[i].get("indicator")})
+        ind_txt = "".join(f" | 지표: {n} ({'발표 결과' if st == 'released' else '예정·전망, 결과로 말하지 않음'})" for n, st in ind)
+        out.append(f"## [{s['priority']}] {s['headline']} | 분야 {s['section']} | 목표 {s['target_seconds']}초 (약 {round(s['target_seconds'] * CHARS_PER_SECOND)}자){ind_txt} | "
                    f"관련 보유·관심 종목: {', '.join(s['related_holdings']) or '-'}")
         out.append("확인된 사실: " + " / ".join(f"{f['fact']} ({f['source_id']})" for f in s["key_facts"]))
         out.append(f"편집자 해석(추론): {s['interpretation']}")
@@ -117,11 +132,17 @@ def plan_text(plan: dict, articles: dict[str, dict]) -> str:
 
 def write(plan: dict, articles: dict[str, dict], date_label: str, company_facts: dict, *,
           disclosures_note: str = "", model: str = "sonnet", profile: dict | None = None) -> tuple[dict, dict]:
-    prompt = (f"# 방송 날짜\n{date_label}\n\n# 기업 기본 사실 (공식 자료 기준)\n{facts_text(company_facts)}\n\n"
+    total = sum(s["target_seconds"] for s in plan["stories"])
+    length = (f"# 전체 목표 분량\n편성표 합계 {total}초 (약 {total // 60}분 {total % 60}초) ≈ {round(total * CHARS_PER_SECOND):,}자 안팎 "
+              "(시작·정리 포함). 지금까지 초안은 목표의 75% 정도로 짧아지는 경향이 있었으니 이야기마다 목표 자수를 실제로 채우세요. 각 이야기는 목표 초에 맞춰 근거와 확인할 사항까지 충분히 설명하되, 반복이나 군더더기로 채우지 마세요.\n\n")
+    prompt = (f"# 방송 날짜\n{date_label}\n\n{length}# 기업 기본 사실 (공식 자료 기준)\n{facts_text(company_facts)}\n\n"
               f"# 공시 수집 상태\n{disclosures_note}\n\n# 오늘의 편성표\n{plan_text(plan, articles)}\n"
               "위 편성표만 근거로 대본을 쓰세요.")
     system = SYSTEM.replace("{relation_examples}", (profile or {}).get("prompt_relation_examples")
                             or "프로필에 '확인된 관계'로 적힌 테마 연결 등")
+    if focus.names(profile or {}):
+        system += focus.SCRIPT_RULE
+        prompt += "\n\n# 집중 분석 종목\n" + ", ".join(focus.names(profile)) + "\n(관련 이야기가 편성표에 있을 때만 더 깊게 다루고, 없으면 언급하지 않습니다.)"
     r = llm.call(prompt, system=system, schema=SCHEMA, model=model, effort="medium")
     return r.data, {"model": r.model, "seconds": round(r.seconds, 2), "input_tokens": r.input_tokens,
                     "output_tokens": r.output_tokens, "cost_usd": r.cost_usd}

@@ -63,6 +63,22 @@ async def _render(lines: list[dict], concurrency: int = 4) -> list[bytes]:
     return await asyncio.gather(*(one(ln) for ln in lines))
 
 
+def measure_seconds(path: Path) -> float | None:
+    """실제 재생 시간(초). macOS afinfo, 없으면 ffprobe. 둘 다 없으면 None."""
+    import shutil, subprocess
+    try:
+        if shutil.which("afinfo"):
+            m = re.search(r"estimated duration: ([\d.]+)", subprocess.run(["afinfo", str(path)], capture_output=True, text=True).stdout)
+            return float(m.group(1)) if m else None
+        if shutil.which("ffprobe"):
+            r = subprocess.run(["ffprobe", "-v", "error", "-show_entries", "format=duration", "-of", "csv=p=0", str(path)],
+                               capture_output=True, text=True)
+            return float(r.stdout.strip())
+    except Exception:
+        return None
+    return None
+
+
 def synthesize(script: dict, out_path: Path) -> dict:
     lines = [ln for ln in script["lines"] if ln["text"].strip()]
     parts = asyncio.run(_render(lines))
@@ -72,7 +88,10 @@ def synthesize(script: dict, out_path: Path) -> dict:
     # 48kbps 기준 대략 길이
     root = Path(__file__).resolve().parent.parent
     rel = out_path.resolve().relative_to(root) if out_path.resolve().is_relative_to(root) else out_path.name
-    return {"path": str(rel), "bytes": len(data), "approx_seconds": round(len(data) * 8 / 48000),
+    approx = round(len(data) * 8 / 48000)
+    real = measure_seconds(out_path)
+    return {"path": str(rel), "bytes": len(data), "approx_seconds": round(real) if real else approx,
+            "measured_seconds": round(real, 1) if real else None, "bitrate_estimate_seconds": approx,
             "voices": VOICES, "n_clips": len(parts)}
 
 

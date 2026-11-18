@@ -51,39 +51,32 @@ function memoItem(m, refresh, withDate = false) {
 
 // 점검 항목 한 건: 완료 체크·중요 표시·수정·삭제 (보고서·마이페이지 공통)
 function checkItem(c, refresh) {
-  const d = el("div", null, { class: `item${c.done ? " done" : ""}` });
-  const line = el("label", null, { class: "check-line" });
+  const put = async (body) => { await api(`/api/checks/${c.id}`, { method: "PUT", body: JSON.stringify(body) }); refresh(); };
+  const d = el("div", null, { class: `item todo${c.done ? " done" : ""}` });
   const box = el("input", null, { type: "checkbox", "aria-label": "완료" });
   box.checked = c.done;
-  box.onchange = async () => { await api(`/api/checks/${c.id}`, { method: "PUT", body: JSON.stringify({ done: box.checked }) }); refresh(); };
-  const text = el("span", c.text, { class: "text" });
-  if (c.important) text.append(el("span", "중요", { class: "mark" }));
-  line.append(box, text);
-  d.append(line, el("div", `${c.origin === "ai" ? "AI 추천에서 추가" : "직접 작성"} · ${kst(c.created_at)}${c.done_at ? ` · 완료 ${kst(c.done_at)}` : ""}`, { class: "meta" }));
-  if (c.ai_ref?.reason) d.append(el("div", `추천 이유: ${c.ai_ref.reason}`, { class: "meta" }));
+  box.onchange = () => put({ done: box.checked });
+  const body = el("div", null, { class: "todo-body" });
+  body.append(el("span", c.text, { class: "text" }));
+  body.append(el("span", String(c.created_at || "").slice(0, 10), { class: "reg" }));
+  if (c.ai_ref?.reason) body.append(el("div", `추천 이유: ${c.ai_ref.reason}`, { class: "meta" }));
   const acts = el("div", null, { class: "actions" });
-  const imp = el("button", c.important ? "중요 표시 해제" : "중요 표시", { type: "button", class: "text" });
-  imp.onclick = async () => { await api(`/api/checks/${c.id}`, { method: "PUT", body: JSON.stringify({ important: !c.important }) }); refresh(); };
-  const edit = el("button", "수정", { type: "button", class: "text" });
+  const edit = el("button", "수정", { type: "button", class: "mini" });
   edit.onclick = async () => {
     const t = prompt("점검 항목 수정", c.text);
-    if (t && t.trim()) { await api(`/api/checks/${c.id}`, { method: "PUT", body: JSON.stringify({ text: t }) }); refresh(); }
+    if (t && t.trim()) put({ text: t });
   };
-  const del = el("button", "삭제", { type: "button", class: "text" });
+  const del = el("button", "삭제", { type: "button", class: "mini" });
   del.onclick = async () => { if (confirm("이 항목을 삭제할까요?")) { await api(`/api/checks/${c.id}`, { method: "DELETE" }); refresh(); } };
-  if (!c.done) acts.append(imp);
   acts.append(edit, del);
-  d.append(acts);
+  d.append(box, body, acts);
   return d;
 }
 
 // 머리말: 브랜드('그내종.' 크게, 아래 '그래서 내 종목은?'), 오른쪽 두 줄 소개, 메뉴
 const NAV = [
-  ["main", "/", "메인"],
   ["profile", "/mypage#profile", "내 투자 프로필"],
-  ["archive", "/#archive", "지난 브리핑"],
-  ["records", "/mypage#records", "내 기록"],
-  ["account", "/mypage#account", "계정 설정"],
+  ["archive", "/archive", "브리핑 모음"],
 ];
 let META = null;
 async function renderChrome(page) {
@@ -104,14 +97,10 @@ async function renderChrome(page) {
     nav.append(a);
   }
   head.replaceChildren(brand, nav);
-  if (META.mode === "demo") {
-    head.append(el("p", "가상 데모입니다. 가상 투자자 프로필로 실제 뉴스(2026-11-17 수집)를 AI 파이프라인에 돌린 결과이며, 실제 사람의 보유 내역이 아니고 투자 권유가 아닙니다.", { class: "notice" }));
-  }
   const foot = $("#site-footer");
   if (foot) {
     foot.replaceChildren(
-      el("p", "그내종은 투자 판단을 돕는 개인용 리서치 도구이며 매수·매도를 권하지 않습니다. 음성은 AI가 만든 대본을 AI 음성으로 읽은 것입니다."),
-      el("p", `지금은 이 컴퓨터에서만 쓰는 단일 사용자 버전입니다. 로그인과 사용자별 데이터 분리는 아직 구현하지 않았습니다. · ${META.mode === "demo" ? "가상 데모 데이터" : "내 데이터"}`));
+      el("p", "그내종은 투자 판단을 돕는 개인용 리서치 도구이며 매수·매도를 권하지 않습니다. 음성은 AI가 만든 대본을 AI 음성으로 읽은 것입니다."));
   }
   return META;
 }

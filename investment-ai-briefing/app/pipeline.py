@@ -29,7 +29,7 @@ from pathlib import Path
 
 from dotenv import load_dotenv
 
-from app import corroborate, editor, exploration, fact_check, ingest_dart, relevance_llm, script_writer, translate, tts
+from app import corroborate, editor, exploration, fact_check, focus, indicators, ingest_dart, relevance_llm, script_writer, translate, tts
 
 ROOT = Path(__file__).resolve().parent.parent
 KST = timezone(timedelta(hours=9))
@@ -221,7 +221,24 @@ def run_live(args) -> Path:
     run["evidence_recovery"] = rec
     if rec["targets"]:
         print(f"      근거 보강: high인데 제목만·묶음인 기사 {rec['targets']}건 중 원문 확인 {rec.get('original_ok', 0)}, 사실 확보 {rec.get('recovered', 0)}", flush=True)
-    ranked = editor.pre_rank(cands, judged, limit=args.candidates, cutoff=cutoff)
+    # 주요 거시경제 지표 발표 기사 식별 (마감 이후 기사는 여기 오기 전에 이미 제외됨). 발표 결과 기사는 방송 후보에서 빠지지 않게 한다
+    ind_log = indicators.detect(cands, cutoff)
+    by_j = {j["article_id"]: j for j in judged}
+    forced = []
+    for items in ind_log["found"].values():
+        for x in items:
+            j = by_j.get(x["article_id"])
+            if x["status"] == "released" and j and not j.get("include_in_podcast") and not j.get("duplicate_of") \
+                    and j["relevance_type"] in editor.TYPE_BONUS:
+                j["include_in_podcast"] = True
+                forced.append(x["article_id"])
+    ind_log["forced_into_candidates"] = forced
+    run["indicators"] = {k: ind_log[k] for k in ("released_keys", "upcoming_keys", "not_found", "forced_into_candidates")}
+    (out / "indicators.json").write_text(json.dumps(ind_log, ensure_ascii=False, indent=1), encoding="utf-8")
+    (out / "indicators.md").write_text(indicators.to_markdown(ind_log), encoding="utf-8")
+    print(f"      지표 발표 식별: 결과 {[indicators.NAME[k] for k in ind_log['released_keys']] or '없음'}, "
+          f"예정·전망 {[indicators.NAME[k] for k in ind_log['upcoming_keys']] or '없음'}", flush=True)
+    ranked = editor.pre_rank(cands, judged, limit=args.candidates, cutoff=cutoff, focus=set(focus.names(profile)))
     run["foreign_reserve_used"] = sum(1 for a in ranked if a.get("via_foreign_reserve"))
     plan, call = editor.plan(ranked, relevance_llm.profile_text(profile), date_label, model=args.edit_model)
     rep = editor.selection_report(ranked, judged, plan, pool={c["id"] for c in cands},
@@ -261,6 +278,12 @@ def run_live(args) -> Path:
         (out / "plan.json").write_text(json.dumps(plan, ensure_ascii=False, indent=1), encoding="utf-8")
         print(f"      원문 대조: 이야기 {cb_log['stories_checked']}개, 원문 확인 {cb_log['original_ok']}/{cb_log['articles']}건 "
               f"({cb_log['call']['seconds']}초)", flush=True)
+    ind2 = indicators.detect(cands, cutoff)  # 원문 대조로 확인된 사실까지 포함해 다시 식별 (대본 표시·기록용)
+    run["indicators"] = {k: ind2[k] for k in ("released_keys", "upcoming_keys", "not_found")} | {"forced_into_candidates": forced}
+    ind2["forced_into_candidates"] = forced
+    (out / "indicators.json").write_text(json.dumps(ind2, ensure_ascii=False, indent=1), encoding="utf-8")
+    (out / "indicators.md").write_text(indicators.to_markdown(ind2), encoding="utf-8")
+    print(f"      지표 재식별(원문 대조 후): 결과 {[indicators.NAME[k] for k in ind2['released_keys']] or '없음'}", flush=True)
     script, call = script_writer.write(
         plan, articles, date_label, facts, model=args.script_model, profile=profile,
         disclosures_note=f"OpenDART 공시 목록: {dart['status']}. 조회하지 못한 날은 수주 공시 기사만 다루고, 조회 실패는 방송에서 말하지 않는다 (텍스트 리포트에 기록됨).")
@@ -291,7 +314,7 @@ def run_live(args) -> Path:
     audio = tts.synthesize(script, out / "briefing.mp3")
     run["audio"] = audio
     run["finished_at"] = datetime.now(KST).isoformat(timespec="seconds")
-    print(f"[6/6] MP3 {audio['bytes'] // 1024}KB, 약 {audio['approx_seconds'] // 60}분 {audio['approx_seconds'] % 60}초", flush=True)
+    print(f"[6/6] MP3 {audio['bytes'] // 1024}KB, 실측 {audio['approx_seconds'] // 60}분 {audio['approx_seconds'] % 60}초", flush=True)
     (out / "run.json").write_text(json.dumps(run, ensure_ascii=False, indent=1), encoding="utf-8")
 
     if args.export:

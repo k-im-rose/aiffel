@@ -7,7 +7,7 @@
 
 | 원칙 | 구현 |
 |---|---|
-| 명조체 중심 | `--font-serif` (임시: Noto Serif KR). 제목·본문 모두 명조 |
+| 고딕체 중심 | `--font-serif` 변수 이름은 그대로 두고 값을 Noto Sans KR로 바꿨다(2026-11). 제목·본문 모두 고딕. 이전 명조 버전은 `docs/design_backup/style.serif.css`에 보존 |
 | 색 세 가지 | 화이트 `--color-bg` #FFFFFF, 차콜 `--color-ink` #222222, 테라코타 `--color-accent` #B8755B. 그 밖에는 무채색 회색 세 단계(보조 글자, 상태 표시, 구분선)만 |
 | 충분한 여백 | 간격 토큰 `--space-1`~`--space-8`. 섹션 사이 72px (아이폰 폭 56px) |
 | 얇은 구분선 | `--rule-thin`(회색 1px), `--rule-strong`(차콜 1px, 영역 시작), `--rule-accent`(테라코타 1px, 인용·중요 안내) |

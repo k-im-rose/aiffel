@@ -46,6 +46,9 @@ $("#check-form").onsubmit = async (e) => {
 
 (async () => {
   await renderChrome(location.hash === "#account" ? "account" : location.hash === "#records" ? "records" : "profile");
-  await Promise.all([mountProfileForm($("#profile-form")), renderMemoAll(), renderCheckAll(), renderRuns()]);
+  // '내 투자 프로필' 화면은 프로필만 보인다. 메모·점검·과거 보고서·계정은 해당 주소(#memos 등)로 들어올 때만 보인다
+  const extra = ["#memos", "#records", "#checks", "#briefings", "#account"].includes(location.hash);
+  document.body.classList.toggle("profile-only", !extra);
+  await Promise.all([mountProfileList($("#profile-form")), renderMemoAll(), renderCheckAll(), renderRuns()]);
   if (location.hash) document.querySelector(location.hash)?.scrollIntoView();
 })();

@@ -6,7 +6,7 @@
 <title>그내종 · 로그인 (시안)</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;600&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/style.css">
 </head>
 <body>
@@ -26,6 +26,13 @@
       입력칸은 비활성화되어 있고, 이 화면은 어떤 값도 보내지 않습니다.
     </p>
     <p class="status">동작 상태: 화면만 · 인증과 다중 사용자는 후속 개발</p>
+  </section>
+
+  <section class="section section-tight" id="demo-entry" aria-label="데모 체험">
+    <h4>데모 체험하기</h4>
+    <p>회원가입이나 로그인 없이 가상 투자자 프로필로 만든 공개 데모를 볼 수 있습니다. 이 화면의 로그인은 시안이라 아무것도 인증하지 않습니다.</p>
+    <div class="form-actions"><a class="demo-go" id="demo-go" href="/" hidden>데모 체험하기</a></div>
+    <p class="status" id="demo-note"></p>
   </section>
 
   <section class="section section-tight" aria-label="로그인 시안">
@@ -49,6 +56,18 @@
 <footer class="site-foot" id="site-footer"></footer>
 </div>
 <script src="/common.js"></script>
-<script>renderChrome("account");</script>
+<script>
+  // 데모 체험은 서버가 가상 프로필(--data demo)로 열려 있을 때만 켠다. 실제 데이터 서버에서는 이 경로를 열지 않아
+  // 데모 버튼으로 실제 개인 데이터에 들어가는 일이 없다.
+  renderChrome("account").then((meta) => {
+    const go = $("#demo-go"), note = $("#demo-note");
+    if (meta.mode === "demo") {
+      go.hidden = false;
+      note.textContent = "이 서버는 가상 프로필 데모 모드입니다. 보이는 투자 프로필은 모두 가상이고, 뉴스는 실제 수집한 기사입니다.";
+    } else {
+      note.textContent = "이 서버는 실제 데이터 모드라서 데모 체험 버튼을 열지 않았습니다. 데모는 --data demo로 실행한 서버에서 볼 수 있습니다.";
+    }
+  });
+</script>
 </body>
 </html>

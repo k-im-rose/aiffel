@@ -36,3 +36,4 @@ demo/outputs/*/exploration_all.json
 demo/outputs/*/script_draft.json
 demo/outputs/*/factcheck.json
 demo/outputs/*/*.mp3
+/data/symbols/
