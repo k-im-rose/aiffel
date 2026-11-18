@@ -1,6 +1,6 @@
 # 원하는 포즈로 이미지 만드는 도구
 
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/k-im-rose/pose-image-tool/blob/main/pose_tool.ipynb)
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/k-im-rose/aiffel/blob/main/pose-image-tool/pose_tool.ipynb)
 
 ## 도구 설명
 - 참조 사진에서 OpenPose로 관절 뼈대를 뽑고, 그 뼈대를 포즈 조건으로 넣어 **같은 자세의 다른 인물·장면**을 만듭니다.
