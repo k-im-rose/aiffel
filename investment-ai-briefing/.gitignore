@@ -37,3 +37,4 @@ demo/outputs/*/script_draft.json
 demo/outputs/*/factcheck.json
 demo/outputs/*/*.mp3
 /data/symbols/
+/site/media/

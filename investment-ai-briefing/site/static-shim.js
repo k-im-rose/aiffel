@@ -68,7 +68,7 @@
   document.addEventListener("DOMContentLoaded", () => {
     const b = document.createElement("div");
     b.setAttribute("style", "background:var(--tint-accent,#F8F1EE);color:var(--color-ink-2,#555);font-size:12px;line-height:1.6;padding:8px 16px;text-align:center");
-    b.textContent = "정적 데모 · 가상 투자자 프로필 + 2026-11-17 실제 수집 뉴스 · 수정한 내용은 이 브라우저에만 저장됩니다 · 음성(MP3)은 재배포 조건 미확인으로 제외 · 매수·매도를 권유하지 않습니다";
+    b.textContent = "정적 데모 · 가상 투자자 프로필 + 2026-11-17 실제 수집 뉴스 · 수정한 내용은 이 브라우저에만 저장됩니다 · 음성은 비공식 서비스(edge-tts)로 만든 개인 시연용 파일입니다 · 매수·매도를 권유하지 않습니다";
     document.body.prepend(b);
   });
 })();

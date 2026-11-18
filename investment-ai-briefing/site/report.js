@@ -470,7 +470,7 @@ $("#pdf-btn").onclick = () => window.print();  // 인쇄 창에서 "PDF로 저�
   }
   $("#r-meta").textContent = `생성 ${kst(B.generated_at)} · 뉴스 수집 마감 ${kst(B.cutoff_at)} KST`;
   // 수정 기록(B.revision)은 화면에 쓰지 않는다. 자동 실행 때 채팅으로 따로 보고한다.
-  $(".player").replaceChildren(el("p", "음성 파일(MP3)은 재배포 조건이 확인되지 않아 공개하지 않았습니다. 대본은 저장소의 script.md에서 읽을 수 있습니다.", { class: "meta" }));
+  $("#player").src = `media/${encodeURIComponent(RUN_ID)}/briefing.mp3`;
   { // 핵심 요약: 저장된 뉴스 제목 앞 네 건
     const sb = $("#b-summary"), top = B.stories.slice(0, 4);
     if (top.length) { { const lb = el("div", "핵심", { class: "summary-label" }); lb.append(el("br"), "요약"); sb.append(lb); } const ul = el("ul"); top.forEach((s) => ul.append(el("li", s.headline))); sb.append(ul); sb.hidden = false; }
