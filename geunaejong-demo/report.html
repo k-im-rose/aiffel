@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>그내종 · 일일 보고서</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;600&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="wrap">
+<header id="site-header"></header>
+
+<main class="report">
+  <!-- 이전 보고서 확인하기: 카테고리 바로 아래, 왼쪽 정렬 -->
+  <div class="run-pick">
+    <button type="button" id="run-toggle" aria-expanded="false" aria-controls="run-list">이전 보고서 확인하기</button>
+    <div id="run-list" hidden></div>
+  </div>
+
+  <!-- 보고서 머리: 날짜·제목·생성 정보 -->
+  <section class="report-head">
+    <button type="button" class="pdf-btn" id="pdf-btn">PDF로 저장</button>
+    <div class="when" id="r-when" hidden></div>
+    <h1 id="r-title">보고서를 불러오는 중입니다.</h1>
+    <div class="player"><audio id="player" controls preload="metadata"></audio></div>
+    <p class="meta" id="r-meta"></p>
+    <p class="notice notice-record" id="r-record" hidden></p>
+    <p class="meta" id="r-revision" hidden></p>
+    <div id="b-summary" class="summary-box" hidden></div>
+  </section>
+
+  <!-- 2. 주요 경제·산업 뉴스 -->
+  <section class="section" id="s-stories">
+    <h2><span class="sec-n">01</span>주요 경제·산업 뉴스</h2>
+    <div id="stories"></div>
+  </section>
+
+  <!-- 3. 내 종목에 미치는 영향과 확인할 사항 -->
+  <section class="section" id="s-holdings">
+    <h2><span class="sec-n">02</span>그래서 내 종목은?</h2>
+    <div id="holdings"></div>
+  </section>
+
+  <!-- 4. 추가로 보면 좋을 뉴스 -->
+  <section class="section" id="s-not-aired">
+    <h2><span class="sec-n">03</span>추가로 보면 좋을 뉴스</h2>
+    <div id="not-aired"></div>
+  </section>
+
+  <!-- 5·6. 오늘의 경제 개념 + 퀴즈 (2열) -->
+  <div class="pair">
+  <section class="section" id="s-concept">
+    <h2><span class="sec-n">04</span>오늘의 경제 개념</h2>
+    <div id="concept"></div>
+  </section>
+
+  <!-- 6. 오늘의 퀴즈 -->
+  <section class="section" id="s-quiz">
+    <h2><span class="sec-n">05</span>오늘의 퀴즈</h2>
+    <div id="quiz"></div>
+  </section>
+  </div>
+
+</main>
+
+<!-- 08·09: 데스크톱 2열 (왼쪽 메모, 오른쪽 점검). 높이는 억지로 맞추지 않는다. 모바일은 1열 -->
+<div class="duo report notes">
+  <section class="section" id="s-memo">
+    <h3 class="mini-h">오늘의 메모</h3>
+    <form id="memo-form" class="panel">
+      <textarea id="memo-text" rows="8" aria-label="오늘의 메모" placeholder="오늘 브리핑에서 느낀 점, 내 생각을 자유롭게 기록하세요."></textarea>
+    </form>
+    <p class="memo-status" id="memo-status" role="status" aria-live="polite"></p>
+    <p class="meta"><a href="mypage.html#memos">모든 날짜의 메모 보기</a></p>
+  </section>
+
+  <section class="section" id="s-checks">
+    <h3 class="mini-h">다음에 점검할 것</h3>
+    <div class="panel">
+      <form id="check-form" class="form-actions">
+        <input id="check-text" class="grow" placeholder="예: 관심 기업의 다음 실적 발표 확인">
+        <button type="submit">추가</button>
+      </form>
+      <div id="check-list"></div>
+      <details><summary>완료한 항목</summary><div id="check-done"></div></details>
+    </div>
+  </section>
+</div>
+
+<footer class="site-foot" id="site-footer"></footer>
+</div>
+<script src="static-shim.js"></script>
+<script src="common.js"></script>
+<script src="report.js"></script>
+</body>
+</html>

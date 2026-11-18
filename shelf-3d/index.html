@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>내 방을 알갱이로</title>
+<style>
+  html,body{margin:0;height:100%;background:#0b0f14;color:#e2e8f0;overflow:hidden;
+    font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR",sans-serif}
+  #c{display:block;width:100%;height:100%;touch-action:none}
+  .panel{position:fixed;background:rgba(11,15,20,.9);border:1px solid #1e293b;
+    border-radius:12px;padding:12px 14px;font-size:12.5px;line-height:1.65;
+    backdrop-filter:blur(6px)}
+  #hud{left:12px;top:12px;max-width:min(360px,calc(100vw - 24px))}
+  #hud h1{margin:0 0 6px;font-size:14px;color:#7dd3fc;font-weight:600}
+  #steps{margin:0;padding:0;list-style:none}
+  #steps li{padding:1px 0;color:#64748b}
+  #steps li.ok{color:#86efac}
+  #steps li.ok::before{content:"OK  ";color:#22c55e;font-weight:700}
+  #steps li.bad{color:#fca5a5}
+  #steps li.bad::before{content:"X   ";color:#ef4444;font-weight:700}
+  #steps li.run::before{content:"..  ";color:#eab308}
+  #steps li:not(.ok):not(.bad):not(.run)::before{content:"    "}
+  #stats{display:grid;grid-template-columns:auto 1fr;gap:1px 10px;
+    margin-top:9px;padding-top:8px;border-top:1px solid #1e293b}
+  #stats span{color:#64748b}
+  #stats b{color:#e2e8f0;font-weight:500;text-align:right;font-variant-numeric:tabular-nums}
+  #fix{margin-top:10px;padding:10px;border-radius:8px;background:#2a1215;
+    border:1px solid #7f1d1d;color:#fecaca;display:none;white-space:pre-wrap}
+  #fix.show{display:block}
+  #fix b{color:#fca5a5}
+  #ctl{right:12px;top:12px;text-align:right}
+  button{background:#1e293b;color:#e2e8f0;border:1px solid #334155;border-radius:8px;
+    padding:6px 11px;font-size:12px;cursor:pointer;margin:2px}
+  button:hover{background:#334155}
+  button.on{background:#0369a1;border-color:#0ea5e9}
+  .hint{color:#64748b;font-size:11px;margin-top:4px}
+  #cmp{left:12px;bottom:12px;max-width:min(640px,calc(100vw - 24px));
+    max-height:38vh;overflow:auto;display:none}
+  #cmp.show{display:block}
+  #cmp h2{margin:0 0 6px;font-size:13px;color:#7dd3fc;font-weight:600}
+  #cmp table{border-collapse:collapse;width:100%;font-size:11.5px}
+  #cmp th,#cmp td{padding:2px 6px;border-bottom:1px solid #1e293b;
+    text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums}
+  #cmp th{color:#64748b;font-weight:500}
+  #cmp th:first-child,#cmp td:first-child{text-align:left;max-width:180px;
+    overflow:hidden;text-overflow:ellipsis}
+  #drop{position:fixed;inset:0;display:none;place-items:center;text-align:center;
+    background:rgba(2,6,23,.72);border:2px dashed #0ea5e9;z-index:50;
+    pointer-events:none;font-size:18px;color:#e0f2fe}
+  #drop.show{display:grid}
+  #drop span{display:block;margin-top:6px;font-size:12px;color:#94a3b8}
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+
+<div class="panel" id="hud">
+  <h1>내 방을 알갱이로</h1>
+  <ul id="steps">
+    <li id="s1">라이브러리 불러오기</li>
+    <li id="s2">렌더러 넣기</li>
+    <li id="s3">파일 받기</li>
+    <li id="s4">알갱이로 풀기</li>
+    <li id="s5">크기 재기</li>
+  </ul>
+  <div id="stats">
+    <span>파일</span><b id="stat-file">-</b>
+    <span>크기</span><b id="stat-size">-</b>
+    <span>받는 시간</span><b id="stat-time">-</b>
+    <span>알갱이</span><b id="stat-count">-</b>
+  </div>
+  <div id="fix"></div>
+</div>
+
+<div class="panel" id="ctl">
+  <div><button id="fit">화면에 맞추기</button><button id="flip">위아래 뒤집기</button></div>
+  <div><button id="spin">자동 회전</button><button id="pick">파일 고르기</button></div>
+  <div class="hint">파일을 화면 어디에나 끌어다 놓아도 됩니다</div>
+  <input type="file" id="picker" accept=".ply,.compressed.ply,.sog,.spz,.splat,.ksplat,.rad" hidden>
+</div>
+
+<div class="panel" id="cmp">
+  <h2>불러온 파일 비교</h2>
+  <table>
+    <thead><tr><th>이름</th><th>형식</th><th>크기(바이트)</th><th>풀기(초)</th><th>알갱이</th></tr></thead>
+    <tbody id="cmp-body"></tbody>
+  </table>
+</div>
+
+<div id="drop">파일을 여기에 놓으세요<span>.ply / .compressed.ply / .sog / .spz</span></div>
+
+<script type="importmap">
+{"imports":{
+  "three":"https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js",
+  "three/addons/":"https://cdn.jsdelivr.net/npm/three@0.180.0/examples/jsm/",
+  "@sparkjsdev/spark":"https://sparkjs.dev/releases/spark/2.4.0/spark.module.js"
+}}
+</script>
+<script type="module">
+let SPLAT_FILE = "scene.sog";   // 같은 폴더에 둔 .sog 파일 이름
+
+const el = id => document.getElementById(id);
+const mark = (id, cls) => { el(id).className = cls; };
+function fail(msg) {
+  const f = el("fix");
+  f.textContent = "막혔습니다\n" + msg;
+  f.classList.add("show");
+}
+function clearFail() {
+  const f = el("fix");
+  f.textContent = "";
+  f.classList.remove("show");
+}
+addEventListener("error", e => fail("자바스크립트 오류: " + (e?.message ?? String(e))));
+addEventListener("unhandledrejection", e =>
+  fail("처리 못 한 실패: " + (e.reason?.message || e.reason)));
+
+let THREE, OrbitControls, SPARK;
+try {
+  THREE = await import("three");
+  ({ OrbitControls } = await import("three/addons/controls/OrbitControls.js"));
+  SPARK = await import("@sparkjsdev/spark");
+  mark("s1", "ok");
+} catch (e) {
+  mark("s1", "bad");
+  fail("three.js 나 Spark 를 못 불러왔습니다. 인터넷 연결을 확인하십시오.\n" +
+       (e?.message ?? String(e)));
+  throw e;
+}
+
+const canvas = el("c");
+const renderer = new THREE.WebGLRenderer({ canvas, antialias: false });
+renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0x0b0f14);
+const camera = new THREE.PerspectiveCamera(55, 1, 0.01, 1000);
+const controls = new OrbitControls(camera, canvas);
+controls.enableDamping = true;
+controls.dampingFactor = 0.08;
+camera.position.set(2, 1, 2);
+
+/* Spark 는 자체 렌더러를 장면에 넣어야 그립니다. */
+let spark = null;
+if (SPARK.SparkRenderer) {
+  spark = new SPARK.SparkRenderer({ renderer });
+  scene.add(spark);
+  mark("s2", "ok");
+} else {
+  mark("s2", "bad");
+  fail("이 Spark 판에는 SparkRenderer 가 없습니다.");
+}
+
+function resize() {
+  renderer.setSize(innerWidth, innerHeight, false);
+  camera.aspect = innerWidth / innerHeight;
+  camera.updateProjectionMatrix();
+}
+addEventListener("resize", resize); resize();
+
+mark("s3", "run");
+
+/* 확장자 → Spark 2.4.0 파일 형식. .compressed.ply 를 .ply 보다 먼저 검사합니다. */
+const FILE_TYPES = [
+  { re: /\.compressed\.ply$/i, fileType: "ply", label: "compressed.ply" },
+  { re: /\.ply$/i, fileType: "ply", label: "ply" },
+  { re: /\.sog$/i, fileType: "pcsogszip", label: "sog" },
+  { re: /\.spz$/i, fileType: "spz", label: "spz" },
+  { re: /\.splat$/i, fileType: "splat", label: "splat" },
+  { re: /\.ksplat$/i, fileType: "ksplat", label: "ksplat" },
+  { re: /\.rad$/i, fileType: "rad", label: "rad" }
+];
+const detectType = name => FILE_TYPES.find(f => f.re.test(name)) || null;
+
+/* 복원할 때 카메라들이 있던 쪽(촬영 방향)에서 소품을 바라봅니다. */
+const SHOOT_DIR = new THREE.Vector3(0.35, 0.07, 0.93).normalize();
+let flipped = false;
+let radius = 1;
+let mesh = null, count = 0, currentName = "", currentType = "";
+let loadToken = 0;
+
+/* 알갱이 덩어리는 Box3.setFromObject 로 크기를 못 재는 경우가 많습니다.
+   Spark 의 getBoundingBox 를 먼저 쓰고, 안 되면 일반 상자로 대신합니다. */
+function measure() {
+  if (!mesh) return { box: null, naiveWorks: false };
+  const naive = new THREE.Box3().setFromObject(mesh);
+  const naiveWorks = !naive.isEmpty() && isFinite(naive.min.x);
+  let box = null;
+  if (mesh.getBoundingBox) {
+    try { box = mesh.getBoundingBox(true); } catch (e) {}
+  }
+  if ((!box || box.isEmpty()) && naiveWorks) box = naive;
+  return { box, naiveWorks };
+}
+
+function fit() {
+  const { box, naiveWorks } = measure();
+  if (!box || box.isEmpty()) {
+    mark("s5", "bad");
+    controls.target.set(0, 0, 0);
+    camera.position.set(2, 1, 2);
+    fail("장면 크기를 못 쟀습니다. 카메라를 손으로 끌어서 찾아보십시오.");
+    return;
+  }
+  const c = box.getCenter(new THREE.Vector3());
+  radius = box.getSize(new THREE.Vector3()).length() * 0.5;
+  const dir = SHOOT_DIR.clone();
+  if (flipped) { dir.y *= -1; dir.z *= -1; }
+  controls.target.copy(c);
+  camera.position.copy(c).addScaledVector(dir, radius * 2.2);
+  camera.up.set(0, 1, 0);
+  camera.near = Math.max(radius / 1000, 0.001);
+  camera.far = radius * 100;
+  camera.updateProjectionMatrix();
+  controls.update();
+  mark("s5", "ok");
+  el("s5").textContent =
+    `크기 재기 반지름 ${radius.toFixed(3)}m` +
+    (naiveWorks ? " (Box3)" : " (Box3 빈 상자 → Spark 자)");
+}
+
+/* 파일을 바꿔도 카메라는 그대로 둡니다. 크기만 다시 재서 표시합니다. */
+function updateBoundsText() {
+  const { box, naiveWorks } = measure();
+  if (!box || box.isEmpty()) {
+    mark("s5", "bad");
+    el("s5").textContent = "크기 재기 실패 (시점 유지)";
+    return;
+  }
+  radius = box.getSize(new THREE.Vector3()).length() * 0.5;
+  mark("s5", "ok");
+  el("s5").textContent =
+    `크기 재기 반지름 ${radius.toFixed(3)}m (시점 유지)` +
+    (naiveWorks ? "" : " · Spark 자");
+}
+
+function addCompareRow(name, format, bytes, parseSec, n) {
+  const tr = document.createElement("tr");
+  for (const v of [name, format, bytes.toLocaleString("ko-KR"),
+                   parseSec.toFixed(3), n.toLocaleString("ko-KR")]) {
+    const td = document.createElement("td");
+    td.textContent = v;
+    tr.appendChild(td);
+  }
+  el("cmp-body").appendChild(tr);
+  el("cmp").classList.add("show");
+}
+
+async function makeMesh(bytes, fileType) {
+  const m = new SPARK.SplatMesh({ fileBytes: new Uint8Array(bytes), fileType });
+  scene.add(m);
+  try {
+    await m.initialized;
+  } catch (e) {
+    scene.remove(m);
+    try { m.dispose?.(); } catch (_) {}
+    throw e;
+  }
+  const n = m.packedSplats?.numSplats ?? 0;
+  if (!n) {
+    scene.remove(m);
+    try { m.dispose?.(); } catch (_) {}
+    throw new Error("알갱이가 0개입니다");
+  }
+  return { mesh: m, count: n };
+}
+
+async function loadBytes(name, bytes, { readSec = 0, source = "file", initial = false } = {}) {
+  const info = detectType(name);
+  if (!info) {
+    fail(`지원하지 않는 형식입니다: ${name}\n` +
+         "쓸 수 있는 확장자: .ply .compressed.ply .sog .spz .splat .ksplat .rad");
+    return false;
+  }
+  const token = ++loadToken;
+  clearFail();
+
+  mark("s3", "ok");
+  el("s3").textContent =
+    `${source === "url" ? "파일 받기" : "파일 읽기"} ${name} ` +
+    `${(bytes.byteLength / 1048576).toFixed(2)}MB ${readSec.toFixed(2)}초`;
+  el("stat-file").textContent = name;
+  el("stat-size").textContent =
+    `${(bytes.byteLength / 1048576).toFixed(2)} MB (${bytes.byteLength.toLocaleString("ko-KR")} B)`;
+  el("stat-time").textContent = `${readSec.toFixed(2)}초`;
+
+  mark("s4", "run");
+  el("s4").textContent = `알갱이로 풀기 ${info.label}`;
+  const t0 = performance.now();
+  let made;
+  try {
+    made = await makeMesh(bytes, info.fileType);
+  } catch (e) {
+    if (token === loadToken) {
+      mark("s4", "bad");
+      fail("파일은 받았는데 알갱이로 못 풀었습니다. " + (e?.message ?? String(e)) +
+           "\n확장자와 실제 형식이 맞는지 보십시오.");
+    }
+    return false;
+  }
+  const parseSec = (performance.now() - t0) / 1000;
+  if (token !== loadToken) {
+    scene.remove(made.mesh);
+    try { made.mesh.dispose?.(); } catch (_) {}
+    return false;
+  }
+
+  const old = mesh;
+  made.mesh.scale.set(1, flipped ? -1 : 1, flipped ? -1 : 1);
+  made.mesh.updateMatrixWorld(true);
+  mesh = made.mesh;
+  count = made.count;
+  currentName = name;
+  currentType = info.label;
+  if (old) {
+    scene.remove(old);
+    try { old.dispose?.(); } catch (_) {}
+  }
+
+  el("stat-count").textContent =
+    `${count.toLocaleString("ko-KR")}개 (${(bytes.byteLength / count).toFixed(2)} B/개)`;
+  mark("s4", "ok");
+  el("s4").textContent =
+    `알갱이로 풀기 ${count.toLocaleString("ko-KR")}개 (${info.label})`;
+
+  if (initial) fit(); else updateBoundsText();
+  addCompareRow(name, info.label, bytes.byteLength, parseSec, count);
+  return true;
+}
+
+async function loadFile(file) {
+  clearFail();
+  mark("s3", "run");
+  el("s3").textContent = `파일 읽기 ${file.name}`;
+  const t0 = performance.now();
+  let bytes;
+  try {
+    bytes = await file.arrayBuffer();
+  } catch (e) {
+    mark("s3", "bad");
+    fail(`"${file.name}" 를 읽지 못했습니다. ` + (e?.message ?? String(e)));
+    return false;
+  }
+  const readSec = (performance.now() - t0) / 1000;
+  return loadBytes(file.name, bytes, { readSec, source: "file" });
+}
+
+/* 처음에는 같은 폴더의 scene.sog 를 자동으로 불러옵니다. */
+try {
+  const t0 = performance.now();
+  const r = await fetch(SPLAT_FILE);
+  if (!r.ok) throw new Error(`서버가 ${r.status} 를 돌려줬습니다`);
+  const bytes = await r.arrayBuffer();
+  const readSec = (performance.now() - t0) / 1000;
+  await loadBytes(SPLAT_FILE, bytes, { readSec, source: "url", initial: true });
+} catch (e) {
+  mark("s3", "bad");
+  fail(`"${SPLAT_FILE}" 를 못 받았습니다. ${(e?.message ?? String(e))}\n` +
+       "파일이 이 페이지와 같은 폴더에 있는지, 이름 철자가 맞는지 확인하십시오.");
+}
+
+function doFlip(silent) {
+  if (!mesh) return;
+  flipped = !flipped;
+  mesh.scale.y *= -1;
+  mesh.scale.z *= -1;
+  mesh.updateMatrixWorld(true);
+  if (!silent) fit();
+}
+
+el("fit").onclick = fit;
+el("flip").onclick = () => doFlip(false);
+let spinning = false;
+el("spin").onclick = e => {
+  spinning = !spinning;
+  controls.autoRotate = spinning;
+  controls.autoRotateSpeed = 0.6;
+  e.target.classList.toggle("on", spinning);
+};
+
+el("pick").onclick = () => el("picker").click();
+el("picker").onchange = async e => {
+  const f = e.target.files?.[0];
+  e.target.value = "";
+  if (f) await loadFile(f);
+};
+
+/* 페이지 어디에나 파일을 끌어다 놓을 수 있게 합니다. */
+const dropEl = el("drop");
+let dragDepth = 0;
+const hasFiles = e => [...(e.dataTransfer?.types || [])].includes("Files");
+addEventListener("dragenter", e => {
+  if (!hasFiles(e)) return;
+  e.preventDefault();
+  dragDepth++;
+  dropEl.classList.add("show");
+});
+addEventListener("dragover", e => {
+  if (!hasFiles(e)) return;
+  e.preventDefault();
+  e.dataTransfer.dropEffect = "copy";
+  dropEl.classList.add("show");
+});
+addEventListener("dragleave", e => {
+  if (!hasFiles(e)) return;
+  dragDepth = Math.max(0, dragDepth - 1);
+  if (!dragDepth) dropEl.classList.remove("show");
+});
+addEventListener("drop", async e => {
+  if (!hasFiles(e)) return;
+  e.preventDefault();
+  dragDepth = 0;
+  dropEl.classList.remove("show");
+  const f = e.dataTransfer.files?.[0];
+  if (f) await loadFile(f);
+});
+
+window.room3d = {
+  THREE, SPARK, scene, camera, controls, renderer, spark,
+  fit, measure, detectType, loadBytes, loadFile,
+  get mesh() { return mesh; },
+  get count() { return count; },
+  get currentName() { return currentName; },
+  get currentType() { return currentType; }
+};
+
+(function loop() {
+  requestAnimationFrame(loop);
+  controls.update();
+  renderer.render(scene, camera);
+})();
+</script>
+</body>
+</html>
