@@ -799,7 +799,7 @@ addSection('03-01', "인공지능의 학습", [
     "word": "Install: 설치하다\nPackage: 꾸러미, 묶음\npip: 파이썬 꾸러미를 설치해 주는 도구",
     "code": "# 파이썬 라이브러리 설치\npip install requests",
     "related": ["npm", "uv", "dependency"],
-    "src": "03-01 · 03-02 · 03-05 · 03-06 · 03-07"
+    "src": "03-01 · 03-02 · 03-05 · 03-06 · 03-07 · 04-01"
   },
   {
     "id": "matplotlib",
