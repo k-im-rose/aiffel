@@ -2,7 +2,7 @@
 addSection('03-03', "로컬 LLM과 실행 위치", [
   {
     "id": "inference",
-    "src": "03-03 · 03-06 · 03-08",
+    "src": "03-03 · 03-06 · 03-08 · 04-01",
     "term": "Inference",
     "ko": "추론",
     "full": "",
@@ -475,6 +475,7 @@ addSection('03-03', "로컬 LLM과 실행 위치", [
   },
   {
     "id": "chat-messages",
+    "src": "03-03 · 04-01",
     "term": "messages (role · content)",
     "ko": "대화 메시지 형식",
     "full": "",
